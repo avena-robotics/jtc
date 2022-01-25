@@ -1,0 +1,201 @@
+<?xml version="1.0" ?>
+<robot name="avena">
+    <link name="left_avena_link_0">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="link_0.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <inertial>
+        <origin xyz="0. -0.0129 0.00034" rpy="0. 0. 0."/>
+        <mass value="0.75"/>
+        <inertia ixx="1."  ixy="0."  ixz="0." iyy="1." iyz="0." izz="1." />
+      </inertial>
+      <!-- <collision> -->
+        <!-- <origin xyz="0 0 0" rpy="0 0 0" /> -->
+        <!-- <geometry> -->
+          <!-- <mesh filename="file://$(find ${description_pkg})/urdf/meshes/avena/link_0.stl" scale="0.001 0.001 0.001" /> -->
+        <!-- </geometry> -->
+      <!-- </collision> -->
+    </link>
+    
+    <link name="left_avena_link_1">
+      <visual>
+        <origin xyz="0 0 0.0495" rpy="3.141593 0 -1.570796" />
+        <geometry>
+          <mesh filename="link_1.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <inertial>
+        <origin xyz="0.019 0. 0.0445 " rpy="0. 0. 1.570796"/>
+        <mass value="1.960"/>
+        <inertia ixx="2.233e-03"  ixy="0."  ixz="0." iyy="2.047e-03" iyz="0." izz="2.384e-03" />
+      </inertial>
+      <!-- <collision> -->
+        <!-- <origin xyz="0 0 0.0495" rpy="3.141593 0 -1.570796" /> -->
+        <!-- <geometry> -->
+          <!-- <mesh filename="file://$(find ${description_pkg})/urdf/meshes/avena/link_1.stl" scale="0.001 0.001 0.001" /> -->
+        <!-- </geometry> -->
+      <!-- </collision> -->
+    </link>
+  
+    <link name="left_avena_link_2">
+      <visual>
+        <origin xyz="0 0 0.0495" rpy="0 3.141593 1.570796" />
+        <geometry>
+          <mesh filename="link_2.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <inertial>
+        <origin xyz="-0.226 0 0.0334" rpy="0. 0. 1.570796"/>
+        <mass value="4.660"/>
+        <inertia ixx="1.941e-01"  ixy="0."  ixz="0." iyy="5.522e-03" iyz="0." izz="1.941e-01" />
+      </inertial>
+      <!-- <collision> -->
+        <!-- <origin xyz="0 0 0.0495" rpy="0 3.141593 1.570796" /> -->
+        <!-- <geometry> -->
+          <!-- <mesh filename="file://$(find ${description_pkg})/urdf/meshes/avena/link_2.stl" scale="0.001 0.001 0.001" /> -->
+        <!-- </geometry> -->
+      <!-- </collision> -->
+    </link>
+   
+    <link name="left_avena_link_3">
+      <visual>
+        <origin xyz="0. 0. 0.0721" rpy="0 3.141593 -1.570796" />
+        <geometry>
+          <mesh filename="link_3_1.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <inertial>
+        <origin xyz="0.3046 0. 0.0588" rpy="0 0 1.570796"/>
+        <mass value="3.375"/>
+        <inertia ixx="1.149e-01"  ixy="0"  ixz="0" iyy="4.518e-03" iyz="0" izz="1.148e-01" />
+      </inertial>
+      <!-- <collision> -->
+        <!-- <origin xyz="0 0 0.0721" rpy="0 3.141593 -1.570796" /> -->
+        <!-- <geometry> -->
+          <!-- <mesh filename="file://$(find ${description_pkg})/urdf/meshes/avena/link_3.stl" scale="0.001 0.001 0.001" /> -->
+        <!-- </geometry> -->
+      <!-- </collision> -->
+    </link>
+  
+    <link name="left_avena_link_4">
+      <visual>
+        <origin xyz="0 0 0.064" rpy="1.570796 0 1.570796" />
+        <geometry>
+          <mesh filename="link_4.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <inertial>
+        <origin xyz="0.019 0. 0.059 " rpy="0. 0. 1.570796"/>
+        <mass value="1.960"/>
+        <inertia ixx="2.233e-03"  ixy="0."  ixz="0." iyy="2.047e-03" iyz="0." izz="2.384e-03" />
+      </inertial>
+      <!-- <collision> -->
+        <!-- <origin xyz="0 0 0.064" rpy="1.570796 0 1.570796" /> -->
+        <!-- <geometry> -->
+          <!-- <mesh filename="file://$(find ${description_pkg})/urdf/meshes/avena/link_4.stl" scale="0.001 0.001 0.001" /> -->
+        <!-- </geometry> -->
+      <!-- </collision> -->
+    </link>
+  
+    <link name="left_avena_link_5">
+      <visual>
+        <origin xyz="0 0 0.064" rpy="1.570796 0 1.570796" />
+        <geometry>
+          <mesh filename="link_5.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <inertial>
+        <origin xyz="0.019 0 0.059" rpy="0. 0. 1.570796"/>
+        <mass value="1.960"/>
+        <inertia ixx="2.233e-03"  ixy="0."  ixz="0." iyy="2.047e-03" iyz="0." izz="2.384e-03" />
+      </inertial>
+      <!-- <collision> -->
+        <!-- <origin xyz="0 0 0.064" rpy="1.570796 0 1.570796" /> -->
+        <!-- <geometry> -->
+          <!-- <mesh filename="file://$(find ${description_pkg})/urdf/meshes/avena/link_5.stl" scale="0.001 0.001 0.001" /> -->
+        <!-- </geometry> -->
+      <!-- </collision> -->
+    </link>
+  
+    <link name="left_avena_link_6">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="link_6.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="gray" />
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="8.200e-02"/>
+        <inertia ixx="4.100e-05"  ixy="0"  ixz="0" iyy="4.200e-05" iyz="0" izz="8.000e-05" />
+      </inertial>
+      <!-- <collision> -->
+        <!-- <origin xyz="0 0 0" rpy="0 0 0" /> -->
+        <!-- <geometry> -->
+          <!-- <mesh filename="file://$(find ${description_pkg})/urdf/meshes/avena/link_6.stl" scale="0.001 0.001 0.001" /> -->
+        <!-- </geometry> -->
+      <!-- </collision> -->
+    </link>
+  
+  <link name="left_avena_gripper_connection" />
+
+  <!-- Joints -->
+  <joint name="left_avena_joint_1" type="revolute">
+    <origin xyz="0 0 0.063" rpy="0 0 -0.1963" />
+    <parent link="left_avena_link_0"/>
+    <child link="left_avena_link_1"/>
+    <axis xyz="0 0 1"/>
+    <!-- <limit effort="0" lower="-3.05" upper="3.05" velocity="0"/> -->
+  </joint>
+  <joint name="left_avena_joint_2" type="revolute">
+    <origin xyz="0.064 0 0.0495" rpy="0 1.570796 0" />
+    <parent link="left_avena_link_1"/>
+    <child link="left_avena_link_2"/>
+    <axis xyz="0 0 1"/>
+    <!-- <limit effort="0" lower="-1.57" upper="1.57" velocity="0"/> -->
+  </joint>
+  <joint name="left_avena_joint_3" type="revolute">
+    <origin xyz="-0.452 0 0" rpy="0 3.141592 0" />
+    <parent link="left_avena_link_2"/>
+    <child link="left_avena_link_3"/>
+    <axis xyz="0 0 1"/>
+    <!-- <limit effort="0" lower="-2.9" upper="2.9" velocity="0"/> -->
+  </joint>
+  <joint name="left_avena_joint_4" type="revolute">
+    <origin xyz="0.452 0 0.0226" rpy="3.141592 0 0" />
+    <parent link="left_avena_link_3"/>
+    <child link="left_avena_link_4"/>
+    <axis xyz="0 0 1"/>
+    <!-- <limit effort="0" lower="-3.05" upper="3.05" velocity="0"/> -->
+  </joint>
+  <joint name="left_avena_joint_5" type="revolute">
+    <origin xyz="0.0495 0 0.064" rpy="0 -1.570796 3.141592" />
+    <parent link="left_avena_link_4"/>
+    <child link="left_avena_link_5"/>
+    <axis xyz="0 0 1"/>
+    <!-- <limit effort="0" lower="-3.05" upper="3.05" velocity="0"/> -->
+  </joint>
+  <joint name="left_avena_joint_6" type="revolute">
+    <origin xyz="0.0495 0 0.064" rpy="0 1.570796 0" />
+    <parent link="left_avena_link_5"/>
+    <child link="left_avena_link_6"/>
+    <axis xyz="0 0 1"/>
+    <!-- <limit effort="0" lower="-3.05" upper="3.05" velocity="0"/> -->
+  </joint>
+  <joint name="left_avena_joint_7" type="fixed">
+    <origin xyz="0 0 0.0181" rpy="0 0 0"/>
+    <parent link="left_avena_link_6"/>
+    <child link="left_avena_gripper_connection"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+</robot>
