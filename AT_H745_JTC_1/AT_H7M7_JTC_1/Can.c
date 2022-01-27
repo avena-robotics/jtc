@@ -139,7 +139,7 @@ static void Can_SendFrameToJoints(void)
 				pC->Can.TxMsgs[num].bytes[idx++] = pC->Joints[i].targetFsm;
 			}
 			
-			for(int i=0;i<4;i++)
+			for(int i=0;i<CAN_TXDATA_LEN/4;i++)
 			{
 				pC->Can.TxMsgs[num].data[i] = 0x00;
 				pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+0] << 0);
@@ -150,7 +150,7 @@ static void Can_SendFrameToJoints(void)
 			
 			*(pC->Can.txBufAddr + 0) = pC->Can.TxMsgs[num].r0;
 			*(pC->Can.txBufAddr + 1) = pC->Can.TxMsgs[num].r1;
-			*(pC->Can.txBufAddr + 2) = pC->Can.TxMsgs[num].data[num];
+			*(pC->Can.txBufAddr + 2) = pC->Can.TxMsgs[num].data[0];
 			*(pC->Can.txBufAddr + 3) = pC->Can.TxMsgs[num].data[1];
 			*(pC->Can.txBufAddr + 4) = pC->Can.TxMsgs[num].data[2];
 			*(pC->Can.txBufAddr + 5) = pC->Can.TxMsgs[num].data[3];
