@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     frictionTableStandardItemModel = new QStandardItemModel(this);
     pidParametersStandardItemModel = new QStandardItemModel(this);
     jtcParametersStandardItemModel = new QStandardItemModel(this);
+    armModelLinksStandardItemModel = new QStandardItemModel(this);
+    armModelJointsStandardItemModel = new QStandardItemModel(this);
     jointsParametersStandardItemModel = new QStandardItemModel(this);
     joints[0].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint0.csv";
     joints[1].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint1.csv";
@@ -29,10 +31,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     joints[3].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint3.csv";
     joints[4].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint4.csv";
     joints[5].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint5.csv";
-    armModelFilePath = "..\\..\\Dane JTC\\Avena.urdf";
-
-    SetDefualtArmModel();
-
+    Arm.armModelFilePath = "..\\..\\Dane JTC\\avena_arm_id.urdf";
+    traj.trajFilePath = "..\\..\\Dane JTC\\TrajectoryInt.csv";
+//    SetDefualtArmModel();
+    Com_ButtonSetEnable(false);
     comAsynchronicSend = false;
     comSynchroTransmisionEnable = true;
     numFrameToAsynchroSend = Host_FTAS_Null;
@@ -45,10 +47,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     serial = new QSerialPort(this);
     connect(timerSerialSend, SIGNAL(timeout()), this, SLOT(Com_Send()));
     connect(timerSerialRead, SIGNAL(timeout()), this, SLOT(Com_Read()));
-    connect(timerSerialTimeout, SIGNAL(timeout()), this, SLOT(Com_Timeout()));
+//    connect(timerSerialTimeout, SIGNAL(timeout()), this, SLOT(Com_Timeout()));
     connect(timerLabels, SIGNAL(timeout()), this, SLOT(RefreshLabels()));
 //    connect(serial, SIGNAL(readyRead()), this, SLOT(Com_Read()));
     timerLabels->start(100);
+
+    traj.wasRead = false;
+    pidParamWasRead = false;
+    frictionWasRead = false;
+    Arm.wasRead = false;
 }
 MainWindow::~MainWindow()
 {
@@ -118,6 +125,8 @@ void MainWindow::SetDefualtArmModel()
     Arm.Links[4].mass = 1.960;		//mass of link 4
     Arm.Links[5].mass = 1.960;		//mass of link 5
     Arm.Links[6].mass = 0.082;		//mass of link 6
+
+    Arm.wasRead= false;
 }
 void MainWindow::ShowTrajectory()
 {
@@ -472,7 +481,9 @@ void MainWindow::Com_ReadFrameJtcStatus(uint8_t *buf)
     jtcInitStatus = buf[idx++];
     jointsInitStatus = buf[idx++];
     traj.currentStatus = (eTrajExecStatus)buf[idx++];
-    traj.numCurrentPoint = (uint16_t)buf[idx++] << 8;
+    traj.numCurrentPoint = (uint16_t)buf[idx++] << 24;
+    traj.numCurrentPoint += (uint16_t)buf[idx++] << 16;
+    traj.numCurrentPoint += (uint16_t)buf[idx++] << 8;
     traj.numCurrentPoint += (uint16_t)buf[idx++] << 0;
 
     //CAN Status
@@ -735,10 +746,10 @@ void MainWindow::Com_PrepareArmModelToSend()
         for(int j=0;j<6;j++)
         {
             x.f32 = Arm.Joints[i].origin[j];
-            armModelWriteString.append(x.u32 >> 24);
-            armModelWriteString.append(x.u32 >> 16);
-            armModelWriteString.append(x.u32 >> 8);
-            armModelWriteString.append(x.u32 >> 0);
+            Arm.armModelWriteString.append(x.u32 >> 24);
+            Arm.armModelWriteString.append(x.u32 >> 16);
+            Arm.armModelWriteString.append(x.u32 >> 8);
+            Arm.armModelWriteString.append(x.u32 >> 0);
         }
     }
     for(int i=0;i<Arm.Links.length();i++)
@@ -746,24 +757,24 @@ void MainWindow::Com_PrepareArmModelToSend()
         for(int j=0;j<6;j++)
         {
             x.f32 = Arm.Links[i].origin[j];
-            armModelWriteString.append(x.u32 >> 24);
-            armModelWriteString.append(x.u32 >> 16);
-            armModelWriteString.append(x.u32 >> 8);
-            armModelWriteString.append(x.u32 >> 0);
+            Arm.armModelWriteString.append(x.u32 >> 24);
+            Arm.armModelWriteString.append(x.u32 >> 16);
+            Arm.armModelWriteString.append(x.u32 >> 8);
+            Arm.armModelWriteString.append(x.u32 >> 0);
         }
         for(int j=0;j<6;j++)
         {
             x.f32 = Arm.Links[i].innertia[j];
-            armModelWriteString.append(x.u32 >> 24);
-            armModelWriteString.append(x.u32 >> 16);
-            armModelWriteString.append(x.u32 >> 8);
-            armModelWriteString.append(x.u32 >> 0);
+            Arm.armModelWriteString.append(x.u32 >> 24);
+            Arm.armModelWriteString.append(x.u32 >> 16);
+            Arm.armModelWriteString.append(x.u32 >> 8);
+            Arm.armModelWriteString.append(x.u32 >> 0);
         }
         x.f32 = Arm.Links[i].mass;
-        armModelWriteString.append(x.u32 >> 24);
-        armModelWriteString.append(x.u32 >> 16);
-        armModelWriteString.append(x.u32 >> 8);
-        armModelWriteString.append(x.u32 >> 0);
+        Arm.armModelWriteString.append(x.u32 >> 24);
+        Arm.armModelWriteString.append(x.u32 >> 16);
+        Arm.armModelWriteString.append(x.u32 >> 8);
+        Arm.armModelWriteString.append(x.u32 >> 0);
     }
 }
 void MainWindow::Com_SendCommandClearCurrentErrors()
@@ -866,10 +877,12 @@ void MainWindow::Com_Send()
 //        if(numFrameToSynchroSend >= COMFRAMETOSYNCHROSENDMAX)
 //            numFrameToSynchroSend = 0;
     }
+
 }
 void MainWindow::Com_Read()
 {
     comReadString += serial->readAll();
+
     if(comReadString.length() < 4)
         return;
     if(comReadString.length() > COMBUFREADMAX)
@@ -917,8 +930,8 @@ void MainWindow::Com_Read()
 }
 void MainWindow::Com_RefreshSerialPort()
 {
-    serial->close();
-    serial->open(QIODevice::ReadWrite);
+    on_Com_CloseButt_clicked();
+    on_Com_OpenButt_clicked();
 }
 void MainWindow::on_Com_OpenButt_clicked()
 {
@@ -932,6 +945,7 @@ void MainWindow::on_Com_OpenButt_clicked()
         serial->open(QIODevice::ReadWrite);
         if(serial->isOpen())
         {
+            Com_ButtonSetEnable(true);
             statusBar()->showMessage("The COM port has been opened.", 2000);
             timerSerialSend->start(COMTIMESEND);
             timerSerialRead->start(COMTIMEREAD);
@@ -948,34 +962,56 @@ void MainWindow::on_Com_OpenButt_clicked()
 }
 void MainWindow::on_Com_CloseButt_clicked()
 {
+    Com_ButtonSetEnable(false);
     timerSerialSend->stop();
+    timerSerialRead->stop();
     serial->close();
     statusBar()->showMessage("The COM port has been closed.", 2000);
 }
 void MainWindow::on_Com_ReadTrajectoryInt16_clicked()
 {
+    traj.wasRead = false;
     traj.ReadTrajectoryInt16();
     ui->Com_TrajTextEdit->setText(traj.trajString);
     ShowTrajectory();
+    traj.wasRead = true;
 }
 void MainWindow::on_Com_SendTrajectoryToJtc_clicked()
 {
-    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    if(traj.wasRead == false)
     {
-        traj.PrepareTrajectoryToSend();
-        comAsynchronicSend = true;
-        numFrameToAsynchroSend = Host_FTAS_Trajectory;
+        QMessageBox msgBox;
+        msgBox.setText("You need to load the trajcetory file");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.show();
+        if(msgBox.exec() == QMessageBox::Ok)
+        {
+
+        }
+    }
+    else
+    {
+        if(numFrameToAsynchroSend == Host_FTAS_Null)
+        {
+            traj.PrepareTrajectoryToSend();
+            comAsynchronicSend = true;
+            numFrameToAsynchroSend = Host_FTAS_Trajectory;
+        }
     }
 }
 void MainWindow::on_Com_ReadFrictionTableFloat_clicked()
 {
+    frictionWasRead = false;
     for(uint8_t i=0;i<JOINTS_MAX;i++)
         joints[i].ReadFrictionTableFloat();
     ui->Com_FrictionTableTextEdit->setText(joints[0].fricTableString);
     ShowFrictionTable(0);
+    frictionWasRead = true;
 }
 void MainWindow::on_Com_ReadArmModel_clicked()
 {
+    ArmModelReadStringFromFile();
+    ArmModelParse();
 }
 void MainWindow::ShowPidParametersTable()
 {
@@ -1016,6 +1052,7 @@ void MainWindow::ShowPidParametersTable()
 }
 void MainWindow::on_Com_ReadPidParam_clicked()
 {
+    pidParamWasRead = false;
     ui->Com_PidParametersTextEdit->clear();
     for(uint8_t i=0;i<JOINTS_MAX;i++)
     {
@@ -1023,6 +1060,7 @@ void MainWindow::on_Com_ReadPidParam_clicked()
         ui->Com_PidParametersTextEdit->append(joints[i].pidParamString);
     }
     ShowPidParametersTable();
+    pidParamWasRead = true;
 }
 void MainWindow::on_Com_ReadTextEdit_2_clicked()
 {
@@ -1034,10 +1072,24 @@ void MainWindow::on_Com_ReadDebugTextedit_clicked()
 }
 void MainWindow::on_Com_SendPidParamlToJtc_clicked()
 {
-    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    if(pidParamWasRead == false)
     {
-        comAsynchronicSend = true;
-        numFrameToAsynchroSend = Host_FTAS_PidParam;
+        QMessageBox msgBox;
+        msgBox.setText("You need to load the pid parameters file");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.show();
+        if(msgBox.exec() == QMessageBox::Ok)
+        {
+
+        }
+    }
+    else
+    {
+        if(numFrameToAsynchroSend == Host_FTAS_Null)
+        {
+            comAsynchronicSend = true;
+            numFrameToAsynchroSend = Host_FTAS_PidParam;
+        }
     }
 }
 void MainWindow::on_Com_SendCommandUseDefaultPidParamlToJtc_clicked()
@@ -1050,10 +1102,483 @@ void MainWindow::on_Com_SendCommandUseDefaultPidParamlToJtc_clicked()
 }
 void MainWindow::on_Com_SendFrictionTableToJtc_clicked()
 {
-    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    if(frictionWasRead == false)
     {
-        comAsynchronicSend = true;
-        numFrameToAsynchroSend = Host_FTAS_FrictionTable;
+        QMessageBox msgBox;
+        msgBox.setText("You need to load the friction file");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.show();
+        if(msgBox.exec() == QMessageBox::Ok)
+        {
+
+        }
+    }
+    else
+    {
+        if(numFrameToAsynchroSend == Host_FTAS_Null)
+        {
+            comAsynchronicSend = true;
+            numFrameToAsynchroSend = Host_FTAS_FrictionTable;
+        }
+    }
+}
+void MainWindow::ArmModelReadStringFromFile()
+{
+    Arm.armModelFilePath = QFileDialog::getOpenFileName(nullptr, tr("Open File"), "..\\..\\Dane JTC\\avena_arm_id.urdf", tr("Image Files (*.urdf *.txt *.csv)"));
+    QFile file(Arm.armModelFilePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        statusBar()->showMessage("The Arm model file has not been opened.", 2000);
+        return;
+    }
+    statusBar()->showMessage("The Arm model file has been opened.", 2000);
+
+    Arm.armModelString.clear();
+    Arm.armModelString = file.readAll();
+    ui->Com_ArmModelTextEdit->setText(Arm.armModelString);
+}
+void MainWindow::ArmModelShowJoins()
+{
+    armModelJointsStandardItemModel->clear();
+    ui->Com_ArmModelJointsTableView->setModel(armModelJointsStandardItemModel);
+    int rows;
+    QList<QList<QStandardItem*>> itemTable;
+    QStringList columnHeader = {"Join Name", "Origin X", "Origin Y", "Origin Z", "Origin Roll", "Origin Pitch", "Origin Yaw", "Parent", "Child", "Limit lower", "Limit upper", "Limit efort", "Limit velocity", "Type"};
+    armModelJointsStandardItemModel->insertColumns(0, columnHeader.length());
+    for(int i=0;i<columnHeader.length();i++)
+    {
+        armModelJointsStandardItemModel->setHeaderData(i, Qt::Horizontal, columnHeader[i]);
+    }
+
+    for(int i=0;i<Arm.Joints.length();i++)
+    {
+        rows = armModelJointsStandardItemModel->rowCount();
+        armModelJointsStandardItemModel->insertRow(rows);
+        armModelJointsStandardItemModel->setHeaderData(i, Qt::Vertical, "Joint ");
+        QList<QStandardItem*> itemList;
+        itemTable.append(itemList);
+
+        int idx = 0;
+
+        QStandardItem* itemName = new QStandardItem;
+        itemName->setText(Arm.Joints[i].name);
+        itemName->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemName);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemX = new QStandardItem;
+        itemX->setText(QString::number(Arm.Joints[i].origin[0]));
+        itemX->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemX);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemY = new QStandardItem;
+        itemY->setText(QString::number(Arm.Joints[i].origin[1]));
+        itemY->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemY);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemZ = new QStandardItem;
+        itemZ->setText(QString::number(Arm.Joints[i].origin[2]));
+        itemZ->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemZ);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemRoll = new QStandardItem;
+        itemRoll->setText(QString::number(Arm.Joints[i].origin[3]));
+        itemRoll->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemRoll);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemPitch = new QStandardItem;
+        itemPitch->setText(QString::number(Arm.Joints[i].origin[4]));
+        itemPitch->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemPitch);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemYaw = new QStandardItem;
+        itemYaw->setText(QString::number(Arm.Joints[i].origin[5]));
+        itemYaw->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemYaw);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemParent = new QStandardItem;
+        itemParent->setText(Arm.Joints[i].parentName);
+        itemParent->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemParent);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemChild = new QStandardItem;
+        itemChild->setText(Arm.Joints[i].childName);
+        itemChild->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemChild);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemLimitLower = new QStandardItem;
+        itemLimitLower->setText(QString::number(Arm.Joints[i].limitLower));
+        itemLimitLower->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemLimitLower);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemLimitUpper = new QStandardItem;
+        itemLimitUpper->setText(QString::number(Arm.Joints[i].limitUpper));
+        itemLimitUpper->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemLimitUpper);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemLimitEffort = new QStandardItem;
+        itemLimitEffort->setText(QString::number(Arm.Joints[i].limitEffort));
+        itemLimitEffort->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemLimitEffort);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemLimitVelocity = new QStandardItem;
+        itemLimitVelocity->setText(QString::number(Arm.Joints[i].limitVelocity));
+        itemLimitVelocity->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemLimitVelocity);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemType = new QStandardItem;
+        itemType->setText(Arm.Joints[i].type);
+        itemType->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemType);
+        armModelJointsStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+    }
+
+    ui->Com_ArmModelJointsTableView->show();
+    ui->Com_ArmModelJointsTableView->resizeColumnsToContents();
+}
+void MainWindow::ArmModelShowLinks()
+{
+    armModelLinksStandardItemModel->clear();
+    ui->Com_ArmModelLinksTableView->setModel(armModelLinksStandardItemModel);
+    int rows;
+    QList<QList<QStandardItem*>> itemTable;
+    QStringList columnHeader = {"Link Name", "Origin X", "Origin Y", "Origin Z", "Origin Roll", "Origin Pitch", "Origin Yaw", "Mass", "Ixx", "Ixy", "Ixz", "Iyy", "Iyz", "Izz"};
+    armModelLinksStandardItemModel->insertColumns(0, columnHeader.length());
+    for(int i=0;i<columnHeader.length();i++)
+    {
+        armModelLinksStandardItemModel->setHeaderData(i, Qt::Horizontal, columnHeader[i]);
+    }
+
+    for(int i=0;i<Arm.Links.length();i++)
+    {
+        rows = armModelLinksStandardItemModel->rowCount();
+        armModelLinksStandardItemModel->insertRow(rows);
+        armModelLinksStandardItemModel->setHeaderData(i, Qt::Vertical, "Link ");
+        QList<QStandardItem*> itemList;
+        itemTable.append(itemList);
+
+        int idx = 0;
+
+        QStandardItem* itemName = new QStandardItem;
+        itemName->setText(Arm.Links[i].name);
+        itemName->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemName);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemX = new QStandardItem;
+        itemX->setText(QString::number(Arm.Links[i].origin[0]));
+        itemX->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemX);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemY = new QStandardItem;
+        itemY->setText(QString::number(Arm.Links[i].origin[1]));
+        itemY->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemY);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemZ = new QStandardItem;
+        itemZ->setText(QString::number(Arm.Links[i].origin[2]));
+        itemZ->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemZ);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemRoll = new QStandardItem;
+        itemRoll->setText(QString::number(Arm.Links[i].origin[3]));
+        itemRoll->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemRoll);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemPitch = new QStandardItem;
+        itemPitch->setText(QString::number(Arm.Links[i].origin[4]));
+        itemPitch->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemPitch);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemYaw = new QStandardItem;
+        itemYaw->setText(QString::number(Arm.Links[i].origin[5]));
+        itemYaw->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemYaw);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemMass = new QStandardItem;
+        itemMass->setText(QString::number(Arm.Links[i].mass));
+        itemMass->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemMass);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemIxx = new QStandardItem;
+        itemIxx->setText(QString::number(Arm.Links[i].innertia[0]));
+        itemIxx->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemIxx);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemIxy = new QStandardItem;
+        itemIxy->setText(QString::number(Arm.Links[i].innertia[1]));
+        itemIxy->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemIxy);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemIxz = new QStandardItem;
+        itemIxz->setText(QString::number(Arm.Links[i].innertia[2]));
+        itemIxz->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemIxz);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemIyy = new QStandardItem;
+        itemIyy->setText(QString::number(Arm.Links[i].innertia[3]));
+        itemIyy->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemIyy);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemIyz = new QStandardItem;
+        itemIyz->setText(QString::number(Arm.Links[i].innertia[4]));
+        itemIyz->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemIyz);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+
+        QStandardItem* itemIzz = new QStandardItem;
+        itemIzz->setText(QString::number(Arm.Links[i].innertia[5]));
+        itemIzz->setTextAlignment(Qt::AlignRight);
+        itemList.append(itemIzz);
+        armModelLinksStandardItemModel->setItem(i, idx, itemList[idx]);
+        idx++;
+    }
+
+    ui->Com_ArmModelLinksTableView->show();
+    ui->Com_ArmModelLinksTableView->resizeColumnsToContents();
+}
+sArmModelLink MainWindow::ArmModelLinkClear()
+{
+    sArmModelLink l;
+    l.name.clear();
+    l.mass = 0.;
+    for(int i=0;i<6;i++)
+    {
+        l.innertia[i] = 0.;
+        l.origin[i] = 0.;
+    }
+    return l;
+}
+sArmModelLink MainWindow::ArmModelParseLink(QString str)
+{
+    sArmModelLink link;
+    link = ArmModelLinkClear();
+
+    QStringList linksLines = str.split("\n");
+    link.name = linksLines[0].split("\"")[1];
+    int lineStart = 0, lineEnd = 0;
+    for(int j=1;j<linksLines.length();j++)
+    {
+        if(linksLines[j].contains("<inertial>"))
+            lineStart = j;
+        if(linksLines[j].contains("</inertial>"))
+            lineEnd = j;
+    }
+    for(int j=lineStart+1;j<lineEnd;j++)
+    {
+        if(linksLines[j].contains("<origin"))
+        {
+            if(linksLines[j].contains("xyz"))
+            {
+                link.origin[0] = linksLines[j].split("xyz")[1].split("\"")[1].split(" ")[0].toDouble();
+                link.origin[1] = linksLines[j].split("xyz")[1].split("\"")[1].split(" ")[1].toDouble();
+                link.origin[2] = linksLines[j].split("xyz")[1].split("\"")[1].split(" ")[2].toDouble();
+            }
+            if(linksLines[j].contains("xyz"))
+            {
+                link.origin[3] = linksLines[j].split("rpy")[1].split("\"")[1].split(" ")[0].toDouble();
+                link.origin[4] = linksLines[j].split("rpy")[1].split("\"")[1].split(" ")[1].toDouble();
+                link.origin[5] = linksLines[j].split("rpy")[1].split("\"")[1].split(" ")[2].toDouble();
+            }
+        }
+        if(linksLines[j].contains("<mass"))
+        {
+            link.mass = linksLines[j].split("\"")[1].toDouble();
+        }
+        if(linksLines[j].contains("<inertia"))
+        {
+            if(linksLines[j].contains("ixx"))
+                link.innertia[0] = linksLines[j].split("ixx")[1].split("\"")[1].toDouble();
+            if(linksLines[j].contains("ixy"))
+                link.innertia[1] = linksLines[j].split("ixy")[1].split("\"")[1].toDouble();
+            if(linksLines[j].contains("ixz"))
+                link.innertia[2] = linksLines[j].split("ixz")[1].split("\"")[1].toDouble();
+            if(linksLines[j].contains("iyy"))
+                link.innertia[3] = linksLines[j].split("iyy")[1].split("\"")[1].toDouble();
+            if(linksLines[j].contains("iyz"))
+                link.innertia[4] = linksLines[j].split("iyz")[1].split("\"")[1].toDouble();
+            if(linksLines[j].contains("izz"))
+                link.innertia[5] = linksLines[j].split("izz")[1].split("\"")[1].toDouble();
+        }
+    }
+    return link;
+}
+sArmModelJoint MainWindow::ArmModelJointClear()
+{
+    sArmModelJoint j;
+    j.name.clear();
+    j.type.clear();
+    for(int i=0;i<6;i++)
+    {
+        j.origin[i] = 0.;
+    }
+    j.parentName.clear();
+    j.childName.clear();
+    j.limitLower = 0.;
+    j.limitUpper = 0.;
+    j.limitEffort = 0.;
+    j.limitVelocity = 0.;
+    return j;
+}
+sArmModelJoint MainWindow::ArmModelParseJoint(QString str)
+{
+    sArmModelJoint joint;
+    joint = ArmModelJointClear();
+
+    QStringList jointsLines = str.split("\n");
+    if(jointsLines[0].compare("name"))
+        joint.name = jointsLines[0].split("name")[1].split("\"")[1];
+    if(jointsLines[0].compare("type"))
+        joint.type = jointsLines[0].split("type")[1].split("\"")[1];
+
+    for(int j=1;j<jointsLines.length();j++)
+    {
+        if(jointsLines[j].contains("<origin"))
+        {
+            if(jointsLines[j].contains("xyz"))
+            {
+                joint.origin[0] = jointsLines[j].split("xyz")[1].split("\"")[1].split(" ")[0].toDouble();
+                joint.origin[1] = jointsLines[j].split("xyz")[1].split("\"")[1].split(" ")[1].toDouble();
+                joint.origin[2] = jointsLines[j].split("xyz")[1].split("\"")[1].split(" ")[2].toDouble();
+            }
+            if(jointsLines[j].contains("xyz"))
+            {
+                joint.origin[3] = jointsLines[j].split("rpy")[1].split("\"")[1].split(" ")[0].toDouble();
+                joint.origin[4] = jointsLines[j].split("rpy")[1].split("\"")[1].split(" ")[1].toDouble();
+                joint.origin[5] = jointsLines[j].split("rpy")[1].split("\"")[1].split(" ")[2].toDouble();
+            }
+        }
+        if(jointsLines[j].contains("<parent"))
+            joint.parentName = jointsLines[j].split("\"")[1];
+        if(jointsLines[j].contains("<child"))
+            joint.childName = jointsLines[j].split("\"")[1];
+        if(jointsLines[j].contains("<limit"))
+        {
+            if(jointsLines[j].contains("lower"))
+                joint.limitLower = jointsLines[j].split("lower")[1].split("\"")[1].toDouble();
+            if(jointsLines[j].contains("upper"))
+                joint.limitUpper = jointsLines[j].split("upper")[1].split("\"")[1].toDouble();
+            if(jointsLines[j].contains("effort"))
+                joint.limitEffort = jointsLines[j].split("effort")[1].split("\"")[1].toDouble();
+            if(jointsLines[j].contains("velocity"))
+                joint.limitVelocity = jointsLines[j].split("velocity")[1].split("\"")[1].toDouble();
+        }
+    }
+
+    return joint;
+}
+void MainWindow::ArmModelParse()
+{
+    Arm.wasRead = true;
+    Arm.Links.clear();
+    Arm.Joints.clear();
+
+    QStringList linksRaw = Arm.armModelString.split("<link ");
+    QStringList jointsRaw = Arm.armModelString.split("<joint ");
+    QStringList links, joints;
+    for(int i=0;i<linksRaw.length();i++)
+        if(linksRaw[i].contains("<inertial>") && linksRaw[i].contains("</inertial>") && linksRaw[i].contains("</link>"))
+            links.append(linksRaw[i]);
+
+    for(int i=0;i<jointsRaw.length();i++)
+        if(jointsRaw[i].contains("<parent") && jointsRaw[i].contains("<child"))
+            joints.append(jointsRaw[i]);
+
+    //start from "avena_link_0"
+    for(int i=0;i<links.length();i++)
+        Arm.Links.append(ArmModelParseLink(links[i]));
+
+    //start from "avena_joint_1"
+    for(int i=1;i<joints.length();i++)
+        Arm.Joints.append(ArmModelParseJoint(joints[i]));
+
+    if(Arm.Links.length() != (ARMMODEL_DOF+1))
+    {
+        Arm.wasRead = false;
+        QMessageBox msgBox;
+        msgBox.setText("Incorrect links number");
+        msgBox.setInformativeText("Links number = " + QString::number(Arm.Links.length()) + "\r\nExpected links number = " + QString::number(ARMMODEL_DOF+1));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.show();
+        if(msgBox.exec() == QMessageBox::Ok)
+        {
+
+        }
+    }
+
+    if(Arm.Joints.length() != (ARMMODEL_DOF+1))
+    {
+        Arm.wasRead = false;
+        QMessageBox msgBox;
+        msgBox.setText("Incorrect joints number");
+        msgBox.setInformativeText("joints number = " + QString::number(Arm.Joints.length()) + "\r\nExpected joints number = " + QString::number(ARMMODEL_DOF+1));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.show();
+        if(msgBox.exec() == QMessageBox::Ok)
+        {
+
+        }
+    }
+
+    if(Arm.wasRead == false)
+    {
+        Arm.Links.clear();
+        Arm.Joints.clear();
+    }
+    else
+    {
+        ArmModelShowLinks();
+        ArmModelShowJoins();
     }
 }
 void MainWindow::on_Com_SendCommanUsDefaultFrictionTableToJtc_clicked()
@@ -1066,10 +1591,24 @@ void MainWindow::on_Com_SendCommanUsDefaultFrictionTableToJtc_clicked()
 }
 void MainWindow::on_Com_SendArmModelToJtc_clicked()
 {
-    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    if(Arm.wasRead == false)
     {
-        comAsynchronicSend = true;
-        numFrameToAsynchroSend = Host_FTAS_ArmModel;
+        QMessageBox msgBox;
+        msgBox.setText("You need to load the urdf file");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.show();
+        if(msgBox.exec() == QMessageBox::Ok)
+        {
+
+        }
+    }
+    else
+    {
+        if(numFrameToAsynchroSend == Host_FTAS_Null)
+        {
+            comAsynchronicSend = true;
+            numFrameToAsynchroSend = Host_FTAS_ArmModel;
+        }
     }
 }
 void MainWindow::on_Com_SendCommandUseDefaultArmModelToJtc_clicked()
@@ -1159,31 +1698,29 @@ void MainWindow::Com_SendCommandUseDefaultFrictionTable()
 void MainWindow::Com_SendArmModel()
 {
     ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie modelu manipulatora");
-    armModelWriteString.clear();
-    armModelWriteString.append(Host_FT_Header);
-    armModelWriteString.append(Host_FT_ArmModel);
+    Arm.armModelWriteString.clear();
+    Arm.armModelWriteString.append(Host_FT_Header);
+    Arm.armModelWriteString.append(Host_FT_ArmModel);
     Com_PrepareArmModelToSend();
-    uint16_t nd = armModelWriteString.length() + 4;
-    armModelWriteString.insert(2, (uint8_t)(nd >> 8));
-    armModelWriteString.insert(3, (uint8_t)(nd >> 0));
-    uint16_t crc = Com_Crc16v2(armModelWriteString, armModelWriteString.length());
-    armModelWriteString.append(crc >> 8);
-    armModelWriteString.append(crc >> 0);
-    serial->write(armModelWriteString, armModelWriteString.length());
+    uint16_t nd = Arm.armModelWriteString.length() + 4;
+    Arm.armModelWriteString.insert(2, (uint8_t)(nd >> 8));
+    Arm.armModelWriteString.insert(3, (uint8_t)(nd >> 0));
+    uint16_t crc = Com_Crc16v2(Arm.armModelWriteString, Arm.armModelWriteString.length());
+    Arm.armModelWriteString.append(crc >> 8);
+    Arm.armModelWriteString.append(crc >> 0);
+    serial->write(Arm.armModelWriteString, Arm.armModelWriteString.length());
     serial->waitForBytesWritten(5000);
     ui->Com_DebugTextEdit->append("Wysłano model manipulatora");
     ui->Com_DebugTextEdit->append("Waiting for response");
 }
 void MainWindow::Com_Timeout()
 {
-    timerSerialSend->stop();
     timerSerialTimeout->stop();
     Com_RefreshSerialPort();
     comAsynchronicSend = false;
     numFrameToSynchroSend = 0;
     numFrameToAsynchroSend = Host_FTAS_Null;
     comSynchroTransmisionEnable = true;
-    timerSerialSend->start(COMTIMESEND);
     ui->Com_DebugTextEdit->append("Error!!! Timeout!!! Restart serialport.");
 }
 void MainWindow::Com_SendCommandUseDefaultArmModel()
@@ -1277,5 +1814,24 @@ void MainWindow::on_JTC_ClearOccuredErrors_clicked()
         comAsynchronicSend = true;
         numFrameToAsynchroSend = Host_FTAS_ClearOccuredErrors;
     }
+}
+void MainWindow::Com_ButtonSetEnable(bool state)
+{
+    ui->Com_SendArmModelToJtc->setEnabled(state);
+    ui->Com_SendCommandUseDefaultArmModelToJtc->setEnabled(state);
+
+    ui->Com_SendCommanUsDefaultFrictionTableToJtc->setEnabled(state);
+    ui->Com_SendFrictionTableToJtc->setEnabled(state);
+
+    ui->Com_SendPidParamlToJtc->setEnabled(state);
+    ui->Com_SendCommandUseDefaultPidParamlToJtc->setEnabled(state);
+
+    ui->Com_SendTrajectoryToJtc->setEnabled(state);
+    ui->Traj_TrajectoryStop->setEnabled(state);
+    ui->Traj_TrajectoryPause->setEnabled(state);
+    ui->Traj_TrajectoryExecute->setEnabled(state);
+
+    ui->JTC_ClearErrors->setEnabled(state);
+    ui->JTC_ClearOccuredErrors->setEnabled(state);
 }
 

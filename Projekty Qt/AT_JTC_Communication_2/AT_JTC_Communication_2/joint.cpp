@@ -15,6 +15,8 @@ Joint::Joint(QObject *parent) : QObject(parent)
     mcOccuredError = 0;
     currentError = 0;
     currentWarning = 0;
+    internallErrors = 0;
+    internallOccuredErrors = 0;
 }
 union conv32
 {

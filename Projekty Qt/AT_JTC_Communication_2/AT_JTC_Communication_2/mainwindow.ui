@@ -31,7 +31,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -655,13 +655,13 @@
      <attribute name="title">
       <string>Arm model</string>
      </attribute>
-     <widget class="QTableView" name="Com_ArmModelTableView">
+     <widget class="QTableView" name="Com_ArmModelLinksTableView">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>200</y>
+        <y>260</y>
         <width>1400</width>
-        <height>650</height>
+        <height>291</height>
        </rect>
       </property>
      </widget>
@@ -671,7 +671,17 @@
         <x>10</x>
         <y>10</y>
         <width>1400</width>
-        <height>180</height>
+        <height>241</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTableView" name="Com_ArmModelJointsTableView">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>560</y>
+        <width>1400</width>
+        <height>291</height>
        </rect>
       </property>
      </widget>

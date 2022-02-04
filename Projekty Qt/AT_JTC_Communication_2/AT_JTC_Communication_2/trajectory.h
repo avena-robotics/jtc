@@ -54,7 +54,7 @@ public:
 
     eTrajExecStatus         targetStatus;
     eTrajExecStatus         currentStatus;
-    uint16_t                numCurrentPoint;
+    uint32_t                numCurrentPoint;
     bool                    isSend;
     uint32_t                numOfTraj; //numer trajektorii
     uint32_t                lenPointsInTraj; //liczba sampli w trajektorii
@@ -65,6 +65,8 @@ public:
     QList<QList<double>>    value;
     uint32_t                numOfSegToSend;
     QString                 trajString;
+    bool                    wasRead;
+    QString                 trajFilePath;
 
 signals:
 

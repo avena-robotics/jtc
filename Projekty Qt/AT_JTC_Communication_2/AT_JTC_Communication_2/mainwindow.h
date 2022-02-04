@@ -19,6 +19,8 @@
 #include <QElapsedTimer>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QMessageBox>
+#include <stdio.h>
 #include <unistd.h>
 #include "trajectory.h"
 #include "joint.h"
@@ -117,21 +119,35 @@ const double JOINT_VELMAX = 2*M_PI;
 const double JOINT_ACCMAX = 4*M_PI;
 const double JOINT_TORQUEMAX = 256.0;
 const double MAX_INT16 = 32767.0;
-const int TRAJ_MAXPOINTINSEG = 1500; //max 1500
+const int TRAJ_MAXPOINTINSEG = 500; //max 1500
 const int ARMMODEL_DOF=6;
 
 typedef struct
 {
+    QString             name;
+    QString             type;
+    QString             parentName;
+    QString             childName;
     double				origin[6];
+    double              limitLower;
+    double              limitUpper;
+    double              limitEffort;
+    double              limitVelocity;
 }sArmModelJoint;
 typedef struct
 {
+    QString             name;
     double				origin[6];
     double				mass;
     double				innertia[6];
 }sArmModelLink;
 typedef struct
 {
+    bool wasRead;
+    QString armModelFilePath;
+    QString armModelString;
+    QByteArray armModelWriteString;
+
     QList<sArmModelJoint>   Joints;
     QList<sArmModelLink>	Links;
 }sArmModel;
@@ -178,6 +194,14 @@ private slots:
     void on_Com_SendTrajectoryToJtc_clicked();
     void on_Com_ReadFrictionTableFloat_clicked();
     void on_Com_SendFrictionTableToJtc_clicked();
+    void ArmModelReadStringFromFile(void);
+    void ArmModelShowLinks(void);
+    void ArmModelShowJoins(void);
+    sArmModelLink ArmModelLinkClear();
+    sArmModelLink ArmModelParseLink(QString str);
+    sArmModelJoint ArmModelJointClear();
+    sArmModelJoint ArmModelParseJoint(QString str);
+    void ArmModelParse(void);
     void on_Com_ReadArmModel_clicked();
     void on_Com_SendArmModelToJtc_clicked();
     void on_Com_ReadTrajectoryInt16_clicked();
@@ -196,6 +220,7 @@ private slots:
     void on_Com_OnOffSynchroTransmision_clicked();
     void on_JTC_ClearErrors_clicked();
     void on_JTC_ClearOccuredErrors_clicked();
+    void Com_ButtonSetEnable(bool state);
 
 private:
     Ui::MainWindow *ui;
@@ -221,6 +246,8 @@ private:
     QStandardItemModel* pidParametersStandardItemModel;
     QStandardItemModel* jtcParametersStandardItemModel;
     QStandardItemModel* jointsParametersStandardItemModel;
+    QStandardItemModel* armModelLinksStandardItemModel;
+    QStandardItemModel* armModelJointsStandardItemModel;
     bool comAsynchronicSend; //wysylanie ramek asynchronicznych
     bool comSynchroTransmisionEnable;
     uint32_t numFrameToAsynchroSend;
@@ -229,8 +256,7 @@ private:
     QByteArray fricTableWriteString;
     QByteArray pidParamWriteString;
     QByteArray comReadString;
-    QString armModelFilePath;
-    QString armModelString;
-    QByteArray armModelWriteString;
+    bool frictionWasRead;
+    bool pidParamWasRead;
 };
 #endif // MAINWINDOW_H

@@ -18,8 +18,8 @@ Trajectory::Trajectory(QObject *parent) : QObject(parent)
 }
 void Trajectory::ReadTrajectoryInt16()
 {
-//   QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Open File"), "C:\\Users\\Dawid\\Moj dysk\\Avena Technologie\\Projekty Qt\\AT_JTC_Communication_1\\TrajectoryInt.csv", tr("Image Files (*.txt *.csv)"));
-    QString fileName = "..\\..\\Dane JTC\\\\TrajectoryInt.csv";
+    trajFilePath = QFileDialog::getOpenFileName(nullptr, tr("Open File"), "..\\..\\Dane JTC\\TrajectoryInt.csv", tr("Image Files (*.txt *.csv)"));
+    QString fileName = trajFilePath;
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
@@ -66,7 +66,7 @@ void Trajectory::PrepareTrajectorySegments(sTrajSeg *seg, int num)
             seg->lenPointsInSeg = seg->lenPointsInTraj % TRAJ_MAXPOINTINSEG;
     }
 
-    seg->lenBytesInSeg = 42 * seg->lenPointsInSeg + 14;
+    seg->lenBytesInSeg = 36 * seg->lenPointsInSeg + 14;
 
     int startIdx = seg->numOfSeg * TRAJ_MAXPOINTINSEG;
     int finishIdx = startIdx + seg->lenPointsInSeg;
@@ -126,7 +126,10 @@ void Trajectory::PrepareTrajectoryToSend()
     numOfTraj = 0;
     stepTime = 10;
     lenPointsInTraj = value.length();
-    lenSegsInTraj = (lenPointsInTraj / TRAJ_MAXPOINTINSEG) + 1;
+    if((lenPointsInTraj % TRAJ_MAXPOINTINSEG) == 0)
+        lenSegsInTraj = (lenPointsInTraj / TRAJ_MAXPOINTINSEG);
+    else
+        lenSegsInTraj = (lenPointsInTraj / TRAJ_MAXPOINTINSEG) + 1;
     seg.resize(lenSegsInTraj);
     for(uint32_t i=0;i<lenSegsInTraj;i++)
     {
@@ -144,6 +147,7 @@ void Trajectory::PrepareTrajectoryToSend()
 }
 void Trajectory::TrajectoryClear()
 {
+    wasRead = false;
     targetStatus = TES_Null;
     currentStatus = targetStatus;
     isSend = false;
