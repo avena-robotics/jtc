@@ -84,6 +84,8 @@ static void Host_ComPrepareFrameJtcStatus(void)
 	buf[idx++] = (uint8_t)pC->Jtc.jtcInitStatus;
 	buf[idx++] = (uint8_t)pC->Jtc.jointsInitStatus;
 	buf[idx++] = (uint8_t)Traj.currentTES;
+	buf[idx++] = (uint8_t)(Traj.numInterPoint >> 24);
+	buf[idx++] = (uint8_t)(Traj.numInterPoint >> 16);
 	buf[idx++] = (uint8_t)(Traj.numInterPoint >> 8);
 	buf[idx++] = (uint8_t)(Traj.numInterPoint >> 0);
 	
@@ -226,7 +228,15 @@ static void Host_ComUart3Conf(void)
 void Host_ComConf(void)
 {
 	Host_ComStructConf();
-	Host_ComUart3Conf();
+	
+	#ifdef RS422
+		Host_ComUart2Conf();
+	#endif
+	
+	#ifdef UARTUSB
+		Host_ComUart3Conf();
+	#endif
+	
 	Host_ComTimCof();
 }
 static void Host_ComStartSeding(sHost_TxFrame* f)
@@ -349,6 +359,10 @@ static void Host_ComReadFrameTrajectory(uint8_t* buf)
 		// liczba punktow w odebranym segmencie
 		np = (nd - 14) / (3 * JOINTS_MAX * 2);
 
+		// segment o numerze 0 oznacza nowa trajektorie, poprzednia jest czyszczona
+		if(segNum == 0)
+			Control_TrajClear();
+		
 		// odebrano juz zbyt wiele punktów w tej trajektorii
 		if((Traj.numRecPoints + np) > TRAJ_POINTSMAX)
 		{
@@ -373,14 +387,10 @@ static void Host_ComReadFrameTrajectory(uint8_t* buf)
 			Com.rxFrame.dataStatus = Host_RxDS_TrajIncorrectStepTime;
 			return;
 		}
-		
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
-		
-		// segment o numerze 0 oznacza nowa trajektorie, poprzednia jest czyszczona
-		if(segNum == 0)
-			Control_TrajClear();
-		
+				
+		LED3_TOG;
 		// sprawdzenie czy odebrany segment jest ostatnim w trajektorii
 		if(segNum == (segMax-1))
 		{

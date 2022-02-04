@@ -44,47 +44,47 @@ static void Can_FiltersConf(void)
 }
 static void Can_FdcanConf(void)
 {
-	// konfiguracja wyprowadzen
+	// pin configuration
 	GPIOD->MODER &= ~GPIO_MODER_MODE0 & ~GPIO_MODER_MODE1;
 	GPIOD->MODER |= GPIO_MODER_MODE0_1 | GPIO_MODER_MODE1_1;
 	GPIOD->AFR[0] |= 0x00000099;
 	
-	// rozpoczecie konfiguracji FDCAN
+	// FDCAN setup begins
 	FDCAN1->CCCR |= FDCAN_CCCR_INIT | FDCAN_CCCR_CCE;
-	// Ramka w formacie CANFD ze zmienna predkoscia (bit BRSE)
+	// Frame in CANFD format with variable speed (BRSE bit)
 	FDCAN1->CCCR |= FDCAN_CCCR_BRSE | FDCAN_CCCR_FDOE | FDCAN_CCCR_TXP;
 	
-	// predkosc transmisji w trybie nominalnym
+	// transmission baudrate in nominal mode
 	FDCAN1->NBTP = (0x01 << FDCAN_NBTP_NSJW_Pos) | (0x04 << FDCAN_NBTP_NBRP_Pos) | (0x0B << FDCAN_NBTP_NTSEG1_Pos) | (0x03 << FDCAN_NBTP_NTSEG2_Pos);
-	// predkosc transmisji w trybie danych
+	// transmission baudrate in data mode
 	FDCAN1->DBTP = (0x01 << FDCAN_DBTP_DSJW_Pos) | (0x00 << FDCAN_DBTP_DBRP_Pos) | (0x0B << FDCAN_DBTP_DTSEG1_Pos) | (0x03 << FDCAN_DBTP_DTSEG2_Pos);
 	
-	// wszystkie ramki zdalne i ramki ktore nie przeszly filtracji sa odrzucane
+	// all remote and non-filtered frames are discarded
 	FDCAN1->GFC = (0x03 << FDCAN_GFC_ANFS_Pos) | (0x03 << FDCAN_GFC_ANFE_Pos) | FDCAN_GFC_RRFS | FDCAN_GFC_RRFE;
-	// CAN_FILTERS_MAX filtrow standardowych i adres filtrow
+	// CAN_FILTERS_MAX of standard filters and the address of the filters
 	FDCAN1->SIDFC = (CAN_FILTERS_MAX << FDCAN_SIDFC_LSS_Pos) | (pC->Can.filterAddrOffset << 0); 
 	
-	//CAN_TXBUF_MAX buforow nadawczych i adres pierwszego bufora nadawczego
+	// CAN_TXBUF_MAX send buffers and address of the first send buffer
 	FDCAN1->TXBC = (CAN_TXBUF_MAX << FDCAN_TXBC_NDTB_Pos) | (pC->Can.txBufAddrOffset << 0);
-	//bufory nadawcze o rozmiarze 20 bajtow
+	// transmit buffers with a size of 20 bytes
 	FDCAN1->TXESC = (CAN_TXBUFSIZE_CODE << FDCAN_TXESC_TBDS_Pos);
 	
-	// bufory odbiorcze o rozmiarze 12 bajtow, elementy RXFIFO1 i RXFIFO0 o rozmiarze 12 bajtow
+	// 12-byte receiving buffers, RXFIFO 1 and RXFIFO 0 elements with a size of 12 bytes
 	FDCAN1->RXESC = (CAN_RXBUFSIZE_CODE << FDCAN_RXESC_RBDS_Pos) | (CAN_RXBUFSIZE_CODE << FDCAN_RXESC_F1DS_Pos) | (CAN_RXBUFSIZE_CODE << FDCAN_RXESC_F0DS_Pos);
-	// offset adresu pierwszego bufora odbiorczego
+	// first receive buffer address offset
 	FDCAN1->RXBC = (pC->Can.rxBufAddrOffset << 0); 
-	// CAN_RXBUFF_MAX buforow odbiorczych, CAN_RXFIFO0_MAX elementow fifo0 i adres pierwszego elementu fifo0
+	// CAN_RXBUFF_MAX receive buffers, CAN_RXFIFO0_MAX fifo0 and address of first fifo0
 	FDCAN1->RXF0C = (CAN_RXFIFO0_MAX << FDCAN_RXF0C_F0S_Pos) | (pC->Can.rxFifo0AddrOffset << 0); 
 
-	// Przrwanie od odbioru do bufora, te przerwania kierowane sa do EINT0
+	// abort from receive to buffer, these interrupts are directed to EINT0
 	FDCAN1->IE = FDCAN_IE_TCE | FDCAN_IE_DRXE;
-	// Wlaczenie przerwan od transfer complete indywidualnie dla kazdego bufora nadawczego
+	// Enable interrupts from transfer complete individually for each send buffer
 	for(int i=0;i<CAN_TXBUF_MAX;i++)
 		FDCAN1->TXBTIE |= (1 << i);
-	// Przrwanie od obslugi bledow, te przerwania kierowane sa do EINT1
+	// The error handling interrupt, these interrupts are directed to EINT1
 	FDCAN1->IE |= FDCAN_IE_ARAE | FDCAN_IE_PEDE | FDCAN_IE_PEAE | FDCAN_IE_WDIE | FDCAN_IE_BOE | FDCAN_IE_EWE | FDCAN_IE_EPE | FDCAN_IE_ELOE;
 	FDCAN1->ILS = FDCAN_ILS_ARAE | FDCAN_ILS_PEDE | FDCAN_ILS_PEAE | FDCAN_ILS_WDIE | FDCAN_ILS_BOE | FDCAN_ILS_EWE | FDCAN_ILS_EPE | FDCAN_ILS_ELOE;
-	// wlaczenie linii przerwania
+	// turning on the interrupt line
 	FDCAN1->ILE = FDCAN_ILE_EINT0 | FDCAN_ILE_EINT1;
 	NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
 	NVIC_EnableIRQ(FDCAN1_IT1_IRQn);

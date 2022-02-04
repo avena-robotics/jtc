@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
 #define LED1_ON				GPIOB->ODR |= GPIO_ODR_OD0;
 #define LED1_OFF			GPIOB->ODR &= ~GPIO_ODR_OD0;
 #define LED1_TOG			GPIOB->ODR ^= GPIO_ODR_OD0;
@@ -144,6 +143,9 @@ typedef enum
 	Can_SFP_Rx5Timeout	= 13,
 }eCan_StatusFlagPos;
 
+//#define RS422
+#define UARTUSB
+
 #define M_4_PI											12.566370
 #define M_2_PI											6.283185
 #define M_PI												3.141592
@@ -152,12 +154,21 @@ typedef enum
 #define M_PI_8 											0.392699
 #define MAXINT16										32767.0
 
+
+#ifdef RS422
+#define HOST_COMBAUDRATE 						5000000
+#define HOST_COMTIMSEND							15
+#endif
+
+#ifdef UARTUSB
 #define HOST_COMBAUDRATE 						115200
+#define HOST_COMTIMSEND							40
+#endif
+
 #define HOST_COMBUFREADSIZE 				60000
 #define HOST_COMBUFWRITESIZE 				1000
 #define HOST_COMFRAMESSIZE					1
 #define HOST_COMTIMEOUTMAX					100
-#define HOST_COMTIMSEND							50
 #define TRAJ_POINTSMAX							12000
 #define TRAJ_SEGSSMAX								100
 #define JOINTS_MAX									6

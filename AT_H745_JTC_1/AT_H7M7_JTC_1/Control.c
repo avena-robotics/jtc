@@ -160,7 +160,7 @@ static void Cotrol_SafetyConf(void)
 	GPIOD->MODER &= ~GPIO_MODER_MODE3;
 	GPIOD->MODER |= GPIO_MODER_MODE3_0;
 	
-	//Safety in conf as EXTI4
+	//Safety in conf
 	GPIOD->MODER &= ~GPIO_MODER_MODE4;
 	GPIOD->PUPDR |= GPIO_PUPDR_PUPD4_0;
 	
