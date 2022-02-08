@@ -88,6 +88,7 @@ static void Host_ComPrepareFrameJtcStatus(void)
 	buf[idx++] = (uint8_t)(Traj.numInterPoint >> 16);
 	buf[idx++] = (uint8_t)(Traj.numInterPoint >> 8);
 	buf[idx++] = (uint8_t)(Traj.numInterPoint >> 0);
+	buf[idx++] = (uint8_t)pC->Jtc.fricType;
 	
 	//CAN Status
 	buf[idx++] = (uint8_t)pC->Can.statusId;
@@ -477,6 +478,7 @@ static void Host_ComReadFrameFricionTable(uint8_t* buf)
 				}
 			}
 		}
+		pC->Jtc.fricType = JTC_FT_Table;
 		Joints_FindMinMaxVelTempInFrictionTabeIdx();
 		pC->Jtc.flagInitGetFrictionTable = false;
 	}
@@ -499,9 +501,65 @@ static void Host_ComReadFrameFricionTableUseDefault(uint8_t* buf)
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
 		
-		Joints_SetDefaultVariables(); //przyrocenie zmiennych w jointach do domyslnych wartosci przed zmiana nastaw PID
+		pC->Jtc.fricType = JTC_FT_Table;
+		Joints_SetDefaultFriction();
+		pC->Jtc.flagInitGetFrictionTable = false;
+	}
+	else
+	{
+		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
+	}
+}
+static void Host_ComReadFrameFricionPolynomial(uint8_t* buf)
+{
+	uint16_t nd = Com.rxFrame.expectedLength;
+	
+	uint16_t crc1 = Com_Crc16(buf, nd-2);
+	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
+	uint16_t idx = 4;
+	if(crc1 == crc2)
+	{
+		Com.timeout = 0;
 		
-		Joints_SetDefaultFrictionTable();
+		// odebrane dane sa poprawne
+		Com.rxFrame.dataStatus = Host_RxDS_NoError;
+		
+		union conv32 x;
+		for(int num=0;num<JOINTS_MAX;num++)
+		{
+			for(int i=JOINTS_FRICCOEFFMAX-1;i>=0;i--)
+			{
+				x.u32 = ((uint32_t)buf[idx++]<<24);
+				x.u32 += ((uint32_t)buf[idx++]<<16);
+				x.u32 += ((uint32_t)buf[idx++]<<8);
+				x.u32 += ((uint32_t)buf[idx++]<<0);
+				pC->Joints[num].fricCoeff[i] = x.f32;
+			}
+		}
+		pC->Jtc.fricType = JTC_FT_Polynomial;
+		pC->Jtc.flagInitGetFrictionTable = false;
+	}
+	else
+	{
+		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
+	}
+}
+static void Host_ComReadFrameFricionPolynomialUseDefault(uint8_t* buf)
+{
+	uint16_t nd = Com.rxFrame.expectedLength;
+	
+	uint16_t crc1 = Com_Crc16(buf, nd-2);
+	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
+	
+	if(crc1 == crc2)
+	{
+		Com.timeout = 0;
+		
+		// odebrane dane sa poprawne
+		Com.rxFrame.dataStatus = Host_RxDS_NoError;
+		
+		pC->Jtc.fricType = JTC_FT_Polynomial;
+		Joints_SetDefaultFriction();
 		pC->Jtc.flagInitGetFrictionTable = false;
 	}
 	else
@@ -522,8 +580,6 @@ static void Host_ComReadFramePidParam(uint8_t* buf)
 		
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
-		
-		Joints_SetDefaultVariables(); //przyrocenie zmiennych w jointach do domyslnych wartosci przed zmiana nastaw PID
 		
 		union conv32 x;
 		for(int i=0;i<JOINTS_MAX;i++)
@@ -578,7 +634,6 @@ static void Host_ComReadFramePidParamUseDefault(uint8_t* buf)
 		
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
-		
 		Joints_SetDefaultPidParam();
 		pC->Jtc.flagInitGetPidParam = false;
 	}
@@ -687,6 +742,48 @@ static void Host_ComReadFrameTrajSetExecStatus(uint8_t *buf)
 		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
 	}
 }
+static void Host_ComReadFrameTeachingModeEnable(uint8_t *buf)
+{
+	uint16_t nd = Com.rxFrame.expectedLength;
+	
+	uint16_t crc1 = Com_Crc16(buf, nd-2);
+	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
+	
+	if(crc1 == crc2)
+	{
+		Com.timeout = 0;
+		
+		// odebrane dane sa poprawne
+		Com.rxFrame.dataStatus = Host_RxDS_NoError;
+		
+		pC->Jtc.teachingModeReq = true;
+	}
+	else
+	{
+		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
+	}
+}
+static void Host_ComReadFrameTeachingModeDisable(uint8_t *buf)
+{
+	uint16_t nd = Com.rxFrame.expectedLength;
+	
+	uint16_t crc1 = Com_Crc16(buf, nd-2);
+	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
+	
+	if(crc1 == crc2)
+	{
+		Com.timeout = 0;
+		
+		// odebrane dane sa poprawne
+		Com.rxFrame.dataStatus = Host_RxDS_NoError;
+		
+		pC->Jtc.teachingModeReq = false;
+	}
+	else
+	{
+		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
+	}
+}
 static void Host_ComReadFromHost(void)
 {
 	if(Com.firstRun == false)
@@ -700,7 +797,8 @@ static void Host_ComReadFromHost(void)
 	if(buf[0] == Host_FT_Header)
 	{
 		if(buf[1] == Host_FT_ClearCurrentErrors || buf[1] ==  Host_FT_ClearOccuredErrors || buf[1] == Host_FT_Trajectory || buf[1] == Host_FT_FrictionTable || buf[1] == Host_FT_FrictionTableUseDefault || buf[1] == Host_FT_PidParam || 
-			 buf[1] == Host_FT_PidParamUseDefault || buf[1] == Host_FT_ArmModel || buf[1] == Host_FT_ArmModelUseDefault || buf[1] == Host_FT_TrajSetExecStatus)
+			 buf[1] == Host_FT_PidParamUseDefault || buf[1] == Host_FT_ArmModel || buf[1] == Host_FT_ArmModelUseDefault || buf[1] == Host_FT_TrajSetExecStatus || 
+			 buf[1] == Host_FT_TeachingModeEnable || buf[1] == Host_FT_TeachingModeDisable || buf[1] == Host_FT_FrictionPolynomial || buf[1] == Host_FT_FrictionPolynomialUseDefault)
 		{
 			Com_CheckConsistencyReceivedFrame(buf);
 			if(Com.rxFrame.consist == Host_RxFC_IsReceived)
@@ -750,6 +848,22 @@ static void Host_ComReadFromHost(void)
 		else if(buf[1] == Host_FT_TrajSetExecStatus)
 		{
 			Host_ComReadFrameTrajSetExecStatus(buf);
+		}
+		else if(buf[1] == Host_FT_TeachingModeEnable)
+		{
+			Host_ComReadFrameTeachingModeEnable(buf);
+		}
+		else if(buf[1] == Host_FT_TeachingModeDisable)
+		{
+			Host_ComReadFrameTeachingModeDisable(buf);
+		}
+		else if(buf[1] == Host_FT_FrictionPolynomial)
+		{
+			Host_ComReadFrameFricionPolynomial(buf);
+		}
+		else if(buf[1] == Host_FT_FrictionPolynomialUseDefault)
+		{
+			Host_ComReadFrameFricionPolynomialUseDefault(buf);
 		}
 		else
 		{

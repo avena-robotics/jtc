@@ -23,9 +23,12 @@
 
 typedef enum 
 {
+	JTC_FSM_Null = 255,
 	JTC_FSM_Start = 0,
 	JTC_FSM_Init,
+	JTC_FSM_HoldPos,
 	JTC_FSM_Operate,
+	JTC_FSM_Teaching,
 	JTC_FSM_Error,
 }eJTC_FSM;
 typedef enum 
@@ -58,6 +61,10 @@ typedef enum
 	Host_FT_ArmModel,
 	Host_FT_ArmModelUseDefault,
 	Host_FT_TrajSetExecStatus,
+  Host_FT_TeachingModeEnable,
+  Host_FT_TeachingModeDisable,
+	Host_FT_FrictionPolynomial,
+	Host_FT_FrictionPolynomialUseDefault,
 }eHost_FrameType;
 typedef enum
 {
@@ -143,8 +150,11 @@ typedef enum
 	Can_SFP_Rx5Timeout	= 13,
 }eCan_StatusFlagPos;
 
-//#define RS422
-#define UARTUSB
+typedef enum
+{
+    JTC_FT_Polynomial = 0,
+    JTC_FT_Table = 1,
+}eJTC_FricType;
 
 #define M_4_PI											12.566370
 #define M_2_PI											6.283185
@@ -154,6 +164,8 @@ typedef enum
 #define M_PI_8 											0.392699
 #define MAXINT16										32767.0
 
+//#define RS422
+#define UARTUSB
 
 #ifdef RS422
 #define HOST_COMBAUDRATE 						5000000
@@ -174,6 +186,7 @@ typedef enum
 #define JOINTS_MAX									6
 #define JOINTS_FRICTABVELSIZE				20
 #define JOINTS_FRICTABTEMPSIZE			20
+#define JOINTS_FRICCOEFFMAX					4
 #define JOINTS_PIDBUFMAX						200
 
 #define ARMMODEL_DOF								6
@@ -318,6 +331,7 @@ typedef struct
 	double				fricTableVelIdx[JOINTS_FRICTABVELSIZE];										//Wartosc predkosci dla indeksu 0 w tablicy kompensacji tarcia
 	double				fricTableTempIdx[JOINTS_FRICTABTEMPSIZE];									//Wartosc temperatury dla indeksu 0 w tablicy kompensacji tarcia
 	double				fricTable[JOINTS_FRICTABVELSIZE][JOINTS_FRICTABTEMPSIZE]; //Tablica ze wszpolczynnikami kompensacji tarcia
+	double				fricCoeff[JOINTS_FRICCOEFFMAX];														//Tablica wspólczynników do równania tarcia
 	
 	
 	double				idSetPos;				//Pozycja katowa - wartosc do liczenia dynamiki odwrotnej
@@ -416,6 +430,13 @@ typedef struct
 {
 	eJTC_FSM			targetFsm;
 	eJTC_FSM			currentFsm;
+	bool					errorModeReq;
+	bool					initModeReq;
+	bool					teachingModeReq;
+	bool					holdposModeReq;
+	bool					operateModeReq;
+	
+	eJTC_FricType	fricType;								//Rodzaj uzywanej kompensacji tarcia: 0 - wielomian 3 stopnia, 1 - tablica wspólczynników 20x20
 	
 	uint16_t			errors;									// Wszystkie flagi biezacych bledow
 	uint16_t			occuredErrors;					// Wszystkie flagi bledow

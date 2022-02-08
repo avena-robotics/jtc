@@ -35,7 +35,7 @@ void Joints_FindMinMaxVelTempInFrictionTabeIdx(void)
 		}
 	}
 }
-void Joints_SetDefaultFrictionTable(void)
+static void Joints_SetDefaultFrictionTable(void)
 {
 	const	double* FricTableJoints[JOINTS_MAX] = {FricTabDefaultJoint0, FricTabDefaultJoint1, FricTabDefaultJoint2, FricTabDefaultJoint3, FricTabDefaultJoint4, FricTabDefaultJoint5};
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -53,6 +53,23 @@ void Joints_SetDefaultFrictionTable(void)
 				pC->Joints[num].fricTable[i][j] = FricTableJoints[num][idx++];
 	}
 	Joints_FindMinMaxVelTempInFrictionTabeIdx();
+}
+static void Joints_SetDefaultFrictionPolynomial(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		for(int i=0;i<JOINTS_FRICCOEFFMAX;i++)
+		{
+			pC->Joints[num].fricCoeff[i] = 0.0;
+		}
+	}
+}
+void Joints_SetDefaultFriction(void)
+{
+	if(pC->Jtc.fricType == JTC_FT_Polynomial)
+		Joints_SetDefaultFrictionPolynomial();
+	else if(pC->Jtc.fricType == JTC_FT_Table)
+		Joints_SetDefaultFrictionTable();
 }
 void Joints_SetDefaultPidParam(void)
 {
@@ -92,6 +109,14 @@ void Joints_SetDefaultPidParam(void)
 	pC->Joints[5].pidErrorIntMin = -15.0;
 	pC->Joints[5].pidErrorIntMax = 15.0;
 }
+void Joints_ClearCanValues(uint8_t num)
+{
+	pC->Joints[num].currentFsm = Joint_FSM_Start;
+	pC->Joints[num].currentPos = 0.0;
+	pC->Joints[num].currentVel = 0.0;
+	pC->Joints[num].currentTorque = 0.0;
+	pC->Joints[num].currentTemp = 0;
+}
 void Joints_SetDefaultVariables(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -100,11 +125,6 @@ void Joints_SetDefaultVariables(void)
 		pC->Joints[num].setVel = 0.0;
 		pC->Joints[num].setAcc = 0.0;
 		pC->Joints[num].setTorque = 0.0;
-		pC->Joints[num].currentPos = 0.0;
-		pC->Joints[num].currentVel = 0.0;
-		pC->Joints[num].currentAcc = 0.0;
-		pC->Joints[num].currentTorque = 0.0;
-		pC->Joints[num].currentTemp = 0.0;
 		
 		pC->Joints[num].limitPosMin = -M_PI;
 		pC->Joints[num].limitPosMax = M_PI;
@@ -143,7 +163,7 @@ void Joints_SetDefaultVariables(void)
 		pC->Joints[num].pidTorque = 0.0;
 	}
 }
-void Joints_CalcFrictionCompensate(void)
+static void Joints_CalcFrictionCompensateTable(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
@@ -216,6 +236,24 @@ void Joints_CalcFrictionCompensate(void)
 		
 		pC->Joints[num].fricTorque = tRatio * (pC->Joints[num].currentTemp - t0) + Mva;
 	}
+}
+static void Joints_CalcFrictionCompensatePolynomial(void)
+{
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+	{
+		double sign = 1.0;
+		double vel = pC->Joints[num].setVelTemp;
+		if(vel < 0)
+			sign = -1.0;
+		pC->Joints[num].fricTorque = sign*pC->Joints[num].fricCoeff[0] + pC->Joints[num].fricCoeff[1]*vel + sign*pC->Joints[num].fricCoeff[2]*vel*vel + pC->Joints[num].fricCoeff[3]*vel*vel*vel;
+	}
+}
+void Joints_CalcFrictionCompensate(void)
+{
+	if(pC->Jtc.fricType == JTC_FT_Polynomial)
+		Joints_CalcFrictionCompensatePolynomial();
+	else if(pC->Jtc.fricType == JTC_FT_Table)
+		Joints_CalcFrictionCompensateTable();
 }
 void Joints_CalcPIDs(void)
 {

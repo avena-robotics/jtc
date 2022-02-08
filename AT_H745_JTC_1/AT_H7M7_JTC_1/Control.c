@@ -48,6 +48,7 @@ void Control_SetDefualtArmModel(void)
 static void Control_JtcVariableConf(void)
 {
 	pC->Jtc.currentFsm = JTC_FSM_Start;
+	pC->Jtc.fricType = JTC_FT_Polynomial;
 	pC->Jtc.flagInitGetArmModel = true;
 	pC->Jtc.flagInitGetFrictionTable = true;
 	pC->Jtc.flagInitGetPidParam = true;
@@ -89,7 +90,7 @@ static void Control_VariablesConf(void)
 	Control_JtcVariableConf();
 	Control_TrajVariableConf();
 	Joints_SetDefaultVariables();
-	Joints_SetDefaultFrictionTable();
+	Joints_SetDefaultFriction();
 	Joints_SetDefaultPidParam();
 	Control_SetDefualtArmModel();
 }
@@ -202,36 +203,26 @@ void Control_Delay(uint32_t ms)
 	while(pC->tick < ms);
 }
 // *********************** Joints functions ***************************************
-static void ControlJtcSetJointToInit(uint8_t num)
+static void Control_JtcSetJointToInit(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_Init;
 	pC->Joints[num].setTorque = 0.0;
 }
-static void ControlJtcSetJointToReadyToOperate(uint8_t num)
+static void Control_JtcSetJointToReadyToOperate(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_ReadyToOperate;
 	pC->Joints[num].setTorque = 0.0;
 }
-static void ControlJtcSetJointToEnable(uint8_t num)
+static void Control_JtcSetJointToEnable(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_OperationEnable;
-}
-static void Control_CalcDynamic(void)
-{
-	for(int num=0;num<JOINTS_MAX;num++)
-	{
-		pC->Joints[num].idSetPos = pC->Joints[num].currentPos;			// aktualna pozycja katowa napedu
-		pC->Joints[num].idSetVel = pC->Joints[num].setVelTemp;			// przewidywana zadana predkosc katowa tymczasowa
-		pC->Joints[num].idSetAcc = pC->Joints[num].setAccTemp;			// przewidywane zadane przyspieszenie katowe tymczasowa
-	}
-	RNEA_CalcTorques();
 }
 static void Control_CheckLimits(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		// Check torque limits
-		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
+//		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
 		if(pC->Joints[num].setTorqueTemp < pC->Joints[num].limitTorqueMin || pC->Joints[num].setTorqueTemp > pC->Joints[num].limitTorqueMax)
 			pC->Joints[num].flagSetTorqueOverlimit = true;
 		
@@ -294,6 +285,7 @@ static void Control_CheckErrorFlags(void)
 		if(pC->Can.TxMsgs[num].flagTimeout == true)									pC->Jtc.internalCanError = true;
 	}
 	
+	
 	// Check hardware emergency line
 	pC->Jtc.emergencyInput = Control_SafetyInRead();
 	
@@ -343,9 +335,12 @@ static void Control_SetNewTorqueValues(void)
 	if(pC->Jtc.externalError == false && pC->Jtc.internalError == false)
 	{
 		for(uint8_t num=0;num<JOINTS_MAX;num++)
-		{
 			pC->Joints[num].setTorque = pC->Joints[num].setTorqueTemp;
-		}
+	}
+	else
+	{
+		for(uint8_t num=0;num<JOINTS_MAX;num++)
+			pC->Joints[num].setTorque = 0.0;
 	}
 }
 static void Control_SendDataToJoints(void)
@@ -355,6 +350,9 @@ static void Control_SendDataToJoints(void)
 // ***************** Trajectory functions ************************************
 void Control_TrajClear(void)
 {
+	if(Traj.currentTES == TES_Null)
+		return;
+	
 	Traj.comStatus = TCS_Null;
 	Traj.targetTES = TES_Null;
 	Traj.currentTES = TES_Null;
@@ -417,13 +415,6 @@ static void Control_TrajInterpolate(void)
 		double offsetAcc = (double)m * (dAcc / (double)Traj.stepTime);
 		Traj.interpolatePoint.acc[num] = Traj.startPoint.acc[num] + offsetAcc;
 	}
-	
-	for(int num=0;num<JOINTS_MAX;num++)
-	{
-		pC->Joints[num].setPosTemp = Traj.interpolatePoint.pos[num];
-		pC->Joints[num].setVelTemp = Traj.interpolatePoint.vel[num];
-		pC->Joints[num].setAccTemp = Traj.interpolatePoint.acc[num];
-	}
 }
 static void Control_TrajCheckState(void)
 {
@@ -442,7 +433,19 @@ static void Control_TrajCheckState(void)
 	else if(Traj.currentTES == TES_Execute && Traj.targetTES == TES_Finish)
 		Traj.currentTES = TES_Finish; 								// Przejscie natychmiastowe
 	else if(Traj.currentTES == TES_Finish && Traj.targetTES == TES_Stop)
-		Traj.currentTES = TES_Stop; 								// Przejscie natychmiastowe
+		Traj.currentTES = TES_Stop; 									// Przejscie natychmiastowe
+	
+	
+	// Check JTC status: HoldPos
+	if(Traj.currentTES == TES_Null || Traj.currentTES == TES_Stop || Traj.currentTES == TES_Pause || Traj.currentTES == TES_Finish ||  Traj.currentTES == TES_TransNullToStop)
+		pC->Jtc.holdposModeReq = true;
+	else
+		pC->Jtc.holdposModeReq = false;
+	// Check JTC status: Operate
+	if(Traj.currentTES == TES_Execute)
+		pC->Jtc.operateModeReq = true;
+	else
+		pC->Jtc.operateModeReq = false;
 }
 static void Control_TrajStop(void)
 {
@@ -453,30 +456,6 @@ static void Control_TrajStop(void)
 	Control_TrajClearPointDouble(&Traj.startPoint);
 	Control_TrajClearPointDouble(&Traj.interpolatePoint);
 	Control_TrajClearPointDouble(&Traj.endPoint);
-	
-	Joints_SetDefaultVariables();
-}
-static void Control_TrajPause(void)
-{
-	// Niczego tu nie znajde
-}
-static void Control_TrajExecute(void)
-{
-	Traj.numInterPoint++;
-	if(Traj.numInterPoint >= Traj.maxInterPoints)
-	{
-		Traj.targetTES = TES_Finish; // Koniec trajektorii
-		return;
-	}
-	
-	Control_TrajInterpolate();
-	Control_CalcDynamic();
-	Joints_CalcPIDs();
-	Joints_CalcFrictionCompensate();
-}
-static void Control_TrajFinish(void)
-{
-	Joints_SetDefaultVariables();
 }
 static void Control_TrajTransNullToStop(void)
 {
@@ -490,38 +469,46 @@ static void Control_TrajTransNullToStop(void)
 		Traj.currentTES = TES_Null;
 	}
 }
-static void Control_TrajAct(void)
+// ***************** Joint Trajectory Controller functions *********************
+static void Control_JtcPrepareSetedValuesForTeaching(void)
 {
-	Control_TrajCheckState();
-	if(Traj.currentTES == TES_Null)
+	for(int num=0;num<JOINTS_MAX;num++)
 	{
-		return;
-	}
-	else if(Traj.currentTES == TES_Stop)
-	{
-		Control_TrajStop();
-	}
-	else if(Traj.currentTES == TES_Pause)
-	{
-		Control_TrajPause();
-	}
-	else if(Traj.currentTES == TES_Execute)
-	{
-		Control_TrajExecute();
-		Control_CheckLimits();
-		Control_CheckErrorFlags();
-		Control_SetNewTorqueValues();
-	}
-	else if(Traj.currentTES == TES_Finish)
-	{
-		Control_TrajFinish();
-	}
-	else if(Traj.currentTES == TES_TransNullToStop)
-	{
-		Control_TrajTransNullToStop();
+		pC->Joints[num].idSetPos = pC->Joints[num].currentPos;		// aktualna pozycja katowa napedu dla dynamiki
+		pC->Joints[num].idSetVel = 0.0;
+		pC->Joints[num].idSetAcc = 0.0;
 	}
 }
-// ***************** Joint Trajectory Controller functions *********************
+static void Control_JtcPrepareSetedValuesForHoldPos(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		pC->Joints[num].idSetPos = pC->Joints[num].currentPos;		// aktualna pozycja katowa napedu dla dynamiki
+		pC->Joints[num].idSetVel = 0.0;
+		pC->Joints[num].idSetAcc = 0.0;
+	}
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		pC->Joints[num].setPosTemp = pC->Joints[num].setPosTemp; 	//utrzymywanie zadanej pozycji
+		pC->Joints[num].setVelTemp = 0.0;
+		pC->Joints[num].setAccTemp = 0.0;
+	}
+}
+static void Control_JtcPrepareSetedValuesForOperate(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		pC->Joints[num].idSetPos = pC->Joints[num].currentPos;					// aktualna pozycja katowa napedu dla dynamiki
+		pC->Joints[num].idSetVel = Traj.interpolatePoint.vel[num];			// przewidywana zadana predkosc katowa tymczasowa
+		pC->Joints[num].idSetAcc = Traj.interpolatePoint.acc[num];			// przewidywane zadane przyspieszenie katowe tymczasowa
+	}
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		pC->Joints[num].setPosTemp = Traj.interpolatePoint.pos[num];
+		pC->Joints[num].setVelTemp = Traj.interpolatePoint.vel[num];
+		pC->Joints[num].setAccTemp = Traj.interpolatePoint.acc[num];
+	}
+}
 static void Control_ClearErrorSourceVariables(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -586,15 +573,12 @@ static void Control_JtcCheckStateError(void)
 {
 	// Error check
 	if(pC->Jtc.internalError == true || pC->Jtc.externalError == true)
-		pC->Jtc.targetFsm = JTC_FSM_Error;
+		pC->Jtc.errorModeReq = true;
 	else
-		pC->Jtc.targetFsm = JTC_FSM_Start;
+		pC->Jtc.errorModeReq = false;
 }
 static void Control_JtcCheckStateInit(void)
 {
-	if(pC->Jtc.targetFsm == JTC_FSM_Error)
-		return;
-	
 	// Check JTC init status flags
 	if(pC->Jtc.flagInitGetFrictionTable == false)
 		pC->Jtc.jtcInitStatus &= ~(1 << 0);
@@ -614,63 +598,97 @@ static void Control_JtcCheckStateInit(void)
 	
 	// Check JTC init status and Joints init status
 	if(pC->Jtc.jtcInitStatus != 0x00 || pC->Jtc.jointsInitStatus != 0x00)
-		pC->Jtc.targetFsm = JTC_FSM_Init;			// Continue of Init state
+		pC->Jtc.initModeReq = true;			// Continue of Init state
 	else
-		pC->Jtc.targetFsm = JTC_FSM_Operate; 	// Finish of Init state
+		pC->Jtc.initModeReq = false;		// Finish of Init state
 }
 static void Control_JtcCheckState(void)
 {
 	Control_JtcCheckStateError();
 	Control_JtcCheckStateInit();
+	Control_TrajCheckState();
 	
-	if(pC->Jtc.currentFsm == JTC_FSM_Init && pC->Jtc.targetFsm == JTC_FSM_Operate)
-		pC->Jtc.currentFsm = JTC_FSM_Operate; 						// Przejscie natychmiastowe
-	else if(pC->Jtc.currentFsm == JTC_FSM_Init && pC->Jtc.targetFsm == JTC_FSM_Error)
-		pC->Jtc.currentFsm = JTC_FSM_Error; 							// Przejscie natychmiastowe
-	
-	else if(pC->Jtc.currentFsm == JTC_FSM_Operate && pC->Jtc.targetFsm == JTC_FSM_Init)
-		pC->Jtc.currentFsm = JTC_FSM_Init; 								// Przejscie natychmiastowe
-	else if(pC->Jtc.currentFsm == JTC_FSM_Operate && pC->Jtc.targetFsm == JTC_FSM_Error)
-		pC->Jtc.currentFsm = JTC_FSM_Error; 							// Przejscie natychmiastowe
-	
-	else if(pC->Jtc.currentFsm == JTC_FSM_Error && pC->Jtc.targetFsm == JTC_FSM_Init)
-		pC->Jtc.currentFsm = JTC_FSM_Init; 								// Przejscie natychmiastowe
-	else if(pC->Jtc.currentFsm == JTC_FSM_Error && pC->Jtc.targetFsm == JTC_FSM_Operate)
-		pC->Jtc.currentFsm = JTC_FSM_Operate; 						// Przejscie natychmiastowe
-}
-static void Control_JtcInit(void)
-{
-	// Czyszczenie trajektorii (jednorazowo lub po odebraniu nowej gdy JTC_FSM_Init)
-	if(Traj.currentTES != TES_Null)
-		Control_TrajClear();
-	
-	for(uint8_t num=0;num<JOINTS_MAX;num++)
-		ControlJtcSetJointToReadyToOperate(num);
-}
-static void Control_JtcOperate(void)
-{
-	Control_TrajAct();
-	if(Traj.currentTES == TES_Execute)
+	if(pC->Jtc.errorModeReq == true)
 	{
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
-			ControlJtcSetJointToEnable(num);
+		pC->Jtc.targetFsm = JTC_FSM_Error;
 	}
-	else
+	else if(pC->Jtc.initModeReq == true)
 	{
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
-			ControlJtcSetJointToReadyToOperate(num);
+		pC->Jtc.targetFsm = JTC_FSM_Init;
+	}
+	else if(pC->Jtc.teachingModeReq == true)
+	{
+		pC->Jtc.targetFsm = JTC_FSM_Teaching;
+	}
+	else if(pC->Jtc.holdposModeReq == true)
+	{
+		pC->Jtc.targetFsm = JTC_FSM_HoldPos;
+	}
+	else if(pC->Jtc.operateModeReq == true)
+	{
+		pC->Jtc.targetFsm = JTC_FSM_Operate;
+	}
+	
+
+	if(pC->Jtc.targetFsm == JTC_FSM_Error)
+	{
+		pC->Jtc.currentFsm = JTC_FSM_Error;
+	}
+	else if(pC->Jtc.targetFsm == JTC_FSM_Init)
+	{
+		pC->Jtc.currentFsm = JTC_FSM_Init;
+	}
+	else if(pC->Jtc.targetFsm == JTC_FSM_Teaching)
+	{
+		if(pC->Jtc.currentFsm != JTC_FSM_Teaching)
+		{
+			Joints_SetDefaultVariables();
+			for(int num=0;num<JOINTS_MAX;num++)
+			{
+				pC->Joints[num].setPosTemp = 0.0;
+				pC->Joints[num].setVelTemp = 0.0;
+				pC->Joints[num].setAccTemp = 0.0;
+			}
+		}
+		pC->Jtc.currentFsm = JTC_FSM_Teaching;
+	}
+	else if(pC->Jtc.targetFsm == JTC_FSM_HoldPos)
+	{
+		if(pC->Jtc.currentFsm != JTC_FSM_HoldPos)
+		{
+			Joints_SetDefaultVariables();
+			for(int num=0;num<JOINTS_MAX;num++)
+			{
+				pC->Joints[num].setPosTemp = pC->Joints[num].currentPos; 	// aktualna pozycja jako pozycja zadana
+				pC->Joints[num].setVelTemp = 0.0;
+				pC->Joints[num].setAccTemp = 0.0;
+			}
+		}
+		pC->Jtc.currentFsm = JTC_FSM_HoldPos;
+	}
+	else if(pC->Jtc.targetFsm == JTC_FSM_Operate)
+	{
+		if(pC->Jtc.currentFsm != JTC_FSM_Operate)
+		{
+			Joints_SetDefaultVariables();
+		}
+		pC->Jtc.currentFsm = JTC_FSM_Operate;
 	}
 }
 static void Control_JtcError(void)
 {
-	// Czyszczenie trajektorii
 	Control_TrajClear();
+	Joints_SetDefaultVariables();
+	pC->Jtc.teachingModeReq = false;
 	
 	// Reaction for internall error
 	if(pC->Jtc.internalError == true)
 	{
 		for(uint8_t num=0;num<JOINTS_MAX;num++)
-			ControlJtcSetJointToReadyToOperate(num);
+			Control_JtcSetJointToReadyToOperate(num);
+		for(uint8_t num=0;num<JOINTS_MAX;num++)
+			if(pC->Can.RxMsgs[num].flagTimeout == true)
+				Joints_ClearCanValues(num);
 	}
 	
 	// Reaction for externall error
@@ -679,15 +697,76 @@ static void Control_JtcError(void)
 		for(uint8_t num=0;num<JOINTS_MAX;num++)
 		{
 			if(pC->Joints[num].flagCanError == true)
-				ControlJtcSetJointToInit(num);
+				Control_JtcSetJointToInit(num);
 			else
-				ControlJtcSetJointToReadyToOperate(num);
+				Control_JtcSetJointToReadyToOperate(num);
 		}
 	}
 }
+static void Control_JtcInit(void)
+{
+	Control_TrajClear();
+	Joints_SetDefaultVariables();
+	pC->Jtc.teachingModeReq = false;
+	
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		Control_JtcSetJointToReadyToOperate(num);
+	
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = 0.0;
+}
+static void Control_JtcTeaching(void)
+{
+	Control_TrajClear();
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		Control_JtcSetJointToEnable(num);
+	
+	Control_JtcPrepareSetedValuesForTeaching();
+	RNEA_CalcTorques();
+	
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = pC->Joints[num].idTorque;
+}
+static void Control_JtcHoldPos(void)
+{
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		Control_JtcSetJointToEnable(num);
+	
+	if(Traj.currentTES == TES_Stop)
+		Control_TrajStop();
+	else if(Traj.currentTES == TES_TransNullToStop)
+		Control_TrajTransNullToStop();
+	
+	Control_JtcPrepareSetedValuesForHoldPos();
+	RNEA_CalcTorques();
+	Joints_CalcPIDs();
+	
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque;
+}
+static void Control_JtcOperate(void)
+{
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		Control_JtcSetJointToEnable(num);
+	
+	Traj.numInterPoint++;
+	if(Traj.numInterPoint >= Traj.maxInterPoints)
+	{
+		Traj.targetTES = TES_Finish; // Koniec trajektorii
+		return;
+	}
+	
+	Control_TrajInterpolate();
+	Control_JtcPrepareSetedValuesForOperate();
+	RNEA_CalcTorques();
+	Joints_CalcPIDs();
+	Joints_CalcFrictionCompensate();
+	
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
+}
 static void Control_JtcAct(void)
 {
-	TIM5->CNT = 0;
 	LED1_OFF;
 	LED2_OFF;
 	LED3_OFF;
@@ -695,29 +774,37 @@ static void Control_JtcAct(void)
 	Control_CheckErrorFlags();
 	Control_JtcCheckState();
 	
-	if(pC->Jtc.currentFsm == JTC_FSM_Start)
+	if(pC->Jtc.currentFsm == JTC_FSM_Error)
 	{
-		return;
+		LED3_ON;
+		Control_JtcError();
 	}
 	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
 	{
 		LED1_ON;
 		Control_JtcInit();
 	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
+	{
+		LED1_ON;
+		LED2_ON;
+		Control_JtcTeaching();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
+	{
+		LED2_ON;
+		Control_JtcHoldPos();
+	}
 	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
 	{
 		LED2_ON;
 		Control_JtcOperate();
 	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_Error)
-	{
-		LED3_ON;
-		Control_JtcError();
-	}
 	
+	Control_CheckLimits();
+	Control_CheckErrorFlags();
+	Control_SetNewTorqueValues();
 	Control_SendDataToJoints();
-
-	totaltime[0] = (double)TIM5->CNT / 240.0;
 }
 // ********************** Interrupts functions ***********************************
 void TIM7_IRQHandler(void)
