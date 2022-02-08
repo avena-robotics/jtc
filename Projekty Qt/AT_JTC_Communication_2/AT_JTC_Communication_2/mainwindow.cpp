@@ -33,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     joints[5].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint5.csv";
     Arm.armModelFilePath = "..\\..\\Dane JTC\\avena_arm_id.urdf";
     traj.trajFilePath = "..\\..\\Dane JTC\\TrajectoryInt.csv";
-//    SetDefualtArmModel();
+    fricPolynomialPath = "..\\..\\Dane JTC\\FricPolynomialCoeffs.csv";
+
     Com_ButtonSetEnable(false);
     comAsynchronicSend = false;
     comSynchroTransmisionEnable = true;
@@ -185,7 +186,7 @@ void MainWindow::ShowJtcValues()
     int rows;
     QList<QList<QStandardItem*>> itemTable;
 
-    QStringList columnHeader = {"Jtc Fsm", "Jtc Errors","Jtc Occured Errors", "Jtc Init Status", "Joints Init Status", "Traj. Status", "Traj. num of point", "Can Tx timeout", "Can Rx timeout"};
+    QStringList columnHeader = {"Jtc Fsm", "Jtc Errors","Jtc Occured Errors", "Jtc Init Status", "Joints Init Status", "Traj. Status", "Traj. num of point", "Can Tx timeout", "Can Rx timeout", "Fric Type"};
 
     jtcParametersStandardItemModel->insertColumns(0, columnHeader.length());
     for(int i=0;i<columnHeader.length();i++)
@@ -205,8 +206,12 @@ void MainWindow::ShowJtcValues()
         val = "JTC_FSM_Start";
     else if(jtcFsm == JTC_FSM_Init)
         val = "JTC_FSM_Init";
+    else if(jtcFsm == JTC_FSM_HoldPos)
+        val = "JTC_FSM_HoldPos";
     else if(jtcFsm == JTC_FSM_Operate)
         val = "JTC_FSM_Operate";
+    else if(jtcFsm == JTC_FSM_Teaching)
+        val = "JTC_FSM_Teaching";
     else if(jtcFsm == JTC_FSM_Error)
         val = "JTC_FSM_Error";
     else
@@ -279,6 +284,18 @@ void MainWindow::ShowJtcValues()
     itemCanRxTimeout->setTextAlignment(Qt::AlignRight);
     itemList.append(itemCanRxTimeout);
     jtcParametersStandardItemModel->setItem(0, 8, itemList[8]);
+
+    if(jtcFricType == JTC_FT_Polynomial)
+        val = "JTC_FT_Polynomial";
+    else if(jtcFricType == JTC_FT_Table)
+        val = "JTC_FT_Table";
+    else
+        val = "JTC_FricType_Unknown";
+    QStandardItem* itemFricType = new QStandardItem;
+    itemFricType->setText(val);
+    itemFricType->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemFricType);
+    jtcParametersStandardItemModel->setItem(0, 9, itemList[9]);
 
     ui->Com_JtcParamTableView->show();
     ui->Com_JtcParamTableView->resizeColumnsToContents();
@@ -468,6 +485,43 @@ void MainWindow::ShowFrictionTable(uint8_t num)
     ui->Com_FrictionTableTableView->show();
     ui->Com_FrictionTableTableView->resizeColumnsToContents();
 }
+void MainWindow::ShowFrictionPolynomialCoeffs(void)
+{
+    frictionTableStandardItemModel->clear();
+    ui->Com_FrictionTableTableView->setModel(frictionTableStandardItemModel);
+    int rows;
+    QList<QList<QStandardItem*>> itemTable;
+    QStringList columnHeader = {"Coeff 3", "Coeff 2", "Coeff 1", "Coeff 0"};
+
+    frictionTableStandardItemModel->insertColumns(0, columnHeader.length());
+    for(int i=0;i<columnHeader.length();i++)
+    {
+        frictionTableStandardItemModel->setHeaderData(i, Qt::Horizontal, columnHeader[i]);
+    }
+
+    for(int i=0;i<JOINTS_MAX;i++)
+    {
+        rows = frictionTableStandardItemModel->rowCount();
+        frictionTableStandardItemModel->insertRow(rows);
+
+        QString rowHeaderStr = "Joint = " + QString::number(i);
+        frictionTableStandardItemModel->setHeaderData(i, Qt::Vertical, rowHeaderStr);
+
+        QList<QStandardItem*> itemList;
+        itemTable.append(itemList);
+        for(int j=0;j<joints[i].fricPolynomialCoeffs.length();j++)
+        {
+            QStandardItem* item = new QStandardItem;
+            item->setText(QString::number(joints[i].fricPolynomialCoeffs[j],'f',4));
+            item->setTextAlignment(Qt::AlignRight);
+            itemList.append(item);
+            frictionTableStandardItemModel->setItem(i, j, itemList[j]);
+        }
+    }
+
+    ui->Com_FrictionTableTableView->show();
+    ui->Com_FrictionTableTableView->resizeColumnsToContents();
+}
 void MainWindow::Com_ReadFrameJtcStatus(uint8_t *buf)
 {
     uint32_t idx = 4+5;
@@ -485,6 +539,7 @@ void MainWindow::Com_ReadFrameJtcStatus(uint8_t *buf)
     traj.numCurrentPoint += (uint16_t)buf[idx++] << 16;
     traj.numCurrentPoint += (uint16_t)buf[idx++] << 8;
     traj.numCurrentPoint += (uint16_t)buf[idx++] << 0;
+    jtcFricType = (eJTC_FricType)buf[idx++];
 
     //CAN Status
     canStatus = buf[idx++];
@@ -710,6 +765,36 @@ void MainWindow::Com_ReadFrameReceivedFrameResponse(uint8_t *buf)
             }
         }
     }
+    if(buf[4] == Host_FT_FrictionPolynomial) // odbiór potwierdzenia Friction Polynomial Coeffs
+    {
+        if(buf[5] == Host_RxFS_NoError)
+        {
+            if(buf[6] == Host_RxDS_NoError)
+            {
+                ui->Com_DebugTextEdit->append("Response Friction Polynomial Coeffs: Data No Error");
+                comAsynchronicSend = false;
+            }
+            else
+            {
+                ui->Com_DebugTextEdit->append("Response Friction Polynomial Coeffs: Incorrect data.");
+            }
+        }
+    }
+    if(buf[4] == Host_FT_FrictionPolynomialUseDefault) // odbiór potwierdzenia Friction Polynomial Coeffs use Default
+    {
+        if(buf[5] == Host_RxFS_NoError)
+        {
+            if(buf[6] == Host_RxDS_NoError)
+            {
+                ui->Com_DebugTextEdit->append("Response Friction Polynomial Coeffs use Default: Data No Error");
+                comAsynchronicSend = false;
+            }
+            else
+            {
+                ui->Com_DebugTextEdit->append("Response Friction Polynomial Coeffs use Default: Incorrect data.");
+            }
+        }
+    }
     timerSerialSend->start(COMTIMESEND);
 }
 void MainWindow::Com_SendTrajectory()
@@ -862,6 +947,26 @@ void MainWindow::Com_Send()
         else if(numFrameToAsynchroSend == Host_FTAS_TrajSetExecStatus)
         {
             Com_SendCommandTrajSetExecStatus();
+            timerSerialTimeout->start(COMTIMEOUT);
+        }
+        else if(numFrameToAsynchroSend == Host_FTAS_TeachingModeEnable)
+        {
+            Com_SendCommandTeachingModeEnable();
+            timerSerialTimeout->start(COMTIMEOUT);
+        }
+        else if(numFrameToAsynchroSend == Host_FTAS_TeachingModeDisable)
+        {
+            Com_SendCommandTeachingModeDisable();
+            timerSerialTimeout->start(COMTIMEOUT);
+        }
+        else if(numFrameToAsynchroSend == Host_FTAS_FrictionPolynomial)
+        {
+            Com_SendFrictionPolynomialCoeffs();
+            timerSerialTimeout->start(COMTIMEOUT);
+        }
+        else if(numFrameToAsynchroSend == Host_FTAS_FrictionPolynomialUseDefault)
+        {
+            Com_SendCommandFrictionPolynomialUseDefault();
             timerSerialTimeout->start(COMTIMEOUT);
         }
         numFrameToAsynchroSend = Host_FTAS_Null;
@@ -1761,6 +1866,57 @@ void MainWindow::Com_SendCommandTrajSetExecStatus()
     ui->Com_DebugTextEdit->append("Wysłano komendę zmiany trybu wykonywania trajektorii na: " + val);
     ui->Com_DebugTextEdit->append("Waiting for response");
 }
+void MainWindow::Com_SendCommandTeachingModeEnable()
+{
+    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie komendy wlączenia trybu uczenia (Teaching Mode)");
+    comWriteString.clear();
+    comWriteString.append(Host_FT_Header);
+    comWriteString.append(Host_FT_TeachingModeEnable);
+    uint16_t nd = comWriteString.length() + 4;
+    comWriteString.insert(2, (uint8_t)(nd >> 8));
+    comWriteString.insert(3, (uint8_t)(nd >> 0));
+    uint16_t crc = Com_Crc16v2(comWriteString, comWriteString.length());
+    comWriteString.append(crc >> 8);
+    comWriteString.append(crc >> 0);
+    serial->write(comWriteString, comWriteString.length());
+    serial->waitForBytesWritten(1000);
+    ui->Com_DebugTextEdit->append("Wysłano komendę wlączenia trybu uczenia (Teaching Mode)");
+    ui->Com_DebugTextEdit->append("Waiting for response");
+}
+void MainWindow::Com_SendCommandTeachingModeDisable()
+{
+    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie komendy wylączenia trybu uczenia (Teaching Mode)");
+    comWriteString.clear();
+    comWriteString.append(Host_FT_Header);
+    comWriteString.append(Host_FT_TeachingModeDisable);
+    uint16_t nd = comWriteString.length() + 4;
+    comWriteString.insert(2, (uint8_t)(nd >> 8));
+    comWriteString.insert(3, (uint8_t)(nd >> 0));
+    uint16_t crc = Com_Crc16v2(comWriteString, comWriteString.length());
+    comWriteString.append(crc >> 8);
+    comWriteString.append(crc >> 0);
+    serial->write(comWriteString, comWriteString.length());
+    serial->waitForBytesWritten(1000);
+    ui->Com_DebugTextEdit->append("Wysłano komendę wylączenia trybu uczenia (Teaching Mode)");
+    ui->Com_DebugTextEdit->append("Waiting for response");
+}
+void MainWindow::Com_SendCommandFrictionPolynomialUseDefault()
+{
+    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie komendy użycia domyślnych współczynników wielomanu tarcia");
+    comWriteString.clear();
+    comWriteString.append(Host_FT_Header);
+    comWriteString.append(Host_FT_FrictionPolynomial);
+    uint16_t nd = comWriteString.length() + 4;
+    comWriteString.insert(2, (uint8_t)(nd >> 8));
+    comWriteString.insert(3, (uint8_t)(nd >> 0));
+    uint16_t crc = Com_Crc16v2(comWriteString, comWriteString.length());
+    comWriteString.append(crc >> 8);
+    comWriteString.append(crc >> 0);
+    serial->write(comWriteString, comWriteString.length());
+    serial->waitForBytesWritten(1000);
+    ui->Com_DebugTextEdit->append("Wysłano komendę użycia domyślnych współczynników wielomanu tarcia");
+    ui->Com_DebugTextEdit->append("Waiting for response");
+}
 void MainWindow::on_Traj_TrajectoryStop_clicked()
 {
     if(numFrameToAsynchroSend == Host_FTAS_Null)
@@ -1823,6 +1979,9 @@ void MainWindow::Com_ButtonSetEnable(bool state)
     ui->Com_SendCommanUsDefaultFrictionTableToJtc->setEnabled(state);
     ui->Com_SendFrictionTableToJtc->setEnabled(state);
 
+    ui->Com_SendCommanUsDefaultFrictionPolynomialCoeffsToJtc->setEnabled(state);
+    ui->Com_SendFrictionPolynomialCoeffsToJtc->setEnabled(state);
+
     ui->Com_SendPidParamlToJtc->setEnabled(state);
     ui->Com_SendCommandUseDefaultPidParamlToJtc->setEnabled(state);
 
@@ -1833,5 +1992,100 @@ void MainWindow::Com_ButtonSetEnable(bool state)
 
     ui->JTC_ClearErrors->setEnabled(state);
     ui->JTC_ClearOccuredErrors->setEnabled(state);
+
+    ui->JTC_TeachingModeEnable->setEnabled(state);
+    ui->JTC_TeachingModeDisable->setEnabled(state);
+}
+void MainWindow::on_JTC_TeachingModeEnable_clicked()
+{
+    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    {
+        comAsynchronicSend = true;
+        numFrameToAsynchroSend = Host_FTAS_TeachingModeEnable;
+    }
+}
+void MainWindow::on_JTC_TeachingModeDisable_clicked()
+{
+    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    {
+        comAsynchronicSend = true;
+        numFrameToAsynchroSend = Host_FTAS_TeachingModeDisable;
+    }
+}
+void MainWindow::Com_ReadFrictionPolynomialCoeffs(void)
+{
+    //  QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Open File"), "C:\\Users\\Dawid\\Moj dysk\\Avena Technologie\\Projekty uC\\AT_JtcTest\\Friction", tr("Image Files (*.txt *.csv)"));
+        QFile file(fricPolynomialPath);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+        fricPolynomialReadString.clear();
+        for(int i=0;i<JOINTS_MAX;i++)
+        {
+            QString line = file.readLine();
+            fricPolynomialReadString += line;
+            joints[i].ConvertFrictionPolynomialCoeffsToDoubleFromDoubleString(line);
+        }
+
+}
+void MainWindow::on_Com_ReadFrictionPolynomialCoeffsFloat_clicked()
+{
+    fricPolynomialWasRead = false;
+    ui->Com_FrictionTableTextEdit->clear();
+    Com_ReadFrictionPolynomialCoeffs();
+    ui->Com_FrictionTableTextEdit->setText(fricPolynomialReadString);
+    ShowFrictionPolynomialCoeffs();
+    fricPolynomialWasRead = true;
+}
+void MainWindow::on_Com_SendFrictionPolynomialCoeffsToJtc_clicked()
+{
+    if(fricPolynomialWasRead == false)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("You need to load friction polynomial coeffs file");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.show();
+        if(msgBox.exec() == QMessageBox::Ok)
+        {
+
+        }
+    }
+    else
+    {
+        if(numFrameToAsynchroSend == Host_FTAS_Null)
+        {
+            comAsynchronicSend = true;
+            numFrameToAsynchroSend = Host_FTAS_FrictionPolynomial;
+        }
+    }
+}
+void MainWindow::on_Com_SendCommanUsDefaultFrictionPolynomialCoeffsToJtc_clicked()
+{
+    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    {
+        comAsynchronicSend = true;
+        numFrameToAsynchroSend = Host_FTAS_FrictionPolynomialUseDefault;
+    }
+}
+void MainWindow::Com_SendFrictionPolynomialCoeffs()
+{
+    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie współczynników wielomianów tarcia dla wszystkich jointów");
+    fricPolynomialWriteString.clear();
+    fricPolynomialWriteString.append(Host_FT_Header);
+    fricPolynomialWriteString.append(Host_FT_FrictionPolynomial);
+    for(uint32_t i=0;i<JOINTS_MAX;i++)
+    {
+        joints[i].PrepareFrictionPolynomialCoeffsToSend();
+        fricPolynomialWriteString += joints[i].fricPolynomialCooefsStrToSend;
+    }
+    uint16_t nd = fricPolynomialWriteString.length() + 4;
+    fricPolynomialWriteString.insert(2, (uint8_t)(nd >> 8));
+    fricPolynomialWriteString.insert(3, (uint8_t)(nd >> 0));
+    uint16_t crc = Com_Crc16v2(fricPolynomialWriteString, fricPolynomialWriteString.length());
+    fricPolynomialWriteString.append(crc >> 8);
+    fricPolynomialWriteString.append(crc >> 0);
+    serial->write(fricPolynomialWriteString, fricPolynomialWriteString.length());
+    serial->waitForBytesWritten(5000);
+    ui->Com_DebugTextEdit->append("Wysłano współczynniki wielomianów tarcia dla wszystkich jointów");
+    ui->Com_DebugTextEdit->append("Waiting for response");
 }
 

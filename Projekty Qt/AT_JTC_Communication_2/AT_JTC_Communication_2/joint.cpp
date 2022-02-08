@@ -76,6 +76,19 @@ void Joint::PrepareFrictionTableToSend(void)
         }
     }
 }
+void Joint::PrepareFrictionPolynomialCoeffsToSend()
+{
+    fricPolynomialCooefsStrToSend.clear();
+    conv32 x;
+    for(int i=0;i<fricPolynomialCoeffs.length();i++)
+    {
+        x.f32 = fricPolynomialCoeffs[i];
+        fricPolynomialCooefsStrToSend.append(x.u32 >> 24);
+        fricPolynomialCooefsStrToSend.append(x.u32 >> 16);
+        fricPolynomialCooefsStrToSend.append(x.u32 >> 8);
+        fricPolynomialCooefsStrToSend.append(x.u32 >> 0);
+    }
+}
 void Joint::PreparePidParamToSend()
 {
     pidParamStrToSend.clear();
@@ -112,5 +125,11 @@ void Joint::ConvertPidParametersToDoubleFromDoubleString(QString line)
     pidKd = pidParamTableValue[2];
     pidErrorIntMin = pidParamTableValue[3];
     pidErrorIntMax = pidParamTableValue[4];
+}
+void Joint::ConvertFrictionPolynomialCoeffsToDoubleFromDoubleString(QString line)
+{
+    QStringList lineList = line.split(",");
+    for(uint32_t i=0;i<lineList.length();i++)
+        fricPolynomialCoeffs.append(lineList[i].toFloat());
 }
 

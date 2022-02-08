@@ -30,9 +30,12 @@ namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 typedef enum
 {
+    JTC_FSM_Null = 255,
     JTC_FSM_Start = 0,
     JTC_FSM_Init,
+    JTC_FSM_HoldPos,
     JTC_FSM_Operate,
+    JTC_FSM_Teaching,
     JTC_FSM_Error,
 }eJTC_FSM;
 typedef enum
@@ -65,6 +68,10 @@ typedef enum
     Host_FT_ArmModel,
     Host_FT_ArmModelUseDefault,
     Host_FT_TrajSetExecStatus,
+    Host_FT_TeachingModeEnable,
+    Host_FT_TeachingModeDisable,
+    Host_FT_FrictionPolynomial,
+    Host_FT_FrictionPolynomialUseDefault,
 }eHost_FrameType;
 typedef enum
 {
@@ -98,6 +105,11 @@ typedef enum
     Host_FTAS_ArmModel,
     Host_FTAS_ArmModelUseDefault,
     Host_FTAS_TrajSetExecStatus,
+    Host_FTAS_TeachingModeEnable,
+    Host_FTAS_TeachingModeDisable,
+    Host_FTAS_FrictionPolynomial,
+    Host_FTAS_FrictionPolynomialUseDefault,
+
 }eHost_FrameToAsynchroSend;
 typedef enum
 {
@@ -108,12 +120,19 @@ typedef enum
     Host_FTSS_GetJointsValues,
 }eHost_FrameToSynchroSend;
 
+typedef enum
+{
+    JTC_FT_Polynomial = 0,
+    JTC_FT_Table = 1,
+}eJTC_FricType;
+
 const int COMFRAMETOSYNCHROSENDMAX = 1;
 const int COMBUFREADMAX = 10000;
 const int COMTIMESEND = 25;
 const int COMTIMEREAD = 15;
 const int COMTIMEOUT = 1000;
 const int JOINTS_MAX = 6;
+const int JOINTS_FRICCOEFFMAX = 4;
 const double JOINT_POSMAX = M_PI;
 const double JOINT_VELMAX = 2*M_PI;
 const double JOINT_ACCMAX = 4*M_PI;
@@ -172,6 +191,7 @@ private slots:
     void RedrawButtons();
     void RefreshLabels(void);
     void ShowFrictionTable(uint8_t num);
+    void ShowFrictionPolynomialCoeffs(void);
     void Com_ReadFrameJtcStatus(uint8_t* buf);
     void Com_ReadFrameReceivedFrameResponse(uint8_t* buf);
     void Com_SendTrajectory(void);
@@ -207,6 +227,9 @@ private slots:
     void on_Com_ReadTrajectoryInt16_clicked();
     void on_Com_SendCommanUsDefaultFrictionTableToJtc_clicked();
     void Com_SendCommandTrajSetExecStatus();
+    void Com_SendCommandTeachingModeEnable();
+    void Com_SendCommandTeachingModeDisable();
+    void Com_SendCommandFrictionPolynomialUseDefault();
     void ShowPidParametersTable(void);
     void on_Com_ReadPidParam_clicked();
     void on_Com_SendCommandUseDefaultPidParamlToJtc_clicked();
@@ -221,6 +244,13 @@ private slots:
     void on_JTC_ClearErrors_clicked();
     void on_JTC_ClearOccuredErrors_clicked();
     void Com_ButtonSetEnable(bool state);
+    void on_JTC_TeachingModeEnable_clicked();
+    void on_JTC_TeachingModeDisable_clicked();
+    void Com_ReadFrictionPolynomialCoeffs(void);
+    void on_Com_ReadFrictionPolynomialCoeffsFloat_clicked();
+    void on_Com_SendFrictionPolynomialCoeffsToJtc_clicked();
+    void on_Com_SendCommanUsDefaultFrictionPolynomialCoeffsToJtc_clicked();
+    void Com_SendFrictionPolynomialCoeffs(void);
 
 private:
     Ui::MainWindow *ui;
@@ -258,5 +288,10 @@ private:
     QByteArray comReadString;
     bool frictionWasRead;
     bool pidParamWasRead;
+    eJTC_FricType jtcFricType;
+    QString fricPolynomialPath;
+    QString fricPolynomialReadString;
+    QByteArray fricPolynomialWriteString;
+    bool fricPolynomialWasRead;
 };
 #endif // MAINWINDOW_H

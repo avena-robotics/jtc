@@ -24,14 +24,17 @@ public:
     void ConvertFricTableToDoubleFromDoubleString(QString line);
     void ReadFrictionTableFloat(void);
     void PrepareFrictionTableToSend(void);
+    void PrepareFrictionPolynomialCoeffsToSend(void);
     void PreparePidParamToSend(void);
     void ReadPidParametersFloat(void);
     void ConvertPidParametersToDoubleFromDoubleString(QString line);
+    void ConvertFrictionPolynomialCoeffsToDoubleFromDoubleString(QString line);
 
     QString fricTableString;
     QString pidParamString;
     QList<QList<float>> fricTableValue;
     QByteArray fricTableStrToSend;
+    QByteArray fricPolynomialCooefsStrToSend;
     QByteArray pidParamStrToSend;
     QString fricTableFilePath;
     QString pidParamFilePath;
@@ -53,6 +56,7 @@ public:
     uint8_t     currentWarning;
     uint16_t    internallErrors;
     uint16_t    internallOccuredErrors;
+    QList<float> fricPolynomialCoeffs;
 
 signals:
 
