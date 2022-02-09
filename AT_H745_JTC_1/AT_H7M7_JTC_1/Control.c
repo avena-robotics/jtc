@@ -528,16 +528,7 @@ static void Control_ClearErrorSourceVariables(void)
 		pC->Joints[num].currentError = 0x00;
 		pC->Joints[num].mcCurrentError = 0x00;
 		
-		pC->Joints[num].setPosTemp = 0.0;
-		pC->Joints[num].setVelTemp = 0.0;
-		pC->Joints[num].setAccTemp = 0.0;
-		pC->Joints[num].setTorqueTemp = 0.0;
 		pC->Joints[num].pidErrorCurrent = 0.0;
-		
-		pC->Joints[num].setTorqueTemp = 0.0;
-		pC->Joints[num].setTorqueTemp = 0.0;
-		pC->Joints[num].setTorqueTemp = 0.0;
-		pC->Joints[num].setTorqueTemp = 0.0;
 	}
 }
 static void Control_ClearErrorFlags(void)
