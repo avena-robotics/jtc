@@ -222,7 +222,6 @@ static void Control_CheckLimits(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		// Check torque limits
-//		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
 		if(pC->Joints[num].setTorqueTemp < pC->Joints[num].limitTorqueMin || pC->Joints[num].setTorqueTemp > pC->Joints[num].limitTorqueMax)
 			pC->Joints[num].flagSetTorqueOverlimit = true;
 		
@@ -288,6 +287,12 @@ static void Control_CheckErrorFlags(void)
 	
 	// Check hardware emergency line
 	pC->Jtc.emergencyInput = Control_SafetyInRead();
+	
+	
+	#ifdef TESTMODE
+	pC->Jtc.internalJointsError = false;
+	pC->Jtc.internalCanError = false;
+	#endif
 	
 	//Check global internall error
 	if(pC->Jtc.internalJointsError == true || pC->Jtc.internalCanError == true || pC->Jtc.internalComError == true)
@@ -478,6 +483,13 @@ static void Control_JtcPrepareSetedValuesForTeaching(void)
 		pC->Joints[num].idSetVel = 0.0;
 		pC->Joints[num].idSetAcc = 0.0;
 	}
+	
+	pC->Joints[0].idSetPos = -0.103;
+	pC->Joints[1].idSetPos = -1.676;
+	pC->Joints[2].idSetPos = -0.042;
+	pC->Joints[3].idSetPos = 0.368;
+	pC->Joints[4].idSetPos = 0.001;
+	pC->Joints[5].idSetPos = -0.010;
 }
 static void Control_JtcPrepareSetedValuesForHoldPos(void)
 {
@@ -586,6 +598,15 @@ static void Control_JtcCheckStateInit(void)
 		pC->Jtc.jtcInitStatus &= ~(1 << 1);
 	if(pC->Jtc.flagInitGetArmModel == false)
 		pC->Jtc.jtcInitStatus &= ~(1 << 2);
+	
+	#ifdef TESTMODE
+	pC->Joints[0].currentFsm = Joint_FSM_ReadyToOperate;
+	pC->Joints[1].currentFsm = Joint_FSM_ReadyToOperate;
+	pC->Joints[2].currentFsm = Joint_FSM_ReadyToOperate;
+	pC->Joints[3].currentFsm = Joint_FSM_ReadyToOperate;
+	pC->Joints[5].currentFsm = Joint_FSM_ReadyToOperate;
+	#endif
+	
 	
 	// Check Joints init status flags
 	for(uint8_t num=0;num<JOINTS_MAX;num++)

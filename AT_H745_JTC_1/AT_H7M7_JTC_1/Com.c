@@ -693,6 +693,7 @@ static void Host_ComReadFrameArmModel(uint8_t* buf)
 		}
 		
 		pC->Jtc.flagInitGetArmModel = false;
+		RNEA_Conf();
 	}
 	else
 	{
@@ -715,6 +716,7 @@ static void Host_ComReadFrameArmModelUseDefault(uint8_t* buf)
 		Control_SetDefualtArmModel();
 		
 		pC->Jtc.flagInitGetArmModel = false;
+		RNEA_Conf();
 	}
 	else
 	{

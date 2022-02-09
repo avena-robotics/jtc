@@ -164,12 +164,15 @@ typedef enum
 #define M_PI_8 											0.392699
 #define MAXINT16										32767.0
 
+
+//#define TESTMODE
+
 //#define RS422
 #define UARTUSB
 
 #ifdef RS422
-#define HOST_COMBAUDRATE 						5000000
-#define HOST_COMTIMSEND							15
+#define HOST_COMBAUDRATE 						115200
+#define HOST_COMTIMSEND							40
 #endif
 
 #ifdef UARTUSB
