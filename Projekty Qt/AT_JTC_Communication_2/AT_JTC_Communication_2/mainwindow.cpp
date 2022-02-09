@@ -19,21 +19,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     armModelLinksStandardItemModel = new QStandardItemModel(this);
     armModelJointsStandardItemModel = new QStandardItemModel(this);
     jointsParametersStandardItemModel = new QStandardItemModel(this);
-    joints[0].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint0.csv";
-    joints[1].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint1.csv";
-    joints[2].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint2.csv";
-    joints[3].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint3.csv";
-    joints[4].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint4.csv";
-    joints[5].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint5.csv";
-    joints[0].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint0.csv";
-    joints[1].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint1.csv";
-    joints[2].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint2.csv";
-    joints[3].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint3.csv";
-    joints[4].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint4.csv";
-    joints[5].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint5.csv";
-    Arm.armModelFilePath = "..\\..\\Dane JTC\\avena_arm_id.urdf";
-    traj.trajFilePath = "..\\..\\Dane JTC\\TrajectoryInt.csv";
-    fricPolynomialPath = "..\\..\\Dane JTC\\FricPolynomialCoeffs.csv";
+
+    if(ui->pathWindowsRadioButton->isChecked())
+        UseWindowsFilePath();
+    else if(ui->pathLinuxRadioButton->isChecked())
+        UseLinuxFilePath();
 
     Com_ButtonSetEnable(false);
     comAsynchronicSend = false;
@@ -61,6 +51,45 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+void MainWindow::UseWindowsFilePath()
+{
+    joints[0].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint0.csv";
+    joints[1].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint1.csv";
+    joints[2].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint2.csv";
+    joints[3].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint3.csv";
+    joints[4].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint4.csv";
+    joints[5].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint5.csv";
+    joints[0].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint0.csv";
+    joints[1].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint1.csv";
+    joints[2].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint2.csv";
+    joints[3].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint3.csv";
+    joints[4].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint4.csv";
+    joints[5].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint5.csv";
+    Arm.armModelFilePath = "..\\..\\Dane JTC\\avena_arm_id.urdf";
+    traj.trajFilePath = "..\\..\\Dane JTC\\TrajectoryInt.csv";
+    fricPolynomialPath = "..\\..\\Dane JTC\\FricPolynomialCoeffs.csv";
+    statusBar()->showMessage("You are now using file paths on Windows.", 2000);
+}
+void MainWindow::UseLinuxFilePath()
+{
+    joints[0].fricTableFilePath = "../../Dane JTC/FricTableJoint0.csv";
+    joints[1].fricTableFilePath = "../../Dane JTC/FricTableJoint1.csv";
+    joints[2].fricTableFilePath = "../../Dane JTC/FricTableJoint2.csv";
+    joints[3].fricTableFilePath = "../../Dane JTC/FricTableJoint3.csv";
+    joints[4].fricTableFilePath = "../../Dane JTC/FricTableJoint4.csv";
+    joints[5].fricTableFilePath = "../../Dane JTC/FricTableJoint5.csv";
+    joints[0].pidParamFilePath = "../../Dane JTC/PidParamJoint0.csv";
+    joints[1].pidParamFilePath = "../../Dane JTC/PidParamJoint1.csv";
+    joints[2].pidParamFilePath = "../../Dane JTC/PidParamJoint2.csv";
+    joints[3].pidParamFilePath = "../../Dane JTC/PidParamJoint3.csv";
+    joints[4].pidParamFilePath = "../../Dane JTC/PidParamJoint4.csv";
+    joints[5].pidParamFilePath = "../../Dane JTC/PidParamJoint5.csv";
+    Arm.armModelFilePath = "../../Dane JTC/avena_arm_id.urdf";
+    traj.trajFilePath = "../../Dane JTC/TrajectoryInt.csv";
+    fricPolynomialPath = "../../Dane JTC/FricPolynomialCoeffs.csv";
+
+    statusBar()->showMessage("You are now using file paths on Linux.", 2000);
 }
 uint16_t MainWindow::Com_Crc16(uint8_t *packet, uint32_t nBytes)
 {
@@ -2087,5 +2116,13 @@ void MainWindow::Com_SendFrictionPolynomialCoeffs()
     serial->waitForBytesWritten(5000);
     ui->Com_DebugTextEdit->append("Wysłano współczynniki wielomianów tarcia dla wszystkich jointów");
     ui->Com_DebugTextEdit->append("Waiting for response");
+}
+void MainWindow::on_pathLinuxRadioButton_clicked()
+{
+    UseLinuxFilePath();
+}
+void MainWindow::on_pathWindowsRadioButton_clicked()
+{
+    UseWindowsFilePath();
 }
 

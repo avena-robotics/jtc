@@ -182,6 +182,8 @@ public:
 public slots:
 
 private slots:
+    void UseWindowsFilePath(void);
+    void UseLinuxFilePath(void);
     uint16_t Com_Crc16(uint8_t* packet, uint32_t nBytes);
     uint16_t Com_Crc16v2(QByteArray packet, uint32_t nBytes);
     void SetDefualtArmModel(void);
@@ -251,6 +253,10 @@ private slots:
     void on_Com_SendFrictionPolynomialCoeffsToJtc_clicked();
     void on_Com_SendCommanUsDefaultFrictionPolynomialCoeffsToJtc_clicked();
     void Com_SendFrictionPolynomialCoeffs(void);
+
+    void on_pathLinuxRadioButton_clicked();
+
+    void on_pathWindowsRadioButton_clicked();
 
 private:
     Ui::MainWindow *ui;
