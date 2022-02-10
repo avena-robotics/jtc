@@ -483,13 +483,6 @@ static void Control_JtcPrepareSetedValuesForTeaching(void)
 		pC->Joints[num].idSetVel = 0.0;
 		pC->Joints[num].idSetAcc = 0.0;
 	}
-	
-	pC->Joints[0].idSetPos = -0.103;
-	pC->Joints[1].idSetPos = -1.676;
-	pC->Joints[2].idSetPos = -0.042;
-	pC->Joints[3].idSetPos = 0.368;
-	pC->Joints[4].idSetPos = 0.001;
-	pC->Joints[5].idSetPos = -0.010;
 }
 static void Control_JtcPrepareSetedValuesForHoldPos(void)
 {

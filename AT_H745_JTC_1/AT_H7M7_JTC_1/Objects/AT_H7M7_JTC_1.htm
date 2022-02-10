@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\AT_H7M7_JTC_1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\AT_H7M7_JTC_1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Feb 09 15:09:53 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Feb 10 10:18:45 2022
 <BR><P>
 <H3>Maximum Stack Usage =       2760 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-TIM7_IRQHandler &rArr; Control_JtcAct &rArr; Control_JtcOperate &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+TIM7_IRQHandler &rArr; Control_JtcAct &rArr; Control_JtcTeaching &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 <P>
 <H3>
 Functions with no stack information
@@ -264,9 +264,10 @@ Global Symbols
 <P><STRONG><a name="[c4]"></a>Control_TrajClear</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, control.o(i.Control_TrajClear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Control_TrajClear
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClearPointDouble
+<BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClearPointDouble
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcError
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameTrajectory (via Veneer)
@@ -288,17 +289,17 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensateTable
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensatePolynomial
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
 </UL>
 
 <P><STRONG><a name="[f9]"></a>Joints_CalcPIDs</STRONG> (Thumb, 268 bytes, Stack size 16 bytes, joints.o(i.Joints_CalcPIDs))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Joints_CalcPIDs
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
-<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 </UL>
 
-<P><STRONG><a name="[f6]"></a>Joints_ClearCanValues</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, joints.o(i.Joints_ClearCanValues))
+<P><STRONG><a name="[f4]"></a>Joints_ClearCanValues</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, joints.o(i.Joints_ClearCanValues))
 <BR><BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcError
 </UL>
 
@@ -334,7 +335,7 @@ Global Symbols
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[ef]"></a>RNEA_CalcTorques</STRONG> (Thumb, 5288 bytes, Stack size 2392 bytes, rnea.o(i.RNEA_CalcTorques))
+<P><STRONG><a name="[f8]"></a>RNEA_CalcTorques</STRONG> (Thumb, 5288 bytes, Stack size 2392 bytes, rnea.o(i.RNEA_CalcTorques))
 <BR><BR>[Stack]<UL><LI>Max Depth = 2728<LI>Call Chain = RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3xScalar
@@ -351,9 +352,9 @@ Global Symbols
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
-<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<BR>[Called By]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
+<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 </UL>
 
 <P><STRONG><a name="[be]"></a>RNEA_Conf</STRONG> (Thumb, 3762 bytes, Stack size 1048 bytes, rnea.o(i.RNEA_Conf))
@@ -381,7 +382,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
 <P><STRONG><a name="[43]"></a>TIM7_IRQHandler</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, control.o(i.TIM7_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 2760<LI>Call Chain = TIM7_IRQHandler &rArr; Control_JtcAct &rArr; Control_JtcOperate &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+<BR><BR>[Stack]<UL><LI>Max Depth = 2760<LI>Call Chain = TIM7_IRQHandler &rArr; Control_JtcAct &rArr; Control_JtcTeaching &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
@@ -1014,7 +1015,7 @@ Global Symbols
 <LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY (via Veneer)
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionTable (via Veneer)
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques (via Veneer)
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques (via Veneer)
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajInterpolate (via Veneer)
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf (via Veneer)
 </UL>
@@ -1438,7 +1439,7 @@ Local Symbols
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClearCurrentErrors
 </UL>
 
-<P><STRONG><a name="[f2]"></a>Control_CheckLimits</STRONG> (Thumb, 214 bytes, Stack size 8 bytes, control.o(i.Control_CheckLimits))
+<P><STRONG><a name="[f0]"></a>Control_CheckLimits</STRONG> (Thumb, 214 bytes, Stack size 8 bytes, control.o(i.Control_CheckLimits))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Control_CheckLimits
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
@@ -1464,20 +1465,18 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[e8]"></a>Control_JtcAct</STRONG> (Thumb, 276 bytes, Stack size 16 bytes, control.o(i.Control_JtcAct))
-<BR><BR>[Stack]<UL><LI>Max Depth = 2752<LI>Call Chain = Control_JtcAct &rArr; Control_JtcOperate &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+<P><STRONG><a name="[e8]"></a>Control_JtcAct</STRONG> (Thumb, 218 bytes, Stack size 16 bytes, control.o(i.Control_JtcAct))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2752<LI>Call Chain = Control_JtcAct &rArr; Control_JtcTeaching &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetNewTorqueValues
+<BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
+<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetNewTorqueValues
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToReadyToOperate
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
-<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcPrepareSetedValuesForTeaching
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
-<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcError
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckLimits
+<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckLimits
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendDataToJoints
@@ -1489,13 +1488,13 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = Control_JtcCheckState &rArr; Joints_SetDefaultVariables
 </UL>
 <BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
-<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajCheckState
-<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckStateInit
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajCheckState
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckStateInit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[f4]"></a>Control_JtcCheckStateInit</STRONG> (Thumb, 124 bytes, Stack size 8 bytes, control.o(i.Control_JtcCheckStateInit))
+<P><STRONG><a name="[f2]"></a>Control_JtcCheckStateInit</STRONG> (Thumb, 124 bytes, Stack size 8 bytes, control.o(i.Control_JtcCheckStateInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Control_JtcCheckStateInit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
@@ -1505,63 +1504,67 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = Control_JtcError &rArr; Joints_SetDefaultVariables
 </UL>
 <BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
-<LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_ClearCanValues
+<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_ClearCanValues
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToReadyToOperate
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[f0]"></a>Control_JtcHoldPos</STRONG> (Thumb, 154 bytes, Stack size 8 bytes, control.o(i.Control_JtcHoldPos))
+<P><STRONG><a name="[ee]"></a>Control_JtcHoldPos</STRONG> (Thumb, 154 bytes, Stack size 8 bytes, control.o(i.Control_JtcHoldPos))
 <BR><BR>[Stack]<UL><LI>Max Depth = 2736<LI>Call Chain = Control_JtcHoldPos &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Calls]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcPIDs
-<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClearPointDouble
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
-<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcPrepareSetedValuesForHoldPos
+<LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClearPointDouble
+<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcPrepareSetedValuesForHoldPos
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[f1]"></a>Control_JtcOperate</STRONG> (Thumb, 118 bytes, Stack size 8 bytes, control.o(i.Control_JtcOperate))
+<P><STRONG><a name="[ef]"></a>Control_JtcOperate</STRONG> (Thumb, 118 bytes, Stack size 8 bytes, control.o(i.Control_JtcOperate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 2736<LI>Call Chain = Control_JtcOperate &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Calls]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcPIDs
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensate
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajInterpolate
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
+<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcPrepareSetedValuesForOperate
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[f8]"></a>Control_JtcPrepareSetedValuesForHoldPos</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, control.o(i.Control_JtcPrepareSetedValuesForHoldPos))
-<BR><BR>[Called By]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+<P><STRONG><a name="[f7]"></a>Control_JtcPrepareSetedValuesForHoldPos</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, control.o(i.Control_JtcPrepareSetedValuesForHoldPos))
+<BR><BR>[Called By]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 </UL>
 
 <P><STRONG><a name="[fb]"></a>Control_JtcPrepareSetedValuesForOperate</STRONG> (Thumb, 118 bytes, Stack size 12 bytes, control.o(i.Control_JtcPrepareSetedValuesForOperate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Control_JtcPrepareSetedValuesForOperate
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
 </UL>
 
-<P><STRONG><a name="[ee]"></a>Control_JtcPrepareSetedValuesForTeaching</STRONG> (Thumb, 124 bytes, Stack size 12 bytes, control.o(i.Control_JtcPrepareSetedValuesForTeaching))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Control_JtcPrepareSetedValuesForTeaching
-</UL>
-<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
-</UL>
-
-<P><STRONG><a name="[ed]"></a>Control_JtcSetJointToEnable</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, control.o(i.Control_JtcSetJointToEnable))
-<BR><BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
-<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<P><STRONG><a name="[f5]"></a>Control_JtcSetJointToEnable</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, control.o(i.Control_JtcSetJointToEnable))
+<BR><BR>[Called By]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
+<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 </UL>
 
 <P><STRONG><a name="[ec]"></a>Control_JtcSetJointToReadyToOperate</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, control.o(i.Control_JtcSetJointToReadyToOperate))
 <BR><BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcError
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+</UL>
+
+<P><STRONG><a name="[ed]"></a>Control_JtcTeaching</STRONG> (Thumb, 106 bytes, Stack size 8 bytes, control.o(i.Control_JtcTeaching))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2736<LI>Call Chain = Control_JtcTeaching &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+</UL>
+<BR>[Calls]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
+<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
+</UL>
+<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
 <P><STRONG><a name="[ff]"></a>Control_JtcVariableConf</STRONG> (Thumb, 118 bytes, Stack size 12 bytes, control.o(i.Control_JtcVariableConf))
@@ -1575,7 +1578,7 @@ Local Symbols
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
 </UL>
 
-<P><STRONG><a name="[f3]"></a>Control_SetNewTorqueValues</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, control.o(i.Control_SetNewTorqueValues))
+<P><STRONG><a name="[f1]"></a>Control_SetNewTorqueValues</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, control.o(i.Control_SetNewTorqueValues))
 <BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
@@ -1589,14 +1592,14 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[f5]"></a>Control_TrajCheckState</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, control.o(i.Control_TrajCheckState))
+<P><STRONG><a name="[f3]"></a>Control_TrajCheckState</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, control.o(i.Control_TrajCheckState))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Control_TrajCheckState
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
 </UL>
 
-<P><STRONG><a name="[f7]"></a>Control_TrajClearPointDouble</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, control.o(i.Control_TrajClearPointDouble))
-<BR><BR>[Called By]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+<P><STRONG><a name="[f6]"></a>Control_TrajClearPointDouble</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, control.o(i.Control_TrajClearPointDouble))
+<BR><BR>[Called By]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
 </UL>
 
@@ -1605,7 +1608,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
 </UL>
 
 <P><STRONG><a name="[108]"></a>Joints_CalcFrictionCompensatePolynomial</STRONG> (Thumb, 110 bytes, Stack size 0 bytes, joints.o(i.Joints_CalcFrictionCompensatePolynomial))
@@ -1654,7 +1657,7 @@ Local Symbols
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos (via Veneer)
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
@@ -1671,7 +1674,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
@@ -1680,7 +1683,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
@@ -1689,13 +1692,13 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 </UL>
 
 <P><STRONG><a name="[110]"></a>Mat3xVec3</STRONG> (Thumb, 96 bytes, Stack size 88 bytes, rnea.o(i.Mat3xVec3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Mat3xVec3
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 </UL>
 
 <P><STRONG><a name="[10d]"></a>Mat4Ones</STRONG> (Thumb, 68 bytes, Stack size 144 bytes, rnea.o(i.Mat4Ones))
@@ -1711,7 +1714,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
@@ -1726,39 +1729,39 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
 <P><STRONG><a name="[112]"></a>Vec3AddVec3</STRONG> (Thumb, 58 bytes, Stack size 88 bytes, rnea.o(i.Vec3AddVec3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Vec3AddVec3
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 </UL>
 
 <P><STRONG><a name="[113]"></a>Vec3Cross</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, rnea.o(i.Vec3Cross))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Vec3Cross
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 </UL>
 
 <P><STRONG><a name="[115]"></a>Vec3SubVec3</STRONG> (Thumb, 58 bytes, Stack size 88 bytes, rnea.o(i.Vec3SubVec3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Vec3SubVec3
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
 <P><STRONG><a name="[114]"></a>Vec3Zeros</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, rnea.o(i.Vec3Zeros))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Vec3Zeros
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 </UL>
 
 <P><STRONG><a name="[111]"></a>Vec3xScalar</STRONG> (Thumb, 50 bytes, Stack size 64 bytes, rnea.o(i.Vec3xScalar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = Vec3xScalar
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 </UL>
 <P>
 <H3>
