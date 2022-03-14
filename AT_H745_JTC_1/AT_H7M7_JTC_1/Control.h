@@ -107,6 +107,12 @@ typedef enum
 }eHost_ComStatus;
 typedef enum
 {
+	Joint_M_Null = 0x00,
+	Joint_M_Torque = 0x01,
+	Joint_M_Speed = 0x02,
+}eJoint_Mode;
+typedef enum
+{
 	Joint_FSM_Start = 0,
 	Joint_FSM_Init = 1,
 	Joint_FSM_ReadyToOperate = 2,
@@ -120,6 +126,12 @@ typedef enum
 	Joint_FSM_ReactionActive = 254,
 	Joint_FSM_Fault = 255
 }eJoint_FSM;
+typedef enum
+{
+	Can_TxF_Move = 0,
+	Can_TxF_ChangeFsm = 1,
+	Can_TxF_ChangeMode = 2
+}eCanTxFrames;
 typedef enum
 {
 	Can_TxS_Idle = 0,
@@ -149,7 +161,6 @@ typedef enum
 	Can_SFP_Rx4Timeout	= 12,
 	Can_SFP_Rx5Timeout	= 13,
 }eCan_StatusFlagPos;
-
 typedef enum
 {
     JTC_FT_Polynomial = 0,
@@ -163,7 +174,7 @@ typedef enum
 #define M_PI_4 											0.785398
 #define M_PI_8 											0.392699
 #define MAXINT16										32767.0
-
+#define MAXINT32										2147483647.0
 
 //#define TESTMODE
 
@@ -195,15 +206,14 @@ typedef enum
 #define ARMMODEL_DOF								6
 
 #define CAN_MSGRAM_STARTADDR				0x4000AC00
-#define CAN_FILTERS_MAX							0x06
-#define CAN_TXBUF_MAX								0x01
-#define CAN_TXBUFSIZE_CODE					0x03
-#define CAN_TXDATA_DLCCODE					0x0B
-#define CAN_TXDATA_LEN							0x14
-#define CAN_RXBUF_MAX								0x06
-#define CAN_RXFIFO0_MAX							(0x40 - CAN_RXBUF_MAX)
-#define CAN_RXBUFSIZE_CODE					0x01
-#define CAN_RXDATA_LEN							0x0C
+#define CAN_FILTERS_MAX							18
+#define CAN_TXBUF_MAX								3
+#define CAN_TXBUFSIZE_CODE					0x01
+#define CAN_TXDATA_LEN							12
+#define CAN_RXBUF_MAX								18
+#define CAN_RXFIFO0_MAX							(64 - CAN_RXBUF_MAX)
+#define CAN_RXBUFSIZE_CODE					0x02
+#define CAN_RXDATA_LEN							16
 #define CAN_TIMEOUTMAX							5
 
 typedef struct
@@ -273,6 +283,9 @@ typedef struct
 }sTrajectory;
 typedef struct
 {
+	eJoint_Mode		targetMode;										//Zadany tryb pracy [0x01 - torque, 0x02 - speed]
+	eJoint_Mode		currentMode;									//Aktualny tryb pracy [0x01 - torque, 0x02 - speed]
+	uint8_t				confFun;											//Konfiguracja bitowa funkcjonalnosci [0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730]
 	eJoint_FSM		targetFsm;
 	eJoint_FSM		currentFsm;
 	uint8_t				mcCurrentError;
@@ -281,6 +294,8 @@ typedef struct
 	uint8_t				currentWarning;
 	uint16_t			internallErrors;							//Bledy - wszystkie flagi biezacych bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
 	uint16_t			internallOccuredErrors;				//Bledy - wszystkie flagi bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
+	
+	bool					flagFirstPosRead;							//Flaga - pierwszy odczyt pozycji z jointa
 	
 	bool					flagSetPosOverlimit;					//Pozycja - wyliczona pozycja jest poza zakresem
 	bool					flagSetVelOverlimit;					//Predkosc - wyliczona predkosc jest poza zakresem
@@ -292,21 +307,23 @@ typedef struct
 	bool					flagCanError;									// Flaga - dowolny blad jointa odebrany z CAN (suma logiczna wszystkich flg bledow odebranych przez CAN)
 	bool					flagJtcError;									// Flaga - dowolny blad jointa powstaly w JTC (suma logiczna wszystkich flg bledow wewnetrznych)
 	
-	double 				setPos;					//Pozycja - wartosc zadana
-	double				setVel;					//Predkosc - wartosc zadana
-	double				setAcc;					//Przyspieszenie - wartosc zadana
-	double				setTorque;			//Moment - wartosc zadana
+	bool					cWPosNotAccurate;							//Flaga - warning odebrany z CAN - [1 - pozycja z enkodera nie jest dokladna, 0 - popozycja z enkodera  jest dokladna]
 	
-	double 				setPosTemp;			//Pozycja - tymczasowa wartosc zadana
-	double				setVelTemp;			//Predkosc - tymczasowa wartosc zadana
-	double				setAccTemp;			//Przyspieszenie - tymczasowa wartosc zadana
-	double				setTorqueTemp;	//Moment - tymczasowa wartosc zadana
+	double 				setPos;							//Pozycja - wartosc zadana
+	double				setVel;							//Predkosc - wartosc zadana
+	double				setAcc;							//Przyspieszenie - wartosc zadana
+	double				setTorque;					//Moment - wartosc zadana
 	
-	double 				currentPos;			//Pozycja - wartosc aktualna
-	double 				currentVel;			//Predkosc - wartosc aktualna
-	double 				currentAcc;			//Przyspieszenie - wartosc aktualna
-	double				currentTorque;	//Moment - wartosc aktualna
-	double				currentTemp;		//Teperatura - wartosc aktualna
+	double 				setPosTemp;					//Pozycja - tymczasowa wartosc zadana
+	double				setVelTemp;					//Predkosc - tymczasowa wartosc zadana
+	double				setAccTemp;					//Przyspieszenie - tymczasowa wartosc zadana
+	double				setTorqueTemp;			//Moment - tymczasowa wartosc zadana
+	
+	double 				currentPos;					//Pozycja - wartosc aktualna
+	double 				currentVel;					//Predkosc - wartosc aktualna
+	double 				currentAcc;					//Przyspieszenie - wartosc aktualna
+	double				currentTorque;			//Moment - wartosc aktualna
+	double				currentTemp;				//Teperatura - wartosc aktualna
 	
 	double				limitPosMin;				//Limit wartosci pozycji dla danego jointa - wartosc minimum
 	double				limitPosMax;				//Limit wartosci pozycji dla danego jointa - wartosc maximum
@@ -321,10 +338,10 @@ typedef struct
 	double				limitPosErrorMin;		//Limit wartosci uchybu pozycji dla danego jointa - wartosc minimum
 	double				limitPosErrorMax;		//Limit wartosci uchybu pozycji dla danego jointa - wartosc maximum
 	
-	double				maxPosCom;			//Maksymalna wartosc pozycji do obliczania zakresów przy przesylaniu danych
-	double				maxVelCom;			//Maksymalna wartosc predkosci do obliczania zakresów przy przesylaniu danych
-	double				maxAccCom;			//Maksymalna wartosc przyspieszenia do obliczania zakresów przy przesylaniu danych
-	double				maxTorqueCom;		//Maksymalna wartosc momentu do obliczania zakresów przy przesylaniu danych
+	double				maxPosCom;					//Maksymalna wartosc pozycji do obliczania zakresów przy przesylaniu danych
+	double				maxVelCom;					//Maksymalna wartosc predkosci do obliczania zakresów przy przesylaniu danych
+	double				maxAccCom;					//Maksymalna wartosc przyspieszenia do obliczania zakresów przy przesylaniu danych
+	double				maxTorqueCom;				//Maksymalna wartosc momentu do obliczania zakresów przy przesylaniu danych
 	
 	double				fricTorque;																								//Moment - wartosc momentu tarcia odczytana z tablicy kompensacji
 	double				fricTableVelMin;																					//Minimalna predkosc dla ktorej okreslono moment tarcia
@@ -356,6 +373,15 @@ typedef struct
 	double				pidErrorIntMin;												//PID - saturacja calki uchybu - wartosc minimalna
 	double				pidErrorIntMax;												//PID - saturacja calki uchybu - wartosc maksymalna
 	double				pidTorque;														//PID - wyjscie z regulatora
+	
+	bool					irIsRun;															//Init Reg - flaga sygnalizujaca prace - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irDt;																	//Init Reg - krok czasowy - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irMaxTorque;													//Init Reg - maksymalny moment (wartosc bezwzgledna) - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irTargetTorque;												//Init Reg - zadany moment - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irCurrentTorque;											//Init Reg - aktualny moment - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irErrorTorque;												//Init Reg - uchyb momentu - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irHyst;																//Init Reg - histereza momentu - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irRampTorque;													//Init Reg - predkosc zmiany momentu [Unit: Nm/sek] - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
 }sJoint;
 typedef struct
 {
@@ -371,6 +397,8 @@ typedef struct
 	uint32_t			timeoutCnt;
 	bool					flagTimeout;
 	uint64_t			frameTotalCnt;
+	bool					reqSend;
+	void					(*funSendFrame)(void);
 	
 	uint8_t				esi;
 	uint8_t				xtd;
@@ -425,6 +453,7 @@ typedef struct
 	uint32_t			statusFlags;
 	uint32_t			statusOccurredFlags;
 	
+	uint16_t			frameToSend;
 	sCanFilter		Filters[CAN_FILTERS_MAX];
 	sCanTxMsg			TxMsgs[CAN_TXBUF_MAX];
 	sCanRxMsg			RxMsgs[CAN_RXBUF_MAX];
@@ -447,10 +476,12 @@ typedef struct
 	bool					emergencyOutput;
 	bool					internalError;					// Dowolny wewnetrzny Blad w pracy JTC - powoduje ustawienie emergencyOutput
 	bool					externalError;					// Dowolny zewnetrzny Blad w pracy JTC - nie powoduje ustawienia emergencyOutput
+	bool					externalWarning;				// Dowolny zewnetrzny warning w pracy JTC - nie powoduje ustawienia emergencyOutput
 	bool					internalJointsError;		// Blad w pracy JTC zwiazany z jointami - powoduje ustawienie emergencyOutput
 	bool					internalCanError;				// Blad w pracy JTC zwiazany z CAN - powoduje ustawienie emergencyOutput
 	bool					internalComError;				// Blad w pracy JTC zwiazany z COM - powoduje ustawienie emergencyOutput
-	bool					externaljointsError;		// Blad w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
+	bool					externalJointsError;		// Blad w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
+	bool					externalJointsWarning;	// Warning w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
 
 	uint8_t				jtcInitStatus;
 	uint8_t				jointsInitStatus;

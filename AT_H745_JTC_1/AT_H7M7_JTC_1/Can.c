@@ -1,5 +1,104 @@
 #include "Can.h"
 extern  sControl* pC;
+static void Can_SendFrameMove(void)
+{
+	uint16_t num = 0; // tx buffer number
+	if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
+	{
+		uint16_t idx = 0;
+		for(int i=0;i<JOINTS_MAX;i++)
+		{
+			pC->Can.TxMsgs[num].bytes[idx++] = (int16_t)(pC->Joints[i].setTorque / pC->Joints[i].maxTorqueCom * MAXINT16) >> 8;
+			pC->Can.TxMsgs[num].bytes[idx++] = (int16_t)(pC->Joints[i].setTorque / pC->Joints[i].maxTorqueCom * MAXINT16) >> 0;
+		}
+		
+		for(int i=0;i<CAN_TXDATA_LEN/4;i++)
+		{
+			pC->Can.TxMsgs[num].data[i] = 0x00;
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+0] << 0);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+1] << 8);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+2] << 16);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+3] << 24);
+		}
+		
+		idx = 5 * num;
+		*(pC->Can.txBufAddr + idx + 0) = pC->Can.TxMsgs[num].r0;
+		*(pC->Can.txBufAddr + idx + 1) = pC->Can.TxMsgs[num].r1;
+		*(pC->Can.txBufAddr + idx + 2) = pC->Can.TxMsgs[num].data[0];
+		*(pC->Can.txBufAddr + idx + 3) = pC->Can.TxMsgs[num].data[1];
+		*(pC->Can.txBufAddr + idx + 4) = pC->Can.TxMsgs[num].data[2];
+		
+		pC->Can.TxMsgs[num].status = Can_TxS_Sending;
+		
+		FDCAN1->TXBAR |= (1 << num); // start sending
+	}
+}
+static void Can_SendFrameChangeFsm(void)
+{
+	uint16_t num = 1; // tx buffer number
+	if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
+	{
+		uint16_t idx = 0;
+		for(int i=0;i<JOINTS_MAX;i++)
+		{
+			pC->Can.TxMsgs[num].bytes[idx++] = pC->Joints[i].targetFsm;
+		}
+		
+		for(int i=0;i<CAN_TXDATA_LEN/4;i++)
+		{
+			pC->Can.TxMsgs[num].data[i] = 0x00;
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+0] << 0);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+1] << 8);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+2] << 16);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+3] << 24);
+		}
+		
+		idx = 5 * num;
+		*(pC->Can.txBufAddr + idx + 0) = pC->Can.TxMsgs[num].r0;
+		*(pC->Can.txBufAddr + idx + 1) = pC->Can.TxMsgs[num].r1;
+		*(pC->Can.txBufAddr + idx + 2) = pC->Can.TxMsgs[num].data[0];
+		*(pC->Can.txBufAddr + idx + 3) = pC->Can.TxMsgs[num].data[1];
+		*(pC->Can.txBufAddr + idx + 4) = pC->Can.TxMsgs[num].data[2];
+		
+		pC->Can.TxMsgs[num].status = Can_TxS_Sending;
+		
+		FDCAN1->TXBAR |= (1 << num); // start sending
+	}
+}
+static void Can_SendFrameChangeMode(void)
+{
+	uint16_t num = 2; // tx buffer number
+	if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
+	{
+		uint16_t idx = 0;
+		for(int i=0;i<JOINTS_MAX;i++)
+		{
+			pC->Can.TxMsgs[num].bytes[idx++] = pC->Joints[i].targetMode;
+			pC->Can.TxMsgs[num].bytes[idx++] = pC->Joints[i].confFun;
+		}
+		
+		for(int i=0;i<CAN_TXDATA_LEN/4;i++)
+		{
+			pC->Can.TxMsgs[num].data[i] = 0x00;
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+0] << 0);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+1] << 8);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+2] << 16);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+3] << 24);
+		}
+		
+		idx = 5 * num;
+		*(pC->Can.txBufAddr + idx + 0) = pC->Can.TxMsgs[num].r0;
+		*(pC->Can.txBufAddr + idx + 1) = pC->Can.TxMsgs[num].r1;
+		*(pC->Can.txBufAddr + idx + 2) = pC->Can.TxMsgs[num].data[0];
+		*(pC->Can.txBufAddr + idx + 3) = pC->Can.TxMsgs[num].data[1];
+		*(pC->Can.txBufAddr + idx + 4) = pC->Can.TxMsgs[num].data[2];
+		
+		pC->Can.TxMsgs[num].status = Can_TxS_Sending;
+		
+		FDCAN1->TXBAR |= (1 << num); // start sending
+	}
+}
+
 static void Can_StructConf(void)
 {
 	pC->Can.filterAddrOffset = 0x0000;
@@ -14,33 +113,90 @@ static void Can_StructConf(void)
 }
 static void Can_FiltersConf(void)
 {
-	// filtr dla Joint0
-	pC->Can.Filters[0].sfid1 = 0xA0;
-	
-	// filtr dla Joint1
-	pC->Can.Filters[1].sfid1 = 0xB0;
-	
-	// filtr dla Joint2
-	pC->Can.Filters[2].sfid1 = 0xC0;
-	
-	// filtr dla Joint3
-	pC->Can.Filters[3].sfid1 = 0xD0;
-	
-	// filtr dla Joint4
-	pC->Can.Filters[4].sfid1 = 0xE0;
-	
-	// filtr dla Joint5
-	pC->Can.Filters[5].sfid1 = 0xF0;
+	uint8_t idx = 0;
+	// Responses for boroadcast ID = 0x0000
+	pC->Can.Filters[idx++].sfid1 = 0x0200;
+	pC->Can.Filters[idx++].sfid1 = 0x0201;
+	pC->Can.Filters[idx++].sfid1 = 0x0202;
+	pC->Can.Filters[idx++].sfid1 = 0x0203;
+	pC->Can.Filters[idx++].sfid1 = 0x0204;
+	pC->Can.Filters[idx++].sfid1 = 0x0205;
+	// Responses for boroadcast ID = 0x0010
+	pC->Can.Filters[idx++].sfid1 = 0x0210;
+	pC->Can.Filters[idx++].sfid1 = 0x0211;
+	pC->Can.Filters[idx++].sfid1 = 0x0212;
+	pC->Can.Filters[idx++].sfid1 = 0x0213;
+	pC->Can.Filters[idx++].sfid1 = 0x0214;
+	pC->Can.Filters[idx++].sfid1 = 0x0215;
+	// Responses for boroadcast ID = 0x00F0
+	pC->Can.Filters[idx++].sfid1 = 0x02F0;
+	pC->Can.Filters[idx++].sfid1 = 0x02F1;
+	pC->Can.Filters[idx++].sfid1 = 0x02F2;
+	pC->Can.Filters[idx++].sfid1 = 0x02F3;
+	pC->Can.Filters[idx++].sfid1 = 0x02F4;
+	pC->Can.Filters[idx++].sfid1 = 0x02F5;
 	
 	for(int i=0;i<CAN_FILTERS_MAX;i++)
 	{
-		pC->Can.Filters[i].sft = 0x01;
-		// ramki zgodne z filtrm trafiaja do buforow odbiorczych
-		pC->Can.Filters[i].sfec = 0x07;
-		pC->Can.Filters[i].sfid2 = i;
+		pC->Can.Filters[i].sft = 0x01; // Dual ID filter for SFID1 or SFID2
+		pC->Can.Filters[i].sfec = 0x07; // Store into Rx buffer or as debug message, configuration of FDCAN_SFT[1:0] ignored
+		pC->Can.Filters[i].sfid2 = i; //buffer number
 		pC->Can.Filters[i].r0 = (pC->Can.Filters[i].sft << 30) | (pC->Can.Filters[i].sfec << 27) | (pC->Can.Filters[i].sfid1 << 16) | (pC->Can.Filters[i].sfid2 << 0);
 		*(pC->Can.filterAddr + i) = pC->Can.Filters[i].r0;
 	}
+}
+static void Can_TxBufferConf(void)
+{
+	uint8_t num;
+	
+	// TxBuffer 0
+	num = Can_TxF_Move;
+	pC->Can.TxMsgs[num].reqSend = false;
+	pC->Can.TxMsgs[num].funSendFrame = Can_SendFrameMove;
+	pC->Can.TxMsgs[num].esi = 0x00;		//passive error
+	pC->Can.TxMsgs[num].xtd = 0x00;		//standardowe identyfikatory 11bit
+	pC->Can.TxMsgs[num].rtr = 0x00;		//ramka z danymi
+	pC->Can.TxMsgs[num].id = 0x0000;	//identyfikator 11 bitowy
+	pC->Can.TxMsgs[num].mm = 0x00;		//marker do event, nie uzywany
+	pC->Can.TxMsgs[num].efc = 0x00;		//bez geneorwanie eventow
+	pC->Can.TxMsgs[num].fdf = 0x01;		//ramka w formacie CANFD
+	pC->Can.TxMsgs[num].brs = 0x01;		//zmienna predkosc - BRS = On
+	pC->Can.TxMsgs[num].dlc = 0x09;		//12 bajtow w ramce
+	pC->Can.TxMsgs[num].r0 = (pC->Can.TxMsgs[num].esi << 31) | (pC->Can.TxMsgs[num].xtd << 30) | (pC->Can.TxMsgs[num].rtr << 29) | (pC->Can.TxMsgs[num].id << 18);
+	pC->Can.TxMsgs[num].r1 = (pC->Can.TxMsgs[num].mm << 24) | (pC->Can.TxMsgs[num].efc << 23) | (pC->Can.TxMsgs[num].fdf << 21) | (pC->Can.TxMsgs[num].brs << 20) | (pC->Can.TxMsgs[num].dlc << 16);
+
+	// TxBuffer 1
+	num = Can_TxF_ChangeFsm;
+	pC->Can.TxMsgs[num].reqSend = false;
+	pC->Can.TxMsgs[num].funSendFrame = Can_SendFrameChangeFsm;
+	pC->Can.TxMsgs[num].esi = 0x00;		//passive error
+	pC->Can.TxMsgs[num].xtd = 0x00;		//standardowe identyfikatory 11bit
+	pC->Can.TxMsgs[num].rtr = 0x00;		//ramka z danymi
+	pC->Can.TxMsgs[num].id = 0x0010;	//identyfikator 11 bitowy
+	pC->Can.TxMsgs[num].mm = 0x00;		//marker do event, nie uzywany
+	pC->Can.TxMsgs[num].efc = 0x00;		//bez geneorwanie eventow
+	pC->Can.TxMsgs[num].fdf = 0x01;		//ramka w formacie CANFD
+	pC->Can.TxMsgs[num].brs = 0x01;		//zmienna predkosc - BRS = On
+	pC->Can.TxMsgs[num].dlc = 0x06;		//6 bajtow w ramce
+	pC->Can.TxMsgs[num].r0 = (pC->Can.TxMsgs[num].esi << 31) | (pC->Can.TxMsgs[num].xtd << 30) | (pC->Can.TxMsgs[num].rtr << 29) | (pC->Can.TxMsgs[num].id << 18);
+	pC->Can.TxMsgs[num].r1 = (pC->Can.TxMsgs[num].mm << 24) | (pC->Can.TxMsgs[num].efc << 23) | (pC->Can.TxMsgs[num].fdf << 21) | (pC->Can.TxMsgs[num].brs << 20) | (pC->Can.TxMsgs[num].dlc << 16);
+
+	// TxBuffer 2
+	num = Can_TxF_ChangeMode;
+	pC->Can.TxMsgs[num].reqSend = false;
+	pC->Can.TxMsgs[num].funSendFrame = Can_SendFrameChangeMode;
+	pC->Can.TxMsgs[num].esi = 0x00;		//passive error
+	pC->Can.TxMsgs[num].xtd = 0x00;		//standardowe identyfikatory 11bit
+	pC->Can.TxMsgs[num].rtr = 0x00;		//ramka z danymi
+	pC->Can.TxMsgs[num].id = 0x00F0;	//identyfikator 11 bitowy
+	pC->Can.TxMsgs[num].mm = 0x00;		//marker do event, nie uzywany
+	pC->Can.TxMsgs[num].efc = 0x00;		//bez geneorwanie eventow
+	pC->Can.TxMsgs[num].fdf = 0x01;		//ramka w formacie CANFD
+	pC->Can.TxMsgs[num].brs = 0x01;		//zmienna predkosc - BRS = On
+	pC->Can.TxMsgs[num].dlc = 0x09;		//12 bajtow w ramce
+	pC->Can.TxMsgs[num].r0 = (pC->Can.TxMsgs[num].esi << 31) | (pC->Can.TxMsgs[num].xtd << 30) | (pC->Can.TxMsgs[num].rtr << 29) | (pC->Can.TxMsgs[num].id << 18);
+	pC->Can.TxMsgs[num].r1 = (pC->Can.TxMsgs[num].mm << 24) | (pC->Can.TxMsgs[num].efc << 23) | (pC->Can.TxMsgs[num].fdf << 21) | (pC->Can.TxMsgs[num].brs << 20) | (pC->Can.TxMsgs[num].dlc << 16);
+
 }
 static void Can_FdcanConf(void)
 {
@@ -66,10 +222,10 @@ static void Can_FdcanConf(void)
 	
 	// CAN_TXBUF_MAX send buffers and address of the first send buffer
 	FDCAN1->TXBC = (CAN_TXBUF_MAX << FDCAN_TXBC_NDTB_Pos) | (pC->Can.txBufAddrOffset << 0);
-	// transmit buffers with a size of 20 bytes
+	// transmit buffers with a size of CAN_TXDATA_LEN bytes
 	FDCAN1->TXESC = (CAN_TXBUFSIZE_CODE << FDCAN_TXESC_TBDS_Pos);
 	
-	// 12-byte receiving buffers, RXFIFO 1 and RXFIFO 0 elements with a size of 12 bytes
+	// CAN_RXDATA_LEN byte receiving buffers, RXFIFO 1 and RXFIFO 0 elements with a size of CAN_RXDATA_LEN bytes
 	FDCAN1->RXESC = (CAN_RXBUFSIZE_CODE << FDCAN_RXESC_RBDS_Pos) | (CAN_RXBUFSIZE_CODE << FDCAN_RXESC_F1DS_Pos) | (CAN_RXBUFSIZE_CODE << FDCAN_RXESC_F0DS_Pos);
 	// first receive buffer address offset
 	FDCAN1->RXBC = (pC->Can.rxBufAddrOffset << 0); 
@@ -98,6 +254,7 @@ void Can_Conf(void)
 {
 	Can_StructConf();
 	Can_FiltersConf();
+	Can_TxBufferConf();
 	Can_FdcanConf();
 	Can_Start();
 }
@@ -105,7 +262,7 @@ static void Can_SendFrameOccurred(void)
 {
 	for(int num=0;num<CAN_TXBUF_MAX;num++)
 	{
-		if(((FDCAN1->TXBTO >> num) & 0x01) != RESET)
+		if(((FDCAN1->TXBTO >> num) & 0x01) != RESET && pC->Can.TxMsgs[num].status == Can_TxS_Sending)
 		{
 			pC->Can.TxMsgs[num].status = Can_TxS_Sent;
 			pC->Can.TxMsgs[num].timeoutCnt = 0;
@@ -115,103 +272,171 @@ static void Can_SendFrameOccurred(void)
 }
 static void Can_SendFrameToJoints(void)
 {
-	for(int num=0;num<CAN_TXBUF_MAX;num++)
+	for(int i=0;i<CAN_TXBUF_MAX;i++)
 	{
-		if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
+		pC->Can.frameToSend++;
+		pC->Can.frameToSend = pC->Can.frameToSend % CAN_TXBUF_MAX;
+		if(pC->Can.TxMsgs[pC->Can.frameToSend].reqSend == true)
 		{
-			pC->Can.TxMsgs[num].esi = 0x00;	//passive error
-			pC->Can.TxMsgs[num].xtd = 0x00;	//standardowe identyfikatory 11bit
-			pC->Can.TxMsgs[num].rtr = 0x00;	//ramka z danymi
-			pC->Can.TxMsgs[num].id = 0xAA;		//identyfikator 11 bitowy
-			pC->Can.TxMsgs[num].mm = 0x00;		//marker do event, nie uzywany
-			pC->Can.TxMsgs[num].efc = 0x00;	//bez geneorwanie eventow
-			pC->Can.TxMsgs[num].fdf = 0x01;	//ramka w formacie CANFD
-			pC->Can.TxMsgs[num].brs = 0x01;	//zmienna predkosc - BRS = On
-			pC->Can.TxMsgs[num].dlc = CAN_TXDATA_DLCCODE;	//20 bajtow w ramce
-			pC->Can.TxMsgs[num].r0 = (pC->Can.TxMsgs[num].esi << 31) | (pC->Can.TxMsgs[num].xtd << 30) | (pC->Can.TxMsgs[num].rtr << 29) | (pC->Can.TxMsgs[num].id << 18);
-			pC->Can.TxMsgs[num].r1 = (pC->Can.TxMsgs[num].mm << 24) | (pC->Can.TxMsgs[num].efc << 23) | (pC->Can.TxMsgs[num].fdf << 21) | (pC->Can.TxMsgs[num].brs << 20) | (pC->Can.TxMsgs[num].dlc << 16);
-			
-			uint16_t idx = 0;
-			for(int i=0;i<JOINTS_MAX;i++)
-			{
-				pC->Can.TxMsgs[num].bytes[idx++] = (int16_t)(pC->Joints[i].setTorque / pC->Joints[i].maxTorqueCom * MAXINT16) >> 8;
-				pC->Can.TxMsgs[num].bytes[idx++] = (int16_t)(pC->Joints[i].setTorque / pC->Joints[i].maxTorqueCom * MAXINT16) >> 0;
-				pC->Can.TxMsgs[num].bytes[idx++] = pC->Joints[i].targetFsm;
-			}
-			
-			for(int i=0;i<CAN_TXDATA_LEN/4;i++)
-			{
-				pC->Can.TxMsgs[num].data[i] = 0x00;
-				pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+0] << 0);
-				pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+1] << 8);
-				pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+2] << 16);
-				pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+3] << 24);
-			}
-			
-			*(pC->Can.txBufAddr + 0) = pC->Can.TxMsgs[num].r0;
-			*(pC->Can.txBufAddr + 1) = pC->Can.TxMsgs[num].r1;
-			*(pC->Can.txBufAddr + 2) = pC->Can.TxMsgs[num].data[0];
-			*(pC->Can.txBufAddr + 3) = pC->Can.TxMsgs[num].data[1];
-			*(pC->Can.txBufAddr + 4) = pC->Can.TxMsgs[num].data[2];
-			*(pC->Can.txBufAddr + 5) = pC->Can.TxMsgs[num].data[3];
-			*(pC->Can.txBufAddr + 6) = pC->Can.TxMsgs[num].data[4];
-			
-			pC->Can.TxMsgs[num].status = Can_TxS_Sending;
-			
-			FDCAN1->TXBAR |= (1 << num);
+			pC->Can.TxMsgs[pC->Can.frameToSend].funSendFrame();
+			pC->Can.TxMsgs[pC->Can.frameToSend].reqSend = false;
+			break;
+		}
+		else
+		{
+			continue;
 		}
 	}
 }
-static void Can_ReadFrameFromBuffer(void)
+static void Can_ReadFrameMoveResponse(uint8_t num)
 {
-	for(int num=0;num<CAN_RXBUF_MAX;num++)
+		uint16_t idx = 6 * num;
+		uint16_t jointNum = num % JOINTS_MAX;
+		pC->Can.RxMsgs[num].r0 = *(pC->Can.rxBufAddr + idx + 0);
+		pC->Can.RxMsgs[num].r1 = *(pC->Can.rxBufAddr + idx + 1);
+		pC->Can.RxMsgs[num].data[0] = *(pC->Can.rxBufAddr + idx + 2);
+		pC->Can.RxMsgs[num].data[1] = *(pC->Can.rxBufAddr + idx + 3);
+		pC->Can.RxMsgs[num].data[2] = *(pC->Can.rxBufAddr + idx + 4);
+		pC->Can.RxMsgs[num].data[3] = *(pC->Can.rxBufAddr + idx + 5);
+		
+		pC->Can.RxMsgs[num].esi = (pC->Can.RxMsgs[num].r0 >> 31) & 0x01;
+		pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 30) & 0x01;
+		pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 29) & 0x01;
+		pC->Can.RxMsgs[num].id = (pC->Can.RxMsgs[num].r0 >> 18) & 0x07FF;
+		
+		pC->Can.RxMsgs[num].anmf = (pC->Can.RxMsgs[num].r1 >> 31) & 0x01;
+		pC->Can.RxMsgs[num].fidx = (pC->Can.RxMsgs[num].r1 >> 24) & 0x3F;
+		pC->Can.RxMsgs[num].fdf = (pC->Can.RxMsgs[num].r1 >> 21) & 0x01;
+		pC->Can.RxMsgs[num].brs = (pC->Can.RxMsgs[num].r1 >> 20) & 0x01;
+		pC->Can.RxMsgs[num].dlc = (pC->Can.RxMsgs[num].r1 >> 16) & 0x0F;
+		pC->Can.RxMsgs[num].rxts = (pC->Can.RxMsgs[num].r1 >> 16) & 0xFFFF;
+		
+		for(int i=0;i<4;i++)
+		{
+			pC->Can.RxMsgs[num].bytes[4*i+0] = pC->Can.RxMsgs[num].data[i] >> 0;
+			pC->Can.RxMsgs[num].bytes[4*i+1] = pC->Can.RxMsgs[num].data[i] >> 8;
+			pC->Can.RxMsgs[num].bytes[4*i+2] = pC->Can.RxMsgs[num].data[i] >> 16;
+			pC->Can.RxMsgs[num].bytes[4*i+3] = pC->Can.RxMsgs[num].data[i] >> 24;
+		}
+		
+		// pozycja jest w rad
+		pC->Joints[jointNum].currentPos = (double)((int32_t)(((uint32_t)pC->Can.RxMsgs[num].bytes[0] << 24) + ((uint32_t)pC->Can.RxMsgs[num].bytes[1] << 16) + ((uint32_t)pC->Can.RxMsgs[num].bytes[2] << 8) + ((uint32_t)pC->Can.RxMsgs[num].bytes[3] << 0))) * pC->Joints[num].maxPosCom / MAXINT32;
+		// predkosc jest w rad/s
+		pC->Joints[jointNum].currentVel = (double)((int16_t)(((uint16_t)pC->Can.RxMsgs[num].bytes[4] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[5] << 0))) * pC->Joints[num].maxVelCom / MAXINT16;
+		// moment obrotowy jest w Nm
+		pC->Joints[jointNum].currentTorque = (double)((int16_t)(((uint16_t)pC->Can.RxMsgs[num].bytes[6] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[7] << 0))) * pC->Joints[num].maxTorqueCom / MAXINT16;
+		pC->Joints[jointNum].currentTemp = (double)pC->Can.RxMsgs[num].bytes[8];
+		pC->Joints[jointNum].currentFsm = (eJoint_FSM)pC->Can.RxMsgs[num].bytes[9];
+		pC->Joints[jointNum].mcCurrentError = pC->Can.RxMsgs[num].bytes[10];
+		pC->Joints[jointNum].mcOccuredError = pC->Can.RxMsgs[num].bytes[11];
+		pC->Joints[jointNum].currentError = pC->Can.RxMsgs[num].bytes[12];
+		pC->Joints[jointNum].currentWarning = pC->Can.RxMsgs[num].bytes[13];
+		
+		pC->Joints[jointNum].flagFirstPosRead = true;
+		pC->Joints[jointNum].cWPosNotAccurate = pC->Joints[jointNum].currentWarning & 0x01;
+		
+		pC->Can.RxMsgs[num].timeoutCnt = 0;
+		pC->Can.RxMsgs[num].frameTotalCnt++;
+		pC->Can.RxMsgs[num].status = Can_RxS_Idle;
+}
+static void Can_ReadFrameChangeFsmResponse(uint8_t num)
+{
+		uint16_t idx = 6 * num;
+		uint16_t jointNum = num % JOINTS_MAX;
+		pC->Can.RxMsgs[num].r0 = *(pC->Can.rxBufAddr + idx + 0);
+		pC->Can.RxMsgs[num].r1 = *(pC->Can.rxBufAddr + idx + 1);
+		pC->Can.RxMsgs[num].data[0] = *(pC->Can.rxBufAddr + idx + 2);
+		pC->Can.RxMsgs[num].data[1] = *(pC->Can.rxBufAddr + idx + 3);
+		pC->Can.RxMsgs[num].data[2] = *(pC->Can.rxBufAddr + idx + 4);
+		pC->Can.RxMsgs[num].data[3] = *(pC->Can.rxBufAddr + idx + 5);
+		
+		pC->Can.RxMsgs[num].esi = (pC->Can.RxMsgs[num].r0 >> 31) & 0x01;
+		pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 30) & 0x01;
+		pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 29) & 0x01;
+		pC->Can.RxMsgs[num].id = (pC->Can.RxMsgs[num].r0 >> 18) & 0x07FF;
+		
+		pC->Can.RxMsgs[num].anmf = (pC->Can.RxMsgs[num].r1 >> 31) & 0x01;
+		pC->Can.RxMsgs[num].fidx = (pC->Can.RxMsgs[num].r1 >> 24) & 0x3F;
+		pC->Can.RxMsgs[num].fdf = (pC->Can.RxMsgs[num].r1 >> 21) & 0x01;
+		pC->Can.RxMsgs[num].brs = (pC->Can.RxMsgs[num].r1 >> 20) & 0x01;
+		pC->Can.RxMsgs[num].dlc = (pC->Can.RxMsgs[num].r1 >> 16) & 0x0F;
+		pC->Can.RxMsgs[num].rxts = (pC->Can.RxMsgs[num].r1 >> 16) & 0xFFFF;
+		
+		for(int i=0;i<4;i++)
+		{
+			pC->Can.RxMsgs[num].bytes[4*i+0] = pC->Can.RxMsgs[num].data[i] >> 0;
+			pC->Can.RxMsgs[num].bytes[4*i+1] = pC->Can.RxMsgs[num].data[i] >> 8;
+			pC->Can.RxMsgs[num].bytes[4*i+2] = pC->Can.RxMsgs[num].data[i] >> 16;
+			pC->Can.RxMsgs[num].bytes[4*i+3] = pC->Can.RxMsgs[num].data[i] >> 24;
+		}
+		
+		pC->Joints[jointNum].currentFsm = (eJoint_FSM)pC->Can.RxMsgs[num].bytes[0];
+		
+		pC->Can.RxMsgs[num].timeoutCnt = 0;
+		pC->Can.RxMsgs[num].frameTotalCnt++;
+		pC->Can.RxMsgs[num].status = Can_RxS_Idle;
+}
+static void Can_ReadFrameChangeConfResponse(uint8_t num)
+{
+		uint16_t idx = 6 * num;
+		uint16_t jointNum = num % JOINTS_MAX;
+		pC->Can.RxMsgs[num].r0 = *(pC->Can.rxBufAddr + idx + 0);
+		pC->Can.RxMsgs[num].r1 = *(pC->Can.rxBufAddr + idx + 1);
+		pC->Can.RxMsgs[num].data[0] = *(pC->Can.rxBufAddr + idx + 2);
+		pC->Can.RxMsgs[num].data[1] = *(pC->Can.rxBufAddr + idx + 3);
+		pC->Can.RxMsgs[num].data[2] = *(pC->Can.rxBufAddr + idx + 4);
+		pC->Can.RxMsgs[num].data[3] = *(pC->Can.rxBufAddr + idx + 5);
+		
+		pC->Can.RxMsgs[num].esi = (pC->Can.RxMsgs[num].r0 >> 31) & 0x01;
+		pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 30) & 0x01;
+		pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 29) & 0x01;
+		pC->Can.RxMsgs[num].id = (pC->Can.RxMsgs[num].r0 >> 18) & 0x07FF;
+		
+		pC->Can.RxMsgs[num].anmf = (pC->Can.RxMsgs[num].r1 >> 31) & 0x01;
+		pC->Can.RxMsgs[num].fidx = (pC->Can.RxMsgs[num].r1 >> 24) & 0x3F;
+		pC->Can.RxMsgs[num].fdf = (pC->Can.RxMsgs[num].r1 >> 21) & 0x01;
+		pC->Can.RxMsgs[num].brs = (pC->Can.RxMsgs[num].r1 >> 20) & 0x01;
+		pC->Can.RxMsgs[num].dlc = (pC->Can.RxMsgs[num].r1 >> 16) & 0x0F;
+		pC->Can.RxMsgs[num].rxts = (pC->Can.RxMsgs[num].r1 >> 16) & 0xFFFF;
+		
+		for(int i=0;i<4;i++)
+		{
+			pC->Can.RxMsgs[num].bytes[4*i+0] = pC->Can.RxMsgs[num].data[i] >> 0;
+			pC->Can.RxMsgs[num].bytes[4*i+1] = pC->Can.RxMsgs[num].data[i] >> 8;
+			pC->Can.RxMsgs[num].bytes[4*i+2] = pC->Can.RxMsgs[num].data[i] >> 16;
+			pC->Can.RxMsgs[num].bytes[4*i+3] = pC->Can.RxMsgs[num].data[i] >> 24;
+		}
+		
+		if(pC->Can.RxMsgs[num].bytes[0] == 1)
+			pC->Joints[jointNum].currentMode = pC->Joints[jointNum].targetMode;
+		
+		pC->Can.RxMsgs[num].timeoutCnt = 0;
+		pC->Can.RxMsgs[num].frameTotalCnt++;
+		pC->Can.RxMsgs[num].status = Can_RxS_Idle;
+}
+static void Can_ReadFramesFromBuffer(void)
+{
+	for(int num=0;num<6;num++)
 	{
 		if(((FDCAN1->NDAT1 >> num) & 0x01) != RESET)
 		{
-			uint16_t idx = 5 * num;
-			pC->Can.RxMsgs[num].r0 = *(pC->Can.rxBufAddr + idx + 0);
-			pC->Can.RxMsgs[num].r1 = *(pC->Can.rxBufAddr + idx + 1);
-			pC->Can.RxMsgs[num].data[0] = *(pC->Can.rxBufAddr + idx + 2);
-			pC->Can.RxMsgs[num].data[1] = *(pC->Can.rxBufAddr + idx + 3);
-			pC->Can.RxMsgs[num].data[2] = *(pC->Can.rxBufAddr + idx + 4);
-			
-			pC->Can.RxMsgs[num].esi = (pC->Can.RxMsgs[num].r0 >> 31) & 0x01;
-			pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 30) & 0x01;
-			pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 29) & 0x01;
-			pC->Can.RxMsgs[num].id = (pC->Can.RxMsgs[num].r0 >> 18) & 0x07FF;
-			
-			pC->Can.RxMsgs[num].anmf = (pC->Can.RxMsgs[num].r1 >> 31) & 0x01;
-			pC->Can.RxMsgs[num].fidx = (pC->Can.RxMsgs[num].r1 >> 24) & 0x3F;
-			pC->Can.RxMsgs[num].fdf = (pC->Can.RxMsgs[num].r1 >> 21) & 0x01;
-			pC->Can.RxMsgs[num].brs = (pC->Can.RxMsgs[num].r1 >> 20) & 0x01;
-			pC->Can.RxMsgs[num].dlc = (pC->Can.RxMsgs[num].r1 >> 16) & 0x0F;
-			pC->Can.RxMsgs[num].rxts = (pC->Can.RxMsgs[num].r1 >> 16) & 0xFFFF;
-			
-			for(int i=0;i<3;i++)
-			{
-				pC->Can.RxMsgs[num].bytes[4*i+0] = pC->Can.RxMsgs[num].data[i] >> 0;
-				pC->Can.RxMsgs[num].bytes[4*i+1] = pC->Can.RxMsgs[num].data[i] >> 8;
-				pC->Can.RxMsgs[num].bytes[4*i+2] = pC->Can.RxMsgs[num].data[i] >> 16;
-				pC->Can.RxMsgs[num].bytes[4*i+3] = pC->Can.RxMsgs[num].data[i] >> 24;
-			}
-			
-			// pozycja jest w rad
-			pC->Joints[num].currentPos = (double)((int16_t)(((uint16_t)pC->Can.RxMsgs[num].bytes[0] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[1] << 0))) * pC->Joints[num].maxPosCom / MAXINT16;
-			// predkosc jest w rad/s
-			pC->Joints[num].currentVel = (double)((int16_t)(((uint16_t)pC->Can.RxMsgs[num].bytes[2] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[3] << 0))) * pC->Joints[num].maxVelCom / MAXINT16;
-			// moment obrotowy jest w Nm
-			pC->Joints[num].currentTorque = (double)((int16_t)(((uint16_t)pC->Can.RxMsgs[num].bytes[4] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[5] << 0))) * pC->Joints[num].maxTorqueCom / MAXINT16;
-			pC->Joints[num].currentTemp = (double)pC->Can.RxMsgs[num].bytes[6];
-			pC->Joints[num].currentFsm = (eJoint_FSM)pC->Can.RxMsgs[num].bytes[7];
-			pC->Joints[num].mcCurrentError = pC->Can.RxMsgs[num].bytes[8];
-			pC->Joints[num].mcOccuredError = pC->Can.RxMsgs[num].bytes[9];
-			pC->Joints[num].currentError = pC->Can.RxMsgs[num].bytes[10];
-			pC->Joints[num].currentWarning = pC->Can.RxMsgs[num].bytes[11];
-			
-			pC->Can.RxMsgs[num].timeoutCnt = 0;
-			pC->Can.RxMsgs[num].frameTotalCnt++;
-			pC->Can.RxMsgs[num].status = Can_RxS_Idle;
-			
+			Can_ReadFrameMoveResponse(num);
+			FDCAN1->NDAT1 = (1 << num);
+		}
+	}
+	for(int num=6;num<12;num++)
+	{
+		if(((FDCAN1->NDAT1 >> num) & 0x01) != RESET)
+		{
+			Can_ReadFrameChangeFsmResponse(num);
+			FDCAN1->NDAT1 = (1 << num);
+		}
+	}
+	for(int num=12;num<18;num++)
+	{
+		if(((FDCAN1->NDAT1 >> num) & 0x01) != RESET)
+		{
+			Can_ReadFrameChangeConfResponse(num);
 			FDCAN1->NDAT1 = (1 << num);
 		}
 	}
@@ -254,15 +479,15 @@ static void Can_CheckCanStatus(void)
 {
 	pC->Can.statusFlags = 0x00;
 	// Bajt 0 dla Tx Timeout
-	if(pC->Can.TxMsgs[0].flagTimeout) 	pC->Can.statusFlags |= (1 << Can_SFP_Tx0Timeout);
+	if(pC->Can.TxMsgs[0].flagTimeout && pC->Can.TxMsgs[1].flagTimeout && pC->Can.TxMsgs[2].flagTimeout) 	pC->Can.statusFlags |= (1 << Can_SFP_Tx0Timeout);
 
 	// Bajt 1 dla Rx Timeout
-	if(pC->Can.RxMsgs[0].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx0Timeout);
-	if(pC->Can.RxMsgs[1].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx1Timeout);
-	if(pC->Can.RxMsgs[2].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx2Timeout);
-	if(pC->Can.RxMsgs[3].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx3Timeout);
-	if(pC->Can.RxMsgs[4].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx4Timeout);
-	if(pC->Can.RxMsgs[5].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx5Timeout);
+	if(pC->Can.RxMsgs[0].flagTimeout && pC->Can.RxMsgs[6].flagTimeout && pC->Can.RxMsgs[12].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx0Timeout);
+	if(pC->Can.RxMsgs[1].flagTimeout && pC->Can.RxMsgs[7].flagTimeout && pC->Can.RxMsgs[13].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx1Timeout);
+	if(pC->Can.RxMsgs[2].flagTimeout && pC->Can.RxMsgs[8].flagTimeout && pC->Can.RxMsgs[14].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx2Timeout);
+	if(pC->Can.RxMsgs[3].flagTimeout && pC->Can.RxMsgs[9].flagTimeout && pC->Can.RxMsgs[15].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx3Timeout);
+	if(pC->Can.RxMsgs[4].flagTimeout && pC->Can.RxMsgs[10].flagTimeout && pC->Can.RxMsgs[16].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx4Timeout);
+	if(pC->Can.RxMsgs[5].flagTimeout && pC->Can.RxMsgs[11].flagTimeout && pC->Can.RxMsgs[17].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx5Timeout);
 		
 	if(pC->Can.statusFlags != 0x00)
 		pC->Can.statusId = Can_SId_NoError;
@@ -292,7 +517,7 @@ void FDCAN1_IT0_IRQHandler(void)
 	}
 	if((FDCAN1->IR & FDCAN_IR_DRX) != RESET)
 	{
-		Can_ReadFrameFromBuffer();
+		Can_ReadFramesFromBuffer();
 		FDCAN1->IR = FDCAN_IR_DRX;
 	}
 }

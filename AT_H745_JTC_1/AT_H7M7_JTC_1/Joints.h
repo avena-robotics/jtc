@@ -8,6 +8,6 @@ void Joints_CalcFrictionCompensate(void);
 void Joints_CalcPIDs(void);
 void Joints_ClearCanValues(uint8_t num);
 void Joints_SetDefaultFriction(void);
-
-
+void Joints_SetStartValuesVariables(void);
+void Joints_CalcInitRegsTorque(void);
 #endif
