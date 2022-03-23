@@ -282,11 +282,15 @@ static void Joints_CalcFrictionCompensatePolynomial(void)
 {
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
-		double sign = 1.0;
 		double vel = pC->Joints[num].setVelTemp;
-		if(vel < 0)
-			sign = -1.0;
-		pC->Joints[num].fricTorque = sign*pC->Joints[num].fricCoeff[0] + pC->Joints[num].fricCoeff[1]*vel + sign*pC->Joints[num].fricCoeff[2]*vel*vel + pC->Joints[num].fricCoeff[3]*vel*vel*vel;
+		double t = pC->Joints[num].currentTemp;
+		double coeffs[JOINTS_FRICCOEFFMAX];
+		for(int i=0;i<JOINTS_FRICCOEFFMAX;i++)
+			coeffs[i] = pC->Joints[num].fricCoeff[i];
+		
+//		pC->Joints[num].fricTorque = sign*pC->Joints[num].fricCoeff[0] + pC->Joints[num].fricCoeff[1]*vel + sign*pC->Joints[num].fricCoeff[2]*vel*vel + pC->Joints[num].fricCoeff[3]*vel*vel*vel;
+	
+		pC->Joints[num].fricTorque = (1+coeffs[4]*(t-coeffs[5]))*(coeffs[0] * ((vel > 0) - (vel < 0)) + coeffs[1] * vel + coeffs[2] * pow(vel, 2) * ((vel > 0) - (vel < 0)) + coeffs[3] * pow(vel, 3));
 	}
 }
 void Joints_CalcFrictionCompensate(void)

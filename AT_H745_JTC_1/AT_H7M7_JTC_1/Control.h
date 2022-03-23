@@ -200,7 +200,7 @@ typedef enum
 #define JOINTS_MAX									6
 #define JOINTS_FRICTABVELSIZE				20
 #define JOINTS_FRICTABTEMPSIZE			20
-#define JOINTS_FRICCOEFFMAX					4
+#define JOINTS_FRICCOEFFMAX					6
 #define JOINTS_PIDBUFMAX						200
 
 #define ARMMODEL_DOF								6

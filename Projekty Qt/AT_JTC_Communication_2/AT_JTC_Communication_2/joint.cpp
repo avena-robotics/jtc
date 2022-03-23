@@ -128,6 +128,7 @@ void Joint::ConvertPidParametersToDoubleFromDoubleString(QString line)
 }
 void Joint::ConvertFrictionPolynomialCoeffsToDoubleFromDoubleString(QString line)
 {
+    fricPolynomialCoeffs.clear();
     QStringList lineList = line.split(",");
     for(uint32_t i=0;i<lineList.length();i++)
         fricPolynomialCoeffs.append(lineList[i].toFloat());

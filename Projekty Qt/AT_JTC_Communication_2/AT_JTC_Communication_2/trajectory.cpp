@@ -18,7 +18,6 @@ Trajectory::Trajectory(QObject *parent) : QObject(parent)
 }
 void Trajectory::ReadTrajectoryInt16()
 {
-    trajFilePath = QFileDialog::getOpenFileName(nullptr, tr("Open File"), "..\\..\\Dane JTC\\TrajectoryInt.csv", tr("Image Files (*.txt *.csv)"));
     QString fileName = trajFilePath;
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

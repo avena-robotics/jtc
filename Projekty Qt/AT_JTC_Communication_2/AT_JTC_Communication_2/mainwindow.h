@@ -267,6 +267,7 @@ private:
     uint8_t jtcInitStatus;
     uint8_t jointsInitStatus;
 
+    QString fileProPath;
     uint8_t canStatus;
     uint32_t canStatusFlags;
     uint32_t canOccuredFlags;

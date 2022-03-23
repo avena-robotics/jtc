@@ -54,21 +54,22 @@ MainWindow::~MainWindow()
 }
 void MainWindow::UseWindowsFilePath()
 {
-    joints[0].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint0.csv";
-    joints[1].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint1.csv";
-    joints[2].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint2.csv";
-    joints[3].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint3.csv";
-    joints[4].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint4.csv";
-    joints[5].fricTableFilePath = "..\\..\\Dane JTC\\FricTableJoint5.csv";
-    joints[0].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint0.csv";
-    joints[1].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint1.csv";
-    joints[2].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint2.csv";
-    joints[3].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint3.csv";
-    joints[4].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint4.csv";
-    joints[5].pidParamFilePath = "..\\..\\Dane JTC\\PidParamJoint5.csv";
-    Arm.armModelFilePath = "..\\..\\Dane JTC\\avena_arm_id.urdf";
-    traj.trajFilePath = "..\\..\\Dane JTC\\TrajectoryInt.csv";
-    fricPolynomialPath = "..\\..\\Dane JTC\\FricPolynomialCoeffs.csv";
+    fileProPath = "C:\\Users\\Dawid\\Moj dysk\\Avena Technologie\\AT_Repo\\jtc\\Projekty Qt\\AT_JTC_Communication_2\\AT_JTC_Communication_2..\\";
+    joints[0].fricTableFilePath = fileProPath + "..\\..\\Dane JTC\\FricTableJoint0.csv";
+    joints[1].fricTableFilePath = fileProPath + "..\\..\\Dane JTC\\FricTableJoint1.csv";
+    joints[2].fricTableFilePath = fileProPath + "..\\..\\Dane JTC\\FricTableJoint2.csv";
+    joints[3].fricTableFilePath = fileProPath + "..\\..\\Dane JTC\\FricTableJoint3.csv";
+    joints[4].fricTableFilePath = fileProPath + "..\\..\\Dane JTC\\FricTableJoint4.csv";
+    joints[5].fricTableFilePath = fileProPath + "..\\..\\Dane JTC\\FricTableJoint5.csv";
+    joints[0].pidParamFilePath = fileProPath + "..\\..\\Dane JTC\\PidParamJoint0.csv";
+    joints[1].pidParamFilePath = fileProPath + "..\\..\\Dane JTC\\PidParamJoint1.csv";
+    joints[2].pidParamFilePath = fileProPath + "..\\..\\Dane JTC\\PidParamJoint2.csv";
+    joints[3].pidParamFilePath = fileProPath + "..\\..\\Dane JTC\\PidParamJoint3.csv";
+    joints[4].pidParamFilePath = fileProPath + "..\\..\\Dane JTC\\PidParamJoint4.csv";
+    joints[5].pidParamFilePath = fileProPath + "..\\..\\Dane JTC\\PidParamJoint5.csv";
+    Arm.armModelFilePath = fileProPath + "..\\..\\Dane JTC\\avena_arm_id.urdf";
+    traj.trajFilePath = fileProPath + "..\\..\\Dane JTC\\TrajectoryInt.csv";
+    fricPolynomialPath = fileProPath + "..\\..\\Dane JTC\\FricPolynomialCoeffs.csv";
     statusBar()->showMessage("You are now using file paths on Windows.", 2000);
 }
 void MainWindow::UseLinuxFilePath()
@@ -520,7 +521,7 @@ void MainWindow::ShowFrictionPolynomialCoeffs(void)
     ui->Com_FrictionTableTableView->setModel(frictionTableStandardItemModel);
     int rows;
     QList<QList<QStandardItem*>> itemTable;
-    QStringList columnHeader = {"Coeff 3", "Coeff 2", "Coeff 1", "Coeff 0"};
+    QStringList columnHeader = {"Coeff 5", "Coeff 4", "Coeff 3", "Coeff 2", "Coeff 1", "Coeff 0"};
 
     frictionTableStandardItemModel->insertColumns(0, columnHeader.length());
     for(int i=0;i<columnHeader.length();i++)
@@ -1105,6 +1106,7 @@ void MainWindow::on_Com_CloseButt_clicked()
 void MainWindow::on_Com_ReadTrajectoryInt16_clicked()
 {
     traj.wasRead = false;
+    traj.trajFilePath = QFileDialog::getOpenFileName(nullptr, tr("Open File"), fileProPath + "..\\..\\Dane JTC\\TrajectoryInt.csv", tr("Image Files (*.txt *.csv)"));
     traj.ReadTrajectoryInt16();
     ui->Com_TrajTextEdit->setText(traj.trajString);
     ShowTrajectory();
@@ -1258,7 +1260,7 @@ void MainWindow::on_Com_SendFrictionTableToJtc_clicked()
 }
 void MainWindow::ArmModelReadStringFromFile()
 {
-    Arm.armModelFilePath = QFileDialog::getOpenFileName(nullptr, tr("Open File"), "..\\..\\Dane JTC\\avena_arm_id.urdf", tr("Image Files (*.urdf *.txt *.csv)"));
+    Arm.armModelFilePath = QFileDialog::getOpenFileName(nullptr, tr("Open File"), fileProPath + "..\\..\\Dane JTC\\avena_arm_id.urdf", tr("Image Files (*.urdf *.txt *.csv)"));
     QFile file(Arm.armModelFilePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -2043,18 +2045,18 @@ void MainWindow::on_JTC_TeachingModeDisable_clicked()
 }
 void MainWindow::Com_ReadFrictionPolynomialCoeffs(void)
 {
-    //  QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Open File"), "C:\\Users\\Dawid\\Moj dysk\\Avena Technologie\\Projekty uC\\AT_JtcTest\\Friction", tr("Image Files (*.txt *.csv)"));
-        QFile file(fricPolynomialPath);
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-            return;
-        fricPolynomialReadString.clear();
-        for(int i=0;i<JOINTS_MAX;i++)
-        {
-            QString line = file.readLine();
-            fricPolynomialReadString += line;
-            joints[i].ConvertFrictionPolynomialCoeffsToDoubleFromDoubleString(line);
-        }
+    QFile file(fricPolynomialPath);
+//    QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Open File"), fileProPath + "..\\..\\Dane JTC\\FricPolynomialCoeffs.csv", tr("Image Files (*.txt *.csv)"));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+    fricPolynomialReadString.clear();
 
+    for(int i=0;i<JOINTS_MAX;i++)
+    {
+        QString line = file.readLine();
+        fricPolynomialReadString += line;
+        joints[i].ConvertFrictionPolynomialCoeffsToDoubleFromDoubleString(line);
+    }
 }
 void MainWindow::on_Com_ReadFrictionPolynomialCoeffsFloat_clicked()
 {
@@ -2063,7 +2065,8 @@ void MainWindow::on_Com_ReadFrictionPolynomialCoeffsFloat_clicked()
     Com_ReadFrictionPolynomialCoeffs();
     ui->Com_FrictionTableTextEdit->setText(fricPolynomialReadString);
     ShowFrictionPolynomialCoeffs();
-    fricPolynomialWasRead = true;
+    if(joints[0].fricPolynomialCoeffs.length() > 0)
+        fricPolynomialWasRead = true;
 }
 void MainWindow::on_Com_SendFrictionPolynomialCoeffsToJtc_clicked()
 {
