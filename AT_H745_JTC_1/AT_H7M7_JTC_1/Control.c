@@ -216,16 +216,18 @@ static void Control_JtcSetJointToCurrentFsm(uint8_t num)
 {
 	pC->Joints[num].targetFsm = pC->Joints[num].currentFsm;
 }
-static void Control_JtcSetJointToInit(uint8_t num)
+static void Control_JtcResetAllJoints(void)
 {
-	pC->Joints[num].targetFsm = Joint_FSM_Init;
-	pC->Joints[num].setTorque = 0.0;
-	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
+	if(pC->Can.TxMsgs[Can_TxF_Reset].timeoutCnt > CAN_RESETTIMEOUT)
+	{
+		Joints_SetResetValuesVariables();
+		pC->Can.TxMsgs[Can_TxF_Reset].reqSend = true;
+	}
 }
 static void Control_JtcSetJointToReadyToOperate(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_ReadyToOperate;
-	pC->Joints[num].setTorque = 0.0;
+	pC->Joints[num].setTorqueTemp = 0.0;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetJointToEnable(uint8_t num)
@@ -610,6 +612,12 @@ static void Control_JtcCheckStateInit(void)
 		pC->Jtc.jtcInitStatus &= ~(1 << 2);
 	
 	#ifdef TESTMODE
+	pC->Joints[1].cWPosNotAccurate = false;
+	pC->Joints[2].cWPosNotAccurate = false;
+	pC->Joints[3].cWPosNotAccurate = false;
+	pC->Joints[4].cWPosNotAccurate = false;
+	pC->Joints[5].cWPosNotAccurate = false;
+	
 	pC->Joints[1].flagFirstPosRead = true;
 	pC->Joints[2].flagFirstPosRead = true;
 	pC->Joints[3].flagFirstPosRead = true;
@@ -738,13 +746,7 @@ static void Control_JtcError(void)
 	// Reaction for externall error
 	if(pC->Jtc.externalError == true)
 	{
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
-		{
-			if(pC->Joints[num].flagCanError == true)
-				Control_JtcSetJointToInit(num);
-			else
-				Control_JtcSetJointToReadyToOperate(num);
-		}
+		Control_JtcResetAllJoints();
 	}
 }
 static void Control_JtcInit(void)
@@ -763,7 +765,7 @@ static void Control_JtcInit(void)
 		
 		if(pC->Joints[num].currentMode != Joint_M_Torque && pC->Joints[num].currentFsm != Joint_FSM_Init)
 		{
-			Control_JtcSetJointToInit(num);
+			Control_JtcResetAllJoints();
 		}
 		else if(pC->Joints[num].currentMode != Joint_M_Torque && pC->Joints[num].currentFsm == Joint_FSM_Init)
 		{
@@ -791,22 +793,10 @@ static void Control_JtcInit(void)
 	{
 		// ustalenie kierunku ruchu
 		for(uint8_t num=0;num<JOINTS_MAX;num++)
-		{
 			if(pC->Joints[num].irIsRun == false && pC->Joints[num].cWPosNotAccurate == true)
-			{
-				if(pC->Joints[num].currentPos > 0.0)
-				{
-					pC->Joints[num].irTargetTorque = -pC->Joints[num].irMaxTorque;
-				}
-				else
-				{
-					pC->Joints[num].irTargetTorque = pC->Joints[num].irMaxTorque;
-				}
-				pC->Joints[num].irIsRun = true;
-			}
-		}
+				Joints_StartIrValuesVariables(num);
+			
 		// Realizacja ruchu na pozycje 0.0 dla kazdego jointa, w celu inicjalizacji enkodera
-		Control_TrajClear();
 		for(uint8_t num=0;num<JOINTS_MAX;num++)
 			if(pC->Joints[num].irIsRun == true)
 				Control_JtcSetJointToEnable(num);
@@ -822,7 +812,7 @@ static void Control_JtcInit(void)
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 		if(pC->Joints[num].cWPosNotAccurate == false && pC->Joints[num].currentFsm != Joint_FSM_ReadyToOperate)
 		{
-			pC->Joints[num].irIsRun = false;
+			Joints_StopIrValuesVariables(num);
 			Control_JtcSetJointToReadyToOperate(num);
 		}
 }

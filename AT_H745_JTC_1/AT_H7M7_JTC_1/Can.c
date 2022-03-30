@@ -2,7 +2,7 @@
 extern  sControl* pC;
 static void Can_SendFrameMove(void)
 {
-	uint16_t num = 0; // tx buffer number
+	uint16_t num = Can_TxF_Move; // tx buffer number
 	if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
 	{
 		uint16_t idx = 0;
@@ -35,7 +35,7 @@ static void Can_SendFrameMove(void)
 }
 static void Can_SendFrameChangeFsm(void)
 {
-	uint16_t num = 1; // tx buffer number
+	uint16_t num = Can_TxF_ChangeFsm; // tx buffer number
 	if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
 	{
 		uint16_t idx = 0;
@@ -67,7 +67,7 @@ static void Can_SendFrameChangeFsm(void)
 }
 static void Can_SendFrameChangeMode(void)
 {
-	uint16_t num = 2; // tx buffer number
+	uint16_t num = Can_TxF_ChangeMode; // tx buffer number
 	if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
 	{
 		uint16_t idx = 0;
@@ -98,7 +98,34 @@ static void Can_SendFrameChangeMode(void)
 		FDCAN1->TXBAR |= (1 << num); // start sending
 	}
 }
-
+static void Can_SendFrameReset(void)
+{
+	uint16_t num = Can_TxF_Reset; // tx buffer number
+	if(pC->Can.TxMsgs[num].status != Can_TxS_Sending)
+	{
+		uint16_t idx = 0;
+	
+		for(int i=0;i<CAN_TXDATA_LEN/4;i++)
+		{
+			pC->Can.TxMsgs[num].data[i] = 0x00;
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+0] << 0);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+1] << 8);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+2] << 16);
+			pC->Can.TxMsgs[num].data[i] += ((uint32_t)pC->Can.TxMsgs[num].bytes[4*i+3] << 24);
+		}
+		
+		idx = 5 * num;
+		*(pC->Can.txBufAddr + idx + 0) = pC->Can.TxMsgs[num].r0;
+		*(pC->Can.txBufAddr + idx + 1) = pC->Can.TxMsgs[num].r1;
+		*(pC->Can.txBufAddr + idx + 2) = pC->Can.TxMsgs[num].data[0];
+		*(pC->Can.txBufAddr + idx + 3) = pC->Can.TxMsgs[num].data[1];
+		*(pC->Can.txBufAddr + idx + 4) = pC->Can.TxMsgs[num].data[2];
+		
+		pC->Can.TxMsgs[num].status = Can_TxS_Sending;
+		
+		FDCAN1->TXBAR |= (1 << num); // start sending
+	}
+}
 static void Can_StructConf(void)
 {
 	pC->Can.filterAddrOffset = 0x0000;
@@ -194,6 +221,22 @@ static void Can_TxBufferConf(void)
 	pC->Can.TxMsgs[num].fdf = 0x01;		//ramka w formacie CANFD
 	pC->Can.TxMsgs[num].brs = 0x01;		//zmienna predkosc - BRS = On
 	pC->Can.TxMsgs[num].dlc = 0x09;		//12 bajtow w ramce
+	pC->Can.TxMsgs[num].r0 = (pC->Can.TxMsgs[num].esi << 31) | (pC->Can.TxMsgs[num].xtd << 30) | (pC->Can.TxMsgs[num].rtr << 29) | (pC->Can.TxMsgs[num].id << 18);
+	pC->Can.TxMsgs[num].r1 = (pC->Can.TxMsgs[num].mm << 24) | (pC->Can.TxMsgs[num].efc << 23) | (pC->Can.TxMsgs[num].fdf << 21) | (pC->Can.TxMsgs[num].brs << 20) | (pC->Can.TxMsgs[num].dlc << 16);
+
+	// TxBuffer 3
+	num = Can_TxF_Reset;
+	pC->Can.TxMsgs[num].reqSend = false;
+	pC->Can.TxMsgs[num].funSendFrame = Can_SendFrameReset;
+	pC->Can.TxMsgs[num].esi = 0x00;		//passive error
+	pC->Can.TxMsgs[num].xtd = 0x00;		//standardowe identyfikatory 11bit
+	pC->Can.TxMsgs[num].rtr = 0x00;		//ramka z danymi
+	pC->Can.TxMsgs[num].id = 0x00A0;	//identyfikator 11 bitowy
+	pC->Can.TxMsgs[num].mm = 0x00;		//marker do event, nie uzywany
+	pC->Can.TxMsgs[num].efc = 0x00;		//bez geneorwanie eventow
+	pC->Can.TxMsgs[num].fdf = 0x01;		//ramka w formacie CANFD
+	pC->Can.TxMsgs[num].brs = 0x01;		//zmienna predkosc - BRS = On
+	pC->Can.TxMsgs[num].dlc = 0x00;		//0 bajtow w ramce
 	pC->Can.TxMsgs[num].r0 = (pC->Can.TxMsgs[num].esi << 31) | (pC->Can.TxMsgs[num].xtd << 30) | (pC->Can.TxMsgs[num].rtr << 29) | (pC->Can.TxMsgs[num].id << 18);
 	pC->Can.TxMsgs[num].r1 = (pC->Can.TxMsgs[num].mm << 24) | (pC->Can.TxMsgs[num].efc << 23) | (pC->Can.TxMsgs[num].fdf << 21) | (pC->Can.TxMsgs[num].brs << 20) | (pC->Can.TxMsgs[num].dlc << 16);
 
@@ -479,7 +522,7 @@ static void Can_CheckCanStatus(void)
 {
 	pC->Can.statusFlags = 0x00;
 	// Bajt 0 dla Tx Timeout
-	if(pC->Can.TxMsgs[0].flagTimeout && pC->Can.TxMsgs[1].flagTimeout && pC->Can.TxMsgs[2].flagTimeout) 		pC->Can.statusFlags |= (1 << Can_SFP_Tx0Timeout);
+	if(pC->Can.TxMsgs[0].flagTimeout && pC->Can.TxMsgs[1].flagTimeout && pC->Can.TxMsgs[2].flagTimeout && pC->Can.TxMsgs[3].flagTimeout) 		pC->Can.statusFlags |= (1 << Can_SFP_Tx0Timeout);
 
 	// Bajt 1 dla Rx Timeout
 	if(pC->Can.RxMsgs[0].flagTimeout && pC->Can.RxMsgs[6].flagTimeout && pC->Can.RxMsgs[12].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx0Timeout);

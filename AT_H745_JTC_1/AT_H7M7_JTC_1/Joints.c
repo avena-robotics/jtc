@@ -148,7 +148,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].maxPosCom = M_PI;
 		pC->Joints[num].maxVelCom = M_2_PI;
 		pC->Joints[num].maxAccCom = M_4_PI;
-		pC->Joints[num].maxTorqueCom = 256.0;
+		pC->Joints[num].maxTorqueCom = 360.0;
 		
 		pC->Joints[num].fricTorque = 0.0;
 		
@@ -177,6 +177,63 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].irHyst = 0.2;
 		pC->Joints[num].irRampTorque = 1.0;	//Unit: Nm/sek
 	}
+}
+void Joints_SetResetValuesVariables(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		pC->Joints[num].flagFirstPosRead = false;
+		pC->Joints[num].cWPosNotAccurate = true;
+		pC->Joints[num].currentMode = Joint_M_Null;
+		pC->Joints[num].targetMode = Joint_M_Torque;
+		pC->Joints[num].confFun = 0x07; //[0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - jeszcze nie wiem co to jest :)]
+		
+		pC->Joints[num].setPos = 0.0;
+		pC->Joints[num].setVel = 0.0;
+		pC->Joints[num].setAcc = 0.0;
+		pC->Joints[num].setTorque = 0.0;
+		
+		pC->Joints[num].fricTorque = 0.0;
+		
+		pC->Joints[num].idSetPos = 0.0;
+		pC->Joints[num].idSetVel = 0.0;
+		pC->Joints[num].idSetAcc = 0.0;
+		pC->Joints[num].idTorque = 0.0;
+		
+		pC->Joints[num].pidErrorCurrent = 0.0;
+		pC->Joints[num].pidErrorMeanCurrent = 0.0;
+		pC->Joints[num].pidErrorMeanPrev = 0.0;
+		pC->Joints[num].pidErrorBufIdx = 0;
+		for(uint32_t i=0;i<JOINTS_PIDBUFMAX;i++)
+			pC->Joints[num].pidErrorBuf[i] = 0.0;
+		pC->Joints[num].pidErrorDiv = 0.0;
+		pC->Joints[num].pidErrorInt = 0.0;
+		pC->Joints[num].pidTorque = 0.0;
+		
+		pC->Joints[num].irIsRun = false;
+		pC->Joints[num].irCurrentTorque = 0.0;
+		pC->Joints[num].irTargetTorque = 0.0;
+		pC->Joints[num].irErrorTorque = 0.0;
+	}
+}
+void Joints_StartIrValuesVariables(uint8_t num)
+{
+	pC->Joints[num].irIsRun = true;
+	
+	if(pC->Joints[num].currentPos > 0.0)
+		pC->Joints[num].irTargetTorque = -pC->Joints[num].irMaxTorque;
+	else
+		pC->Joints[num].irTargetTorque = pC->Joints[num].irMaxTorque;
+	
+	pC->Joints[num].irCurrentTorque = 0.0;
+	pC->Joints[num].irErrorTorque = 0.0;
+}
+void Joints_StopIrValuesVariables(uint8_t num)
+{
+	pC->Joints[num].irIsRun = false;
+	pC->Joints[num].irTargetTorque = 0.0;
+	pC->Joints[num].irCurrentTorque = 0.0;
+	pC->Joints[num].irErrorTorque = 0.0;
 }
 void Joints_SetDefaultVariables(void)
 {
@@ -362,9 +419,7 @@ void Joints_CalcInitRegsTorque(void)
 		}
 		else
 		{
-			pC->Joints[num].irTargetTorque = 0.0;
-			pC->Joints[num].irErrorTorque = 0.0;
-			pC->Joints[num].irCurrentTorque = 0.0;
+			Joints_StopIrValuesVariables(num);
 		}
 	}
 }

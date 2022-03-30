@@ -130,7 +130,8 @@ typedef enum
 {
 	Can_TxF_Move = 0,
 	Can_TxF_ChangeFsm = 1,
-	Can_TxF_ChangeMode = 2
+	Can_TxF_ChangeMode = 2,
+	Can_TxF_Reset = 3,
 }eCanTxFrames;
 typedef enum
 {
@@ -207,14 +208,15 @@ typedef enum
 
 #define CAN_MSGRAM_STARTADDR				0x4000AC00
 #define CAN_FILTERS_MAX							18
-#define CAN_TXBUF_MAX								3
+#define CAN_TXBUF_MAX								4
 #define CAN_TXBUFSIZE_CODE					0x01
 #define CAN_TXDATA_LEN							12
 #define CAN_RXBUF_MAX								18
 #define CAN_RXFIFO0_MAX							(64 - CAN_RXBUF_MAX)
 #define CAN_RXBUFSIZE_CODE					0x02
 #define CAN_RXDATA_LEN							16
-#define CAN_TIMEOUTMAX							5
+#define CAN_TIMEOUTMAX							50
+#define CAN_RESETTIMEOUT						20
 
 typedef struct
 {
@@ -394,7 +396,7 @@ typedef struct
 typedef struct
 {
 	eCanTxStatus	status;
-	uint32_t			timeoutCnt;
+	uint32_t			timeoutCnt;							//czas od ostatniego wyslania danej ramki, Jednostka: krok czasowy CAN
 	bool					flagTimeout;
 	uint64_t			frameTotalCnt;
 	bool					reqSend;
@@ -418,7 +420,7 @@ typedef struct
 typedef struct
 {
 	eCanRxStatus	status;
-	uint32_t			timeoutCnt;
+	uint32_t			timeoutCnt;							//czas od ostatniego odebrania danej ramki, Jednostka: krok czasowy CAN
 	bool					flagTimeout;
 	uint64_t			frameTotalCnt;
 	

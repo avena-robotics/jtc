@@ -9,5 +9,8 @@ void Joints_CalcPIDs(void);
 void Joints_ClearCanValues(uint8_t num);
 void Joints_SetDefaultFriction(void);
 void Joints_SetStartValuesVariables(void);
+void Joints_SetResetValuesVariables(void);
+void Joints_StartIrValuesVariables(uint8_t num);
+void Joints_StopIrValuesVariables(uint8_t num);
 void Joints_CalcInitRegsTorque(void);
 #endif
