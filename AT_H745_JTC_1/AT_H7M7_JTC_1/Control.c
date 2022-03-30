@@ -140,19 +140,19 @@ static void Control_LedConf(void)
 }
 static void Control_SafetyOutOn(void)
 {
-	GPIOD->ODR &= ~GPIO_ODR_OD3;
+	GPIOD->ODR |= GPIO_ODR_OD3;
 	pC->Jtc.emergencyOutput = true;
 }
 static void Control_SafetyOutOff(void)
 {
-	GPIOD->ODR |= GPIO_ODR_OD3;
+	GPIOD->ODR &= ~GPIO_ODR_OD3;
 	pC->Jtc.emergencyOutput = false;
 }
 static bool Control_SafetyInRead(void)
 {
 	bool in = false;
-	if((GPIOD->IDR & GPIO_IDR_ID4) == RESET)
-		in = true;
+//	if((GPIOD->IDR & GPIO_IDR_ID4) == RESET)
+//		in = true;
 	return in;
 }
 static void Cotrol_SafetyConf(void)
@@ -294,14 +294,9 @@ static void Control_CheckErrorFlags(void)
 	}
 	
 	// Check CAN comunication errors
-	for(int num=0;num<CAN_RXBUF_MAX;num++)
-	{
-		if(pC->Can.RxMsgs[num].flagTimeout == true)									pC->Jtc.internalCanError = true;
-	}
-	for(int num=0;num<CAN_TXBUF_MAX;num++)
-	{
-		if(pC->Can.TxMsgs[num].flagTimeout == true)									pC->Jtc.internalCanError = true;
-	}
+	uint16_t stat = pC->Can.statusFlags;
+	if(stat != 0x0000)
+		pC->Jtc.internalCanError = true;
 	
 	// Check hardware emergency line
 	pC->Jtc.emergencyInput = Control_SafetyInRead();
@@ -333,11 +328,11 @@ static void Control_CheckErrorFlags(void)
 	// Przygotowywanie flag bledów JTC do wyslania
 	pC->Jtc.errors = 0x0000;
 	pC->Jtc.errors |= pC->Jtc.emergencyInput << 0; 				// bit 0
-	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 			// bit 1
-	pC->Jtc.errors |= pC->Jtc.internalError << 2; 				// bit 2
-	pC->Jtc.errors |= pC->Jtc.externalError << 3; 				// bit 3
+	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 			// bit 1 t
+	pC->Jtc.errors |= pC->Jtc.internalError << 2; 				// bit 2 t
+	pC->Jtc.errors |= pC->Jtc.externalError << 3; 				// bit 3 
 	pC->Jtc.errors |= pC->Jtc.internalJointsError << 4; 	// bit 4
-	pC->Jtc.errors |= pC->Jtc.internalCanError << 5; 			// bit 5
+	pC->Jtc.errors |= pC->Jtc.internalCanError << 5; 			// bit 5 t
 	pC->Jtc.errors |= pC->Jtc.internalComError << 6; 			// bit 6
 	pC->Jtc.errors |= pC->Jtc.externalJointsError << 7; 	// bit 7
 	
@@ -643,6 +638,7 @@ static void Control_JtcCheckStateInit(void)
 		else if(pC->Joints[num].currentMode != Joint_M_Torque || pC->Joints[num].currentFsm == Joint_FSM_Init || pC->Joints[num].currentFsm == Joint_FSM_Start || pC->Joints[num].cWPosNotAccurate == true)
 			pC->Jtc.jointsInitStatus |= (1 << num);
 	}
+	pC->Jtc.jtcInitStatus = 0x00;
 	
 	// Check JTC init status and Joints init status
 	if(pC->Jtc.jtcInitStatus != 0x00 || pC->Jtc.jointsInitStatus != 0x00)
@@ -773,7 +769,7 @@ static void Control_JtcInit(void)
 		{
 			Control_JtcSetJointToModeTorque(num);
 		}
-		else if(pC->Joints[num].currentMode == Joint_M_Torque && pC->Joints[num].currentFsm != Joint_FSM_ReadyToOperate)
+		else if(pC->Joints[num].currentMode == Joint_M_Torque && pC->Joints[num].currentFsm == Joint_FSM_Init)
 		{
 			Control_JtcSetJointToReadyToOperate(num);
 		}

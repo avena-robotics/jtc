@@ -122,6 +122,7 @@ void Joints_SetStartValuesVariables(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].flagFirstPosRead = false;
+		pC->Joints[num].cWPosNotAccurate = true;
 		pC->Joints[num].currentMode = Joint_M_Null;
 		pC->Joints[num].targetMode = Joint_M_Torque;
 		pC->Joints[num].confFun = 0x07; //[0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - jeszcze nie wiem co to jest :)]
@@ -168,7 +169,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].pidTorque = 0.0;
 		
 		pC->Joints[num].irIsRun = false;
-		pC->Joints[num].irMaxTorque = 5.0;
+		pC->Joints[num].irMaxTorque = 10.0;
 		pC->Joints[num].irDt = 0.001;
 		pC->Joints[num].irCurrentTorque = 0.0;
 		pC->Joints[num].irTargetTorque = 0.0;

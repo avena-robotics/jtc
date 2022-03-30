@@ -479,7 +479,7 @@ static void Can_CheckCanStatus(void)
 {
 	pC->Can.statusFlags = 0x00;
 	// Bajt 0 dla Tx Timeout
-	if(pC->Can.TxMsgs[0].flagTimeout && pC->Can.TxMsgs[1].flagTimeout && pC->Can.TxMsgs[2].flagTimeout) 	pC->Can.statusFlags |= (1 << Can_SFP_Tx0Timeout);
+	if(pC->Can.TxMsgs[0].flagTimeout && pC->Can.TxMsgs[1].flagTimeout && pC->Can.TxMsgs[2].flagTimeout) 		pC->Can.statusFlags |= (1 << Can_SFP_Tx0Timeout);
 
 	// Bajt 1 dla Rx Timeout
 	if(pC->Can.RxMsgs[0].flagTimeout && pC->Can.RxMsgs[6].flagTimeout && pC->Can.RxMsgs[12].flagTimeout)		pC->Can.statusFlags |= (1 << Can_SFP_Rx0Timeout);
