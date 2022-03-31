@@ -140,12 +140,12 @@ static void Control_LedConf(void)
 }
 static void Control_SafetyOutOn(void)
 {
-	GPIOD->ODR |= GPIO_ODR_OD3;
+//	GPIOD->ODR |= GPIO_ODR_OD3;
 	pC->Jtc.emergencyOutput = true;
 }
 static void Control_SafetyOutOff(void)
 {
-	GPIOD->ODR &= ~GPIO_ODR_OD3;
+//	GPIOD->ODR &= ~GPIO_ODR_OD3;
 	pC->Jtc.emergencyOutput = false;
 }
 static bool Control_SafetyInRead(void)

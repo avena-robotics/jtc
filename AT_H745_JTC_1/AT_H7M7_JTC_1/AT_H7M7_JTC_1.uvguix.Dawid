@@ -15,17 +15,17 @@
     <View>
       <WinId>38003</WinId>
       <ViewName>Registers</ViewName>
-      <TableColWidths>140 100</TableColWidths>
+      <TableColWidths>140 94</TableColWidths>
     </View>
     <View>
       <WinId>346</WinId>
       <ViewName>Code Coverage</ViewName>
-      <TableColWidths>1010 100</TableColWidths>
+      <TableColWidths>1010 160</TableColWidths>
     </View>
     <View>
       <WinId>204</WinId>
       <ViewName>Performance Analyzer</ViewName>
-      <TableColWidths>1170 175 175 100</TableColWidths>
+      <TableColWidths>1170</TableColWidths>
     </View>
   </SECTreeCtrl>
 
@@ -46,13 +46,13 @@
       <WinId>1936</WinId>
       <ViewName>Watch 1</ViewName>
       <UserString></UserString>
-      <TableColWidths>304 200 133</TableColWidths>
+      <TableColWidths>200 133 133</TableColWidths>
     </View>
     <View>
       <WinId>1937</WinId>
       <ViewName>Watch 2</ViewName>
       <UserString></UserString>
-      <TableColWidths>200 245 133</TableColWidths>
+      <TableColWidths>200 133 133</TableColWidths>
     </View>
     <View>
       <WinId>1935</WinId>
@@ -101,17 +101,17 @@
         <yPos>-1</yPos>
       </MaxPosition>
       <NormalPosition>
-        <Top>8</Top>
+        <Top>9</Top>
         <Left>-8</Left>
         <Right>1824</Right>
-        <Bottom>1047</Bottom>
+        <Bottom>1048</Bottom>
       </NormalPosition>
     </WindowPosition>
     <MDIClientArea>
       <RegID>0</RegID>
       <MDITabState>
-        <Len>60</Len>
-        <Data>010000000400000001000000010000000100000001000000000000000200000000000000010000000100000000000000280000002800000000000000</Data>
+        <Len>402</Len>
+        <Data>0100000004000000010000000100000001000000010000000000000002000000000000000100000001000000000000002800000028000000010000000200000001000000010000005B433A5C55736572735C44617769645C4D6F6A206479736B5C4176656E6120546563686E6F6C6F6769655C41545F5265706F5C6A74635C41545F483734355F4A54435F315C41545F48374D375F4A54435F315C436F6E74726F6C2E630000000009436F6E74726F6C2E6300000000C5D4F200FFFFFFFF58433A5C55736572735C44617769645C4D6F6A206479736B5C4176656E6120546563686E6F6C6F6769655C41545F5265706F5C6A74635C41545F483734355F4A54435F315C41545F48374D375F4A54435F315C6D61696E2E6300000000066D61696E2E6300000000FFDC7800FFFFFFFF0100000010000000C5D4F200FFDC7800BECEA100F0A0A100BCA8E1009CC1B600F7B88600D9ADC200A5C2D700B3A6BE00EAD6A300F6FA7D00B5E99D005FC3CF00C1838300CACAD500010000000000000002000000EC0000006600000069070000FD030000</Data>
       </MDITabState>
     </MDIClientArea>
     <ViewEx>
@@ -3615,9 +3615,5 @@
       </Doc>
     </MDIGroup>
   </MDIGroups>
-
-  <Bookmarks>
-    <ListItem>.\Control.c 648</ListItem>
-  </Bookmarks>
 
 </ProjectGui>
