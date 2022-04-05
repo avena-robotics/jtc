@@ -14,33 +14,33 @@ static void Control_SetTable(double* t, double a0, double a1, double a2, double 
 void Control_SetDefualtArmModel(void)
 {
 	Control_SetTable(pC->Arm.Joints[0].origin, 0, 0, 0.063, 0, 0, -0.1963);									//joint 0 coordinate system
-	Control_SetTable(pC->Arm.Joints[1].origin, 0.064, 0, 0.0495, 0, 1.570796, 0);						//joint 1 coordinate system
-	Control_SetTable(pC->Arm.Joints[2].origin, -0.452, 0, 0, 0, 3.141592, 0);								//joint 2 coordinate system
-	Control_SetTable(pC->Arm.Joints[3].origin, 0.452, 0, 0.0226, 3.141592, 0, 0);						//joint 3 coordinate system
+	Control_SetTable(pC->Arm.Joints[1].origin, 0.063, 0, 0.0763, 0, 1.570796, 0);						//joint 1 coordinate system
+	Control_SetTable(pC->Arm.Joints[2].origin, -0.686, 0, 0, 0, 3.141592, 0);								//joint 2 coordinate system
+	Control_SetTable(pC->Arm.Joints[3].origin, 0.671, 0, 0.005, 3.141592, 0, 0);						//joint 3 coordinate system
 	Control_SetTable(pC->Arm.Joints[4].origin, 0.0495, 0, 0.064, 0, -1.570796, 3.141592);		//joint 4 coordinate system
 	Control_SetTable(pC->Arm.Joints[5].origin, 0.0495, 0, 0.064, 0, 1.570796, 0);						//joint 5 coordinate system
 	Control_SetTable(pC->Arm.Joints[6].origin, 0, 0, 0.0181, 0, 0, 0);											//joint 6 coordinate system
 	
 	Control_SetTable(pC->Arm.Links[0].origin, 0, -0.0129, 0.00034, 0, 0, 0);								//center of mass link 0 coordinate system
-	Control_SetTable(pC->Arm.Links[1].origin, 0.019, 0, 0.0445, 0, 0, 1.570796);						//center of mass link 1 coordinate system
-	Control_SetTable(pC->Arm.Links[2].origin, -0.226, 0, 0.0334, 0, 0, 1.570796);						//center of mass link 2 coordinate system
-	Control_SetTable(pC->Arm.Links[3].origin, 0.3046, 0, 0.0588, 0, 0, 1.570796);						//center of mass link 3 coordinate system
+	Control_SetTable(pC->Arm.Links[1].origin, -0.00005, -0.007, 0.0175, 0, 0, 1.570796);						//center of mass link 1 coordinate system
+	Control_SetTable(pC->Arm.Links[2].origin, -0.343, 0, 0.05884, 0, 3.14, 1.570796);						//center of mass link 2 coordinate system
+	Control_SetTable(pC->Arm.Links[3].origin, 0.38666, 0, 0.051, 0, 0, 1.570796);						//center of mass link 3 coordinate system
 	Control_SetTable(pC->Arm.Links[4].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 4 coordinate system
 	Control_SetTable(pC->Arm.Links[5].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 5 coordinate system
 	Control_SetTable(pC->Arm.Links[6].origin, 0, 0, 0, 0, 0, 0);														//center of mass link 6 coordinate system
 	
 	Control_SetTable(pC->Arm.Links[0].innertia, 1, 0, 0, 1, 0, 1);													//link 0 innertial values
-	Control_SetTable(pC->Arm.Links[1].innertia, 0.002233, 0, 0, 0.002047, 0, 0.002384);			//link 1 innertial values
-	Control_SetTable(pC->Arm.Links[2].innertia, 0.1941, 0, 0, 0.005522, 0, 0.1941);					//link 2 innertial values
-	Control_SetTable(pC->Arm.Links[3].innertia, 0.1149, 0, 0, 0.004518, 0, 0.1148);					//link 3 innertial values
+	Control_SetTable(pC->Arm.Links[1].innertia, 0.005372, 0, 0, 0.004691, 0, 0.005059);			//link 1 innertial values
+	Control_SetTable(pC->Arm.Links[2].innertia, 0.8437, 0, 0, 0.01143, 0, 0.8428);					//link 2 innertial values
+	Control_SetTable(pC->Arm.Links[3].innertia, 0.3605, 0, 0, 0.006825, 0, 0.3606);					//link 3 innertial values
 	Control_SetTable(pC->Arm.Links[4].innertia, 0.002233, 0, 0, 0.002047, 0, 0.002384);			//link 4 innertial values
 	Control_SetTable(pC->Arm.Links[5].innertia, 0.002233, 0, 0, 0.002047, 0, 0.002384);			//link 5 innertial values
 	Control_SetTable(pC->Arm.Links[6].innertia, 0.000041, 0, 0, 0.000042, 0, 0.00008);			//link 6 innertial values
 	
 	pC->Arm.Links[0].mass = 0.750;		//mass of link 0
-	pC->Arm.Links[1].mass = 1.960;		//mass of link 1
-	pC->Arm.Links[2].mass = 4.660;		//mass of link 2
-	pC->Arm.Links[3].mass = 3.375;		//mass of link 3
+	pC->Arm.Links[1].mass = 3.800;		//mass of link 1
+	pC->Arm.Links[2].mass = 7.500;		//mass of link 2
+	pC->Arm.Links[3].mass = 4.800;		//mass of link 3
 	pC->Arm.Links[4].mass = 1.960;		//mass of link 4
 	pC->Arm.Links[5].mass = 1.960;		//mass of link 5
 	pC->Arm.Links[6].mass = 0.082;		//mass of link 6
@@ -327,7 +327,7 @@ static void Control_CheckErrorFlags(void)
 	if(pC->Jtc.externalJointsWarning == true)
 		pC->Jtc.externalWarning = true;
 	
-	// Przygotowywanie flag bledów JTC do wyslania
+	// Przygotowywanie flag bledÃ³w JTC do wyslania
 	pC->Jtc.errors = 0x0000;
 	pC->Jtc.errors |= pC->Jtc.emergencyInput << 0; 				// bit 0
 	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 			// bit 1 t
@@ -340,7 +340,7 @@ static void Control_CheckErrorFlags(void)
 	
 	pC->Jtc.occuredErrors |= pC->Jtc.errors;
 	
-	// Przygotowywanie flag bledów wewnetrznych jointow do wyslania
+	// Przygotowywanie flag bledÃ³w wewnetrznych jointow do wyslania
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].internallErrors = 0x0000;
