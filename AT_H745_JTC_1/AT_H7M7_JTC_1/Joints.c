@@ -169,7 +169,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].pidTorque = 0.0;
 		
 		pC->Joints[num].irIsRun = false;
-		pC->Joints[num].irMaxTorque = 10.0;
+		pC->Joints[num].irMaxTorque = 20.0;
 		pC->Joints[num].irDt = 0.001;
 		pC->Joints[num].irCurrentTorque = 0.0;
 		pC->Joints[num].irTargetTorque = 0.0;
