@@ -73,41 +73,41 @@ void Joints_SetDefaultFriction(void)
 }
 void Joints_SetDefaultPidParam(void)
 {
-	pC->Joints[0].pidKp = 420.0;
-	pC->Joints[0].pidKi = 160.0;
-	pC->Joints[0].pidKd = 20.0;
-	pC->Joints[0].pidErrorIntMin = -10.0;
-	pC->Joints[0].pidErrorIntMax = 10.0;
+	pC->Joints[0].pidKp = 8000.0;
+	pC->Joints[0].pidKi = 14000.0;
+	pC->Joints[0].pidKd = 80.0;
+	pC->Joints[0].pidErrorIntMin = -120.0;
+	pC->Joints[0].pidErrorIntMax = 120.0;
 	
-	pC->Joints[1].pidKp = 420.0;
-	pC->Joints[1].pidKi = 160.0;
-	pC->Joints[1].pidKd = 25.0;
-	pC->Joints[1].pidErrorIntMin = -25.0;
-	pC->Joints[1].pidErrorIntMax = 25.0;
+	pC->Joints[1].pidKp = 8000.0;
+	pC->Joints[1].pidKi = 14000.0;
+	pC->Joints[1].pidKd = 80.0;
+	pC->Joints[1].pidErrorIntMin = -100.0;
+	pC->Joints[1].pidErrorIntMax = 100.0;
 	
-	pC->Joints[2].pidKp = 380.0;
-	pC->Joints[2].pidKi = 160.0;
-	pC->Joints[2].pidKd = 20.0;
-	pC->Joints[2].pidErrorIntMin = -20.0;
-	pC->Joints[2].pidErrorIntMax = 20.0;
+	pC->Joints[2].pidKp = 8000.0;
+	pC->Joints[2].pidKi = 14000.0;
+	pC->Joints[2].pidKd = 80.0;
+	pC->Joints[2].pidErrorIntMin = -80.0;
+	pC->Joints[2].pidErrorIntMax = 80.0;
 	
-	pC->Joints[3].pidKp = 380.0;
-	pC->Joints[3].pidKi = 160.0;
-	pC->Joints[3].pidKd = 15.0;
-	pC->Joints[3].pidErrorIntMin = -15.0;
-	pC->Joints[3].pidErrorIntMax = 15.0;
+	pC->Joints[3].pidKp = 4000.0;
+	pC->Joints[3].pidKi = 24000.0;
+	pC->Joints[3].pidKd = 60.0;
+	pC->Joints[3].pidErrorIntMin = -40.0;
+	pC->Joints[3].pidErrorIntMax = 40.0;
 	
-	pC->Joints[4].pidKp = 380.0;
-	pC->Joints[4].pidKi = 160.0;
-	pC->Joints[4].pidKd = 10.0;
-	pC->Joints[4].pidErrorIntMin = -15.0;
-	pC->Joints[4].pidErrorIntMax = 15.0;
+	pC->Joints[4].pidKp = 4000.0;
+	pC->Joints[4].pidKi = 24000.0;
+	pC->Joints[4].pidKd = 60.0;
+	pC->Joints[4].pidErrorIntMin = -40.0;
+	pC->Joints[4].pidErrorIntMax = 40.0;
 	
-	pC->Joints[5].pidKp = 380.0;
-	pC->Joints[5].pidKi = 160.0;
-	pC->Joints[5].pidKd = 10.0;
-	pC->Joints[5].pidErrorIntMin = -15.0;
-	pC->Joints[5].pidErrorIntMax = 15.0;
+	pC->Joints[5].pidKp = 4000.0;
+	pC->Joints[5].pidKi = 24000.0;
+	pC->Joints[5].pidKd = 60.0;
+	pC->Joints[5].pidErrorIntMin = -40.0;
+	pC->Joints[5].pidErrorIntMax = 40.0;
 }
 void Joints_ClearCanValues(uint8_t num)
 {
@@ -371,16 +371,16 @@ void Joints_CalcPIDs(void)
 	// pidErrorIntMin - minimalna wartosc calki uchybu (do saturacji calki) (rad*s)
 	// pidErrorIntMax - maksymalna wartosc calki uchybu (do saturacji calki) (rad*s)
 	// pidOut - wyjscie regulatora (Nm)
-	// pidKp - wsp髄czynnik kp (Nm/rad)
-	// pidKi - wsp髄czynnik ki (Nm/(rad*s))
-	// pidKd - wsp髄czynnik kd (Nm/(rad/s))
+	// pidKp - wsp贸lczynnik kp (Nm/rad)
+	// pidKi - wsp贸lczynnik ki (Nm/(rad*s))
+	// pidKd - wsp贸lczynnik kd (Nm/(rad/s))
 	
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		// uchyb regulacji
 		pC->Joints[num].pidErrorCurrent = pC->Joints[num].setPosTemp - pC->Joints[num].currentPos;
 
-		// pochodna uchybu liczona jakos wartosc srednia z uchyb體 z ostatnich JOINTS_PIDBUFMAX krok體 czasowych
+		// pochodna uchybu liczona jakos wartosc srednia z uchyb贸w z ostatnich JOINTS_PIDBUFMAX krok贸w czasowych
 		pC->Joints[num].pidErrorBuf[pC->Joints[num].pidErrorBufIdx] = pC->Joints[num].pidErrorCurrent;
 		pC->Joints[num].pidErrorBufIdx = (pC->Joints[num].pidErrorBufIdx + 1) % JOINTS_PIDBUFMAX;
 		pC->Joints[num].pidErrorMeanPrev = pC->Joints[num].pidErrorMeanCurrent;
