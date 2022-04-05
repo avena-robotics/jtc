@@ -202,7 +202,7 @@ typedef enum
 #define JOINTS_FRICTABVELSIZE				20
 #define JOINTS_FRICTABTEMPSIZE			20
 #define JOINTS_FRICCOEFFMAX					6
-#define JOINTS_PIDBUFMAX						200
+#define JOINTS_PIDBUFMAX						5
 
 #define ARMMODEL_DOF								6
 
@@ -294,8 +294,8 @@ typedef struct
 	uint8_t				mcOccuredError;
 	uint8_t				currentError;
 	uint8_t				currentWarning;
-	uint16_t			internallErrors;							//Bledy - wszystkie flagi biezacych bled體 wewnetrznych zebrane w jeden rejestr do wyslania do hosta
-	uint16_t			internallOccuredErrors;				//Bledy - wszystkie flagi bled體 wewnetrznych zebrane w jeden rejestr do wyslania do hosta
+	uint16_t			internallErrors;							//Bledy - wszystkie flagi biezacych bled贸w wewnetrznych zebrane w jeden rejestr do wyslania do hosta
+	uint16_t			internallOccuredErrors;				//Bledy - wszystkie flagi bled贸w wewnetrznych zebrane w jeden rejestr do wyslania do hosta
 	
 	bool					flagFirstPosRead;							//Flaga - pierwszy odczyt pozycji z jointa
 	
@@ -340,10 +340,10 @@ typedef struct
 	double				limitPosErrorMin;		//Limit wartosci uchybu pozycji dla danego jointa - wartosc minimum
 	double				limitPosErrorMax;		//Limit wartosci uchybu pozycji dla danego jointa - wartosc maximum
 	
-	double				maxPosCom;					//Maksymalna wartosc pozycji do obliczania zakres體 przy przesylaniu danych
-	double				maxVelCom;					//Maksymalna wartosc predkosci do obliczania zakres體 przy przesylaniu danych
-	double				maxAccCom;					//Maksymalna wartosc przyspieszenia do obliczania zakres體 przy przesylaniu danych
-	double				maxTorqueCom;				//Maksymalna wartosc momentu do obliczania zakres體 przy przesylaniu danych
+	double				maxPosCom;					//Maksymalna wartosc pozycji do obliczania zakres贸w przy przesylaniu danych
+	double				maxVelCom;					//Maksymalna wartosc predkosci do obliczania zakres贸w przy przesylaniu danych
+	double				maxAccCom;					//Maksymalna wartosc przyspieszenia do obliczania zakres贸w przy przesylaniu danych
+	double				maxTorqueCom;				//Maksymalna wartosc momentu do obliczania zakres贸w przy przesylaniu danych
 	
 	double				fricTorque;																								//Moment - wartosc momentu tarcia odczytana z tablicy kompensacji
 	double				fricTableVelMin;																					//Minimalna predkosc dla ktorej okreslono moment tarcia
@@ -353,7 +353,7 @@ typedef struct
 	double				fricTableVelIdx[JOINTS_FRICTABVELSIZE];										//Wartosc predkosci dla indeksu 0 w tablicy kompensacji tarcia
 	double				fricTableTempIdx[JOINTS_FRICTABTEMPSIZE];									//Wartosc temperatury dla indeksu 0 w tablicy kompensacji tarcia
 	double				fricTable[JOINTS_FRICTABVELSIZE][JOINTS_FRICTABTEMPSIZE]; //Tablica ze wszpolczynnikami kompensacji tarcia
-	double				fricCoeff[JOINTS_FRICCOEFFMAX];														//Tablica wsp髄czynnik體 do r體nania tarcia
+	double				fricCoeff[JOINTS_FRICCOEFFMAX];														//Tablica wsp贸lczynnik贸w do r贸wnania tarcia
 	
 	
 	double				idSetPos;				//Pozycja katowa - wartosc do liczenia dynamiki odwrotnej
@@ -361,29 +361,29 @@ typedef struct
 	double				idSetAcc;				//Przyspieszenie katowe - wartosc do liczenia dynamiki odwrotnej
 	double				idTorque;				//Moment - wartosc momentu wyliczona z zadania dynamiki
 	
-	double				pidKp;																//PID - wsp髄czynnik kp
-	double				pidKi;																//PID - wsp髄czynnik ki
-	double				pidKd;																//PID - wsp髄czynnik kd
+	double				pidKp;																//PID - wsp贸lczynnik kp
+	double				pidKi;																//PID - wsp贸lczynnik ki
+	double				pidKd;																//PID - wsp贸lczynnik kd
 	double				pidDt;																//PID - krok czasowy
 	double				pidErrorCurrent;											//PID - aktualny uchyb
-	double				pidErrorMeanCurrent;									//PID - aktualna srenia uchyb體
-	double				pidErrorMeanPrev;											//PID - poprzednia srednia uchyb體
+	double				pidErrorMeanCurrent;									//PID - aktualna srenia uchyb贸w
+	double				pidErrorMeanPrev;											//PID - poprzednia srednia uchyb贸w
 	uint32_t			pidErrorBufIdx;												//PID - index elementu w buforze
-	double				pidErrorBuf[JOINTS_PIDBUFMAX];				//PID - bufor zawierajacy historie uchyb體 do filtracji r髗niczkowania
+	double				pidErrorBuf[JOINTS_PIDBUFMAX];				//PID - bufor zawierajacy historie uchyb贸w do filtracji r贸zniczkowania
 	double				pidErrorDiv;													//PID - pochodna z uchybu
 	double				pidErrorInt;													//PID - calka uchybu
 	double				pidErrorIntMin;												//PID - saturacja calki uchybu - wartosc minimalna
 	double				pidErrorIntMax;												//PID - saturacja calki uchybu - wartosc maksymalna
 	double				pidTorque;														//PID - wyjscie z regulatora
 	
-	bool					irIsRun;															//Init Reg - flaga sygnalizujaca prace - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
-	double				irDt;																	//Init Reg - krok czasowy - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
-	double				irMaxTorque;													//Init Reg - maksymalny moment (wartosc bezwzgledna) - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
-	double				irTargetTorque;												//Init Reg - zadany moment - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
-	double				irCurrentTorque;											//Init Reg - aktualny moment - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
-	double				irErrorTorque;												//Init Reg - uchyb momentu - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
-	double				irHyst;																//Init Reg - histereza momentu - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
-	double				irRampTorque;													//Init Reg - predkosc zmiany momentu [Unit: Nm/sek] - prosty regulator momentu w fazie inicjalizacji enkoder體 joint體
+	bool					irIsRun;															//Init Reg - flaga sygnalizujaca prace - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
+	double				irDt;																	//Init Reg - krok czasowy - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
+	double				irMaxTorque;													//Init Reg - maksymalny moment (wartosc bezwzgledna) - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
+	double				irTargetTorque;												//Init Reg - zadany moment - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
+	double				irCurrentTorque;											//Init Reg - aktualny moment - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
+	double				irErrorTorque;												//Init Reg - uchyb momentu - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
+	double				irHyst;																//Init Reg - histereza momentu - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
+	double				irRampTorque;													//Init Reg - predkosc zmiany momentu [Unit: Nm/sek] - prosty regulator momentu w fazie inicjalizacji enkoder贸w joint贸w
 }sJoint;
 typedef struct
 {
@@ -470,7 +470,7 @@ typedef struct
 	bool					holdposModeReq;
 	bool					operateModeReq;
 	
-	eJTC_FricType	fricType;								//Rodzaj uzywanej kompensacji tarcia: 0 - wielomian 3 stopnia, 1 - tablica wsp髄czynnik體 20x20
+	eJTC_FricType	fricType;								//Rodzaj uzywanej kompensacji tarcia: 0 - wielomian 3 stopnia, 1 - tablica wsp贸lczynnik贸w 20x20
 	
 	uint16_t			errors;									// Wszystkie flagi biezacych bledow
 	uint16_t			occuredErrors;					// Wszystkie flagi bledow
