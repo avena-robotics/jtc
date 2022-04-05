@@ -474,7 +474,7 @@ static void Control_TrajCheckState(void)
 static void Control_TrajStop(void)
 {
 	Traj.maxPoints = Traj.numRecPoints;
-	Traj.maxInterPoints = Traj.maxPoints * Traj.stepTime;
+	Traj.maxInterPoints = (Traj.maxPoints-1) * Traj.stepTime;
 	Traj.numInterPoint = 0;
 	
 	Control_TrajClearPointDouble(&Traj.startPoint);
