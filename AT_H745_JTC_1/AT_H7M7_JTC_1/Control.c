@@ -418,11 +418,11 @@ static void Control_TrajInterpolate(void)
 	{
 		Traj.startPoint.pos[num] = (double)start.pos[num] * pC->Joints[num].limitPosMax / MAXINT16;
 		Traj.startPoint.vel[num] = (double)start.vel[num] * pC->Joints[num].limitVelMax / MAXINT16;
-		Traj.startPoint.acc[num] = (double)start.acc[num] * pC->Joints[num].limitVelMax / MAXINT16;
+		Traj.startPoint.acc[num] = (double)start.acc[num] * pC->Joints[num].limitAccMax / MAXINT16;
 		
 		Traj.endPoint.pos[num] = (double)end.pos[num] * pC->Joints[num].limitPosMax / MAXINT16;
 		Traj.endPoint.vel[num] = (double)end.vel[num] * pC->Joints[num].limitVelMax / MAXINT16;
-		Traj.endPoint.acc[num] = (double)end.acc[num] * pC->Joints[num].limitVelMax / MAXINT16;
+		Traj.endPoint.acc[num] = (double)end.acc[num] * pC->Joints[num].limitAccMax / MAXINT16;
 	}
 	
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -431,7 +431,7 @@ static void Control_TrajInterpolate(void)
 		double offsetPos = (double)m * (dPos / (double)Traj.stepTime);
 		Traj.interpolatePoint.pos[num] = Traj.startPoint.pos[num] + offsetPos;
 		
-		double dVel = Traj.endPoint.pos[num] - Traj.startPoint.vel[num];
+		double dVel = Traj.endPoint.vel[num] - Traj.startPoint.vel[num];
 		double offsetVel = (double)m * (dVel / (double)Traj.stepTime);
 		Traj.interpolatePoint.vel[num] = Traj.startPoint.vel[num] + offsetVel;
 		
