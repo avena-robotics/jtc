@@ -179,8 +179,8 @@ typedef enum
 
 //#define TESTMODE
 
-//#define RS422
-#define UARTUSB
+#define RS422
+//#define UARTUSB
 
 #ifdef RS422
 #define HOST_COMBAUDRATE 						115200
@@ -215,8 +215,8 @@ typedef enum
 #define CAN_RXFIFO0_MAX							(64 - CAN_RXBUF_MAX)
 #define CAN_RXBUFSIZE_CODE					0x02
 #define CAN_RXDATA_LEN							16
-#define CAN_TIMEOUTMAX							50
-#define CAN_RESETTIMEOUT						20
+#define CAN_TIMEOUTMAX							500
+#define CAN_RESETTIMEOUT						300
 
 typedef struct
 {

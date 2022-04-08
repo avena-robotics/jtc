@@ -151,8 +151,8 @@ static void Control_SafetyOutOff(void)
 static bool Control_SafetyInRead(void)
 {
 	bool in = false;
-//	if((GPIOD->IDR & GPIO_IDR_ID4) == RESET)
-//		in = true;
+	if(GPIOD->IDR & GPIO_IDR_ID4)
+		in = true;
 	return in;
 }
 static void Cotrol_SafetyConf(void)
@@ -240,8 +240,12 @@ static void Control_CheckLimits(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		// Check torque limits
-		if(pC->Joints[num].setTorqueTemp < pC->Joints[num].limitTorqueMin || pC->Joints[num].setTorqueTemp > pC->Joints[num].limitTorqueMax)
+		if(pC->Joints[num].currentTorque < pC->Joints[num].limitTorqueMin || pC->Joints[num].currentTorque > pC->Joints[num].limitTorqueMax)
 			pC->Joints[num].flagSetTorqueOverlimit = true;
+		
+		if(pC->Joints[num].setTorqueTemp*(pC->Joints[num].setTorqueTemp < 0) - (0 < pC->Joints[num].setTorqueTemp) > pC->Joints[num].maxTorqueCom)
+			pC->Joints[num].setTorqueTemp = pC->Joints[num].maxTorqueCom * (pC->Joints[num].setTorqueTemp < 0) - (0 < pC->Joints[num].setTorqueTemp);
+		
 		
 		// Check pos limits
 		if(pC->Joints[num].setPosTemp < pC->Joints[num].limitPosMin || pC->Joints[num].setPosTemp > pC->Joints[num].limitPosMax)
@@ -363,8 +367,10 @@ static void Control_SetNewTorqueValues(void)
 	}
 	else
 	{
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
+		for(uint8_t num=0;num<JOINTS_MAX;num++){
 			pC->Joints[num].setTorque = 0.0;
+			Control_JtcSetJointToEnable;
+		}
 	}
 }
 static void Control_SendDataToJoints(void)
@@ -418,11 +424,11 @@ static void Control_TrajInterpolate(void)
 	{
 		Traj.startPoint.pos[num] = (double)start.pos[num] * pC->Joints[num].limitPosMax / MAXINT16;
 		Traj.startPoint.vel[num] = (double)start.vel[num] * pC->Joints[num].limitVelMax / MAXINT16;
-		Traj.startPoint.acc[num] = (double)start.acc[num] * pC->Joints[num].limitVelMax / MAXINT16;
+		Traj.startPoint.acc[num] = (double)start.acc[num] * pC->Joints[num].limitAccMax / MAXINT16;
 		
 		Traj.endPoint.pos[num] = (double)end.pos[num] * pC->Joints[num].limitPosMax / MAXINT16;
 		Traj.endPoint.vel[num] = (double)end.vel[num] * pC->Joints[num].limitVelMax / MAXINT16;
-		Traj.endPoint.acc[num] = (double)end.acc[num] * pC->Joints[num].limitVelMax / MAXINT16;
+		Traj.endPoint.acc[num] = (double)end.acc[num] * pC->Joints[num].limitAccMax / MAXINT16;
 	}
 	
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -431,7 +437,7 @@ static void Control_TrajInterpolate(void)
 		double offsetPos = (double)m * (dPos / (double)Traj.stepTime);
 		Traj.interpolatePoint.pos[num] = Traj.startPoint.pos[num] + offsetPos;
 		
-		double dVel = Traj.endPoint.pos[num] - Traj.startPoint.vel[num];
+		double dVel = Traj.endPoint.vel[num] - Traj.startPoint.vel[num];
 		double offsetVel = (double)m * (dVel / (double)Traj.stepTime);
 		Traj.interpolatePoint.vel[num] = Traj.startPoint.vel[num] + offsetVel;
 		
@@ -842,8 +848,10 @@ static void Control_JtcHoldPos(void)
 	RNEA_CalcTorques();
 	Joints_CalcPIDs();
 	
-	for(int num=0;num<JOINTS_MAX;num++)
+	for(int num=0;num<JOINTS_MAX;num++){
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque;
+		pC->Joints[num].setTorqueTemp *= 1.3;
+	}
 }
 static void Control_JtcOperate(void)
 {
@@ -863,8 +871,10 @@ static void Control_JtcOperate(void)
 	Joints_CalcPIDs();
 	Joints_CalcFrictionCompensate();
 	
-	for(int num=0;num<JOINTS_MAX;num++)
+	for(int num=0;num<JOINTS_MAX;num++){
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
+		pC->Joints[num].setTorqueTemp *= 1.3;
+	}
 }
 static void Control_JtcAct(void)
 {
