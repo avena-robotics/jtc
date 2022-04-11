@@ -151,8 +151,8 @@ static void Control_SafetyOutOff(void)
 static bool Control_SafetyInRead(void)
 {
 	bool in = false;
-//	if((GPIOD->IDR & GPIO_IDR_ID4) == RESET)
-//		in = true;
+	if(GPIOD->IDR & GPIO_IDR_ID4)
+		in = true;
 	return in;
 }
 static void Cotrol_SafetyConf(void)
@@ -240,8 +240,12 @@ static void Control_CheckLimits(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		// Check torque limits
-		if(pC->Joints[num].setTorqueTemp < pC->Joints[num].limitTorqueMin || pC->Joints[num].setTorqueTemp > pC->Joints[num].limitTorqueMax)
+		if(pC->Joints[num].currentTorque < pC->Joints[num].limitTorqueMin || pC->Joints[num].currentTorque > pC->Joints[num].limitTorqueMax)
 			pC->Joints[num].flagSetTorqueOverlimit = true;
+		
+		if(pC->Joints[num].setTorqueTemp*(pC->Joints[num].setTorqueTemp < 0) - (0 < pC->Joints[num].setTorqueTemp) > pC->Joints[num].maxTorqueCom)
+			pC->Joints[num].setTorqueTemp = pC->Joints[num].maxTorqueCom * (pC->Joints[num].setTorqueTemp < 0) - (0 < pC->Joints[num].setTorqueTemp);
+		
 		
 		// Check pos limits
 		if(pC->Joints[num].setPosTemp < pC->Joints[num].limitPosMin || pC->Joints[num].setPosTemp > pC->Joints[num].limitPosMax)
@@ -363,8 +367,10 @@ static void Control_SetNewTorqueValues(void)
 	}
 	else
 	{
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
+		for(uint8_t num=0;num<JOINTS_MAX;num++){
 			pC->Joints[num].setTorque = 0.0;
+			Control_JtcSetJointToReadyToOperate(num);
+		}
 	}
 }
 static void Control_SendDataToJoints(void)
@@ -746,7 +752,7 @@ static void Control_JtcError(void)
 	// Reaction for externall error
 	if(pC->Jtc.externalError == true)
 	{
-		Control_JtcResetAllJoints();
+		//Control_JtcResetAllJoints();
 	}
 }
 static void Control_JtcInit(void)
@@ -810,7 +816,7 @@ static void Control_JtcInit(void)
 	
 	// Koniec inicjalizacji danego jointa
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
-		if(pC->Joints[num].cWPosNotAccurate == false && pC->Joints[num].currentFsm != Joint_FSM_ReadyToOperate)
+		if(pC->Joints[num].cWPosNotAccurate == false && pC->Joints[num].currentFsm == Joint_FSM_OperationEnable)
 		{
 			Joints_StopIrValuesVariables(num);
 			Control_JtcSetJointToReadyToOperate(num);
@@ -842,8 +848,10 @@ static void Control_JtcHoldPos(void)
 	RNEA_CalcTorques();
 	Joints_CalcPIDs();
 	
-	for(int num=0;num<JOINTS_MAX;num++)
+	for(int num=0;num<JOINTS_MAX;num++){
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque;
+		pC->Joints[num].setTorqueTemp *= 1.3;
+	}
 }
 static void Control_JtcOperate(void)
 {
@@ -863,8 +871,10 @@ static void Control_JtcOperate(void)
 	Joints_CalcPIDs();
 	Joints_CalcFrictionCompensate();
 	
-	for(int num=0;num<JOINTS_MAX;num++)
+	for(int num=0;num<JOINTS_MAX;num++){
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
+		pC->Joints[num].setTorqueTemp *= 1.3;
+	}
 }
 static void Control_JtcAct(void)
 {
