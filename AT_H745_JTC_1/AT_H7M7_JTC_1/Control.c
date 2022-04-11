@@ -369,7 +369,7 @@ static void Control_SetNewTorqueValues(void)
 	{
 		for(uint8_t num=0;num<JOINTS_MAX;num++){
 			pC->Joints[num].setTorque = 0.0;
-			Control_JtcSetJointToEnable;
+			Control_JtcSetJointToReadyToOperate(num);
 		}
 	}
 }
@@ -752,7 +752,7 @@ static void Control_JtcError(void)
 	// Reaction for externall error
 	if(pC->Jtc.externalError == true)
 	{
-		Control_JtcResetAllJoints();
+		//Control_JtcResetAllJoints();
 	}
 }
 static void Control_JtcInit(void)
@@ -816,7 +816,7 @@ static void Control_JtcInit(void)
 	
 	// Koniec inicjalizacji danego jointa
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
-		if(pC->Joints[num].cWPosNotAccurate == false && pC->Joints[num].currentFsm != Joint_FSM_ReadyToOperate)
+		if(pC->Joints[num].cWPosNotAccurate == false && pC->Joints[num].currentFsm == Joint_FSM_OperationEnable)
 		{
 			Joints_StopIrValuesVariables(num);
 			Control_JtcSetJointToReadyToOperate(num);

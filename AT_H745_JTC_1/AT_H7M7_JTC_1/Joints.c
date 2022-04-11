@@ -189,7 +189,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].limitPosErrorMax = 0.09;
 		
 		pC->Joints[num].maxPosCom = M_PI;
-		pC->Joints[num].maxVelCom = M_2_PI;
+		pC->Joints[num].maxVelCom = 2.;
 		pC->Joints[num].maxAccCom = M_4_PI;
 		pC->Joints[num].maxTorqueCom = 360.0;
 		
@@ -229,6 +229,8 @@ void Joints_SetResetValuesVariables(void)
 		pC->Joints[num].cWPosNotAccurate = true;
 		pC->Joints[num].currentMode = Joint_M_Null;
 		pC->Joints[num].targetMode = Joint_M_Torque;
+		pC->Joints[num].currentFsm = Joint_FSM_Start;
+		pC->Joints[num].targetFsm = Joint_FSM_Init;
 		pC->Joints[num].confFun = 0x07; //[0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - jeszcze nie wiem co to jest :)]
 		
 		pC->Joints[num].setPos = 0.0;
