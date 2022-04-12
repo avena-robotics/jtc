@@ -6,7 +6,7 @@
 ".\objects\joints.o"
 ".\objects\rnea.o"
 ".\objects\startup_stm32h745xx.o"
-".\objects\system_stm32h7xx.o"
+".\objects\system_stm32h7xx_dualcore_boot_cm4_cm7.o"
 --strict --scatter ".\Objects\AT_H7M7_JTC_1.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

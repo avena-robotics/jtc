@@ -1308,8 +1308,8 @@ Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M7.fp.dp --apcs=
 interwork --depend=.\objects\startup_stm32h745xx.d -o.\objects\startup_stm32h74
 5xx.o -I.\RTE\_Target_1 -IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.
 0\CMSIS\Core\Include -IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DF
-P\2.8.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include --predefine="__UVISION_VERSIO
-N SETA 535" --predefine="_RTE_ SETA 1" --predefine="CORE_CM7 SETA 1" --predefin
+P\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include --predefine="__UVISION_VERSIO
+N SETA 536" --predefine="_RTE_ SETA 1" --predefine="CORE_CM7 SETA 1" --predefin
 e="STM32H745xx SETA 1" --predefine="_RTE_ SETA 1" --list=.\listings\startup_stm
 32h745xx.lst RTE\Device\STM32H745ZITx_CM7\startup_stm32h745xx.s
 

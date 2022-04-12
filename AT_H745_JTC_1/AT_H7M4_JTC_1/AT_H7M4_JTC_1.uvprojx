@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>STM32H745ZITx:CM4</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32H7xx_DFP.2.8.0</PackID>
+          <PackID>Keil.STM32H7xx_DFP.3.0.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x10000000,0x00048000) IROM(0x08100000,0x00100000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -420,15 +420,21 @@
       <file attr="config" category="source" condition="STM32H745_ARMCC" name="Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\arm\startup_stm32h745xx.s" version="1.9.0">
         <instance index="0">RTE\Device\STM32H745ZITx_CM4\startup_stm32h745xx.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.9.0" condition="STM32H7 CMSIS"/>
-        <package name="STM32H7xx_DFP" schemaVersion="1.7.2" url="http://www.keil.com/pack/" vendor="Keil" version="2.8.0"/>
+        <package name="STM32H7xx_DFP" schemaVersion="1.7.2" url="http://www.keil.com/pack/" vendor="Keil" version="3.0.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" name="Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\system_stm32h7xx.c" version="1.9.0">
-        <instance index="0">RTE\Device\STM32H745ZITx_CM4\system_stm32h7xx.c</instance>
+        <instance index="0" removed="1">RTE\Device\STM32H745ZITx_CM4\system_stm32h7xx.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.9.0" condition="STM32H7 CMSIS"/>
         <package name="STM32H7xx_DFP" schemaVersion="1.7.2" url="http://www.keil.com/pack/" vendor="Keil" version="2.8.0"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="source" condition="STM32H7_DC" name="Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\system_stm32h7xx_dualcore_boot_cm4_cm7.c" version="0.0.0">
+        <instance index="0">RTE\Device\STM32H745ZITx_CM4\system_stm32h7xx_dualcore_boot_cm4_cm7.c</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.9.0" condition="STM32H7 CMSIS"/>
+        <package name="STM32H7xx_DFP" schemaVersion="1.7.2" url="http://www.keil.com/pack/" vendor="Keil" version="3.0.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>

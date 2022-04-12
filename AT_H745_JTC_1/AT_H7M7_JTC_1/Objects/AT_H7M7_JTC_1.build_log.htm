@@ -3,37 +3,48 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: µVision V5.35.0.0
+IDE-Version: µVision V5.36.0.0
 Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: A A, A, LIC=NHY61-W24V9-IV3XX-00KAN-IEFBD-8VHKA
+License Information: Dawid Pietrala, Kielce University of Technology, LIC=6XJFT-AYDM9-4EBLA-Z8CIF-21WVS-ZCPY5
  
 Tool Versions:
-Toolchain:       MDK-ARM Professional  Version: 5.35.0.2
+Toolchain:       MDK-ARM Professional  Version: 5.36.0.0
 Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
 C Compiler:      Armcc.exe V5.06 update 7 (build 960)
 Assembler:       Armasm.exe V5.06 update 7 (build 960)
 Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
 Library Manager: ArmAr.exe V5.06 update 7 (build 960)
 Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
-CPU DLL:         SARMCM3.DLL V5.35.0.2
+CPU DLL:         SARMCM3.DLL V5.36.0.0
 Dialog DLL:      DCM.DLL V1.17.3.0
 Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
 Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
 C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\AT_H7M7_JTC_1.uvprojx
-Project File Date:  03/08/2022
+Project File Date:  04/11/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build Project 'AT_H7M7_JTC_1' - Target 'Target 1'
+Rebuild Project 'AT_H7M7_JTC_1' - Target 'Target 1'
+assembling startup_stm32h745xx.s...
+compiling Can.c...
 compiling main.c...
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\main.c(13): warning:  #1-D: last line of file ends without a newline
+  	
+main.c: 1 warning, 0 errors
+compiling RNEA.c...
+compiling Com.c...
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Com.c(201): warning:  #177-D: function "Host_ComUart3Conf"  was declared but never referenced
+  static void Host_ComUart3Conf(void)
+Com.c: 1 warning, 0 errors
+compiling Joints.c...
+compiling system_stm32h7xx_dualcore_boot_cm4_cm7.c...
+compiling Control.c...
 linking...
-Program Size: Code=33072 RO-data=22320 RW-data=554796 ZI-data=111220  
+Program Size: Code=33896 RO-data=22320 RW-data=554796 ZI-data=101860  
 FromELF: creating hex file...
-.\Objects\AT_H7M7_JTC_1.hex: Warning: Q9931W: Your license for feature Keil will expire in 4 days
-Finished: 0 information, 1 warning and 0 error messages.
-".\Objects\AT_H7M7_JTC_1.axf" - 0 Error(s), 0 Warning(s).
+".\Objects\AT_H7M7_JTC_1.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -44,15 +55,15 @@ Package Vendor: ARM
    * Component: CORE Version: 5.5.0
 
 Package Vendor: Keil
-                http://www.keil.com/pack/Keil.STM32H7xx_DFP.2.8.0.pack
-                Keil.STM32H7xx_DFP.2.8.0
+                http://www.keil.com/pack/Keil.STM32H7xx_DFP.3.0.0.pack
+                Keil.STM32H7xx_DFP.3.0.0
                 STMicroelectronics STM32H7 Series Device Support and Examples
    * Component: Startup Version: 1.9.0
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_Target_1
   C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include
-  C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include
+  C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
@@ -61,8 +72,8 @@ Package Vendor: Keil
    * Component: Keil::Device:Startup:1.9.0
       Source file:   Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\arm\startup_stm32h745xx.s
       Include file:  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h
-      Source file:   Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\system_stm32h7xx.c
-Build Time Elapsed:  00:00:03
+      Source file:   Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\system_stm32h7xx_dualcore_boot_cm4_cm7.c
+Build Time Elapsed:  00:00:08
 </pre>
 </body>
 </html>

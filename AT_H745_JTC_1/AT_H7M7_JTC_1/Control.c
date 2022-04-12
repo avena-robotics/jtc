@@ -825,8 +825,10 @@ static void Control_JtcInit(void)
 static void Control_JtcTeaching(void)
 {
 	Control_TrajClear();
+	
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
-		Control_JtcSetJointToEnable(num);
+		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
+			Control_JtcSetJointToEnable(num);
 	
 	Control_JtcPrepareSetedValuesForTeaching();
 	RNEA_CalcTorques();
@@ -837,7 +839,8 @@ static void Control_JtcTeaching(void)
 static void Control_JtcHoldPos(void)
 {
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
-		Control_JtcSetJointToEnable(num);
+		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
+			Control_JtcSetJointToEnable(num);
 	
 	if(Traj.currentTES == TES_Stop)
 		Control_TrajStop();
@@ -848,7 +851,8 @@ static void Control_JtcHoldPos(void)
 	RNEA_CalcTorques();
 	Joints_CalcPIDs();
 	
-	for(int num=0;num<JOINTS_MAX;num++){
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque;
 		pC->Joints[num].setTorqueTemp *= 1.3;
 	}
@@ -856,7 +860,8 @@ static void Control_JtcHoldPos(void)
 static void Control_JtcOperate(void)
 {
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
-		Control_JtcSetJointToEnable(num);
+		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
+			Control_JtcSetJointToEnable(num);
 	
 	Traj.numInterPoint++;
 	if(Traj.numInterPoint >= Traj.maxInterPoints)
@@ -871,7 +876,8 @@ static void Control_JtcOperate(void)
 	Joints_CalcPIDs();
 	Joints_CalcFrictionCompensate();
 	
-	for(int num=0;num<JOINTS_MAX;num++){
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
 		pC->Joints[num].setTorqueTemp *= 1.3;
 	}
