@@ -31,7 +31,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="iconSize">
      <size>
@@ -543,9 +543,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>330</y>
+        <y>440</y>
         <width>1291</width>
-        <height>291</height>
+        <height>261</height>
        </rect>
       </property>
      </widget>
@@ -565,11 +565,11 @@
         <x>0</x>
         <y>99</y>
         <width>1291</width>
-        <height>221</height>
+        <height>321</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QPushButton" name="JTC_ClearErrors">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -585,12 +585,12 @@
           </font>
          </property>
          <property name="text">
-          <string>Clear Current Errors</string>
+          <string>Clear  Errors</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="Traj_TrajectoryExecute">
+       <item row="1" column="2">
+        <widget class="QPushButton" name="JTC_TeachingModeDisable">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -605,11 +605,11 @@
           </font>
          </property>
          <property name="text">
-          <string>Trajectory Execute</string>
+          <string>Teaching Mode Disable</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
+       <item row="2" column="2">
         <widget class="QPushButton" name="JTC_ClearOccuredErrors">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -625,7 +625,67 @@
           </font>
          </property>
          <property name="text">
-          <string>Clear Occured Errors</string>
+          <string>Clear Occured Errors (Not used)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QPushButton" name="Gripper_PumpOn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Gripper Pump On</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QPushButton" name="Gripper_PumpOff">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Gripper Pump Off</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="JTC_TeachingModeEnable">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Teaching Mode Enable</string>
          </property>
         </widget>
        </item>
@@ -649,6 +709,26 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="Traj_TrajectoryExecute">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Trajectory Execute</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QPushButton" name="Traj_TrajectoryStop">
          <property name="sizePolicy">
@@ -669,8 +749,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QPushButton" name="JTC_TeachingModeEnable">
+       <item row="3" column="0">
+        <widget class="QPushButton" name="ResetCanDevice">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -685,31 +765,41 @@
           </font>
          </property>
          <property name="text">
-          <string>Teaching Mode Enable</string>
+          <string>Reset Can Device</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
-        <widget class="QPushButton" name="JTC_TeachingModeDisable">
+       <item row="3" column="1">
+        <widget class="QComboBox" name="ResetCanDeviceComboBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Teaching Mode Disable</string>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="ClearErrorsComboBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QTableView" name="Com_GripperParamTableView">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>710</y>
+        <width>1291</width>
+        <height>81</height>
+       </rect>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="Com">

@@ -65,6 +65,8 @@ typedef enum
   Host_FT_TeachingModeDisable,
 	Host_FT_FrictionPolynomial,
 	Host_FT_FrictionPolynomialUseDefault,
+	Host_FT_ResetCanDevices,
+	Host_FT_GripperControl,
 }eHost_FrameType;
 typedef enum
 {
@@ -128,10 +130,27 @@ typedef enum
 }eJoint_FSM;
 typedef enum
 {
+	Can_DN_Joint0 = 0,
+	Can_DN_Joint1 = 1,
+	Can_DN_Joint2 = 2,
+	Can_DN_Joint3 = 3,
+	Can_DN_Joint4 = 4,
+	Can_DN_Joint5 = 5,
+	Can_DN_Gripper = 6,
+}eCanDevNum;
+typedef enum
+{
 	Can_TxF_Move = 0,
 	Can_TxF_ChangeFsm = 1,
 	Can_TxF_ChangeMode = 2,
-	Can_TxF_Reset = 3,
+	Can_TxF_ResetAllDevices = 3,
+	Can_TxF_ResetJoint0 = 4,
+	Can_TxF_ResetJoint1 = 5,
+	Can_TxF_ResetJoint2 = 6,
+	Can_TxF_ResetJoint3 = 7,
+	Can_TxF_ResetJoint4 = 8,
+	Can_TxF_ResetJoint5 = 9,
+	Can_TxF_ResetGripper = 10,
 }eCanTxFrames;
 typedef enum
 {
@@ -161,6 +180,7 @@ typedef enum
 	Can_SFP_Rx3Timeout	= 11,
 	Can_SFP_Rx4Timeout	= 12,
 	Can_SFP_Rx5Timeout	= 13,
+	Can_SFP_Rx6Timeout	= 14,
 }eCan_StatusFlagPos;
 typedef enum
 {
@@ -177,10 +197,10 @@ typedef enum
 #define MAXINT16										32767.0
 #define MAXINT32										2147483647.0
 
-//#define TESTMODE
+#define TESTMODE
 
-#define RS422
-//#define UARTUSB
+//#define RS422
+#define UARTUSB
 
 #ifdef RS422
 #define HOST_COMBAUDRATE 						115200
@@ -206,12 +226,13 @@ typedef enum
 
 #define ARMMODEL_DOF								6
 
+#define CAN_DEVICESMAX							7
 #define CAN_MSGRAM_STARTADDR				0x4000AC00
-#define CAN_FILTERS_MAX							18
-#define CAN_TXBUF_MAX								4
-#define CAN_TXBUFSIZE_CODE					0x01
-#define CAN_TXDATA_LEN							12
-#define CAN_RXBUF_MAX								18
+#define CAN_FILTERS_MAX							21
+#define CAN_TXBUF_MAX								11
+#define CAN_TXBUFSIZE_CODE					0x02
+#define CAN_TXDATA_LEN							16
+#define CAN_RXBUF_MAX								21
 #define CAN_RXFIFO0_MAX							(64 - CAN_RXBUF_MAX)
 #define CAN_RXBUFSIZE_CODE					0x02
 #define CAN_RXDATA_LEN							16
@@ -287,7 +308,7 @@ typedef struct
 {
 	eJoint_Mode		targetMode;										//Zadany tryb pracy [0x01 - torque, 0x02 - speed]
 	eJoint_Mode		currentMode;									//Aktualny tryb pracy [0x01 - torque, 0x02 - speed]
-	uint8_t				confFun;											//Konfiguracja bitowa funkcjonalnosci [0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730]
+	uint8_t				confFun;											//Konfiguracja bitowa funkcjonalnosci [0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - obsluga safety]
 	eJoint_FSM		targetFsm;
 	eJoint_FSM		currentFsm;
 	uint8_t				mcCurrentError;
@@ -296,6 +317,9 @@ typedef struct
 	uint8_t				currentWarning;
 	uint16_t			internallErrors;							//Bledy - wszystkie flagi biezacych bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
 	uint16_t			internallOccuredErrors;				//Bledy - wszystkie flagi bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
+	
+	bool					reqCanReset;									//Żadanie resetu urządzenia
+	bool					reqCanClearErrors;						//Żadanie skasowania bledów w urządzeniu poprzez Can
 	
 	bool					flagFirstPosRead;							//Flaga - pierwszy odczyt pozycji z jointa
 	
@@ -385,6 +409,29 @@ typedef struct
 	double				irHyst;																//Init Reg - histereza momentu - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
 	double				irRampTorque;													//Init Reg - predkosc zmiany momentu [Unit: Nm/sek] - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
 }sJoint;
+typedef struct
+{
+	uint8_t				confFun;											//Konfiguracja bitowa funkcjonalnosci [0x04 - obsluga safety]
+	eJoint_FSM		targetFsm;
+	eJoint_FSM		currentFsm;
+	uint8_t				currentError;
+	uint8_t				currentWarning;
+	uint16_t			internallErrors;							//Bledy - wszystkie flagi biezacych bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
+	uint16_t			internallOccuredErrors;				//Bledy - wszystkie flagi bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
+	
+	bool					reqCanReset;									//Żadanie resetu urządzenia
+	bool					reqCanClearErrors;						//Żadanie skasowania bledów w urządzeniu poprzez Can
+	
+	bool					flagFirstPosRead;							//Flaga - pierwszy odczyt pozycji z grippera
+	
+	bool					flagCanError;									//Flaga - dowolny blad grippera odebrany z CAN (suma logiczna wszystkich flg bledow odebranych przez CAN)
+	bool					flagJtcError;									//Flaga - dowolny blad grippera powstaly w JTC (suma logiczna wszystkich flg bledow wewnetrznych)
+	
+	uint8_t				targetPumpState;							//Stan pompy (uint8_t) - 1 - pompa działa, 0 - pompa nie działa
+	uint8_t				currentPumpState;							//Stan pompy (uint8_t) - 1 - pompa działa, 0 - pompa nie działa
+	uint8_t				pressure1;										//Pierwszy poziom ciśnienia osiągnięty (uint8_t) - 1 - osiągnięty, 0 - nie osiągnięty
+	uint8_t				pressure2;										//Drugi poziom ciśnienia osiągnięty (uint8_t) - 1 - osiągnięty, 0 - nie osiągnięty
+}sGripper;
 typedef struct
 {
 	uint8_t				sft;
@@ -512,6 +559,7 @@ typedef struct
 	volatile 	uint32_t 			tick;
 						sJtc					Jtc;
 						sJoint				Joints[JOINTS_MAX];
+						sGripper			Gripper;
 						sCan					Can;
 						sArmModel			Arm;
 }sControl;
@@ -520,12 +568,13 @@ void Control_SystemConf(void);
 void Control_Delay(uint32_t ms);
 void Control_TrajClear(void);
 void Control_SetDefualtArmModel(void);
-void Control_ClearCurrentErrors(void);
-void Control_ClearOccuredErrors(void);
+void Control_ClearInternallErrorsInJtc(void);
+void Control_ClearExternallErrorsViaCan(uint8_t byte);
 
 #include "Com.h"
 #include "Can.h"
 #include "Joints.h"
 #include "RNEA.h"
+#include "Gripper.h"
 
 #endif

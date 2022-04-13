@@ -72,6 +72,8 @@ typedef enum
     Host_FT_TeachingModeDisable,
     Host_FT_FrictionPolynomial,
     Host_FT_FrictionPolynomialUseDefault,
+    Host_FT_ResetCanDevices,
+    Host_FT_GripperControl,
 }eHost_FrameType;
 typedef enum
 {
@@ -109,7 +111,8 @@ typedef enum
     Host_FTAS_TeachingModeDisable,
     Host_FTAS_FrictionPolynomial,
     Host_FTAS_FrictionPolynomialUseDefault,
-
+    Host_FTAS_ResetCanDevices,
+    Host_FTAS_GripperControl,
 }eHost_FrameToAsynchroSend;
 typedef enum
 {
@@ -189,6 +192,7 @@ private slots:
     void SetDefualtArmModel(void);
     void ShowTrajectory();
     void ShowJtcValues(void);
+    void ShowGripperValues(void);
     void ShowJointsValues(void);
     void RedrawButtons();
     void RefreshLabels(void);
@@ -232,6 +236,8 @@ private slots:
     void Com_SendCommandTeachingModeEnable();
     void Com_SendCommandTeachingModeDisable();
     void Com_SendCommandFrictionPolynomialUseDefault();
+    void Com_SendCommandGripperControl();
+    void Com_SendCommandResetCanDevice();
     void ShowPidParametersTable(void);
     void on_Com_ReadPidParam_clicked();
     void on_Com_SendCommandUseDefaultPidParamlToJtc_clicked();
@@ -257,6 +263,12 @@ private slots:
     void on_pathLinuxRadioButton_clicked();
 
     void on_pathWindowsRadioButton_clicked();
+
+    void on_Gripper_PumpOn_clicked();
+
+    void on_Gripper_PumpOff_clicked();
+
+    void on_ResetCanDevice_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -285,6 +297,7 @@ private:
     QStandardItemModel* jointsParametersStandardItemModel;
     QStandardItemModel* armModelLinksStandardItemModel;
     QStandardItemModel* armModelJointsStandardItemModel;
+    QStandardItemModel* gripperParametersStandardItemModel;
     bool comAsynchronicSend; //wysylanie ramek asynchronicznych
     bool comSynchroTransmisionEnable;
     uint32_t numFrameToAsynchroSend;
@@ -300,5 +313,18 @@ private:
     QString fricPolynomialReadString;
     QByteArray fricPolynomialWriteString;
     bool fricPolynomialWasRead;
+
+    uint8_t gripperCurrentFsm;
+    uint8_t gripperTargetPumpState;
+    uint8_t gripperCurrentPumpState;
+    uint8_t gripperPressure1;
+    uint8_t gripperPressure2;
+    uint8_t gripperCurrentError;
+    uint8_t gripperCurrentWarning;
+    uint16_t gripperInternallErrors;
+    uint16_t gripperInternallOccuredErrors;
+
+    QList<QString> resetDevNameString;
+    QList<QString> errorClearNameString;
 };
 #endif // MAINWINDOW_H

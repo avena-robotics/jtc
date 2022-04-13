@@ -92,6 +92,7 @@ static void Control_VariablesConf(void)
 	Joints_SetStartValuesVariables();
 	Joints_SetDefaultFriction();
 	Joints_SetDefaultPidParam();
+	Gripper_SetStartValuesVariables();
 	Control_SetDefualtArmModel();
 }
 static void Control_ClockConf(void)
@@ -216,13 +217,10 @@ static void Control_JtcSetJointToCurrentFsm(uint8_t num)
 {
 	pC->Joints[num].targetFsm = pC->Joints[num].currentFsm;
 }
-static void Control_JtcResetAllJoints(void)
+static void Control_JtcSetJointToInit(uint8_t num)
 {
-	if(pC->Can.TxMsgs[Can_TxF_Reset].timeoutCnt > CAN_RESETTIMEOUT)
-	{
-		Joints_SetResetValuesVariables();
-		pC->Can.TxMsgs[Can_TxF_Reset].reqSend = true;
-	}
+	pC->Joints[num].targetFsm = Joint_FSM_Init;
+	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetJointToReadyToOperate(uint8_t num)
 {
@@ -233,6 +231,21 @@ static void Control_JtcSetJointToReadyToOperate(uint8_t num)
 static void Control_JtcSetJointToEnable(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_OperationEnable;
+	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
+}
+static void Control_JtcSetGripperToInit(void)
+{
+	pC->Gripper.targetFsm = Joint_FSM_Init;
+	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
+}
+static void Control_JtcSetGripperToReadyToOperate(void)
+{
+	pC->Gripper.targetFsm = Joint_FSM_ReadyToOperate;
+	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
+}
+static void Control_JtcSetGripperToEnable(void)
+{
+	pC->Gripper.targetFsm = Joint_FSM_OperationEnable;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_CheckLimits(void)
@@ -300,14 +313,14 @@ static void Control_CheckErrorFlags(void)
 	}
 	
 	// Check CAN comunication errors
-	uint16_t stat = pC->Can.statusFlags;
-	if(stat != 0x0000)
+	if(pC->Can.statusId == Can_SId_Error)
 		pC->Jtc.internalCanError = true;
 	
 	// Check hardware emergency line
 	pC->Jtc.emergencyInput = Control_SafetyInRead();
 	
 	#ifdef TESTMODE
+	pC->Jtc.emergencyInput = false;
 	pC->Jtc.internalJointsError = false;
 	pC->Jtc.internalCanError = false;
 	pC->Jtc.externalJointsError = false;
@@ -334,11 +347,11 @@ static void Control_CheckErrorFlags(void)
 	// Przygotowywanie flag bledów JTC do wyslania
 	pC->Jtc.errors = 0x0000;
 	pC->Jtc.errors |= pC->Jtc.emergencyInput << 0; 				// bit 0
-	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 			// bit 1 t
-	pC->Jtc.errors |= pC->Jtc.internalError << 2; 				// bit 2 t
+	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 			// bit 1
+	pC->Jtc.errors |= pC->Jtc.internalError << 2; 				// bit 2
 	pC->Jtc.errors |= pC->Jtc.externalError << 3; 				// bit 3 
 	pC->Jtc.errors |= pC->Jtc.internalJointsError << 4; 	// bit 4
-	pC->Jtc.errors |= pC->Jtc.internalCanError << 5; 			// bit 5 t
+	pC->Jtc.errors |= pC->Jtc.internalCanError << 5; 			// bit 5
 	pC->Jtc.errors |= pC->Jtc.internalComError << 6; 			// bit 6
 	pC->Jtc.errors |= pC->Jtc.externalJointsError << 7; 	// bit 7
 	
@@ -371,6 +384,90 @@ static void Control_SetNewTorqueValues(void)
 			pC->Joints[num].setTorque = 0.0;
 			Control_JtcSetJointToReadyToOperate(num);
 		}
+	}
+}
+static void Control_SendCommandClearErrorsToJoints(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		if(pC->Joints[num].reqCanClearErrors == true)
+		{
+			Control_JtcSetJointToInit(num);
+			pC->Joints[num].reqCanClearErrors = false;
+		}
+	}
+	if(pC->Gripper.reqCanClearErrors == true)
+	{
+		Control_JtcSetGripperToInit();
+		pC->Gripper.reqCanClearErrors = false;
+	}
+}
+static void Control_SendCommandResetDevice(void)
+{
+	//sprawdzenie czy wszystkie urzadzenia wymagaja resetowania
+	bool flag = true;
+	for(int num=0;num<JOINTS_MAX;num++)
+		if(pC->Joints[num].reqCanReset == false)
+			flag = false;
+	if(pC->Gripper.reqCanReset == false)
+			flag = false;
+	
+	if(flag == true)
+	{
+		for(int num=0;num<JOINTS_MAX;num++)
+		{
+			pC->Joints[num].reqCanReset = false;
+			Joints_SetResetValuesVariables(num);
+		}
+		pC->Gripper.reqCanReset = false;
+		Gripper_SetResetValuesVariables();
+		
+		pC->Can.TxMsgs[Can_TxF_ResetAllDevices].reqSend = true;
+		return;
+	}
+	
+	//indywidualne resetowanie urzadzen
+	if(pC->Joints[0].reqCanReset == true)
+	{
+		pC->Joints[0].reqCanReset = false;
+		Joints_SetResetValuesVariables(0);
+		pC->Can.TxMsgs[Can_TxF_ResetJoint0].reqSend = true;
+	}
+	if(pC->Joints[1].reqCanReset == true)
+	{
+		pC->Joints[1].reqCanReset = false;
+		Joints_SetResetValuesVariables(1);
+		pC->Can.TxMsgs[Can_TxF_ResetJoint1].reqSend = true;
+	}
+	if(pC->Joints[2].reqCanReset == true)
+	{
+		pC->Joints[2].reqCanReset = false;
+		Joints_SetResetValuesVariables(2);
+		pC->Can.TxMsgs[Can_TxF_ResetJoint2].reqSend = true;
+	}
+	if(pC->Joints[3].reqCanReset == true)
+	{
+		pC->Joints[3].reqCanReset = false;
+		Joints_SetResetValuesVariables(3);
+		pC->Can.TxMsgs[Can_TxF_ResetJoint3].reqSend = true;
+	}
+	if(pC->Joints[4].reqCanReset == true)
+	{
+		pC->Joints[4].reqCanReset = false;
+		Joints_SetResetValuesVariables(4);
+		pC->Can.TxMsgs[Can_TxF_ResetJoint4].reqSend = true;
+	}
+	if(pC->Joints[5].reqCanReset == true)
+	{
+		pC->Joints[5].reqCanReset = false;
+		Joints_SetResetValuesVariables(5);
+		pC->Can.TxMsgs[Can_TxF_ResetJoint5].reqSend = true;
+	}
+	if(pC->Gripper.reqCanReset == true)
+	{
+		pC->Gripper.reqCanReset = false;
+		Gripper_SetResetValuesVariables();
+		pC->Can.TxMsgs[Can_TxF_ResetGripper].reqSend = true;
 	}
 }
 static void Control_SendDataToJoints(void)
@@ -548,56 +645,74 @@ static void Control_JtcPrepareSetedValuesForOperate(void)
 		pC->Joints[num].setAccTemp = Traj.interpolatePoint.acc[num];
 	}
 }
-static void Control_ClearErrorSourceVariables(void)
+void Control_ClearInternallErrorsInJtc(void)
 {
-	for(int num=0;num<JOINTS_MAX;num++)
-	{
-		pC->Joints[num].currentError = 0x00;
-		pC->Joints[num].mcCurrentError = 0x00;
-		
-		pC->Joints[num].pidErrorCurrent = 0.0;
-	}
-}
-static void Control_ClearErrorFlags(void)
-{
+	//Clear Jtc Errors
+	pC->Jtc.emergencyInput = false;
+	pC->Jtc.emergencyOutput = false;
+	pC->Jtc.internalError = false;
+	pC->Jtc.externalError = false;
+	pC->Jtc.externalWarning = false;
+	pC->Jtc.internalJointsError = false;
+	pC->Jtc.internalCanError = false;
+	pC->Jtc.internalComError = false;
+	pC->Jtc.externalJointsError = false;
+	pC->Jtc.externalJointsWarning = false;
+	pC->Jtc.errors = 0x00;
+	pC->Jtc.occuredErrors = 0x00;
+	
+	//Clear internall device errors
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].flagCanError = false;
 		pC->Joints[num].flagJtcError = false;
-		
 		pC->Joints[num].flagSetTorqueOverlimit = false;
 		pC->Joints[num].flagFricTableValueOverlimit = false;
 		pC->Joints[num].flagSetPosOverlimit = false;
 		pC->Joints[num].flagSetVelOverlimit = false;
 		pC->Joints[num].flagSetAccOverlimit = false;
 		pC->Joints[num].flagPosErrorOverlimit = false;
+		pC->Joints[num].mcCurrentError = 0x00;
+		pC->Joints[num].mcOccuredError = 0x00;
+		pC->Joints[num].currentError = 0.0;
+		pC->Joints[num].currentWarning = 0x00;
+		pC->Joints[num].internallErrors = 0x00;
+		pC->Joints[num].internallOccuredErrors = 0x00;
 	}
+	pC->Gripper.flagCanError = false;
+	pC->Gripper.flagJtcError = false;
+	pC->Gripper.currentError = 0x00;
+	pC->Gripper.currentWarning = 0x00;
+	pC->Gripper.internallErrors = 0x00;
+	pC->Gripper.internallOccuredErrors = 0x00;
 	
+	//Clear Can Errors
 	for(int num=0;num<CAN_RXBUF_MAX;num++)
 	{
 		pC->Can.RxMsgs[num].flagTimeout = false;
+		pC->Can.RxMsgs[num].timeoutCnt = 0;
 	}
 	for(int num=0;num<CAN_TXBUF_MAX;num++)
 	{
 		pC->Can.TxMsgs[num].flagTimeout = false;
+		pC->Can.TxMsgs[num].timeoutCnt = 0;
 	}
-}
-void Control_ClearCurrentErrors(void)
-{
-	Control_ClearErrorSourceVariables();
-	Control_ClearErrorFlags();
+	pC->Can.statusId = Can_SId_NoError;
+	pC->Can.statusFlags = 0x00;
+	pC->Can.statusOccurredFlags = 0x00;
+	
+	// Check new errors
 	Control_CheckErrorFlags();
 }
-void Control_ClearOccuredErrors(void)
+void Control_ClearExternallErrorsViaCan(uint8_t byte)
 {
-	Control_ClearErrorSourceVariables();
-	Control_ClearErrorFlags();
-	pC->Jtc.occuredErrors = 0x0000;
-	for(int num=0;num<JOINTS_MAX;num++)
-	{
-		pC->Joints[num].internallOccuredErrors = 0x0000;
-	}
-	Control_CheckErrorFlags();
+	if(((byte >> Can_DN_Joint0) & 0x01) == 0x01) 		pC->Joints[Can_DN_Joint0].reqCanClearErrors = true;
+	if(((byte >> Can_DN_Joint1) & 0x01) == 0x01) 		pC->Joints[Can_DN_Joint1].reqCanClearErrors = true;
+	if(((byte >> Can_DN_Joint2) & 0x01) == 0x01) 		pC->Joints[Can_DN_Joint2].reqCanClearErrors = true;
+	if(((byte >> Can_DN_Joint3) & 0x01) == 0x01) 		pC->Joints[Can_DN_Joint3].reqCanClearErrors = true;
+	if(((byte >> Can_DN_Joint4) & 0x01) == 0x01) 		pC->Joints[Can_DN_Joint4].reqCanClearErrors = true;
+	if(((byte >> Can_DN_Joint5) & 0x01) == 0x01) 		pC->Joints[Can_DN_Joint5].reqCanClearErrors = true;
+	if(((byte >> Can_DN_Gripper) & 0x01) == 0x01) 	pC->Gripper.reqCanClearErrors = true;
 }
 static void Control_JtcCheckStateError(void)
 {
@@ -629,6 +744,7 @@ static void Control_JtcCheckStateInit(void)
 	pC->Joints[3].flagFirstPosRead = true;
 	pC->Joints[4].flagFirstPosRead = true;
 	pC->Joints[5].flagFirstPosRead = true;
+	pC->Gripper.flagFirstPosRead = true;
 	
 	pC->Joints[1].currentMode = Joint_M_Torque;
 	pC->Joints[2].currentMode = Joint_M_Torque;
@@ -641,6 +757,7 @@ static void Control_JtcCheckStateInit(void)
 	pC->Joints[3].currentFsm = Joint_FSM_ReadyToOperate;
 	pC->Joints[4].currentFsm = Joint_FSM_ReadyToOperate;
 	pC->Joints[5].currentFsm = Joint_FSM_ReadyToOperate;
+	pC->Gripper.currentFsm = Joint_FSM_ReadyToOperate;
 	#endif
 	
 	
@@ -744,15 +861,12 @@ static void Control_JtcError(void)
 	{
 		for(uint8_t num=0;num<JOINTS_MAX;num++)
 			Control_JtcSetJointToReadyToOperate(num);
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
-			if(pC->Can.RxMsgs[num].flagTimeout == true)
-				Joints_ClearCanValues(num);
 	}
 	
 	// Reaction for externall error
 	if(pC->Jtc.externalError == true)
 	{
-		//Control_JtcResetAllJoints();
+		//Waiting for host reaction
 	}
 }
 static void Control_JtcInit(void)
@@ -771,7 +885,7 @@ static void Control_JtcInit(void)
 		
 		if(pC->Joints[num].currentMode != Joint_M_Torque && pC->Joints[num].currentFsm != Joint_FSM_Init)
 		{
-			Control_JtcResetAllJoints();
+//			Control_JtcResetAllJoints();
 		}
 		else if(pC->Joints[num].currentMode != Joint_M_Torque && pC->Joints[num].currentFsm == Joint_FSM_Init)
 		{
@@ -829,6 +943,9 @@ static void Control_JtcTeaching(void)
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
 			Control_JtcSetJointToEnable(num);
+		
+	if(pC->Gripper.currentFsm != Joint_FSM_OperationEnable)
+		Control_JtcSetGripperToEnable();
 	
 	Control_JtcPrepareSetedValuesForTeaching();
 	RNEA_CalcTorques();
@@ -841,6 +958,8 @@ static void Control_JtcHoldPos(void)
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
 			Control_JtcSetJointToEnable(num);
+	if(pC->Gripper.currentFsm != Joint_FSM_OperationEnable)
+		Control_JtcSetGripperToEnable();
 	
 	if(Traj.currentTES == TES_Stop)
 		Control_TrajStop();
@@ -862,6 +981,9 @@ static void Control_JtcOperate(void)
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
 			Control_JtcSetJointToEnable(num);
+		
+	if(pC->Gripper.currentFsm != Joint_FSM_OperationEnable)
+		Control_JtcSetGripperToEnable();
 	
 	Traj.numInterPoint++;
 	if(Traj.numInterPoint >= Traj.maxInterPoints)
@@ -922,6 +1044,8 @@ static void Control_JtcAct(void)
 	Control_CheckErrorFlags();
 	Control_SetNewTorqueValues();
 	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
+	Control_SendCommandClearErrorsToJoints();
+	Control_SendCommandResetDevice();
 	Control_SendDataToJoints();
 }
 // ********************** Interrupts functions ***********************************

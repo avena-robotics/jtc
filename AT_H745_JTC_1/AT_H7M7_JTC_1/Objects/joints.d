@@ -20,3 +20,4 @@
 .\objects\joints.o: Can.h
 .\objects\joints.o: Joints.h
 .\objects\joints.o: RNEA.h
+.\objects\joints.o: Gripper.h

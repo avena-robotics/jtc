@@ -136,6 +136,17 @@ static void Host_ComPrepareFrameJtcStatus(void)
 		buf[idx++] = (uint8_t)pC->Joints[num].currentTemp;
 	}
 	
+	buf[idx++] = (uint8_t)(pC->Gripper.currentFsm);
+	buf[idx++] = (uint8_t)(pC->Gripper.currentPumpState);
+	buf[idx++] = (uint8_t)(pC->Gripper.pressure1);
+	buf[idx++] = (uint8_t)(pC->Gripper.pressure2);
+	buf[idx++] = (uint8_t)(pC->Gripper.currentError >> 0);
+	buf[idx++] = (uint8_t)(pC->Gripper.currentWarning >> 0);
+	buf[idx++] = (uint8_t)(pC->Gripper.internallErrors >> 8);
+	buf[idx++] = (uint8_t)(pC->Gripper.internallErrors >> 0);
+	buf[idx++] = (uint8_t)(pC->Gripper.internallOccuredErrors >> 8);
+	buf[idx++] = (uint8_t)(pC->Gripper.internallOccuredErrors >> 0);
+	
 	// Number of bytes in frame and CRC
 	buf[2] = (uint8_t)((idx + 2) >> 8); // Liczba bajtow w ramce
 	buf[3] = (uint8_t)((idx + 2) >> 0); // Liczba bajtow w ramce
@@ -307,8 +318,11 @@ static void Host_ComReadFrameClearCurrentErrors(uint8_t* buf)
 		
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
+		if(buf[4] == 0x01)
+			Control_ClearInternallErrorsInJtc();
+		Control_ClearExternallErrorsViaCan(buf[5]);
+		//buf[6] - buf[7] currently not used, reserved for future version
 		
-		Control_ClearCurrentErrors();
 	}
 	else
 	{
@@ -328,8 +342,7 @@ static void Host_ComReadFrameClearOccuredErrors(uint8_t* buf)
 		
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
-		
-		Control_ClearOccuredErrors();
+		//Currently not used
 	}
 	else
 	{
@@ -786,6 +799,56 @@ static void Host_ComReadFrameTeachingModeDisable(uint8_t *buf)
 		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
 	}
 }
+static void Host_ComReadFrameResetCanDevices(uint8_t *buf)
+{
+	uint16_t nd = Com.rxFrame.expectedLength;
+	
+	uint16_t crc1 = Com_Crc16(buf, nd-2);
+	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
+	
+	if(crc1 == crc2)
+	{
+		Com.timeout = 0;
+		
+		// odebrane dane sa poprawne
+		Com.rxFrame.dataStatus = Host_RxDS_NoError;
+		
+		pC->Joints[Can_DN_Joint0].reqCanReset = ((buf[4] >> Can_DN_Joint0) & 0x01);
+		pC->Joints[Can_DN_Joint1].reqCanReset = ((buf[4] >> Can_DN_Joint1) & 0x01);
+		pC->Joints[Can_DN_Joint2].reqCanReset = ((buf[4] >> Can_DN_Joint2) & 0x01);
+		pC->Joints[Can_DN_Joint3].reqCanReset = ((buf[4] >> Can_DN_Joint3) & 0x01);
+		pC->Joints[Can_DN_Joint4].reqCanReset = ((buf[4] >> Can_DN_Joint4) & 0x01);
+		pC->Joints[Can_DN_Joint5].reqCanReset = ((buf[4] >> Can_DN_Joint5) & 0x01);
+		pC->Gripper.reqCanReset = ((buf[4] >> Can_DN_Gripper) & 0x01);
+		//buf[5] - buf[7] currently not used, reserved for future version
+	}
+	else
+	{
+		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
+	}
+}
+static void Host_ComReadFrameGripperControl(uint8_t *buf)
+{
+	uint16_t nd = Com.rxFrame.expectedLength;
+	
+	uint16_t crc1 = Com_Crc16(buf, nd-2);
+	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
+	
+	if(crc1 == crc2)
+	{
+		Com.timeout = 0;
+		
+		// odebrane dane sa poprawne
+		Com.rxFrame.dataStatus = Host_RxDS_NoError;
+		
+		pC->Gripper.targetPumpState = buf[4];
+		//buf[5] - buf[7] currently not used, reserved for future version
+	}
+	else
+	{
+		Com.rxFrame.status = Host_RxFS_ErrorIncorrectCrc;
+	}
+}
 static void Host_ComReadFromHost(void)
 {
 	if(Com.firstRun == false)
@@ -800,7 +863,8 @@ static void Host_ComReadFromHost(void)
 	{
 		if(buf[1] == Host_FT_ClearCurrentErrors || buf[1] ==  Host_FT_ClearOccuredErrors || buf[1] == Host_FT_Trajectory || buf[1] == Host_FT_FrictionTable || buf[1] == Host_FT_FrictionTableUseDefault || buf[1] == Host_FT_PidParam || 
 			 buf[1] == Host_FT_PidParamUseDefault || buf[1] == Host_FT_ArmModel || buf[1] == Host_FT_ArmModelUseDefault || buf[1] == Host_FT_TrajSetExecStatus || 
-			 buf[1] == Host_FT_TeachingModeEnable || buf[1] == Host_FT_TeachingModeDisable || buf[1] == Host_FT_FrictionPolynomial || buf[1] == Host_FT_FrictionPolynomialUseDefault)
+			 buf[1] == Host_FT_TeachingModeEnable || buf[1] == Host_FT_TeachingModeDisable || buf[1] == Host_FT_FrictionPolynomial || buf[1] == Host_FT_FrictionPolynomialUseDefault || 
+			 buf[1] == Host_FT_ResetCanDevices || buf[1] == Host_FT_GripperControl)
 		{
 			Com_CheckConsistencyReceivedFrame(buf);
 			if(Com.rxFrame.consist == Host_RxFC_IsReceived)
@@ -866,6 +930,14 @@ static void Host_ComReadFromHost(void)
 		else if(buf[1] == Host_FT_FrictionPolynomialUseDefault)
 		{
 			Host_ComReadFrameFricionPolynomialUseDefault(buf);
+		}
+		else if(buf[1] == Host_FT_ResetCanDevices)
+		{
+			Host_ComReadFrameResetCanDevices(buf);
+		}
+		else if(buf[1] == Host_FT_GripperControl)
+		{
+			Host_ComReadFrameGripperControl(buf);
 		}
 		else
 		{

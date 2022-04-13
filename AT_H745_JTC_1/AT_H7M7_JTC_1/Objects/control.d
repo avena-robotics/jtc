@@ -19,3 +19,4 @@
 .\objects\control.o: Can.h
 .\objects\control.o: Joints.h
 .\objects\control.o: RNEA.h
+.\objects\control.o: Gripper.h

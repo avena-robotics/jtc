@@ -152,14 +152,6 @@ void Joints_SetDefaultPidParam(void)
 	pC->Joints[5].pidErrorIntMin = -40.0;
 	pC->Joints[5].pidErrorIntMax = 40.0;
 }
-void Joints_ClearCanValues(uint8_t num)
-{
-	pC->Joints[num].currentFsm = Joint_FSM_Start;
-	pC->Joints[num].currentPos = 0.0;
-	pC->Joints[num].currentVel = 0.0;
-	pC->Joints[num].currentTorque = 0.0;
-	pC->Joints[num].currentTemp = 0;
-}
 void Joints_SetStartValuesVariables(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -168,7 +160,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].cWPosNotAccurate = true;
 		pC->Joints[num].currentMode = Joint_M_Null;
 		pC->Joints[num].targetMode = Joint_M_Torque;
-		pC->Joints[num].confFun = 0x07; //[0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - jeszcze nie wiem co to jest :)]
+		pC->Joints[num].confFun = 0x07; //[0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - obsluga safety]
 		
 		pC->Joints[num].setPos = 0.0;
 		pC->Joints[num].setVel = 0.0;
@@ -221,45 +213,41 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].irRampTorque = 1.0;	//Unit: Nm/sek
 	}
 }
-void Joints_SetResetValuesVariables(void)
+void Joints_SetResetValuesVariables(uint8_t num)
 {
-	for(int num=0;num<JOINTS_MAX;num++)
-	{
-		pC->Joints[num].flagFirstPosRead = false;
-		pC->Joints[num].cWPosNotAccurate = true;
-		pC->Joints[num].currentMode = Joint_M_Null;
-		pC->Joints[num].targetMode = Joint_M_Torque;
-		pC->Joints[num].currentFsm = Joint_FSM_Start;
-		pC->Joints[num].targetFsm = Joint_FSM_Init;
-		pC->Joints[num].confFun = 0x07; //[0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - jeszcze nie wiem co to jest :)]
-		
-		pC->Joints[num].setPos = 0.0;
-		pC->Joints[num].setVel = 0.0;
-		pC->Joints[num].setAcc = 0.0;
-		pC->Joints[num].setTorque = 0.0;
-		
-		pC->Joints[num].fricTorque = 0.0;
-		
-		pC->Joints[num].idSetPos = 0.0;
-		pC->Joints[num].idSetVel = 0.0;
-		pC->Joints[num].idSetAcc = 0.0;
-		pC->Joints[num].idTorque = 0.0;
-		
-		pC->Joints[num].pidErrorCurrent = 0.0;
-		pC->Joints[num].pidErrorMeanCurrent = 0.0;
-		pC->Joints[num].pidErrorMeanPrev = 0.0;
-		pC->Joints[num].pidErrorBufIdx = 0;
-		for(uint32_t i=0;i<JOINTS_PIDBUFMAX;i++)
-			pC->Joints[num].pidErrorBuf[i] = 0.0;
-		pC->Joints[num].pidErrorDiv = 0.0;
-		pC->Joints[num].pidErrorInt = 0.0;
-		pC->Joints[num].pidTorque = 0.0;
-		
-		pC->Joints[num].irIsRun = false;
-		pC->Joints[num].irCurrentTorque = 0.0;
-		pC->Joints[num].irTargetTorque = 0.0;
-		pC->Joints[num].irErrorTorque = 0.0;
-	}
+	pC->Joints[num].flagFirstPosRead = false;
+	pC->Joints[num].cWPosNotAccurate = true;
+	pC->Joints[num].currentMode = Joint_M_Null;
+	pC->Joints[num].targetMode = Joint_M_Torque;
+	pC->Joints[num].currentFsm = Joint_FSM_Start;
+	pC->Joints[num].targetFsm = Joint_FSM_Init;
+	
+	pC->Joints[num].setPos = 0.0;
+	pC->Joints[num].setVel = 0.0;
+	pC->Joints[num].setAcc = 0.0;
+	pC->Joints[num].setTorque = 0.0;
+	
+	pC->Joints[num].fricTorque = 0.0;
+	
+	pC->Joints[num].idSetPos = 0.0;
+	pC->Joints[num].idSetVel = 0.0;
+	pC->Joints[num].idSetAcc = 0.0;
+	pC->Joints[num].idTorque = 0.0;
+	
+	pC->Joints[num].pidErrorCurrent = 0.0;
+	pC->Joints[num].pidErrorMeanCurrent = 0.0;
+	pC->Joints[num].pidErrorMeanPrev = 0.0;
+	pC->Joints[num].pidErrorBufIdx = 0;
+	for(uint32_t i=0;i<JOINTS_PIDBUFMAX;i++)
+		pC->Joints[num].pidErrorBuf[i] = 0.0;
+	pC->Joints[num].pidErrorDiv = 0.0;
+	pC->Joints[num].pidErrorInt = 0.0;
+	pC->Joints[num].pidTorque = 0.0;
+	
+	pC->Joints[num].irIsRun = false;
+	pC->Joints[num].irCurrentTorque = 0.0;
+	pC->Joints[num].irTargetTorque = 0.0;
+	pC->Joints[num].irErrorTorque = 0.0;
 }
 void Joints_StartIrValuesVariables(uint8_t num)
 {

@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     armModelLinksStandardItemModel = new QStandardItemModel(this);
     armModelJointsStandardItemModel = new QStandardItemModel(this);
     jointsParametersStandardItemModel = new QStandardItemModel(this);
+    gripperParametersStandardItemModel = new QStandardItemModel(this);
 
     if(ui->pathWindowsRadioButton->isChecked())
         UseWindowsFilePath();
@@ -47,6 +48,43 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     pidParamWasRead = false;
     frictionWasRead = false;
     Arm.wasRead = false;
+
+    gripperTargetPumpState = 0;
+    gripperCurrentPumpState = 0;
+    gripperPressure1 = 0;
+    gripperPressure2 = 0;
+    gripperCurrentFsm = Joint_FSM_Start;
+    gripperCurrentError = 0;
+    gripperCurrentWarning = 0;
+    gripperInternallErrors = 0;
+    gripperInternallOccuredErrors = 0;
+
+    resetDevNameString.clear();
+    resetDevNameString.append("Reset all devices");
+    resetDevNameString.append("Reset Joint 0");
+    resetDevNameString.append("Reset Joint 1");
+    resetDevNameString.append("Reset Joint 2");
+    resetDevNameString.append("Reset Joint 3");
+    resetDevNameString.append("Reset Joint 4");
+    resetDevNameString.append("Reset Joint 5");
+    resetDevNameString.append("Reset Gripper");
+
+    errorClearNameString.clear();
+    errorClearNameString.append("Clear all errors via Can");
+    errorClearNameString.append("Clear errors via Can in Joint 0");
+    errorClearNameString.append("Clear errors via Can in Joint 1");
+    errorClearNameString.append("Clear errors via Can in Joint 2");
+    errorClearNameString.append("Clear errors via Can in Joint 3");
+    errorClearNameString.append("Clear errors via Can in Joint 4");
+    errorClearNameString.append("Clear errors via Can in Joint 5");
+    errorClearNameString.append("Clear errors via Can in Gripper");
+    errorClearNameString.append("Clear interall errors in Jtc");
+
+    for(int i=0;i<resetDevNameString.length();i++)
+        ui->ResetCanDeviceComboBox->addItem(resetDevNameString[i]);
+
+    for(int i=0;i<errorClearNameString.length();i++)
+        ui->ClearErrorsComboBox->addItem(errorClearNameString[i]);
 }
 MainWindow::~MainWindow()
 {
@@ -330,6 +368,125 @@ void MainWindow::ShowJtcValues()
     ui->Com_JtcParamTableView->show();
     ui->Com_JtcParamTableView->resizeColumnsToContents();
 }
+void MainWindow::ShowGripperValues()
+{
+    gripperParametersStandardItemModel->clear();
+    ui->Com_GripperParamTableView->setModel(gripperParametersStandardItemModel);
+    int rows;
+    QList<QList<QStandardItem*>> itemTable;
+
+    QStringList columnHeader = {"Current Fsm", "Pump status","Pressure 1","Pressure 2","Not used", "Not used","Not used","Current Errors","Current Warning","Internall Errors", "Internall Occured Errors"};
+
+    gripperParametersStandardItemModel->insertColumns(0, columnHeader.length());
+    for(int i=0;i<columnHeader.length();i++)
+    {
+        gripperParametersStandardItemModel->setHeaderData(i, Qt::Horizontal, columnHeader[i]);
+    }
+
+    rows = gripperParametersStandardItemModel->rowCount();
+    gripperParametersStandardItemModel->insertRow(rows);
+    QString rowHeaderStr = "Gripper ";
+    gripperParametersStandardItemModel->setHeaderData(0, Qt::Vertical, rowHeaderStr);
+    QList<QStandardItem*> itemList;
+    itemTable.append(itemList);
+
+    QString val;
+    if(gripperCurrentFsm == Joint_FSM_Start)
+        val = "Gripper_FSM_Start";
+    else if(gripperCurrentFsm == Joint_FSM_Init)
+        val = "Gripper_FSM_Init";
+    else if(gripperCurrentFsm == Joint_FSM_ReadyToOperate)
+        val = "Gripper_FSM_ReadyToOperate";
+    else if(gripperCurrentFsm == Joint_FSM_OperatioEnable)
+        val = "Gripper_FSM_OperatioEnable";
+    else if(gripperCurrentFsm == Joint_FSM_TransStartToInit)
+        val = "Gripper_FSM_TransStartToInit";
+    else if(gripperCurrentFsm == Joint_FSM_TransInitToReadyToOperate)
+        val = "Gripper_FSM_TransInitToReadyToOperate";
+    else if(gripperCurrentFsm == Joint_FSM_TransReadyToOperateToOperationEnable)
+        val = "Gripper_FSM_TransReadyToOperateToOperationEnable";
+    else if(gripperCurrentFsm == Joint_FSM_TransOperationEnableToReadyToOperate)
+        val = "Gripper_FSM_TransOperationEnableToReadyToOperate";
+    else if(gripperCurrentFsm == Joint_FSM_TransFaultReactionActiveToFault)
+        val = "Gripper_FSM_TransFaultReactionActiveToFault";
+    else if(gripperCurrentFsm == Joint_FSM_TransFaultToReadyToOperate)
+        val = "Gripper_FSM_TransFaultToReadyToOperate";
+    else if(gripperCurrentFsm == Joint_FSM_ReactionActive)
+        val = "Gripper_FSM_ReactionActive";
+    else if(gripperCurrentFsm == Joint_FSM_Fault)
+        val = "Gripper_FSM_Fault";
+    else
+        val = "Gripper_FSM_Unknown";
+
+    QStandardItem* itemFsm = new QStandardItem;
+    itemFsm->setText(val);
+    itemFsm->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemFsm);
+    gripperParametersStandardItemModel->setItem(0, 0, itemList[0]);
+
+    QStandardItem* itemPos = new QStandardItem;
+    itemPos->setText(QString::number(gripperCurrentPumpState, 2));
+    itemPos->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemPos);
+    gripperParametersStandardItemModel->setItem(0, 1, itemList[1]);
+
+    QStandardItem* itemVel = new QStandardItem;
+    itemVel->setText(QString::number(gripperPressure1, 2));
+    itemVel->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemVel);
+    gripperParametersStandardItemModel->setItem(0, 2, itemList[2]);
+
+    QStandardItem* itemTorque = new QStandardItem;
+    itemTorque->setText(QString::number(gripperPressure2, 2));
+    itemTorque->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemTorque);
+    gripperParametersStandardItemModel->setItem(0, 3, itemList[3]);
+
+    QStandardItem* itemTemperature = new QStandardItem;
+    itemTemperature->setText("-----");
+    itemTemperature->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemTemperature);
+    gripperParametersStandardItemModel->setItem(0, 4, itemList[4]);
+
+    QStandardItem* itemMcCurrentError = new QStandardItem;
+    itemMcCurrentError->setText("-----");
+    itemMcCurrentError->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemMcCurrentError);
+    gripperParametersStandardItemModel->setItem(0, 5, itemList[5]);
+
+    QStandardItem* itemMcOccuredError = new QStandardItem;
+    itemMcOccuredError->setText("-----");
+    itemMcOccuredError->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemMcOccuredError);
+    gripperParametersStandardItemModel->setItem(0, 6, itemList[6]);
+
+    QStandardItem* itemCurrentError = new QStandardItem;
+    itemCurrentError->setText(QString::number(gripperCurrentError, 2));
+    itemCurrentError->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemCurrentError);
+    gripperParametersStandardItemModel->setItem(0, 7, itemList[7]);
+
+    QStandardItem* itemCurrentWarning = new QStandardItem;
+    itemCurrentWarning->setText(QString::number(gripperCurrentWarning, 2));
+    itemCurrentWarning->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemCurrentWarning);
+    gripperParametersStandardItemModel->setItem(0, 8, itemList[8]);
+
+    QStandardItem* itemInternallErrors = new QStandardItem;
+    itemInternallErrors->setText(QString::number(gripperInternallErrors, 2));
+    itemInternallErrors->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemInternallErrors);
+    gripperParametersStandardItemModel->setItem(0, 9, itemList[9]);
+
+    QStandardItem* itemInternallOccuredErrors = new QStandardItem;
+    itemInternallOccuredErrors->setText(QString::number(gripperInternallOccuredErrors, 2));
+    itemInternallOccuredErrors->setTextAlignment(Qt::AlignRight);
+    itemList.append(itemInternallOccuredErrors);
+    gripperParametersStandardItemModel->setItem(0, 10, itemList[10]);
+
+    ui->Com_GripperParamTableView->show();
+    ui->Com_GripperParamTableView->resizeColumnsToContents();
+}
 void MainWindow::ShowJointsValues()
 {
     jointsParametersStandardItemModel->clear();
@@ -472,6 +629,7 @@ void MainWindow::RefreshLabels()
 {
     ShowJtcValues();
     ShowJointsValues();
+    ShowGripperValues();
     RedrawButtons();
 }
 void MainWindow::ShowFrictionTable(uint8_t num)
@@ -616,6 +774,16 @@ void MainWindow::Com_ReadFrameJtcStatus(uint8_t *buf)
 
         joints[num].temperature = buf[idx++];
     }
+    gripperCurrentFsm = buf[idx++];
+    gripperCurrentPumpState = buf[idx++];
+    gripperPressure1 = buf[idx++];
+    gripperPressure1 = buf[idx++];
+    gripperCurrentError = buf[idx++];
+    gripperCurrentWarning = buf[idx++];
+    gripperInternallErrors = (uint16_t)buf[idx++] << 8;
+    gripperInternallErrors += (uint16_t)buf[idx++] << 0;
+    gripperInternallOccuredErrors = (uint16_t)buf[idx++] << 8;
+    gripperInternallOccuredErrors += (uint16_t)buf[idx++] << 0;
 }
 void MainWindow::Com_ReadFrameReceivedFrameResponse(uint8_t *buf)
 {
@@ -795,6 +963,36 @@ void MainWindow::Com_ReadFrameReceivedFrameResponse(uint8_t *buf)
             }
         }
     }
+    if(buf[4] == Host_FT_TeachingModeEnable) // odbiór potwierdzenia Teaching Mode Enabled
+    {
+        if(buf[5] == Host_RxFS_NoError)
+        {
+            if(buf[6] == Host_RxDS_NoError)
+            {
+                ui->Com_DebugTextEdit->append("Response Teaching Mode Enabled: Data No Error");
+                comAsynchronicSend = false;
+            }
+            else
+            {
+                ui->Com_DebugTextEdit->append("Response Teaching Mode Enabled: Incorrect data . Restart transmision.");
+            }
+        }
+    }
+    if(buf[4] == Host_FT_TeachingModeDisable) // odbiór potwierdzenia Teaching Mode Disabled
+    {
+        if(buf[5] == Host_RxFS_NoError)
+        {
+            if(buf[6] == Host_RxDS_NoError)
+            {
+                ui->Com_DebugTextEdit->append("Response Teaching Mode Disabled: Data No Error");
+                comAsynchronicSend = false;
+            }
+            else
+            {
+                ui->Com_DebugTextEdit->append("Response Teaching Mode Disabled: Incorrect data . Restart transmision.");
+            }
+        }
+    }
     if(buf[4] == Host_FT_FrictionPolynomial) // odbiór potwierdzenia Friction Polynomial Coeffs
     {
         if(buf[5] == Host_RxFS_NoError)
@@ -822,6 +1020,36 @@ void MainWindow::Com_ReadFrameReceivedFrameResponse(uint8_t *buf)
             else
             {
                 ui->Com_DebugTextEdit->append("Response Friction Polynomial Coeffs use Default: Incorrect data.");
+            }
+        }
+    }
+    if(buf[4] == Host_FT_GripperControl) // odbiór potwierdzenia Gripper Control
+    {
+        if(buf[5] == Host_RxFS_NoError)
+        {
+            if(buf[6] == Host_RxDS_NoError)
+            {
+                ui->Com_DebugTextEdit->append("Response Gripper Control: Data No Error");
+                comAsynchronicSend = false;
+            }
+            else
+            {
+                ui->Com_DebugTextEdit->append("Response Gripper Control: Incorrect data.");
+            }
+        }
+    }
+    if(buf[4] == Host_FT_ResetCanDevices) // odbiór potwierdzenia Reset Can Device
+    {
+        if(buf[5] == Host_RxFS_NoError)
+        {
+            if(buf[6] == Host_RxDS_NoError)
+            {
+                ui->Com_DebugTextEdit->append("Response Reset Can Device: Data No Error");
+                comAsynchronicSend = false;
+            }
+            else
+            {
+                ui->Com_DebugTextEdit->append("Response Reset Can Device: Incorrect data.");
             }
         }
     }
@@ -894,10 +1122,29 @@ void MainWindow::Com_PrepareArmModelToSend()
 }
 void MainWindow::Com_SendCommandClearCurrentErrors()
 {
-    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie komendy kasowania bieżących błędów w JTC");
+    uint8_t varempty = 0x00;
+    uint8_t canDevNum = 0x00;
+    uint8_t Jtc = 0x00;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[0])            canDevNum = 0xFF;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[1])            canDevNum = 0x01;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[2])            canDevNum = 0x02;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[3])            canDevNum = 0x04;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[4])            canDevNum = 0x08;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[5])            canDevNum = 0x10;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[6])            canDevNum = 0x20;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[7])            canDevNum = 0x40;
+    if(ui->ClearErrorsComboBox->currentText() == errorClearNameString[8])            Jtc = 0x01;
+
+    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie komendy kasowania błędów");
     comWriteString.clear();
     comWriteString.append(Host_FT_Header);
     comWriteString.append(Host_FT_ClearCurrentErrors);
+
+    comWriteString.append(Jtc);
+    comWriteString.append(canDevNum);
+    comWriteString.append(varempty);
+    comWriteString.append(varempty);
+
     uint16_t nd = comWriteString.length() + 4;
     comWriteString.insert(2, (uint8_t)(nd >> 8));
     comWriteString.insert(3, (uint8_t)(nd >> 0));
@@ -905,7 +1152,7 @@ void MainWindow::Com_SendCommandClearCurrentErrors()
     comWriteString.append(crc >> 8);
     comWriteString.append(crc >> 0);
     serial->write(comWriteString, comWriteString.length());
-    ui->Com_DebugTextEdit->append("Wysłano komendę kasowania bieżących błędów w JTC");
+    ui->Com_DebugTextEdit->append("Wysłano komendę kasowania błędów");
     ui->Com_DebugTextEdit->append("Oczekiwanie na odpowiedź");
 }
 void MainWindow::Com_SendCommandClearOccuredErrors()
@@ -997,6 +1244,16 @@ void MainWindow::Com_Send()
         else if(numFrameToAsynchroSend == Host_FTAS_FrictionPolynomialUseDefault)
         {
             Com_SendCommandFrictionPolynomialUseDefault();
+            timerSerialTimeout->start(COMTIMEOUT);
+        }
+        else if(numFrameToAsynchroSend == Host_FTAS_GripperControl)
+        {
+            Com_SendCommandGripperControl();
+            timerSerialTimeout->start(COMTIMEOUT);
+        }
+        else if(numFrameToAsynchroSend == Host_FTAS_ResetCanDevices)
+        {
+            Com_SendCommandResetCanDevice();
             timerSerialTimeout->start(COMTIMEOUT);
         }
         numFrameToAsynchroSend = Host_FTAS_Null;
@@ -1948,6 +2205,62 @@ void MainWindow::Com_SendCommandFrictionPolynomialUseDefault()
     ui->Com_DebugTextEdit->append("Wysłano komendę użycia domyślnych współczynników wielomanu tarcia");
     ui->Com_DebugTextEdit->append("Waiting for response");
 }
+void MainWindow::Com_SendCommandGripperControl()
+{
+    uint8_t varempty = 0x00;
+    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie komendy sterującej gripperem");
+    comWriteString.clear();
+    comWriteString.append(Host_FT_Header);
+    comWriteString.append(Host_FT_GripperControl);
+    comWriteString.append(gripperTargetPumpState);
+    comWriteString.append(varempty);
+    comWriteString.append(varempty);
+    comWriteString.append(varempty);
+    uint16_t nd = comWriteString.length() + 4;
+    comWriteString.insert(2, (uint8_t)(nd >> 8));
+    comWriteString.insert(3, (uint8_t)(nd >> 0));
+    uint16_t crc = Com_Crc16v2(comWriteString, comWriteString.length());
+    comWriteString.append(crc >> 8);
+    comWriteString.append(crc >> 0);
+    serial->write(comWriteString, comWriteString.length());
+    serial->waitForBytesWritten(1000);
+    ui->Com_DebugTextEdit->append("Wysłano komendę sterująca gripperem");
+    ui->Com_DebugTextEdit->append("Waiting for response");
+}
+void MainWindow::Com_SendCommandResetCanDevice()
+{
+    uint8_t varempty = 0x00;
+    uint8_t canDevNum = 0x00;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[0])        canDevNum = 0xFF;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[1])        canDevNum = 0x01;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[2])        canDevNum = 0x02;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[3])        canDevNum = 0x04;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[4])        canDevNum = 0x08;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[5])        canDevNum = 0x10;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[6])        canDevNum = 0x20;
+    if(ui->ResetCanDeviceComboBox->currentText() == resetDevNameString[7])        canDevNum = 0x40;
+
+    ui->Com_DebugTextEdit->append("Rozpoczynam wysylanie komendy resetowania urządzeń po Can");
+    comWriteString.clear();
+    comWriteString.append(Host_FT_Header);
+    comWriteString.append(Host_FT_ResetCanDevices);
+
+    comWriteString.append(canDevNum);
+    comWriteString.append(varempty);
+    comWriteString.append(varempty);
+    comWriteString.append(varempty);
+
+    uint16_t nd = comWriteString.length() + 4;
+    comWriteString.insert(2, (uint8_t)(nd >> 8));
+    comWriteString.insert(3, (uint8_t)(nd >> 0));
+    uint16_t crc = Com_Crc16v2(comWriteString, comWriteString.length());
+    comWriteString.append(crc >> 8);
+    comWriteString.append(crc >> 0);
+    serial->write(comWriteString, comWriteString.length());
+    serial->waitForBytesWritten(1000);
+    ui->Com_DebugTextEdit->append("Wysłano komendę resetowania urządzeń po Can");
+    ui->Com_DebugTextEdit->append("Waiting for response");
+}
 void MainWindow::on_Traj_TrajectoryStop_clicked()
 {
     if(numFrameToAsynchroSend == Host_FTAS_Null)
@@ -2022,10 +2335,14 @@ void MainWindow::Com_ButtonSetEnable(bool state)
     ui->Traj_TrajectoryExecute->setEnabled(state);
 
     ui->JTC_ClearErrors->setEnabled(state);
-    ui->JTC_ClearOccuredErrors->setEnabled(state);
+    ui->JTC_ClearOccuredErrors->setEnabled(false);
 
     ui->JTC_TeachingModeEnable->setEnabled(state);
     ui->JTC_TeachingModeDisable->setEnabled(state);
+
+    ui->ResetCanDevice->setEnabled(state);
+    ui->Gripper_PumpOn->setEnabled(state);
+    ui->Gripper_PumpOff->setEnabled(state);
 }
 void MainWindow::on_JTC_TeachingModeEnable_clicked()
 {
@@ -2127,5 +2444,31 @@ void MainWindow::on_pathLinuxRadioButton_clicked()
 void MainWindow::on_pathWindowsRadioButton_clicked()
 {
     UseWindowsFilePath();
+}
+void MainWindow::on_Gripper_PumpOn_clicked()
+{
+    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    {
+        comAsynchronicSend = true;
+        numFrameToAsynchroSend = Host_FTAS_GripperControl;
+        gripperTargetPumpState = 1;
+    }
+}
+void MainWindow::on_Gripper_PumpOff_clicked()
+{
+    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    {
+        comAsynchronicSend = true;
+        numFrameToAsynchroSend = Host_FTAS_GripperControl;
+        gripperTargetPumpState = 0;
+    }
+}
+void MainWindow::on_ResetCanDevice_clicked()
+{
+    if(numFrameToAsynchroSend == Host_FTAS_Null)
+    {
+        comAsynchronicSend = true;
+        numFrameToAsynchroSend = Host_FTAS_ResetCanDevices;
+    }
 }
 

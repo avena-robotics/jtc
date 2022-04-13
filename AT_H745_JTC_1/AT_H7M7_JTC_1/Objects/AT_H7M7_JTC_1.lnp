@@ -5,6 +5,7 @@
 ".\objects\main.o"
 ".\objects\joints.o"
 ".\objects\rnea.o"
+".\objects\gripper.o"
 ".\objects\startup_stm32h745xx.o"
 ".\objects\system_stm32h7xx_dualcore_boot_cm4_cm7.o"
 --strict --scatter ".\Objects\AT_H7M7_JTC_1.sct"

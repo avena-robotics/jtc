@@ -438,6 +438,16 @@
               <FileType>5</FileType>
               <FilePath>.\RNEA.h</FilePath>
             </File>
+            <File>
+              <FileName>Gripper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Gripper.c</FilePath>
+            </File>
+            <File>
+              <FileName>Gripper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Gripper.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
