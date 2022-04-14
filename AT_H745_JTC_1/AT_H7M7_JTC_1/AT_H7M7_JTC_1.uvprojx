@@ -470,7 +470,7 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.9.0" condition="STM32H7 CMSIS">
-        <package name="STM32H7xx_DFP" schemaVersion="1.7.2" url="http://www.keil.com/pack/" vendor="Keil" version="2.8.0"/>
+        <package name="STM32H7xx_DFP" schemaVersion="1.7.2" url="http://www.keil.com/pack/" vendor="Keil" version="3.0.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
         </targetInfos>

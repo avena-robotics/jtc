@@ -1044,6 +1044,8 @@ static void Control_JtcAct(void)
 	Control_CheckErrorFlags();
 	Control_SetNewTorqueValues();
 	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
+	for(int i=0;i<11;i++)
+		pC->Can.TxMsgs[i].reqSend = true;
 	Control_SendCommandClearErrorsToJoints();
 	Control_SendCommandResetDevice();
 	Control_SendDataToJoints();
