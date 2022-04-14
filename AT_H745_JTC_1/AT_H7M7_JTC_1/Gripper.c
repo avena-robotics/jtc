@@ -11,6 +11,7 @@ void Gripper_SetStartValuesVariables(void)
 	pC->Gripper.internallOccuredErrors = 0x00;
 	pC->Gripper.reqCanReset = false;
 	pC->Gripper.flagFirstPosRead = false;
+	pC->Gripper.flagConfirmChangeConf = false;
 	pC->Gripper.flagCanError = false;
 	pC->Gripper.flagJtcError = false;
 	pC->Gripper.targetPumpState = 0x00;

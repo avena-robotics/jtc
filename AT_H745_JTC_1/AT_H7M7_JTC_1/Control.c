@@ -1013,32 +1013,32 @@ static void Control_JtcAct(void)
 	Control_CheckErrorFlags();
 	Control_JtcCheckState();
 	
-	if(pC->Jtc.currentFsm == JTC_FSM_Error)
-	{
-		LED3_ON;
-		Control_JtcError();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
-	{
-		LED1_ON;
-		Control_JtcInit();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
-	{
-		LED1_ON;
-		LED2_ON;
-		Control_JtcTeaching();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
-	{
-		LED2_ON;
-		Control_JtcHoldPos();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
-	{
-		LED2_ON;
-		Control_JtcOperate();
-	}
+//	if(pC->Jtc.currentFsm == JTC_FSM_Error)
+//	{
+//		LED3_ON;
+//		Control_JtcError();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
+//	{
+//		LED1_ON;
+//		Control_JtcInit();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
+//	{
+//		LED1_ON;
+//		LED2_ON;
+//		Control_JtcTeaching();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
+//	{
+//		LED2_ON;
+//		Control_JtcHoldPos();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
+//	{
+//		LED2_ON;
+//		Control_JtcOperate();
+//	}
 	
 	Control_CheckLimits();
 	Control_CheckErrorFlags();

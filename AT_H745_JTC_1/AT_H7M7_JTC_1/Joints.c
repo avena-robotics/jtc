@@ -98,14 +98,6 @@ static void Joints_SetDefaultFrictionPolynomial(void)
 	pC->Joints[5].fricCoeff[3] = 12.648620008379257;
 	pC->Joints[5].fricCoeff[4] = -0.02301637403516809;
 	pC->Joints[5].fricCoeff[5] = 19.112761551382018;
-
-//	for(int num=0;num<JOINTS_MAX;num++)
-//	{
-//		for(int i=0;i<JOINTS_FRICCOEFFMAX;i++)
-//		{
-//			pC->Joints[num].fricCoeff[i] = 0.0;
-//		}
-//	}
 }
 void Joints_SetDefaultFriction(void)
 {
@@ -157,6 +149,7 @@ void Joints_SetStartValuesVariables(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].flagFirstPosRead = false;
+		pC->Joints[num].flagConfirmChangeConf = false;
 		pC->Joints[num].cWPosNotAccurate = true;
 		pC->Joints[num].currentMode = Joint_M_Null;
 		pC->Joints[num].targetMode = Joint_M_Torque;
@@ -216,6 +209,7 @@ void Joints_SetStartValuesVariables(void)
 void Joints_SetResetValuesVariables(uint8_t num)
 {
 	pC->Joints[num].flagFirstPosRead = false;
+	pC->Joints[num].flagConfirmChangeConf = false;
 	pC->Joints[num].cWPosNotAccurate = true;
 	pC->Joints[num].currentMode = Joint_M_Null;
 	pC->Joints[num].targetMode = Joint_M_Torque;
@@ -378,9 +372,7 @@ static void Joints_CalcFrictionCompensatePolynomial(void)
 		double coeffs[JOINTS_FRICCOEFFMAX];
 		for(int i=0;i<JOINTS_FRICCOEFFMAX;i++)
 			coeffs[i] = pC->Joints[num].fricCoeff[i];
-		
-//		pC->Joints[num].fricTorque = sign*pC->Joints[num].fricCoeff[0] + pC->Joints[num].fricCoeff[1]*vel + sign*pC->Joints[num].fricCoeff[2]*vel*vel + pC->Joints[num].fricCoeff[3]*vel*vel*vel;
-	
+			
 		pC->Joints[num].fricTorque = (1+coeffs[4]*(t-coeffs[5]))*(coeffs[0] * ((vel > 0) - (vel < 0)) + coeffs[1] * vel + coeffs[2] * pow(vel, 2) * ((vel > 0) - (vel < 0)) + coeffs[3] * pow(vel, 3));
 	}
 }

@@ -26,16 +26,39 @@ Project File Date:  04/12/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
-Build Project 'AT_H7M7_JTC_1' - Target 'Target 1'
+Rebuild Project 'AT_H7M7_JTC_1' - Target 'Target 1'
+assembling startup_stm32h745xx.s...
+compiling Joints.c...
+compiling RNEA.c...
+compiling main.c...
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\main.c(9): warning:  #1-D: last line of file ends without a newline
+  	
+main.c: 1 warning, 0 errors
+compiling Com.c...
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Com.c(184): warning:  #177-D: function "Host_ComUart2Conf"  was declared but never referenced
+  static void Host_ComUart2Conf(void)
+Com.c: 1 warning, 0 errors
 compiling Control.c...
 C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(241): warning:  #177-D: function "Control_JtcSetGripperToReadyToOperate"  was declared but never referenced
   static void Control_JtcSetGripperToReadyToOperate(void)
-Control.c: 1 warning, 0 errors
-compiling Joints.c...
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(853): warning:  #177-D: function "Control_JtcError"  was declared but never referenced
+  static void Control_JtcError(void)
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(872): warning:  #177-D: function "Control_JtcInit"  was declared but never referenced
+  static void Control_JtcInit(void)
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(939): warning:  #177-D: function "Control_JtcTeaching"  was declared but never referenced
+  static void Control_JtcTeaching(void)
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(956): warning:  #177-D: function "Control_JtcHoldPos"  was declared but never referenced
+  static void Control_JtcHoldPos(void)
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(979): warning:  #177-D: function "Control_JtcOperate"  was declared but never referenced
+  static void Control_JtcOperate(void)
+Control.c: 6 warnings, 0 errors
+compiling Gripper.c...
+compiling system_stm32h7xx_dualcore_boot_cm4_cm7.c...
+compiling Can.c...
 linking...
-Program Size: Code=37704 RO-data=22320 RW-data=554796 ZI-data=102860  
+Program Size: Code=26240 RO-data=22176 RW-data=554796 ZI-data=102860  
 FromELF: creating hex file...
-".\Objects\AT_H7M7_JTC_1.axf" - 0 Error(s), 1 Warning(s).
+".\Objects\AT_H7M7_JTC_1.axf" - 0 Error(s), 8 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -61,10 +84,10 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: Keil::Device:Startup:1.9.0
-      Include file:  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\arm\startup_stm32h745xx.s
+      Include file:  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\system_stm32h7xx_dualcore_boot_cm4_cm7.c
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:10
 </pre>
 </body>
 </html>

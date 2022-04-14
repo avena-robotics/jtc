@@ -28,6 +28,7 @@ static void Can_SendFrameMove(void)
 		*(pC->Can.txBufAddr + idx + 2) = pC->Can.TxMsgs[num].data[0];
 		*(pC->Can.txBufAddr + idx + 3) = pC->Can.TxMsgs[num].data[1];
 		*(pC->Can.txBufAddr + idx + 4) = pC->Can.TxMsgs[num].data[2];
+		*(pC->Can.txBufAddr + idx + 5) = pC->Can.TxMsgs[num].data[3];
 		
 		pC->Can.TxMsgs[num].status = Can_TxS_Sending;
 		
@@ -61,6 +62,7 @@ static void Can_SendFrameChangeFsm(void)
 		*(pC->Can.txBufAddr + idx + 2) = pC->Can.TxMsgs[num].data[0];
 		*(pC->Can.txBufAddr + idx + 3) = pC->Can.TxMsgs[num].data[1];
 		*(pC->Can.txBufAddr + idx + 4) = pC->Can.TxMsgs[num].data[2];
+		*(pC->Can.txBufAddr + idx + 5) = pC->Can.TxMsgs[num].data[3];
 		
 		pC->Can.TxMsgs[num].status = Can_TxS_Sending;
 		
@@ -96,6 +98,7 @@ static void Can_SendFrameChangeMode(void)
 		*(pC->Can.txBufAddr + idx + 2) = pC->Can.TxMsgs[num].data[0];
 		*(pC->Can.txBufAddr + idx + 3) = pC->Can.TxMsgs[num].data[1];
 		*(pC->Can.txBufAddr + idx + 4) = pC->Can.TxMsgs[num].data[2];
+		*(pC->Can.txBufAddr + idx + 5) = pC->Can.TxMsgs[num].data[3];
 		
 		pC->Can.TxMsgs[num].status = Can_TxS_Sending;
 		
@@ -697,11 +700,15 @@ static void Can_ReadFrameChangeConfResponse(uint8_t num)
 		if(devNum <= Can_DN_Joint5)
 		{
 			if(pC->Can.RxMsgs[num].bytes[0] == 1)
+			{
+				pC->Joints[devNum].flagConfirmChangeConf = true;
 				pC->Joints[devNum].currentMode = pC->Joints[devNum].targetMode;
+			}
 		}
 		else if(devNum == Can_DN_Gripper)
 		{
-			//Brak obslugi zmiany trybu pracy dla grippera
+			if(pC->Can.RxMsgs[num].bytes[0] == 1)
+				pC->Gripper.flagConfirmChangeConf = true;
 		}
 		
 		pC->Can.RxMsgs[num].timeoutCnt = 0;

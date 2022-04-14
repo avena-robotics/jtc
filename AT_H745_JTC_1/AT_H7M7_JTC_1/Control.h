@@ -322,6 +322,7 @@ typedef struct
 	bool					reqCanClearErrors;						//Żadanie skasowania bledów w urządzeniu poprzez Can
 	
 	bool					flagFirstPosRead;							//Flaga - pierwszy odczyt pozycji z jointa
+	bool					flagConfirmChangeConf;				//Flaga - potwierdzenie wgrania zmiany konfiguracji	
 	
 	bool					flagSetPosOverlimit;					//Pozycja - wyliczona pozycja jest poza zakresem
 	bool					flagSetVelOverlimit;					//Predkosc - wyliczona predkosc jest poza zakresem
@@ -423,6 +424,7 @@ typedef struct
 	bool					reqCanClearErrors;						//Żadanie skasowania bledów w urządzeniu poprzez Can
 	
 	bool					flagFirstPosRead;							//Flaga - pierwszy odczyt pozycji z grippera
+	bool					flagConfirmChangeConf;				//Flaga - potwierdzenie wgrania zmiany konfiguracji
 	
 	bool					flagCanError;									//Flaga - dowolny blad grippera odebrany z CAN (suma logiczna wszystkich flg bledow odebranych przez CAN)
 	bool					flagJtcError;									//Flaga - dowolny blad grippera powstaly w JTC (suma logiczna wszystkich flg bledow wewnetrznych)
