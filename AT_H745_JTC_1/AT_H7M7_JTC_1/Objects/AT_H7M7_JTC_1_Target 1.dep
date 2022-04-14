@@ -1,8 +1,8 @@
 Dependencies for Project 'AT_H7M7_JTC_1', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\Can.c)(0x6257EB80)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
+F (.\Can.c)(0x62580A51)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
 I (Can.h)(0x62542FB3)
-I (Control.h)(0x6257E118)
+I (Control.h)(0x6258141C)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -22,8 +22,8 @@ I (Joints.h)(0x6257E118)
 I (RNEA.h)(0x62542FB3)
 I (Gripper.h)(0x6257E118)
 F (.\Can.h)(0x62542FB3)()
-F (.\Com.c)(0x6257E118)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\com.o --omf_browse .\objects\com.crf --depend .\objects\com.d)
-I (Control.h)(0x6257E118)
+F (.\Com.c)(0x6257EF59)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\com.o --omf_browse .\objects\com.crf --depend .\objects\com.d)
+I (Control.h)(0x6258141C)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -44,8 +44,8 @@ I (Joints.h)(0x6257E118)
 I (RNEA.h)(0x62542FB3)
 I (Gripper.h)(0x6257E118)
 F (.\Com.h)(0x62542FB3)()
-F (.\Control.c)(0x6257EB91)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\control.o --omf_browse .\objects\control.crf --depend .\objects\control.d)
-I (Control.h)(0x6257E118)
+F (.\Control.c)(0x62581412)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\control.o --omf_browse .\objects\control.crf --depend .\objects\control.d)
+I (Control.h)(0x6258141C)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -65,9 +65,9 @@ I (Can.h)(0x62542FB3)
 I (Joints.h)(0x6257E118)
 I (RNEA.h)(0x62542FB3)
 I (Gripper.h)(0x6257E118)
-F (.\Control.h)(0x6257E118)()
-F (.\main.c)(0x6257E118)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
-I (Control.h)(0x6257E118)
+F (.\Control.h)(0x6258141C)()
+F (.\main.c)(0x6258130A)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (Control.h)(0x6258141C)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -87,9 +87,9 @@ I (Can.h)(0x62542FB3)
 I (Joints.h)(0x6257E118)
 I (RNEA.h)(0x62542FB3)
 I (Gripper.h)(0x6257E118)
-F (.\Joints.c)(0x6257E118)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\joints.o --omf_browse .\objects\joints.crf --depend .\objects\joints.d)
+F (.\Joints.c)(0x62580A4E)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\joints.o --omf_browse .\objects\joints.crf --depend .\objects\joints.d)
 I (Joints.h)(0x6257E118)
-I (Control.h)(0x6257E118)
+I (Control.h)(0x6258141C)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -111,7 +111,7 @@ I (Gripper.h)(0x6257E118)
 F (.\Joints.h)(0x6257E118)()
 F (.\RNEA.c)(0x6257E0BF)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\rnea.o --omf_browse .\objects\rnea.crf --depend .\objects\rnea.d)
 I (RNEA.h)(0x62542FB3)
-I (Control.h)(0x6257E118)
+I (Control.h)(0x6258141C)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -131,9 +131,9 @@ I (Can.h)(0x62542FB3)
 I (Joints.h)(0x6257E118)
 I (Gripper.h)(0x6257E118)
 F (.\RNEA.h)(0x62542FB3)()
-F (.\Gripper.c)(0x6257E118)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\gripper.o --omf_browse .\objects\gripper.crf --depend .\objects\gripper.d)
+F (.\Gripper.c)(0x6257EEA2)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\gripper.o --omf_browse .\objects\gripper.crf --depend .\objects\gripper.d)
 I (Gripper.h)(0x6257E118)
-I (Control.h)(0x6257E118)
+I (Control.h)(0x6258141C)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)

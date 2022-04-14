@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\AT_H7M7_JTC_1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\AT_H7M7_JTC_1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Apr 14 11:38:30 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Apr 14 14:31:42 2022
 <BR><P>
-<H3>Maximum Stack Usage =       1456 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =       2784 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-USART2_IRQHandler &rArr; Host_ComReadFromHost &rArr; Host_ComReadFrameArmModel &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+TIM7_IRQHandler &rArr; Control_JtcAct &rArr; Control_JtcInit &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 <P>
 <H3>
 Functions with no stack information
@@ -205,147 +205,218 @@ Function Pointers
 <H3>
 Global Symbols
 </H3>
-<P><STRONG><a name="[e8]"></a>Can_Conf</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, can.o(i.Can_Conf))
+<P><STRONG><a name="[f1]"></a>Can_Conf</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, can.o(i.Can_Conf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Can_Conf &rArr; Can_FiltersConf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_TxBufferConf
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_StructConf
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_FiltersConf
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_FdcanConf
+<BR>[Calls]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_TxBufferConf
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_StructConf
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_FiltersConf
+<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_FdcanConf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[f2]"></a>Can_SendDataToJoints</STRONG> (Thumb, 88 bytes, Stack size 8 bytes, can.o(i.Can_SendDataToJoints))
+<P><STRONG><a name="[fb]"></a>Can_SendDataToJoints</STRONG> (Thumb, 88 bytes, Stack size 8 bytes, can.o(i.Can_SendDataToJoints))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Can_SendDataToJoints &rArr; Can_CheckStatus &rArr; Can_CheckCanStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendFrameToDevices
-<LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckStatus
+<BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendFrameToDevices
+<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckStatus
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
-</UL>
-
-<P><STRONG><a name="[d4]"></a>Control_ClearExternallErrorsViaCan</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, control.o(i.Control_ClearExternallErrorsViaCan))
-<BR><BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[d3]"></a>Control_ClearInternallErrorsInJtc</STRONG> (Thumb, 214 bytes, Stack size 8 bytes, control.o(i.Control_ClearInternallErrorsInJtc))
+<P><STRONG><a name="[d3]"></a>Control_ClearExternallErrorsViaCan</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, control.o(i.Control_ClearExternallErrorsViaCan))
+<BR><BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+</UL>
+
+<P><STRONG><a name="[d2]"></a>Control_ClearInternallErrorsInJtc</STRONG> (Thumb, 214 bytes, Stack size 8 bytes, control.o(i.Control_ClearInternallErrorsInJtc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Control_ClearInternallErrorsInJtc &rArr; Control_CheckErrorFlags
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
+<BR>[Calls]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
 </UL>
 
-<P><STRONG><a name="[d6]"></a>Control_SetDefualtArmModel</STRONG> (Thumb, 874 bytes, Stack size 40 bytes, control.o(i.Control_SetDefualtArmModel))
+<P><STRONG><a name="[d7]"></a>Control_ResetDevicesViaCan</STRONG> (Thumb, 106 bytes, Stack size 24 bytes, control.o(i.Control_ResetDevicesViaCan))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Control_ResetDevicesViaCan &rArr; Joints_SetResetValuesVariables
+</UL>
+<BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetResetValuesVariables
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gripper_SetResetValuesVariables (via Veneer)
+</UL>
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+</UL>
+
+<P><STRONG><a name="[d5]"></a>Control_SetDefualtArmModel</STRONG> (Thumb, 874 bytes, Stack size 40 bytes, control.o(i.Control_SetDefualtArmModel))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Control_SetDefualtArmModel
 </UL>
-<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetTable
+<BR>[Calls]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetTable
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
 </UL>
 
-<P><STRONG><a name="[e5]"></a>Control_SystemConf</STRONG> (Thumb, 266 bytes, Stack size 8 bytes, control.o(i.Control_SystemConf))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1392<LI>Call Chain = Control_SystemConf &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+<P><STRONG><a name="[eb]"></a>Control_SystemConf</STRONG> (Thumb, 298 bytes, Stack size 16 bytes, control.o(i.Control_SystemConf))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1400<LI>Call Chain = Control_SystemConf &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetStartValuesVariables
-<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gripper_SetStartValuesVariables (via Veneer)
-<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TimerConf
-<LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SafetyOutOff
-<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcVariableConf
-<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClockConf
+<BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetStartValuesVariables
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gripper_SetStartValuesVariables (via Veneer)
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TimerConf
+<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SafetyOutOff
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcVariableConf
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClockConf
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
-<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultPidParam
-<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction
-<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetDefualtArmModel
+<LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultPidParam
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
+<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetDefualtArmModel
 <LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComConf (via Veneer)
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
+<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main (via Veneer)
 </UL>
 
-<P><STRONG><a name="[d0]"></a>Control_TrajClear</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, control.o(i.Control_TrajClear))
+<P><STRONG><a name="[cf]"></a>Control_TrajClear</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, control.o(i.Control_TrajClear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Control_TrajClear
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClearPointDouble
+<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClearPointDouble
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameTrajectory (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameTrajectory (via Veneer)
 </UL>
 
 <P><STRONG><a name="[20]"></a>FDCAN1_IT0_IRQHandler</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, can.o(i.FDCAN1_IT0_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = FDCAN1_IT0_IRQHandler &rArr; Can_ReadFramesFromBuffer &rArr; Can_ReadFrameMoveResponse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendFrameOccurred
-<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
+<BR>[Calls]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendFrameOccurred
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
 <P><STRONG><a name="[22]"></a>FDCAN1_IT1_IRQHandler</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, can.o(i.FDCAN1_IT1_IRQHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
+<P><STRONG><a name="[119]"></a>Joints_CalcFrictionCompensate</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, joints.o(i.Joints_CalcFrictionCompensate))
+<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = Joints_CalcFrictionCompensate &rArr; Joints_CalcFrictionCompensatePolynomial &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
+</UL>
+<BR>[Calls]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensateTable
+<LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensatePolynomial
+</UL>
+<BR>[Called By]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+</UL>
+
+<P><STRONG><a name="[115]"></a>Joints_CalcInitRegsTorque</STRONG> (Thumb, 122 bytes, Stack size 8 bytes, joints.o(i.Joints_CalcInitRegsTorque))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Joints_CalcInitRegsTorque
+</UL>
+<BR>[Calls]<UL><LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_StopIrValuesVariables
+</UL>
+<BR>[Called By]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+</UL>
+
+<P><STRONG><a name="[113]"></a>Joints_CalcPIDs</STRONG> (Thumb, 258 bytes, Stack size 16 bytes, joints.o(i.Joints_CalcPIDs))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Joints_CalcPIDs
+</UL>
+<BR>[Called By]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+</UL>
+
 <P><STRONG><a name="[cc]"></a>Joints_FindMinMaxVelTempInFrictionTabeIdx</STRONG> (Thumb, 162 bytes, Stack size 8 bytes, joints.o(i.Joints_FindMinMaxVelTempInFrictionTabeIdx))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Joints_FindMinMaxVelTempInFrictionTabeIdx
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionTable
+<BR>[Called By]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionTable
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameFricionTable (via Veneer)
 </UL>
 
-<P><STRONG><a name="[d7]"></a>Joints_SetDefaultFriction</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, joints.o(i.Joints_SetDefaultFriction))
+<P><STRONG><a name="[d6]"></a>Joints_SetDefaultFriction</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, joints.o(i.Joints_SetDefaultFriction))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = Joints_SetDefaultFriction &rArr; Joints_SetDefaultFrictionPolynomial
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionTable
-<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionPolynomial
+<BR>[Calls]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionTable
+<LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionPolynomial
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
 </UL>
 
-<P><STRONG><a name="[d5]"></a>Joints_SetDefaultPidParam</STRONG> (Thumb, 226 bytes, Stack size 60 bytes, joints.o(i.Joints_SetDefaultPidParam))
+<P><STRONG><a name="[d4]"></a>Joints_SetDefaultPidParam</STRONG> (Thumb, 226 bytes, Stack size 60 bytes, joints.o(i.Joints_SetDefaultPidParam))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = Joints_SetDefaultPidParam
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
 </UL>
 
-<P><STRONG><a name="[ff]"></a>Joints_SetDefaultVariables</STRONG> (Thumb, 126 bytes, Stack size 16 bytes, joints.o(i.Joints_SetDefaultVariables))
+<P><STRONG><a name="[102]"></a>Joints_SetDefaultVariables</STRONG> (Thumb, 126 bytes, Stack size 16 bytes, joints.o(i.Joints_SetDefaultVariables))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Joints_SetDefaultVariables
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
+<BR>[Called By]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[100]"></a>Joints_SetResetValuesVariables</STRONG> (Thumb, 160 bytes, Stack size 8 bytes, joints.o(i.Joints_SetResetValuesVariables))
+<P><STRONG><a name="[11a]"></a>Joints_SetResetValuesVariables</STRONG> (Thumb, 160 bytes, Stack size 8 bytes, joints.o(i.Joints_SetResetValuesVariables))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Joints_SetResetValuesVariables
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice
+<BR>[Called By]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice
+<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ResetDevicesViaCan
 </UL>
 
-<P><STRONG><a name="[105]"></a>Joints_SetStartValuesVariables</STRONG> (Thumb, 314 bytes, Stack size 84 bytes, joints.o(i.Joints_SetStartValuesVariables))
+<P><STRONG><a name="[11f]"></a>Joints_SetStartValuesVariables</STRONG> (Thumb, 314 bytes, Stack size 84 bytes, joints.o(i.Joints_SetStartValuesVariables))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = Joints_SetStartValuesVariables
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+</UL>
+
+<P><STRONG><a name="[114]"></a>Joints_StartIrValuesVariables</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, joints.o(i.Joints_StartIrValuesVariables))
+<BR><BR>[Called By]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+</UL>
+
+<P><STRONG><a name="[116]"></a>Joints_StopIrValuesVariables</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, joints.o(i.Joints_StopIrValuesVariables))
+<BR><BR>[Called By]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcInitRegsTorque
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+</UL>
+
+<P><STRONG><a name="[112]"></a>RNEA_CalcTorques</STRONG> (Thumb, 5290 bytes, Stack size 2392 bytes, rnea.o(i.RNEA_CalcTorques))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2728<LI>Call Chain = RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+</UL>
+<BR>[Calls]<UL><LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3xScalar
+<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3Zeros
+<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3SubVec3
+<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3Cross
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3AddVec3
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4xMat4
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4ToMat3
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3xVec3
+<LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3xMat3
+<LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Transpose
+<LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Ones
+<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+</UL>
+<BR>[Called By]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 </UL>
 
 <P><STRONG><a name="[c9]"></a>RNEA_Conf</STRONG> (Thumb, 3762 bytes, Stack size 1048 bytes, rnea.o(i.RNEA_Conf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1384<LI>Call Chain = RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3SubVec3
-<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4xMat4
-<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4ToVec3
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4ToMat3
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4Ones
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Transpose
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Ones
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HT
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec3SubVec3
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4xMat4
+<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4ToVec3
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4ToMat3
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4Ones
+<LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Transpose
+<LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Ones
+<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HT
+<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ
+<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY
+<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost (via Veneer)
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameArmModel (via Veneer)
 </UL>
 
@@ -353,15 +424,15 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
 <P><STRONG><a name="[43]"></a>TIM7_IRQHandler</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, control.o(i.TIM7_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = TIM7_IRQHandler &rArr; Control_JtcAct &rArr; Control_JtcCheckState &rArr; Control_JtcCheckStateInit
+<BR><BR>[Stack]<UL><LI>Max Depth = 2784<LI>Call Chain = TIM7_IRQHandler &rArr; Control_JtcAct &rArr; Control_JtcInit &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
 <P><STRONG><a name="[ab]"></a>__main</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, __main.o(!!!main))
-<BR><BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<BR><BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
 <P><STRONG><a name="[ac]"></a>__scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter))
@@ -372,13 +443,13 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
 </UL>
 
-<P><STRONG><a name="[118]"></a>__scatterload_rt2_thumb_only</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter), UNUSED)
+<P><STRONG><a name="[139]"></a>__scatterload_rt2_thumb_only</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter), UNUSED)
 
-<P><STRONG><a name="[119]"></a>__scatterload_null</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter), UNUSED)
+<P><STRONG><a name="[13a]"></a>__scatterload_null</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter), UNUSED)
 
-<P><STRONG><a name="[11a]"></a>__decompress</STRONG> (Thumb, 90 bytes, Stack size unknown bytes, __dczerorl2.o(!!dczerorl2), UNUSED)
+<P><STRONG><a name="[13b]"></a>__decompress</STRONG> (Thumb, 90 bytes, Stack size unknown bytes, __dczerorl2.o(!!dczerorl2), UNUSED)
 
-<P><STRONG><a name="[11b]"></a>__decompress1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl2.o(!!dczerorl2), UNUSED)
+<P><STRONG><a name="[13c]"></a>__decompress1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl2.o(!!dczerorl2), UNUSED)
 
 <P><STRONG><a name="[af]"></a>__scatterload_copy</STRONG> (Thumb, 26 bytes, Stack size unknown bytes, __scatter_copy.o(!!handler_copy), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_copy
@@ -386,7 +457,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_copy
 </UL>
 
-<P><STRONG><a name="[11c]"></a>__scatterload_zeroinit</STRONG> (Thumb, 28 bytes, Stack size unknown bytes, __scatter_zi.o(!!handler_zi), UNUSED)
+<P><STRONG><a name="[13d]"></a>__scatterload_zeroinit</STRONG> (Thumb, 28 bytes, Stack size unknown bytes, __scatter_zi.o(!!handler_zi), UNUSED)
 
 <P><STRONG><a name="[b5]"></a>__rt_lib_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit.o(.ARM.Collect$$libinit$$00000000))
 <BR><BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_li
@@ -396,72 +467,72 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_init
 </UL>
 
-<P><STRONG><a name="[11d]"></a>__rt_lib_init_alloca_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000002E))
+<P><STRONG><a name="[13e]"></a>__rt_lib_init_alloca_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000002E))
 
-<P><STRONG><a name="[11e]"></a>__rt_lib_init_argv_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000002C))
+<P><STRONG><a name="[13f]"></a>__rt_lib_init_argv_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000002C))
 
-<P><STRONG><a name="[11f]"></a>__rt_lib_init_atexit_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000001B))
+<P><STRONG><a name="[140]"></a>__rt_lib_init_atexit_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000001B))
 
-<P><STRONG><a name="[120]"></a>__rt_lib_init_clock_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000021))
+<P><STRONG><a name="[141]"></a>__rt_lib_init_clock_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000021))
 
-<P><STRONG><a name="[121]"></a>__rt_lib_init_cpp_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000032))
+<P><STRONG><a name="[142]"></a>__rt_lib_init_cpp_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000032))
 
-<P><STRONG><a name="[122]"></a>__rt_lib_init_exceptions_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000030))
+<P><STRONG><a name="[143]"></a>__rt_lib_init_exceptions_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000030))
 
-<P><STRONG><a name="[123]"></a>__rt_lib_init_fp_trap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000001F))
+<P><STRONG><a name="[144]"></a>__rt_lib_init_fp_trap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000001F))
 
-<P><STRONG><a name="[124]"></a>__rt_lib_init_getenv_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000023))
+<P><STRONG><a name="[145]"></a>__rt_lib_init_getenv_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000023))
 
-<P><STRONG><a name="[125]"></a>__rt_lib_init_heap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000000A))
+<P><STRONG><a name="[146]"></a>__rt_lib_init_heap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000000A))
 
-<P><STRONG><a name="[126]"></a>__rt_lib_init_lc_collate_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000011))
+<P><STRONG><a name="[147]"></a>__rt_lib_init_lc_collate_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000011))
 
-<P><STRONG><a name="[127]"></a>__rt_lib_init_lc_ctype_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000013))
+<P><STRONG><a name="[148]"></a>__rt_lib_init_lc_ctype_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000013))
 
-<P><STRONG><a name="[128]"></a>__rt_lib_init_lc_monetary_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000015))
+<P><STRONG><a name="[149]"></a>__rt_lib_init_lc_monetary_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000015))
 
-<P><STRONG><a name="[129]"></a>__rt_lib_init_lc_numeric_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000017))
+<P><STRONG><a name="[14a]"></a>__rt_lib_init_lc_numeric_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000017))
 
-<P><STRONG><a name="[12a]"></a>__rt_lib_init_lc_time_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000019))
+<P><STRONG><a name="[14b]"></a>__rt_lib_init_lc_time_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000019))
 
-<P><STRONG><a name="[12b]"></a>__rt_lib_init_preinit_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000004))
+<P><STRONG><a name="[14c]"></a>__rt_lib_init_preinit_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000004))
 
-<P><STRONG><a name="[12c]"></a>__rt_lib_init_rand_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000000E))
+<P><STRONG><a name="[14d]"></a>__rt_lib_init_rand_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000000E))
 
-<P><STRONG><a name="[12d]"></a>__rt_lib_init_return</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000033))
+<P><STRONG><a name="[14e]"></a>__rt_lib_init_return</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000033))
 
-<P><STRONG><a name="[12e]"></a>__rt_lib_init_signal_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000001D))
+<P><STRONG><a name="[14f]"></a>__rt_lib_init_signal_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000001D))
 
-<P><STRONG><a name="[12f]"></a>__rt_lib_init_stdio_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000025))
+<P><STRONG><a name="[150]"></a>__rt_lib_init_stdio_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$00000025))
 
-<P><STRONG><a name="[130]"></a>__rt_lib_init_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000000C))
+<P><STRONG><a name="[151]"></a>__rt_lib_init_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libinit2.o(.ARM.Collect$$libinit$$0000000C))
 
 <P><STRONG><a name="[ba]"></a>__rt_lib_shutdown</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown.o(.ARM.Collect$$libshutdown$$00000000))
 <BR><BR>[Called By]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_ls
 </UL>
 
-<P><STRONG><a name="[131]"></a>__rt_lib_shutdown_cpp_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000004))
+<P><STRONG><a name="[152]"></a>__rt_lib_shutdown_cpp_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000004))
 
-<P><STRONG><a name="[132]"></a>__rt_lib_shutdown_fini_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000002))
+<P><STRONG><a name="[153]"></a>__rt_lib_shutdown_fini_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000002))
 
-<P><STRONG><a name="[133]"></a>__rt_lib_shutdown_fp_trap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000009))
+<P><STRONG><a name="[154]"></a>__rt_lib_shutdown_fp_trap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000009))
 
-<P><STRONG><a name="[134]"></a>__rt_lib_shutdown_heap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000011))
+<P><STRONG><a name="[155]"></a>__rt_lib_shutdown_heap_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000011))
 
-<P><STRONG><a name="[135]"></a>__rt_lib_shutdown_return</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000012))
+<P><STRONG><a name="[156]"></a>__rt_lib_shutdown_return</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000012))
 
-<P><STRONG><a name="[136]"></a>__rt_lib_shutdown_signal_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C))
+<P><STRONG><a name="[157]"></a>__rt_lib_shutdown_signal_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C))
 
-<P><STRONG><a name="[137]"></a>__rt_lib_shutdown_stdio_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000006))
+<P><STRONG><a name="[158]"></a>__rt_lib_shutdown_stdio_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$00000006))
 
-<P><STRONG><a name="[138]"></a>__rt_lib_shutdown_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000E))
+<P><STRONG><a name="[159]"></a>__rt_lib_shutdown_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000E))
 
 <P><STRONG><a name="[ad]"></a>__rt_entry</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry.o(.ARM.Collect$$rtentry$$00000000))
-<BR><BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<BR><BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
 </UL>
 
-<P><STRONG><a name="[139]"></a>__rt_entry_presh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000002))
+<P><STRONG><a name="[15a]"></a>__rt_entry_presh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000002))
 
 <P><STRONG><a name="[b2]"></a>__rt_entry_sh</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry4.o(.ARM.Collect$$rtentry$$00000004))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8 + Unknown Stack Size
@@ -474,17 +545,17 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_lib_init
 </UL>
 
-<P><STRONG><a name="[13a]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
+<P><STRONG><a name="[15b]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[b6]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1392 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 1400 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; Control_SystemConf &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 </UL>
 
-<P><STRONG><a name="[13b]"></a>__rt_entry_postli_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000C))
+<P><STRONG><a name="[15c]"></a>__rt_entry_postli_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000C))
 
 <P><STRONG><a name="[c2]"></a>__rt_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rtexit.o(.ARM.Collect$$rtexit$$00000000))
 <BR><BR>[Called By]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
@@ -494,7 +565,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_lib_shutdown
 </UL>
 
-<P><STRONG><a name="[13c]"></a>__rt_exit_prels_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rtexit2.o(.ARM.Collect$$rtexit$$00000002))
+<P><STRONG><a name="[15d]"></a>__rt_exit_prels_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rtexit2.o(.ARM.Collect$$rtexit$$00000002))
 
 <P><STRONG><a name="[bb]"></a>__rt_exit_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rtexit2.o(.ARM.Collect$$rtexit$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_exit
@@ -972,33 +1043,36 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[10b]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text))
+<P><STRONG><a name="[122]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_memcpy4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4xMat4 (via Veneer)
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4ToMat3 (via Veneer)
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4Ones (via Veneer)
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Transpose (via Veneer)
-<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Ones (via Veneer)
-<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HT (via Veneer)
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ (via Veneer)
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY (via Veneer)
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionTable (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4xMat4 (via Veneer)
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4ToMat3 (via Veneer)
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4Ones (via Veneer)
+<LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3xMat3 (via Veneer)
+<LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Transpose (via Veneer)
+<LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3Ones (via Veneer)
+<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HT (via Veneer)
+<LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ (via Veneer)
+<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY (via Veneer)
+<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
+<LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFrictionTable (via Veneer)
+<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques (via Veneer)
+<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajInterpolate (via Veneer)
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf (via Veneer)
 </UL>
 
-<P><STRONG><a name="[13d]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
+<P><STRONG><a name="[15e]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[13e]"></a>__rt_memcpy_w</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
+<P><STRONG><a name="[15f]"></a>__rt_memcpy_w</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[13f]"></a>_memcpy_lastbytes_aligned</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memcpy_w.o(.text), UNUSED)
+<P><STRONG><a name="[160]"></a>_memcpy_lastbytes_aligned</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memcpy_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[140]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[161]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
-<P><STRONG><a name="[141]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[162]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
-<P><STRONG><a name="[142]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[163]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
 <P><STRONG><a name="[bd]"></a>__read_errno</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, _rserrno.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
@@ -1009,7 +1083,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<BR>[Called By]<UL><LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 </UL>
 
@@ -1018,17 +1094,17 @@ Global Symbols
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__read_errno
 </UL>
 
-<P><STRONG><a name="[143]"></a>__errno$intlibspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, rt_errno_addr_intlibspace.o(.text), UNUSED)
+<P><STRONG><a name="[164]"></a>__errno$intlibspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, rt_errno_addr_intlibspace.o(.text), UNUSED)
 
-<P><STRONG><a name="[144]"></a>__rt_errno_addr$intlibspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, rt_errno_addr_intlibspace.o(.text), UNUSED)
+<P><STRONG><a name="[165]"></a>__rt_errno_addr$intlibspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, rt_errno_addr_intlibspace.o(.text), UNUSED)
 
-<P><STRONG><a name="[145]"></a>__user_libspace</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
+<P><STRONG><a name="[166]"></a>__user_libspace</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
 
 <P><STRONG><a name="[c0]"></a>__user_perproc_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[146]"></a>__user_perthread_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
+<P><STRONG><a name="[167]"></a>__user_perthread_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
 
 <P><STRONG><a name="[b3]"></a>__user_setup_stackheap</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, sys_stackheap_outer.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8 + Unknown Stack Size
@@ -1053,14 +1129,14 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_exit
 </UL>
 
-<P><STRONG><a name="[147]"></a>__I$use$semihosting</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
+<P><STRONG><a name="[168]"></a>__I$use$semihosting</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[148]"></a>__use_no_semihosting_swi</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
+<P><STRONG><a name="[169]"></a>__use_no_semihosting_swi</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[149]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
+<P><STRONG><a name="[16a]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[f5]"></a>Com_HostCheckGeneralTimeout</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, com.o(i.Com_HostCheckGeneralTimeout))
-<BR><BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags (via Veneer)
+<P><STRONG><a name="[fe]"></a>Com_HostCheckGeneralTimeout</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, com.o(i.Com_HostCheckGeneralTimeout))
+<BR><BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags (via Veneer)
 </UL>
 
 <P><STRONG><a name="[18]"></a>DMA1_Stream0_IRQHandler</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, com.o(i.DMA1_Stream0_IRQHandler))
@@ -1073,21 +1149,22 @@ Global Symbols
 <P><STRONG><a name="[19]"></a>DMA1_Stream1_IRQHandler</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, com.o(i.DMA1_Stream1_IRQHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
-<P><STRONG><a name="[101]"></a>Gripper_SetResetValuesVariables</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, gripper.o(i.Gripper_SetResetValuesVariables))
-<BR><BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice (via Veneer)
+<P><STRONG><a name="[11b]"></a>Gripper_SetResetValuesVariables</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, gripper.o(i.Gripper_SetResetValuesVariables))
+<BR><BR>[Called By]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice (via Veneer)
+<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ResetDevicesViaCan (via Veneer)
 </UL>
 
-<P><STRONG><a name="[106]"></a>Gripper_SetStartValuesVariables</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, gripper.o(i.Gripper_SetStartValuesVariables))
-<BR><BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf (via Veneer)
+<P><STRONG><a name="[120]"></a>Gripper_SetStartValuesVariables</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, gripper.o(i.Gripper_SetStartValuesVariables))
+<BR><BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf (via Veneer)
 </UL>
 
 <P><STRONG><a name="[c4]"></a>Host_ComConf</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, com.o(i.Host_ComConf))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Host_ComConf &rArr; Host_ComUart3Conf
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Host_ComConf &rArr; Host_ComUart2Conf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComUart3Conf
+<BR>[Calls]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComUart2Conf
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComTimCof
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf (via Veneer)
 </UL>
 
 <P><STRONG><a name="[9d]"></a>SystemInit</STRONG> (Thumb, 216 bytes, Stack size 20 bytes, system_stm32h7xx_dualcore_boot_cm4_cm7.o(i.SystemInit))
@@ -1112,21 +1189,22 @@ Global Symbols
 <P><STRONG><a name="[33]"></a>USART2_IRQHandler</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, com.o(i.USART2_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1456<LI>Call Chain = USART2_IRQHandler &rArr; Host_ComReadFromHost &rArr; Host_ComReadFrameArmModel &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
 <P><STRONG><a name="[34]"></a>USART3_IRQHandler</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, com.o(i.USART3_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1456<LI>Call Chain = USART3_IRQHandler &rArr; Host_ComReadFromHost &rArr; Host_ComReadFrameArmModel &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h745xx.o(RESET)
 </UL>
-<P><STRONG><a name="[e3]"></a>__ARM_fpclassify</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, fpclassify.o(i.__ARM_fpclassify))
+<P><STRONG><a name="[e9]"></a>__ARM_fpclassify</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, fpclassify.o(i.__ARM_fpclassify))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __ARM_fpclassify
 </UL>
 <BR>[Called By]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
+<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 
 <P><STRONG><a name="[db]"></a>__hardfp_cos</STRONG> (Thumb, 158 bytes, Stack size 32 bytes, cos.o(i.__hardfp_cos))
@@ -1138,12 +1216,30 @@ Global Symbols
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ (via Veneer)
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY (via Veneer)
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ (via Veneer)
+<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY (via Veneer)
+<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
 </UL>
 
-<P><STRONG><a name="[e0]"></a>__hardfp_sin</STRONG> (Thumb, 158 bytes, Stack size 32 bytes, sin.o(i.__hardfp_sin))
+<P><STRONG><a name="[e0]"></a>__hardfp_pow</STRONG> (Thumb, 2140 bytes, Stack size 192 bytes, pow.o(i.__hardfp_pow))
+<BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = __hardfp_pow &rArr; sqrt &rArr; __set_errno
+</UL>
+<BR>[Calls]<UL><LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrt
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
+<LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_overflow
+<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_invalid
+<LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_infnan2
+<LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_divzero
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn
+<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
+</UL>
+<BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensatePolynomial (via Veneer)
+</UL>
+
+<P><STRONG><a name="[ea]"></a>__hardfp_sin</STRONG> (Thumb, 158 bytes, Stack size 32 bytes, sin.o(i.__hardfp_sin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
@@ -1152,235 +1248,280 @@ Global Symbols
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ (via Veneer)
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY (via Veneer)
-<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
+<BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ (via Veneer)
+<LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY (via Veneer)
+<LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
 </UL>
 
 <P><STRONG><a name="[dd]"></a>__ieee754_rem_pio2</STRONG> (Thumb, 646 bytes, Stack size 144 bytes, rred.o(i.__ieee754_rem_pio2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
+<BR>[Calls]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabs
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 </UL>
 
 <P><STRONG><a name="[df]"></a>__kernel_cos</STRONG> (Thumb, 182 bytes, Stack size 56 bytes, cos_i.o(i.__kernel_cos))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = __kernel_cos
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
+<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 </UL>
 
-<P><STRONG><a name="[e2]"></a>__kernel_poly</STRONG> (Thumb, 112 bytes, Stack size 0 bytes, poly.o(i.__kernel_poly))
+<P><STRONG><a name="[e7]"></a>__kernel_poly</STRONG> (Thumb, 112 bytes, Stack size 0 bytes, poly.o(i.__kernel_poly))
 <BR><BR>[Called By]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_cos
+<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 
 <P><STRONG><a name="[de]"></a>__kernel_sin</STRONG> (Thumb, 144 bytes, Stack size 56 bytes, sin_i.o(i.__kernel_sin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = __kernel_sin &rArr; __ARM_fpclassify
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
-<LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
-<LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
+<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_poly
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassify
+<LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_dbl_underflow
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
+</UL>
+
+<P><STRONG><a name="[e2]"></a>__mathlib_dbl_divzero</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, dunder.o(i.__mathlib_dbl_divzero))
+<BR><BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
+</UL>
+
+<P><STRONG><a name="[e1]"></a>__mathlib_dbl_infnan2</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, dunder.o(i.__mathlib_dbl_infnan2))
+<BR><BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 
 <P><STRONG><a name="[dc]"></a>__mathlib_dbl_invalid</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, dunder.o(i.__mathlib_dbl_invalid))
-<BR><BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<BR><BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin
+<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos
 </UL>
 
-<P><STRONG><a name="[e4]"></a>__mathlib_dbl_underflow</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, dunder.o(i.__mathlib_dbl_underflow))
-<BR><BR>[Called By]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
+<P><STRONG><a name="[e3]"></a>__mathlib_dbl_overflow</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, dunder.o(i.__mathlib_dbl_overflow))
+<BR><BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 
-<P><STRONG><a name="[e1]"></a>fabs</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, fabs.o(i.fabs))
+<P><STRONG><a name="[e6]"></a>__mathlib_dbl_underflow</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, dunder.o(i.__mathlib_dbl_underflow))
+<BR><BR>[Called By]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__kernel_sin
+<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
+</UL>
+
+<P><STRONG><a name="[e5]"></a>fabs</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, fabs.o(i.fabs))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = fabs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ieee754_rem_pio2
+<LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 </UL>
 
 <P><STRONG><a name="[b7]"></a>main</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1392<LI>Call Chain = main &rArr; Control_SystemConf &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+<BR><BR>[Stack]<UL><LI>Max Depth = 1400<LI>Call Chain = main &rArr; Control_SystemConf &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf (via Veneer)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
+</UL>
+
+<P><STRONG><a name="[e4]"></a>sqrt</STRONG> (Thumb, 106 bytes, Stack size 24 bytes, sqrt.o(i.sqrt))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = sqrt &rArr; __set_errno
+</UL>
+<BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
+</UL>
+<BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
+</UL>
+
+<P><STRONG><a name="[ec]"></a>__fpl_dcheck_NaN1</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, dcheck1.o(x$fpl$dcheck1))
+<BR><BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_return_NaN
+</UL>
+<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbn
 </UL>
 
 <P><STRONG><a name="[b1]"></a>_fp_init</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, fpinit.o(x$fpl$fpinit))
 <BR><BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_lib_init_fp_1
 </UL>
 
-<P><STRONG><a name="[14a]"></a>__fplib_config_fpu_vfp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
+<P><STRONG><a name="[16b]"></a>__fplib_config_fpu_vfp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
 
-<P><STRONG><a name="[14b]"></a>__fplib_config_pureend_doubles</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
+<P><STRONG><a name="[16c]"></a>__fplib_config_pureend_doubles</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
+
+<P><STRONG><a name="[ed]"></a>__fpl_return_NaN</STRONG> (Thumb, 100 bytes, Stack size 0 bytes, retnan.o(x$fpl$retnan))
+<BR><BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_cmpreturn
+</UL>
+<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dcheck_NaN1
+</UL>
+
+<P><STRONG><a name="[e8]"></a>__ARM_scalbn</STRONG> (Thumb, 92 bytes, Stack size 0 bytes, scalbn.o(x$fpl$scalbn))
+<BR><BR>[Calls]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dcheck_NaN1
+</UL>
+<BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
+</UL>
+
+<P><STRONG><a name="[ee]"></a>__fpl_cmpreturn</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, trapv.o(x$fpl$trapveneer))
+<BR><BR>[Called By]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_return_NaN
+</UL>
 <P>
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[e7]"></a>Can_CheckCanStatus</STRONG> (Thumb, 300 bytes, Stack size 12 bytes, can.o(i.Can_CheckCanStatus))
+<P><STRONG><a name="[f0]"></a>Can_CheckCanStatus</STRONG> (Thumb, 300 bytes, Stack size 12 bytes, can.o(i.Can_CheckCanStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Can_CheckCanStatus
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckStatus
+<BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckStatus
 </UL>
 
-<P><STRONG><a name="[e6]"></a>Can_CheckStatus</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, can.o(i.Can_CheckStatus))
+<P><STRONG><a name="[ef]"></a>Can_CheckStatus</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, can.o(i.Can_CheckStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_CheckStatus &rArr; Can_CheckCanStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckCanStatus
+<BR>[Calls]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckCanStatus
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendDataToJoints
+<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendDataToJoints
 </UL>
 
-<P><STRONG><a name="[ec]"></a>Can_FdcanConf</STRONG> (Thumb, 190 bytes, Stack size 8 bytes, can.o(i.Can_FdcanConf))
+<P><STRONG><a name="[f5]"></a>Can_FdcanConf</STRONG> (Thumb, 190 bytes, Stack size 8 bytes, can.o(i.Can_FdcanConf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Can_FdcanConf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_EnableIRQ
+<BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_EnableIRQ
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
 </UL>
 
-<P><STRONG><a name="[ea]"></a>Can_FiltersConf</STRONG> (Thumb, 404 bytes, Stack size 28 bytes, can.o(i.Can_FiltersConf))
+<P><STRONG><a name="[f3]"></a>Can_FiltersConf</STRONG> (Thumb, 404 bytes, Stack size 28 bytes, can.o(i.Can_FiltersConf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_FiltersConf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
 </UL>
 
-<P><STRONG><a name="[f1]"></a>Can_ReadFrameChangeConfResponse</STRONG> (Thumb, 362 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeConfResponse))
+<P><STRONG><a name="[fa]"></a>Can_ReadFrameChangeConfResponse</STRONG> (Thumb, 362 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeConfResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_ReadFrameChangeConfResponse
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
+<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
 </UL>
 
-<P><STRONG><a name="[f0]"></a>Can_ReadFrameChangeFsmResponse</STRONG> (Thumb, 338 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeFsmResponse))
+<P><STRONG><a name="[f9]"></a>Can_ReadFrameChangeFsmResponse</STRONG> (Thumb, 338 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeFsmResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_ReadFrameChangeFsmResponse
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
+<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
 </UL>
 
-<P><STRONG><a name="[ef]"></a>Can_ReadFrameMoveResponse</STRONG> (Thumb, 598 bytes, Stack size 32 bytes, can.o(i.Can_ReadFrameMoveResponse))
+<P><STRONG><a name="[f8]"></a>Can_ReadFrameMoveResponse</STRONG> (Thumb, 598 bytes, Stack size 32 bytes, can.o(i.Can_ReadFrameMoveResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Can_ReadFrameMoveResponse
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
+<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
 </UL>
 
-<P><STRONG><a name="[ee]"></a>Can_ReadFramesFromBuffer</STRONG> (Thumb, 104 bytes, Stack size 16 bytes, can.o(i.Can_ReadFramesFromBuffer))
+<P><STRONG><a name="[f7]"></a>Can_ReadFramesFromBuffer</STRONG> (Thumb, 104 bytes, Stack size 16 bytes, can.o(i.Can_ReadFramesFromBuffer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Can_ReadFramesFromBuffer &rArr; Can_ReadFrameMoveResponse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFrameMoveResponse
-<LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFrameChangeFsmResponse
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFrameChangeConfResponse
+<BR>[Calls]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFrameMoveResponse
+<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFrameChangeFsmResponse
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFrameChangeConfResponse
 </UL>
 <BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FDCAN1_IT0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[a1]"></a>Can_SendFrameChangeFsm</STRONG> (Thumb, 372 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameChangeFsm))
+<P><STRONG><a name="[a1]"></a>Can_SendFrameChangeFsm</STRONG> (Thumb, 380 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameChangeFsm))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameChangeFsm
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a2]"></a>Can_SendFrameChangeMode</STRONG> (Thumb, 408 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameChangeMode))
+<P><STRONG><a name="[a2]"></a>Can_SendFrameChangeMode</STRONG> (Thumb, 416 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameChangeMode))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameChangeMode
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a0]"></a>Can_SendFrameMove</STRONG> (Thumb, 436 bytes, Stack size 32 bytes, can.o(i.Can_SendFrameMove))
+<P><STRONG><a name="[a0]"></a>Can_SendFrameMove</STRONG> (Thumb, 444 bytes, Stack size 32 bytes, can.o(i.Can_SendFrameMove))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Can_SendFrameMove
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[109]"></a>Can_SendFrameOccurred</STRONG> (Thumb, 94 bytes, Stack size 20 bytes, can.o(i.Can_SendFrameOccurred))
+<P><STRONG><a name="[123]"></a>Can_SendFrameOccurred</STRONG> (Thumb, 94 bytes, Stack size 20 bytes, can.o(i.Can_SendFrameOccurred))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Can_SendFrameOccurred
 </UL>
 <BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FDCAN1_IT0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[a3]"></a>Can_SendFrameResetAllDevices</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetAllDevices))
+<P><STRONG><a name="[a3]"></a>Can_SendFrameResetAllDevices</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetAllDevices))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetAllDevices
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[aa]"></a>Can_SendFrameResetGripper</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetGripper))
+<P><STRONG><a name="[aa]"></a>Can_SendFrameResetGripper</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetGripper))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetGripper
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a4]"></a>Can_SendFrameResetJoint0</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint0))
+<P><STRONG><a name="[a4]"></a>Can_SendFrameResetJoint0</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint0))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetJoint0
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a5]"></a>Can_SendFrameResetJoint1</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint1))
+<P><STRONG><a name="[a5]"></a>Can_SendFrameResetJoint1</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetJoint1
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a6]"></a>Can_SendFrameResetJoint2</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint2))
+<P><STRONG><a name="[a6]"></a>Can_SendFrameResetJoint2</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetJoint2
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a7]"></a>Can_SendFrameResetJoint3</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint3))
+<P><STRONG><a name="[a7]"></a>Can_SendFrameResetJoint3</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetJoint3
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a8]"></a>Can_SendFrameResetJoint4</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint4))
+<P><STRONG><a name="[a8]"></a>Can_SendFrameResetJoint4</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint4))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetJoint4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[a9]"></a>Can_SendFrameResetJoint5</STRONG> (Thumb, 290 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint5))
+<P><STRONG><a name="[a9]"></a>Can_SendFrameResetJoint5</STRONG> (Thumb, 328 bytes, Stack size 28 bytes, can.o(i.Can_SendFrameResetJoint5))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_SendFrameResetJoint5
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> can.o(i.Can_TxBufferConf)
 </UL>
-<P><STRONG><a name="[f3]"></a>Can_SendFrameToDevices</STRONG> (Thumb, 126 bytes, Stack size 16 bytes, can.o(i.Can_SendFrameToDevices))
+<P><STRONG><a name="[fc]"></a>Can_SendFrameToDevices</STRONG> (Thumb, 126 bytes, Stack size 16 bytes, can.o(i.Can_SendFrameToDevices))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Can_SendFrameToDevices
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendDataToJoints
+<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendDataToJoints
 </UL>
 
-<P><STRONG><a name="[e9]"></a>Can_StructConf</STRONG> (Thumb, 56 bytes, Stack size 20 bytes, can.o(i.Can_StructConf))
+<P><STRONG><a name="[f2]"></a>Can_StructConf</STRONG> (Thumb, 56 bytes, Stack size 20 bytes, can.o(i.Can_StructConf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Can_StructConf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
 </UL>
 
-<P><STRONG><a name="[eb]"></a>Can_TxBufferConf</STRONG> (Thumb, 538 bytes, Stack size 20 bytes, can.o(i.Can_TxBufferConf))
+<P><STRONG><a name="[f4]"></a>Can_TxBufferConf</STRONG> (Thumb, 538 bytes, Stack size 20 bytes, can.o(i.Can_TxBufferConf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Can_TxBufferConf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
 </UL>
 
-<P><STRONG><a name="[ed]"></a>__NVIC_EnableIRQ</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, can.o(i.__NVIC_EnableIRQ))
-<BR><BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_FdcanConf
+<P><STRONG><a name="[f6]"></a>__NVIC_EnableIRQ</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, can.o(i.__NVIC_EnableIRQ))
+<BR><BR>[Called By]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_FdcanConf
 </UL>
 
-<P><STRONG><a name="[d2]"></a>Com_CheckConsistencyReceivedFrame</STRONG> (Thumb, 84 bytes, Stack size 12 bytes, com.o(i.Com_CheckConsistencyReceivedFrame))
+<P><STRONG><a name="[d1]"></a>Com_CheckConsistencyReceivedFrame</STRONG> (Thumb, 84 bytes, Stack size 12 bytes, com.o(i.Com_CheckConsistencyReceivedFrame))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Com_CheckConsistencyReceivedFrame
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
 <P><STRONG><a name="[d8]"></a>Com_ClearStr</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, com.o(i.Com_ClearStr))
 <BR><BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComSendResponseToHost
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
 <P><STRONG><a name="[c7]"></a>Com_Crc16</STRONG> (Thumb, 58 bytes, Stack size 20 bytes, com.o(i.Com_Crc16))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Com_Crc16
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameTrajectory
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameResetCanDevices
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameTrajectory
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFramePidParam
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameFricionTable
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameFricionPolynomial
@@ -1391,7 +1532,7 @@ Local Symbols
 <P><STRONG><a name="[c3]"></a>Com_ReinitDmaReadStream</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, com.o(i.Com_ReinitDmaReadStream))
 <BR><BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM8_UP_TIM13_IRQHandler
 <LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA1_Stream0_IRQHandler
-<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
 <P><STRONG><a name="[9f]"></a>Host_ComPrepareFrameJtcStatus</STRONG> (Thumb, 790 bytes, Stack size 24 bytes, com.o(i.Host_ComPrepareFrameJtcStatus))
@@ -1407,7 +1548,7 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf (via Veneer)
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_Crc16
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
 <P><STRONG><a name="[ca]"></a>Host_ComReadFrameFricionPolynomial</STRONG> (Thumb, 162 bytes, Stack size 32 bytes, com.o(i.Host_ComReadFrameFricionPolynomial))
@@ -1415,7 +1556,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_Crc16
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
 <P><STRONG><a name="[cb]"></a>Host_ComReadFrameFricionTable</STRONG> (Thumb, 334 bytes, Stack size 40 bytes, com.o(i.Host_ComReadFrameFricionTable))
@@ -1424,7 +1565,7 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_FindMinMaxVelTempInFrictionTabeIdx (via Veneer)
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_Crc16
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
 <P><STRONG><a name="[cd]"></a>Host_ComReadFramePidParam</STRONG> (Thumb, 400 bytes, Stack size 24 bytes, com.o(i.Host_ComReadFramePidParam))
@@ -1432,37 +1573,29 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_Crc16
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
-<P><STRONG><a name="[ce]"></a>Host_ComReadFrameResetCanDevices</STRONG> (Thumb, 150 bytes, Stack size 24 bytes, com.o(i.Host_ComReadFrameResetCanDevices))
-<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = Host_ComReadFrameResetCanDevices &rArr; Com_Crc16
-</UL>
-<BR>[Calls]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_Crc16
-</UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
-</UL>
-
-<P><STRONG><a name="[cf]"></a>Host_ComReadFrameTrajectory</STRONG> (Thumb, 452 bytes, Stack size 40 bytes, com.o(i.Host_ComReadFrameTrajectory))
+<P><STRONG><a name="[ce]"></a>Host_ComReadFrameTrajectory</STRONG> (Thumb, 452 bytes, Stack size 40 bytes, com.o(i.Host_ComReadFrameTrajectory))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = Host_ComReadFrameTrajectory &rArr; Com_Crc16
 </UL>
-<BR>[Calls]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear (via Veneer)
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_Crc16
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
+<BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFromHost
 </UL>
 
-<P><STRONG><a name="[d1]"></a>Host_ComReadFromHost</STRONG> (Thumb, 876 bytes, Stack size 32 bytes, com.o(i.Host_ComReadFromHost))
+<P><STRONG><a name="[d0]"></a>Host_ComReadFromHost</STRONG> (Thumb, 920 bytes, Stack size 32 bytes, com.o(i.Host_ComReadFromHost))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1448<LI>Call Chain = Host_ComReadFromHost &rArr; Host_ComReadFrameArmModel &rArr; RNEA_Conf &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf (via Veneer)
-<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultPidParam (via Veneer)
-<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction (via Veneer)
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetDefualtArmModel (via Veneer)
-<LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClearInternallErrorsInJtc (via Veneer)
-<LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClearExternallErrorsViaCan (via Veneer)
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameTrajectory
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameResetCanDevices
+<LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultPidParam (via Veneer)
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction (via Veneer)
+<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetDefualtArmModel (via Veneer)
+<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ResetDevicesViaCan (via Veneer)
+<LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClearInternallErrorsInJtc (via Veneer)
+<LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClearExternallErrorsViaCan (via Veneer)
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameTrajectory
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFramePidParam
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameFricionTable
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComReadFrameFricionPolynomial
@@ -1470,7 +1603,7 @@ Local Symbols
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_ReinitDmaReadStream
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_Crc16
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_ClearStr
-<LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_CheckConsistencyReceivedFrame
+<LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_CheckConsistencyReceivedFrame
 </UL>
 <BR>[Called By]<UL><LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_IRQHandler
@@ -1492,8 +1625,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComConf
 </UL>
 
-<P><STRONG><a name="[c5]"></a>Host_ComUart3Conf</STRONG> (Thumb, 170 bytes, Stack size 24 bytes, com.o(i.Host_ComUart3Conf))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Host_ComUart3Conf
+<P><STRONG><a name="[c5]"></a>Host_ComUart2Conf</STRONG> (Thumb, 170 bytes, Stack size 24 bytes, com.o(i.Host_ComUart2Conf))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Host_ComUart2Conf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_EnableIRQ
 </UL>
@@ -1501,217 +1634,377 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[da]"></a>__NVIC_EnableIRQ</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, com.o(i.__NVIC_EnableIRQ))
-<BR><BR>[Called By]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComUart3Conf
+<BR><BR>[Called By]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComUart2Conf
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Host_ComTimCof
 </UL>
 
-<P><STRONG><a name="[f4]"></a>Control_CheckErrorFlags</STRONG> (Thumb, 378 bytes, Stack size 24 bytes, control.o(i.Control_CheckErrorFlags))
+<P><STRONG><a name="[fd]"></a>Control_CheckErrorFlags</STRONG> (Thumb, 390 bytes, Stack size 24 bytes, control.o(i.Control_CheckErrorFlags))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Control_CheckErrorFlags
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SafetyOutOff
-<LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_HostCheckGeneralTimeout (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SafetyOutOff
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Com_HostCheckGeneralTimeout (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
-<LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClearInternallErrorsInJtc
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ClearInternallErrorsInJtc
 </UL>
 
-<P><STRONG><a name="[f9]"></a>Control_CheckLimits</STRONG> (Thumb, 340 bytes, Stack size 8 bytes, control.o(i.Control_CheckLimits))
+<P><STRONG><a name="[108]"></a>Control_CheckLimits</STRONG> (Thumb, 340 bytes, Stack size 8 bytes, control.o(i.Control_CheckLimits))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Control_CheckLimits
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[103]"></a>Control_ClockConf</STRONG> (Thumb, 212 bytes, Stack size 36 bytes, control.o(i.Control_ClockConf))
+<P><STRONG><a name="[11d]"></a>Control_ClockConf</STRONG> (Thumb, 212 bytes, Stack size 36 bytes, control.o(i.Control_ClockConf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Control_ClockConf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[f7]"></a>Control_JtcAct</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, control.o(i.Control_JtcAct))
-<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = Control_JtcAct &rArr; Control_JtcCheckState &rArr; Control_JtcCheckStateInit
+<P><STRONG><a name="[100]"></a>Control_JtcAct</STRONG> (Thumb, 214 bytes, Stack size 16 bytes, control.o(i.Control_JtcAct))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2776<LI>Call Chain = Control_JtcAct &rArr; Control_JtcInit &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetNewTorqueValues
-<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandClearErrorsToJoints
-<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckLimits
-<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendDataToJoints
+<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetNewTorqueValues
+<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice
+<LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandClearErrorsToJoints
+<LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToReadyToOperate
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckLimits
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
+<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendDataToJoints
 </UL>
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
 </UL>
 
-<P><STRONG><a name="[f8]"></a>Control_JtcCheckState</STRONG> (Thumb, 260 bytes, Stack size 32 bytes, control.o(i.Control_JtcCheckState))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Control_JtcCheckState &rArr; Control_JtcCheckStateInit
+<P><STRONG><a name="[101]"></a>Control_JtcCheckState</STRONG> (Thumb, 260 bytes, Stack size 32 bytes, control.o(i.Control_JtcCheckState))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Control_JtcCheckState &rArr; Joints_SetDefaultVariables
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajCheckState
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckStateInit
+<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajCheckState
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckStateInit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
-</UL>
-
-<P><STRONG><a name="[fd]"></a>Control_JtcCheckStateInit</STRONG> (Thumb, 252 bytes, Stack size 20 bytes, control.o(i.Control_JtcCheckStateInit))
-<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Control_JtcCheckStateInit
-</UL>
-<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[104]"></a>Control_JtcVariableConf</STRONG> (Thumb, 118 bytes, Stack size 12 bytes, control.o(i.Control_JtcVariableConf))
+<P><STRONG><a name="[10c]"></a>Control_JtcCheckStateInit</STRONG> (Thumb, 190 bytes, Stack size 12 bytes, control.o(i.Control_JtcCheckStateInit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Control_JtcCheckStateInit
+</UL>
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
+</UL>
+
+<P><STRONG><a name="[106]"></a>Control_JtcHoldPos</STRONG> (Thumb, 196 bytes, Stack size 16 bytes, control.o(i.Control_JtcHoldPos))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2744<LI>Call Chain = Control_JtcHoldPos &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+</UL>
+<BR>[Calls]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcPIDs
+<LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClearPointDouble
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
+<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetGripperToEnable
+<LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcPrepareSetedValuesForHoldPos
+</UL>
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+</UL>
+
+<P><STRONG><a name="[104]"></a>Control_JtcInit</STRONG> (Thumb, 488 bytes, Stack size 32 bytes, control.o(i.Control_JtcInit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2760<LI>Call Chain = Control_JtcInit &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+</UL>
+<BR>[Calls]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_StopIrValuesVariables
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_StartIrValuesVariables
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultVariables
+<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcInitRegsTorque
+<LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToReadyToOperate
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
+</UL>
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+</UL>
+
+<P><STRONG><a name="[107]"></a>Control_JtcOperate</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, control.o(i.Control_JtcOperate))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2744<LI>Call Chain = Control_JtcOperate &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+</UL>
+<BR>[Calls]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcPIDs
+<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensate
+<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajInterpolate
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
+<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetGripperToEnable
+<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcPrepareSetedValuesForOperate
+</UL>
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+</UL>
+
+<P><STRONG><a name="[111]"></a>Control_JtcPrepareSetedValuesForHoldPos</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, control.o(i.Control_JtcPrepareSetedValuesForHoldPos))
+<BR><BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+</UL>
+
+<P><STRONG><a name="[118]"></a>Control_JtcPrepareSetedValuesForOperate</STRONG> (Thumb, 116 bytes, Stack size 12 bytes, control.o(i.Control_JtcPrepareSetedValuesForOperate))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Control_JtcPrepareSetedValuesForOperate
+</UL>
+<BR>[Called By]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+</UL>
+
+<P><STRONG><a name="[10f]"></a>Control_JtcSetGripperToEnable</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, control.o(i.Control_JtcSetGripperToEnable))
+<BR><BR>[Called By]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+</UL>
+
+<P><STRONG><a name="[10e]"></a>Control_JtcSetJointToEnable</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, control.o(i.Control_JtcSetJointToEnable))
+<BR><BR>[Called By]<UL><LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcTeaching
+<LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+<LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+</UL>
+
+<P><STRONG><a name="[103]"></a>Control_JtcSetJointToReadyToOperate</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, control.o(i.Control_JtcSetJointToReadyToOperate))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Control_JtcSetJointToReadyToOperate
+</UL>
+<BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetNewTorqueValues
+<LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+</UL>
+
+<P><STRONG><a name="[105]"></a>Control_JtcTeaching</STRONG> (Thumb, 144 bytes, Stack size 16 bytes, control.o(i.Control_JtcTeaching))
+<BR><BR>[Stack]<UL><LI>Max Depth = 2744<LI>Call Chain = Control_JtcTeaching &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+</UL>
+<BR>[Calls]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToEnable
+<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetGripperToEnable
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
+</UL>
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+</UL>
+
+<P><STRONG><a name="[11e]"></a>Control_JtcVariableConf</STRONG> (Thumb, 118 bytes, Stack size 12 bytes, control.o(i.Control_JtcVariableConf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Control_JtcVariableConf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[f6]"></a>Control_SafetyOutOff</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, control.o(i.Control_SafetyOutOff))
-<BR><BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
-<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
+<P><STRONG><a name="[ff]"></a>Control_SafetyOutOff</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, control.o(i.Control_SafetyOutOff))
+<BR><BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
 </UL>
 
-<P><STRONG><a name="[fb]"></a>Control_SendCommandClearErrorsToJoints</STRONG> (Thumb, 88 bytes, Stack size 20 bytes, control.o(i.Control_SendCommandClearErrorsToJoints))
+<P><STRONG><a name="[10a]"></a>Control_SendCommandClearErrorsToJoints</STRONG> (Thumb, 88 bytes, Stack size 20 bytes, control.o(i.Control_SendCommandClearErrorsToJoints))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Control_SendCommandClearErrorsToJoints
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[fc]"></a>Control_SendCommandResetDevice</STRONG> (Thumb, 338 bytes, Stack size 24 bytes, control.o(i.Control_SendCommandResetDevice))
+<P><STRONG><a name="[10b]"></a>Control_SendCommandResetDevice</STRONG> (Thumb, 432 bytes, Stack size 24 bytes, control.o(i.Control_SendCommandResetDevice))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Control_SendCommandResetDevice &rArr; Joints_SetResetValuesVariables
 </UL>
-<BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetResetValuesVariables
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gripper_SetResetValuesVariables (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetResetValuesVariables
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gripper_SetResetValuesVariables (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
-</UL>
-
-<P><STRONG><a name="[fa]"></a>Control_SetNewTorqueValues</STRONG> (Thumb, 88 bytes, Stack size 12 bytes, control.o(i.Control_SetNewTorqueValues))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Control_SetNewTorqueValues
-</UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[102]"></a>Control_SetTable</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, control.o(i.Control_SetTable))
-<BR><BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetDefualtArmModel
+<P><STRONG><a name="[109]"></a>Control_SetNewTorqueValues</STRONG> (Thumb, 84 bytes, Stack size 24 bytes, control.o(i.Control_SetNewTorqueValues))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Control_SetNewTorqueValues &rArr; Control_JtcSetJointToReadyToOperate
+</UL>
+<BR>[Calls]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcSetJointToReadyToOperate
+</UL>
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[107]"></a>Control_TimerConf</STRONG> (Thumb, 100 bytes, Stack size 20 bytes, control.o(i.Control_TimerConf))
+<P><STRONG><a name="[11c]"></a>Control_SetTable</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, control.o(i.Control_SetTable))
+<BR><BR>[Called By]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetDefualtArmModel
+</UL>
+
+<P><STRONG><a name="[121]"></a>Control_TimerConf</STRONG> (Thumb, 100 bytes, Stack size 20 bytes, control.o(i.Control_TimerConf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = Control_TimerConf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[fe]"></a>Control_TrajCheckState</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, control.o(i.Control_TrajCheckState))
+<P><STRONG><a name="[10d]"></a>Control_TrajCheckState</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, control.o(i.Control_TrajCheckState))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Control_TrajCheckState
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcCheckState
 </UL>
 
-<P><STRONG><a name="[108]"></a>Control_TrajClearPointDouble</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, control.o(i.Control_TrajClearPointDouble))
-<BR><BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
+<P><STRONG><a name="[110]"></a>Control_TrajClearPointDouble</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, control.o(i.Control_TrajClearPointDouble))
+<BR><BR>[Called By]<UL><LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
 </UL>
 
-<P><STRONG><a name="[110]"></a>Joints_SetDefaultFrictionPolynomial</STRONG> (Thumb, 414 bytes, Stack size 192 bytes, joints.o(i.Joints_SetDefaultFrictionPolynomial))
+<P><STRONG><a name="[117]"></a>Control_TrajInterpolate</STRONG> (Thumb, 460 bytes, Stack size 104 bytes, control.o(i.Control_TrajInterpolate))
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = Control_TrajInterpolate &rArr; __aeabi_memcpy4
+</UL>
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+</UL>
+<BR>[Called By]<UL><LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
+</UL>
+
+<P><STRONG><a name="[129]"></a>Joints_CalcFrictionCompensatePolynomial</STRONG> (Thumb, 252 bytes, Stack size 96 bytes, joints.o(i.Joints_CalcFrictionCompensatePolynomial))
+<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = Joints_CalcFrictionCompensatePolynomial &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
+</UL>
+<BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow (via Veneer)
+</UL>
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensate
+</UL>
+
+<P><STRONG><a name="[128]"></a>Joints_CalcFrictionCompensateTable</STRONG> (Thumb, 390 bytes, Stack size 52 bytes, joints.o(i.Joints_CalcFrictionCompensateTable))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Joints_CalcFrictionCompensateTable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensate
+</UL>
+
+<P><STRONG><a name="[12b]"></a>Joints_SetDefaultFrictionPolynomial</STRONG> (Thumb, 414 bytes, Stack size 192 bytes, joints.o(i.Joints_SetDefaultFrictionPolynomial))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = Joints_SetDefaultFrictionPolynomial
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction
+<BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction
 </UL>
 
-<P><STRONG><a name="[10f]"></a>Joints_SetDefaultFrictionTable</STRONG> (Thumb, 160 bytes, Stack size 48 bytes, joints.o(i.Joints_SetDefaultFrictionTable))
+<P><STRONG><a name="[12a]"></a>Joints_SetDefaultFrictionTable</STRONG> (Thumb, 160 bytes, Stack size 48 bytes, joints.o(i.Joints_SetDefaultFrictionTable))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Joints_SetDefaultFrictionTable &rArr; Joints_FindMinMaxVelTempInFrictionTabeIdx
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_FindMinMaxVelTempInFrictionTabeIdx
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction
+<BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction
 </UL>
 
-<P><STRONG><a name="[10a]"></a>HRX</STRONG> (Thumb, 138 bytes, Stack size 152 bytes, rnea.o(i.HRX))
+<P><STRONG><a name="[124]"></a>HRX</STRONG> (Thumb, 138 bytes, Stack size 152 bytes, rnea.o(i.HRX))
 <BR><BR>[Stack]<UL><LI>Max Depth = 336<LI>Call Chain = HRX &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin (via Veneer)
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos (via Veneer)
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[10c]"></a>HRY</STRONG> (Thumb, 138 bytes, Stack size 152 bytes, rnea.o(i.HRY))
+<P><STRONG><a name="[125]"></a>HRY</STRONG> (Thumb, 138 bytes, Stack size 152 bytes, rnea.o(i.HRY))
 <BR><BR>[Stack]<UL><LI>Max Depth = 336<LI>Call Chain = HRY &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin (via Veneer)
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos (via Veneer)
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[10d]"></a>HRZ</STRONG> (Thumb, 138 bytes, Stack size 152 bytes, rnea.o(i.HRZ))
+<P><STRONG><a name="[126]"></a>HRZ</STRONG> (Thumb, 138 bytes, Stack size 152 bytes, rnea.o(i.HRZ))
 <BR><BR>[Stack]<UL><LI>Max Depth = 336<LI>Call Chain = HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sin (via Veneer)
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cos (via Veneer)
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[10e]"></a>HT</STRONG> (Thumb, 80 bytes, Stack size 144 bytes, rnea.o(i.HT))
+<P><STRONG><a name="[127]"></a>HT</STRONG> (Thumb, 80 bytes, Stack size 144 bytes, rnea.o(i.HT))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = HT &rArr; __aeabi_memcpy4
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[111]"></a>Mat3Ones</STRONG> (Thumb, 72 bytes, Stack size 88 bytes, rnea.o(i.Mat3Ones))
+<P><STRONG><a name="[12c]"></a>Mat3Ones</STRONG> (Thumb, 72 bytes, Stack size 88 bytes, rnea.o(i.Mat3Ones))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Mat3Ones &rArr; __aeabi_memcpy4
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[112]"></a>Mat3Transpose</STRONG> (Thumb, 76 bytes, Stack size 112 bytes, rnea.o(i.Mat3Transpose))
+<P><STRONG><a name="[12d]"></a>Mat3Transpose</STRONG> (Thumb, 76 bytes, Stack size 112 bytes, rnea.o(i.Mat3Transpose))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = Mat3Transpose &rArr; __aeabi_memcpy4
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[113]"></a>Mat4Ones</STRONG> (Thumb, 68 bytes, Stack size 144 bytes, rnea.o(i.Mat4Ones))
+<P><STRONG><a name="[12e]"></a>Mat3xMat3</STRONG> (Thumb, 126 bytes, Stack size 120 bytes, rnea.o(i.Mat3xMat3))
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = Mat3xMat3 &rArr; __aeabi_memcpy4
+</UL>
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+</UL>
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+</UL>
+
+<P><STRONG><a name="[132]"></a>Mat3xVec3</STRONG> (Thumb, 96 bytes, Stack size 88 bytes, rnea.o(i.Mat3xVec3))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Mat3xVec3
+</UL>
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+</UL>
+
+<P><STRONG><a name="[12f]"></a>Mat4Ones</STRONG> (Thumb, 68 bytes, Stack size 144 bytes, rnea.o(i.Mat4Ones))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = Mat4Ones &rArr; __aeabi_memcpy4
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[114]"></a>Mat4ToMat3</STRONG> (Thumb, 72 bytes, Stack size 112 bytes, rnea.o(i.Mat4ToMat3))
+<P><STRONG><a name="[130]"></a>Mat4ToMat3</STRONG> (Thumb, 72 bytes, Stack size 112 bytes, rnea.o(i.Mat4ToMat3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = Mat4ToMat3 &rArr; __aeabi_memcpy4
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[116]"></a>Mat4ToVec3</STRONG> (Thumb, 46 bytes, Stack size 48 bytes, rnea.o(i.Mat4ToVec3))
+<P><STRONG><a name="[138]"></a>Mat4ToVec3</STRONG> (Thumb, 46 bytes, Stack size 48 bytes, rnea.o(i.Mat4ToVec3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Mat4ToVec3
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[115]"></a>Mat4xMat4</STRONG> (Thumb, 118 bytes, Stack size 176 bytes, rnea.o(i.Mat4xMat4))
+<P><STRONG><a name="[131]"></a>Mat4xMat4</STRONG> (Thumb, 118 bytes, Stack size 176 bytes, rnea.o(i.Mat4xMat4))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = Mat4xMat4 &rArr; __aeabi_memcpy4
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
 </UL>
 
-<P><STRONG><a name="[117]"></a>Vec3SubVec3</STRONG> (Thumb, 58 bytes, Stack size 88 bytes, rnea.o(i.Vec3SubVec3))
+<P><STRONG><a name="[134]"></a>Vec3AddVec3</STRONG> (Thumb, 58 bytes, Stack size 88 bytes, rnea.o(i.Vec3AddVec3))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Vec3AddVec3
+</UL>
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+</UL>
+
+<P><STRONG><a name="[135]"></a>Vec3Cross</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, rnea.o(i.Vec3Cross))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Vec3Cross
+</UL>
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+</UL>
+
+<P><STRONG><a name="[137]"></a>Vec3SubVec3</STRONG> (Thumb, 58 bytes, Stack size 88 bytes, rnea.o(i.Vec3SubVec3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Vec3SubVec3
 </UL>
-<BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_Conf
+</UL>
+
+<P><STRONG><a name="[136]"></a>Vec3Zeros</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, rnea.o(i.Vec3Zeros))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Vec3Zeros
+</UL>
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
+</UL>
+
+<P><STRONG><a name="[133]"></a>Vec3xScalar</STRONG> (Thumb, 50 bytes, Stack size 64 bytes, rnea.o(i.Vec3xScalar))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = Vec3xScalar
+</UL>
+<BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
 </UL>
 <P>
 <H3>

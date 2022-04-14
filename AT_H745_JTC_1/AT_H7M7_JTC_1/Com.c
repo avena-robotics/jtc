@@ -813,13 +813,7 @@ static void Host_ComReadFrameResetCanDevices(uint8_t *buf)
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
 		
-		pC->Joints[Can_DN_Joint0].reqCanReset = ((buf[4] >> Can_DN_Joint0) & 0x01);
-		pC->Joints[Can_DN_Joint1].reqCanReset = ((buf[4] >> Can_DN_Joint1) & 0x01);
-		pC->Joints[Can_DN_Joint2].reqCanReset = ((buf[4] >> Can_DN_Joint2) & 0x01);
-		pC->Joints[Can_DN_Joint3].reqCanReset = ((buf[4] >> Can_DN_Joint3) & 0x01);
-		pC->Joints[Can_DN_Joint4].reqCanReset = ((buf[4] >> Can_DN_Joint4) & 0x01);
-		pC->Joints[Can_DN_Joint5].reqCanReset = ((buf[4] >> Can_DN_Joint5) & 0x01);
-		pC->Gripper.reqCanReset = ((buf[4] >> Can_DN_Gripper) & 0x01);
+		Control_ResetDevicesViaCan(buf[4]);
 		//buf[5] - buf[7] currently not used, reserved for future version
 	}
 	else

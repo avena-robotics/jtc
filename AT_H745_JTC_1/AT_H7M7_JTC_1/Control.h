@@ -197,10 +197,10 @@ typedef enum
 #define MAXINT16										32767.0
 #define MAXINT32										2147483647.0
 
-#define TESTMODE
+//#define TESTMODE
 
-//#define RS422
-#define UARTUSB
+#define RS422
+//#define UARTUSB
 
 #ifdef RS422
 #define HOST_COMBAUDRATE 						115200
@@ -572,6 +572,7 @@ void Control_TrajClear(void);
 void Control_SetDefualtArmModel(void);
 void Control_ClearInternallErrorsInJtc(void);
 void Control_ClearExternallErrorsViaCan(uint8_t byte);
+void Control_ResetDevicesViaCan(uint8_t byte);
 
 #include "Com.h"
 #include "Can.h"

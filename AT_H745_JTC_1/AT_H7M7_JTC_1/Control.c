@@ -184,6 +184,12 @@ static void Control_TimerConf(void)
 	TIM5->ARR = 0xffffffff-1;
 	TIM5->CR1 |= TIM_CR1_CEN;
 }
+static void Control_ResetCanDevicesAtBeginig(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].reqCanReset = true;
+	pC->Gripper.reqCanReset = true;
+}
 void Control_SystemConf(void)
 {
 	Control_ClockConf();
@@ -195,6 +201,7 @@ void Control_SystemConf(void)
 	Can_Conf();
 	RNEA_Conf();
 	Cotrol_SafetyConf();
+	Control_ResetCanDevicesAtBeginig();
 	Control_TimerConf();
 	pC->Jtc.currentFsm = JTC_FSM_Init;
 }
@@ -216,6 +223,10 @@ static void Control_JtcSetJointToModeTorque(uint8_t num)
 static void Control_JtcSetJointToCurrentFsm(uint8_t num)
 {
 	pC->Joints[num].targetFsm = pC->Joints[num].currentFsm;
+}
+static void Control_JtcSetGripperToCurrentFsm(void)
+{
+	pC->Gripper.targetFsm = pC->Gripper.currentFsm;
 }
 static void Control_JtcSetJointToInit(uint8_t num)
 {
@@ -247,6 +258,10 @@ static void Control_JtcSetGripperToEnable(void)
 {
 	pC->Gripper.targetFsm = Joint_FSM_OperationEnable;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
+}
+static void Control_JtcSetGripperToTargetConf(void)
+{
+	pC->Can.TxMsgs[Can_TxF_ChangeMode].reqSend = true;
 }
 static void Control_CheckLimits(void)
 {
@@ -412,7 +427,7 @@ static void Control_SendCommandResetDevice(void)
 	if(pC->Gripper.reqCanReset == false)
 			flag = false;
 	
-	if(flag == true)
+	if(flag == true && pC->Can.TxMsgs[Can_TxF_ResetAllDevices].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		for(int num=0;num<JOINTS_MAX;num++)
 		{
@@ -427,43 +442,43 @@ static void Control_SendCommandResetDevice(void)
 	}
 	
 	//indywidualne resetowanie urzadzen
-	if(pC->Joints[0].reqCanReset == true)
+	if(pC->Joints[0].reqCanReset == true && pC->Can.TxMsgs[Can_TxF_ResetJoint0].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		pC->Joints[0].reqCanReset = false;
 		Joints_SetResetValuesVariables(0);
 		pC->Can.TxMsgs[Can_TxF_ResetJoint0].reqSend = true;
 	}
-	if(pC->Joints[1].reqCanReset == true)
+	if(pC->Joints[1].reqCanReset == true && pC->Can.TxMsgs[Can_TxF_ResetJoint1].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		pC->Joints[1].reqCanReset = false;
 		Joints_SetResetValuesVariables(1);
 		pC->Can.TxMsgs[Can_TxF_ResetJoint1].reqSend = true;
 	}
-	if(pC->Joints[2].reqCanReset == true)
+	if(pC->Joints[2].reqCanReset == true && pC->Can.TxMsgs[Can_TxF_ResetJoint2].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		pC->Joints[2].reqCanReset = false;
 		Joints_SetResetValuesVariables(2);
 		pC->Can.TxMsgs[Can_TxF_ResetJoint2].reqSend = true;
 	}
-	if(pC->Joints[3].reqCanReset == true)
+	if(pC->Joints[3].reqCanReset == true && pC->Can.TxMsgs[Can_TxF_ResetJoint3].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		pC->Joints[3].reqCanReset = false;
 		Joints_SetResetValuesVariables(3);
 		pC->Can.TxMsgs[Can_TxF_ResetJoint3].reqSend = true;
 	}
-	if(pC->Joints[4].reqCanReset == true)
+	if(pC->Joints[4].reqCanReset == true && pC->Can.TxMsgs[Can_TxF_ResetJoint4].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		pC->Joints[4].reqCanReset = false;
 		Joints_SetResetValuesVariables(4);
 		pC->Can.TxMsgs[Can_TxF_ResetJoint4].reqSend = true;
 	}
-	if(pC->Joints[5].reqCanReset == true)
+	if(pC->Joints[5].reqCanReset == true && pC->Can.TxMsgs[Can_TxF_ResetJoint5].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		pC->Joints[5].reqCanReset = false;
 		Joints_SetResetValuesVariables(5);
 		pC->Can.TxMsgs[Can_TxF_ResetJoint5].reqSend = true;
 	}
-	if(pC->Gripper.reqCanReset == true)
+	if(pC->Gripper.reqCanReset == true && pC->Can.TxMsgs[Can_TxF_ResetGripper].timeoutCnt > CAN_RESETTIMEOUT)
 	{
 		pC->Gripper.reqCanReset = false;
 		Gripper_SetResetValuesVariables();
@@ -714,6 +729,20 @@ void Control_ClearExternallErrorsViaCan(uint8_t byte)
 	if(((byte >> Can_DN_Joint5) & 0x01) == 0x01) 		pC->Joints[Can_DN_Joint5].reqCanClearErrors = true;
 	if(((byte >> Can_DN_Gripper) & 0x01) == 0x01) 	pC->Gripper.reqCanClearErrors = true;
 }
+void Control_ResetDevicesViaCan(uint8_t byte)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+		Joints_SetResetValuesVariables(num);
+	Gripper_SetResetValuesVariables();
+	
+	pC->Joints[Can_DN_Joint0].reqCanReset = ((byte >> Can_DN_Joint0) & 0x01);
+	pC->Joints[Can_DN_Joint1].reqCanReset = ((byte >> Can_DN_Joint1) & 0x01);
+	pC->Joints[Can_DN_Joint2].reqCanReset = ((byte >> Can_DN_Joint2) & 0x01);
+	pC->Joints[Can_DN_Joint3].reqCanReset = ((byte >> Can_DN_Joint3) & 0x01);
+	pC->Joints[Can_DN_Joint4].reqCanReset = ((byte >> Can_DN_Joint4) & 0x01);
+	pC->Joints[Can_DN_Joint5].reqCanReset = ((byte >> Can_DN_Joint5) & 0x01);
+	pC->Gripper.reqCanReset = ((byte >> Can_DN_Gripper) & 0x01);
+}
 static void Control_JtcCheckStateError(void)
 {
 	// Error check
@@ -733,45 +762,39 @@ static void Control_JtcCheckStateInit(void)
 		pC->Jtc.jtcInitStatus &= ~(1 << 2);
 	
 	#ifdef TESTMODE
-	pC->Joints[1].cWPosNotAccurate = false;
-	pC->Joints[2].cWPosNotAccurate = false;
-	pC->Joints[3].cWPosNotAccurate = false;
-	pC->Joints[4].cWPosNotAccurate = false;
-	pC->Joints[5].cWPosNotAccurate = false;
+	for(int num=1;num<JOINTS_MAX;num++)
+	{
+		pC->Joints[num].cWPosNotAccurate = false;
+		pC->Joints[num].flagFirstPosRead = true;
+		pC->Joints[num].currentMode = Joint_M_Torque;
+		pC->Joints[num].currentFsm = Joint_FSM_ReadyToOperate;
+		pC->Joints[num].flagConfirmChangeConf = true;
+	}
 	
-	pC->Joints[1].flagFirstPosRead = true;
-	pC->Joints[2].flagFirstPosRead = true;
-	pC->Joints[3].flagFirstPosRead = true;
-	pC->Joints[4].flagFirstPosRead = true;
-	pC->Joints[5].flagFirstPosRead = true;
 	pC->Gripper.flagFirstPosRead = true;
-	
-	pC->Joints[1].currentMode = Joint_M_Torque;
-	pC->Joints[2].currentMode = Joint_M_Torque;
-	pC->Joints[3].currentMode = Joint_M_Torque;
-	pC->Joints[4].currentMode = Joint_M_Torque;
-	pC->Joints[5].currentMode = Joint_M_Torque;
-	
-	pC->Joints[1].currentFsm = Joint_FSM_ReadyToOperate;
-	pC->Joints[2].currentFsm = Joint_FSM_ReadyToOperate;
-	pC->Joints[3].currentFsm = Joint_FSM_ReadyToOperate;
-	pC->Joints[4].currentFsm = Joint_FSM_ReadyToOperate;
-	pC->Joints[5].currentFsm = Joint_FSM_ReadyToOperate;
+	pC->Gripper.flagConfirmChangeConf = true;
 	pC->Gripper.currentFsm = Joint_FSM_ReadyToOperate;
 	#endif
 	
+	// Check Gripper init status flags
+	if(pC->Gripper.flagConfirmChangeConf == true && (pC->Gripper.currentFsm == Joint_FSM_ReadyToOperate || pC->Gripper.currentFsm == Joint_FSM_OperationEnable))
+		pC->Jtc.jointsInitStatus &= ~(1 << Can_DN_Gripper);
+	else if(pC->Gripper.flagConfirmChangeConf != true || pC->Gripper.currentFsm == Joint_FSM_Init || pC->Gripper.currentFsm == Joint_FSM_Start)
+		pC->Jtc.jointsInitStatus |= (1 << Can_DN_Gripper);
 	
 	// Check Joints init status flags
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
-		if(pC->Joints[num].currentMode == Joint_M_Torque && (pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate || pC->Joints[num].currentFsm == Joint_FSM_OperationEnable) && pC->Joints[num].cWPosNotAccurate == false)
+		if(pC->Joints[num].flagConfirmChangeConf == true && (pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate || pC->Joints[num].currentFsm == Joint_FSM_OperationEnable) && pC->Joints[num].cWPosNotAccurate == false)
 			pC->Jtc.jointsInitStatus &= ~(1 << num);
-		else if(pC->Joints[num].currentMode != Joint_M_Torque || pC->Joints[num].currentFsm == Joint_FSM_Init || pC->Joints[num].currentFsm == Joint_FSM_Start || pC->Joints[num].cWPosNotAccurate == true)
+		else if(pC->Joints[num].flagConfirmChangeConf != true || pC->Joints[num].currentFsm == Joint_FSM_Init || pC->Joints[num].currentFsm == Joint_FSM_Start || pC->Joints[num].cWPosNotAccurate == true)
 			pC->Jtc.jointsInitStatus |= (1 << num);
 	}
+	
+	// na czas testów dla Arka wyłączona konieczność przesyłanai tarcia, modelu manipulatora i pidów
 	pC->Jtc.jtcInitStatus = 0x00;
 	
-	// Check JTC init status and Joints init status
+	// Check JTC init status and Joints and Gripper init status
 	if(pC->Jtc.jtcInitStatus != 0x00 || pC->Jtc.jointsInitStatus != 0x00)
 		pC->Jtc.initModeReq = true;			// Continue of Init state
 	else
@@ -877,31 +900,48 @@ static void Control_JtcInit(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 		pC->Joints[num].setTorqueTemp = 0.0;
 	
-	// podstawowa inicjalizacja do momentu gdy: Tryb = Joint_M_Torque, Fsm = Joint_FSM_ReadyToOperate, nie odczytano jeszcze pozycji z jointa
+	// --------- inicjalizacja grippera
+	Control_JtcSetGripperToCurrentFsm();
+	if(pC->Gripper.flagFirstPosRead == false)
+	{
+		//Czekam na odpowiedź na ramke Move z grippera. Jeżeli nie nastapi to zapewne będzie TIMEOUT na Can
+	}
+	else if(pC->Gripper.flagFirstPosRead == true && pC->Gripper.currentFsm == Joint_FSM_Init)
+	{
+		pC->Gripper.flagConfirmChangeConf = false;
+		Control_JtcSetGripperToReadyToOperate();
+	}
+	else if(pC->Gripper.flagFirstPosRead == true && pC->Gripper.currentFsm == Joint_FSM_ReadyToOperate && pC->Gripper.flagConfirmChangeConf == false)
+	{
+		Control_JtcSetGripperToTargetConf();
+	}
+	
+	// ------- podstawowa inicjalizacja jointów do momentu gdy: Tryb = Joint_M_Torque, Fsm = Joint_FSM_ReadyToOperate, nie odczytano jeszcze pozycji z jointa
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
 		Control_JtcSetJointToCurrentFsm(num);
 		Control_JtcSetJointToCurrentMode(num);
 		
-		if(pC->Joints[num].currentMode != Joint_M_Torque && pC->Joints[num].currentFsm != Joint_FSM_Init)
+		if(pC->Joints[num].flagFirstPosRead == false)
 		{
-//			Control_JtcResetAllJoints();
+			//Czekam na odpowiedź na ramke Move z danego jointa. Jeżeli nie nastapi to zapewne będzie TIMEOUT na Can
 		}
-		else if(pC->Joints[num].currentMode != Joint_M_Torque && pC->Joints[num].currentFsm == Joint_FSM_Init)
+		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init)
+		{
+			pC->Joints[num].flagConfirmChangeConf = false;
+			Control_JtcSetJointToReadyToOperate(num);
+		}
+		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate && pC->Joints[num].flagConfirmChangeConf == false)
 		{
 			Control_JtcSetJointToModeTorque(num);
 		}
-		else if(pC->Joints[num].currentMode == Joint_M_Torque && pC->Joints[num].currentFsm == Joint_FSM_Init)
-		{
-			Control_JtcSetJointToReadyToOperate(num);
-		}
 	}
 	
-	// dodatkowa inicjalizacja do momentu gdy EncoderPositionAccurate
+	// -------- dodatkowa inicjalizacja jointów do momentu gdy EncoderPositionAccurate
 	bool flag = true;
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
-		if(pC->Joints[num].currentMode != Joint_M_Torque)
+		if(pC->Joints[num].flagConfirmChangeConf != true)
 			flag = false;
 		if(pC->Joints[num].currentFsm != Joint_FSM_ReadyToOperate && pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
 			flag = false;
@@ -1013,39 +1053,37 @@ static void Control_JtcAct(void)
 	Control_CheckErrorFlags();
 	Control_JtcCheckState();
 	
-//	if(pC->Jtc.currentFsm == JTC_FSM_Error)
-//	{
-//		LED3_ON;
-//		Control_JtcError();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
-//	{
-//		LED1_ON;
-//		Control_JtcInit();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
-//	{
-//		LED1_ON;
-//		LED2_ON;
-//		Control_JtcTeaching();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
-//	{
-//		LED2_ON;
-//		Control_JtcHoldPos();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
-//	{
-//		LED2_ON;
-//		Control_JtcOperate();
-//	}
+	if(pC->Jtc.currentFsm == JTC_FSM_Error)
+	{
+		LED3_ON;
+		Control_JtcError();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
+	{
+		LED1_ON;
+		Control_JtcInit();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
+	{
+		LED1_ON;
+		LED2_ON;
+		Control_JtcTeaching();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
+	{
+		LED2_ON;
+		Control_JtcHoldPos();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
+	{
+		LED2_ON;
+		Control_JtcOperate();
+	}
 	
 	Control_CheckLimits();
 	Control_CheckErrorFlags();
 	Control_SetNewTorqueValues();
 	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
-	for(int i=0;i<11;i++)
-		pC->Can.TxMsgs[i].reqSend = true;
 	Control_SendCommandClearErrorsToJoints();
 	Control_SendCommandResetDevice();
 	Control_SendDataToJoints();
