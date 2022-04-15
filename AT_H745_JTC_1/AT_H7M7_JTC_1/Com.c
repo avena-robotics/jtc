@@ -136,6 +136,7 @@ static void Host_ComPrepareFrameJtcStatus(void)
 		buf[idx++] = (uint8_t)pC->Joints[num].currentTemp;
 	}
 	
+	//Gripper status
 	buf[idx++] = (uint8_t)(pC->Gripper.currentFsm);
 	buf[idx++] = (uint8_t)(pC->Gripper.currentPumpState);
 	buf[idx++] = (uint8_t)(pC->Gripper.pressure1);
@@ -308,21 +309,17 @@ static void Com_CheckConsistencyReceivedFrame(uint8_t* buf)
 static void Host_ComReadFrameClearCurrentErrors(uint8_t* buf)
 {
 	uint16_t nd = Com.rxFrame.expectedLength;
-	
 	uint16_t crc1 = Com_Crc16(buf, nd-2);
 	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
-	
 	if(crc1 == crc2)
 	{
 		Com.timeout = 0;
-		
 		// odebrane dane sa poprawne
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
 		if(buf[4] == 0x01)
 			Control_ClearInternallErrorsInJtc();
 		Control_ClearExternallErrorsViaCan(buf[5]);
 		//buf[6] - buf[7] currently not used, reserved for future version
-		
 	}
 	else
 	{
@@ -802,17 +799,13 @@ static void Host_ComReadFrameTeachingModeDisable(uint8_t *buf)
 static void Host_ComReadFrameResetCanDevices(uint8_t *buf)
 {
 	uint16_t nd = Com.rxFrame.expectedLength;
-	
 	uint16_t crc1 = Com_Crc16(buf, nd-2);
 	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
-	
 	if(crc1 == crc2)
 	{
 		Com.timeout = 0;
-		
-		// odebrane dane sa poprawne
+		// received data are correct
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
-		
 		Control_ResetDevicesViaCan(buf[4]);
 		//buf[5] - buf[7] currently not used, reserved for future version
 	}
@@ -824,17 +817,13 @@ static void Host_ComReadFrameResetCanDevices(uint8_t *buf)
 static void Host_ComReadFrameGripperControl(uint8_t *buf)
 {
 	uint16_t nd = Com.rxFrame.expectedLength;
-	
 	uint16_t crc1 = Com_Crc16(buf, nd-2);
 	uint16_t crc2 = ((uint16_t)buf[nd-2]<<8) + ((uint16_t)buf[nd-1]<<0);
-	
 	if(crc1 == crc2)
 	{
 		Com.timeout = 0;
-		
-		// odebrane dane sa poprawne
+		// received data are correct
 		Com.rxFrame.dataStatus = Host_RxDS_NoError;
-		
 		pC->Gripper.targetPumpState = buf[4];
 		//buf[5] - buf[7] currently not used, reserved for future version
 	}
