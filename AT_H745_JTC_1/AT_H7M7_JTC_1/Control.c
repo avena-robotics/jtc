@@ -920,20 +920,21 @@ static void Control_JtcInit(void)
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
 		Control_JtcSetJointToCurrentFsm(num);
-		Control_JtcSetJointToCurrentMode(num);
+		//Control_JtcSetJointToCurrentMode(num);
 		
 		if(pC->Joints[num].flagFirstPosRead == false)
 		{
 			//Czekam na odpowiedź na ramke Move z danego jointa. Jeżeli nie nastapi to zapewne będzie TIMEOUT na Can
 		}
-		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init)
+		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init && pC->Joints[num].currentMode != Joint_M_Torque)
 		{
 			pC->Joints[num].flagConfirmChangeConf = false;
-			Control_JtcSetJointToReadyToOperate(num);
-		}
-		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate && pC->Joints[num].flagConfirmChangeConf == false)
-		{
 			Control_JtcSetJointToModeTorque(num);
+			//Control_JtcSetJointToReadyToOperate(num);
+		}
+		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init && pC->Joints[num].currentMode == Joint_M_Torque)
+		{
+			Control_JtcSetJointToReadyToOperate(num);
 		}
 	}
 	
