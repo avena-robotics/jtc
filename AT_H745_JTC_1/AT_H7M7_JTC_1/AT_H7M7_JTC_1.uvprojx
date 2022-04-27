@@ -448,6 +448,26 @@
               <FileType>5</FileType>
               <FilePath>.\Gripper.h</FilePath>
             </File>
+            <File>
+              <FileName>MB_RTU_Slave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MB_RTU_Slave.c</FilePath>
+            </File>
+            <File>
+              <FileName>MB_RTU_Slave.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\MB_RTU_Slave.h</FilePath>
+            </File>
+            <File>
+              <FileName>TrajGen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\TrajGen.c</FilePath>
+            </File>
+            <File>
+              <FileName>TrajGen.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\TrajGen.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -23,6 +23,48 @@
 
 typedef enum 
 {
+	MF_I = 0x00,
+	MF_RnDQ = 0x01,
+	MF_RnDI = 0x02,
+	MF_RnHR = 0x03,
+	MF_RnIR = 0x04,
+	MF_W1DQ = 0x05,
+	MF_W1HR = 0x06,
+	MF_RS = 0x07,
+	MF_DT = 0x08,
+	MF_WnDQ = 0x0f,
+	MF_WnHR = 0x10,
+	MF_ID = 0x11,
+}eMBFun;
+typedef enum 
+{
+	MFE_IF = 0x01,
+	MFE_IDR = 0x02,
+	MFE_IV = 0x03, 
+	MFE_SE = 0x04,
+	MFE_PC = 0x05, 
+	MFE_SNR = 0x06, 
+	MFE_NC = 0x07, 
+	MFE_PE = 0x08
+}eMBError;
+typedef enum 
+{
+	MRN_TStart = 0,
+	MRN_TFinish = 121,
+	MRN_CfStart = 200,
+	MRN_CfFinish = 211,
+	MRN_CtrlStart = 300,
+	MRN_CtrlFinish = 329,
+	MRN_PidStart = 400,
+	MRN_PidFinish = 459,
+	MRN_ArmStart = 500,
+	MRN_ArmFinish = 727,
+	MRN_FricStart = 800,
+	MRN_FricFinish = 871,
+	MRN_SeqStart = 900,
+}eMBRegsNum;
+typedef enum 
+{
 	JTC_FSM_Null = 255,
 	JTC_FSM_Start = 0,
 	JTC_FSM_Init,
@@ -46,6 +88,17 @@ typedef enum
 	TCS_IsRead = 1,
 	TCS_WasRead = 2
 }eTrajComStatus;
+typedef enum
+{
+	SPT_Finish = 0,
+	SPT_Way = 1,
+}eSeqPointType;
+typedef enum
+{
+	TGS_Idle = 0,
+	TGS_Preparing = 1,
+	TGS_Ready = 2,
+}eTrajGenStatus;
 typedef enum 
 {
 	Host_FT_Header = 155,
@@ -197,10 +250,20 @@ typedef enum
 #define MAXINT16										32767.0
 #define MAXINT32										2147483647.0
 
-//#define TESTMODE
+#define TESTMODE
 
-#define RS422
-//#define UARTUSB
+// #define MODBUS - komunikacja jako Modbus RTU Slave
+// #define RS422 - komunikacja tradycyjna poprzez RS422
+// #define UARTUSB - komunikacja tradycyjna poprzez USB (VCP)
+// Gdy wybrany MODBUS: RS422 i UARTUSB bez znaczenia
+#define MODBUS
+//#define RS422
+#define UARTUSB
+
+#define MBS_BUFMAX 									1000
+#define MBS_COMBAUDRATE							115200
+#define MBS_REGMAX									1500
+#define MBS_COILMAX									100
 
 #ifdef RS422
 #define HOST_COMBAUDRATE 						115200
@@ -218,6 +281,8 @@ typedef enum
 #define HOST_COMTIMEOUTMAX					100
 #define TRAJ_POINTSMAX							12000
 #define TRAJ_SEGSSMAX								100
+#define TG_SEQWAYPOINTSSMAX					30
+
 #define JOINTS_MAX									6
 #define JOINTS_FRICTABVELSIZE				20
 #define JOINTS_FRICTABTEMPSIZE			20
@@ -239,6 +304,21 @@ typedef enum
 #define CAN_TIMEOUTMAX							500
 #define CAN_RESETTIMEOUT						300
 
+typedef struct	//modbus rtu slave
+{
+	uint32_t			baud;
+	uint32_t			unittime;
+	uint8_t				bufread[MBS_BUFMAX];
+	uint8_t 			bufwrite[MBS_BUFMAX];
+	
+	uint8_t				address;
+	eMBError			error;
+	uint32_t			tick;
+	eMBFun 				fun;
+	uint16_t			numregs;
+	uint16_t			coils;
+	uint16_t			hregs[MBS_REGMAX];
+}sMB_RTUSlave;
 typedef struct
 {
 	bool										active;
@@ -304,6 +384,24 @@ typedef struct
 	sTrajPointDouble	interpolatePoint;
 	sTrajPointDouble	endPoint;
 }sTrajectory;
+typedef struct
+{
+	double						pos[JOINTS_MAX];
+	double						vel;
+	eSeqPointType			type;
+	bool							active;
+	double						tend;
+}sSeqPoint;
+typedef struct
+{
+	eTrajGenStatus		status;
+	uint32_t					seqNum;
+	double						stepTime;
+	double 						path[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][5];
+	sSeqPoint					waypoints[TG_SEQWAYPOINTSSMAX];
+	uint32_t					maxwaypoints;
+	uint32_t					maxpoints;
+}sTrajGen;
 typedef struct
 {
 	eJoint_Mode		targetMode;										//Zadany tryb pracy [0x01 - torque, 0x02 - speed]
@@ -564,6 +662,7 @@ typedef struct
 						sGripper			Gripper;
 						sCan					Can;
 						sArmModel			Arm;
+						sTrajGen			Tgen;
 }sControl;
 
 void Control_SystemConf(void);
@@ -579,5 +678,7 @@ void Control_ResetDevicesViaCan(uint8_t byte);
 #include "Joints.h"
 #include "RNEA.h"
 #include "Gripper.h"
+#include "MB_RTU_Slave.h"
+#include "TrajGen.h"
 
 #endif

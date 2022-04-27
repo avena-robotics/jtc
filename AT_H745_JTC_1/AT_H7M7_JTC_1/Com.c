@@ -1,4 +1,5 @@
 #include "Control.h"
+#ifndef MODBUS
 extern sControl* pC;
 extern sTrajectory Traj;
 extern sHost_Com Com;
@@ -182,6 +183,7 @@ static void Host_ComTimCof(void)
 	TIM13->SR &= ~TIM_SR_UIF;
 	NVIC_EnableIRQ(TIM8_UP_TIM13_IRQn);
 }
+#ifdef RS422
 static void Host_ComUart2Conf(void)
 {
 	GPIOD->MODER &= ~GPIO_MODER_MODE5 & ~GPIO_MODER_MODE6;
@@ -210,6 +212,8 @@ static void Host_ComUart2Conf(void)
 	USART2->CR1 = USART_CR1_TE | USART_CR1_RE | USART_CR1_UE | USART_CR1_IDLEIE;
 	NVIC_EnableIRQ(USART2_IRQn);
 }
+#endif
+#ifdef UARTUSB
 static void Host_ComUart3Conf(void)
 {
 	GPIOD->MODER &= ~GPIO_MODER_MODE8 & ~GPIO_MODER_MODE9;
@@ -238,6 +242,7 @@ static void Host_ComUart3Conf(void)
 	USART3->CR1 = USART_CR1_TE | USART_CR1_RE | USART_CR1_UE | USART_CR1_IDLEIE;
 	NVIC_EnableIRQ(USART3_IRQn);
 }
+#endif
 void Host_ComConf(void)
 {
 	Host_ComStructConf();
@@ -998,3 +1003,4 @@ void DMA1_Stream1_IRQHandler(void)
 		DMA1->LIFCR |= DMA_LIFCR_CTCIF1;
 	}
 }
+#endif

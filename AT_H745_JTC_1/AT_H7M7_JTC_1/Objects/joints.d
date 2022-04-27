@@ -16,8 +16,10 @@
 .\objects\joints.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\joints.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\joints.o: Com.h
-.\objects\joints.o: Control.h
 .\objects\joints.o: Can.h
+.\objects\joints.o: Control.h
 .\objects\joints.o: Joints.h
 .\objects\joints.o: RNEA.h
 .\objects\joints.o: Gripper.h
+.\objects\joints.o: MB_RTU_Slave.h
+.\objects\joints.o: TrajGen.h

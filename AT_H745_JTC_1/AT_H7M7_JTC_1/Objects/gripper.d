@@ -16,8 +16,10 @@
 .\objects\gripper.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\gripper.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\gripper.o: Com.h
-.\objects\gripper.o: Control.h
 .\objects\gripper.o: Can.h
+.\objects\gripper.o: Control.h
 .\objects\gripper.o: Joints.h
 .\objects\gripper.o: RNEA.h
 .\objects\gripper.o: Gripper.h
+.\objects\gripper.o: MB_RTU_Slave.h
+.\objects\gripper.o: TrajGen.h

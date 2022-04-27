@@ -2,10 +2,9 @@
 sControl Control;
 sTrajectory Traj __attribute__((section (".ARM.__at_0x24000000"))); // Trajektoria, w pamieci AXI_RAM, max 512kB
 sHost_Com Com  __attribute__((section (".ARM.__at_0x30000000"))); // Bufory komunikacji z hostem, w pamieci SRAM1 do SRAM3, max 288kB
+sMB_RTUSlave	Mbs __attribute__((section (".ARM.__at_0x38000000"))); // Bufory komunikacji z poprzez ModBus, w pamieci SRAM4, max 64kB
 sControl* pC = &Control;
 
-double time[10];
-double totaltime[10];
 // *********************** General functions ***************************************
 static void Control_SetTable(double* t, double a0, double a1, double a2, double a3, double a4, double a5)
 {
@@ -177,12 +176,6 @@ static void Control_TimerConf(void)
 	TIM7->DIER |= TIM_DIER_UIE;
 	NVIC_EnableIRQ(TIM7_IRQn);
 	TIM7->CR1 |= TIM_CR1_CEN;
-	
-	TIM5->CR1 &= ~TIM_CR1_CEN;
-	TIM5->CNT = 0;
-	TIM5->PSC = 0;
-	TIM5->ARR = 0xffffffff-1;
-	TIM5->CR1 |= TIM_CR1_CEN;
 }
 static void Control_ResetCanDevicesAtBeginig(void)
 {
@@ -197,7 +190,16 @@ void Control_SystemConf(void)
 	Control_RccConf();
 	Control_LedConf();
 	Control_VariablesConf();
+	
+	#ifndef MODBUS
 	Host_ComConf();
+	#endif
+	
+	#ifdef MODBUS
+	MBS_Conf();
+	#endif
+	
+	TG_Conf();
 	Can_Conf();
 	RNEA_Conf();
 	Cotrol_SafetyConf();
@@ -304,7 +306,7 @@ static void Control_CheckErrorFlags(void)
 	pC->Jtc.internalComError = false;
 	
 	// Check Host comuniaction (PC by RS422)
-	Com_HostCheckGeneralTimeout();
+//	Com_HostCheckGeneralTimeout();
 	
 	// Check Joints internall and external errors
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -894,7 +896,7 @@ static void Control_JtcError(void)
 }
 static void Control_JtcInit(void)
 {
-	Control_TrajClear();
+//	Control_TrajClear();
 	Joints_SetDefaultVariables();
 	pC->Jtc.teachingModeReq = false;
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -1047,47 +1049,50 @@ static void Control_JtcOperate(void)
 }
 static void Control_JtcAct(void)
 {
-	LED1_OFF;
-	LED2_OFF;
-	LED3_OFF;
-	
-	Control_CheckErrorFlags();
-	Control_JtcCheckState();
-	
-	if(pC->Jtc.currentFsm == JTC_FSM_Error)
-	{
-		LED3_ON;
-		Control_JtcError();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
-	{
-		LED1_ON;
-		Control_JtcInit();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
-	{
-		LED1_ON;
-		LED2_ON;
-		Control_JtcTeaching();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
-	{
-		LED2_ON;
-		Control_JtcHoldPos();
-	}
-	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
-	{
-		LED2_ON;
-		Control_JtcOperate();
-	}
-	
-	Control_CheckLimits();
-	Control_CheckErrorFlags();
-	Control_SetNewTorqueValues();
-	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
-	Control_SendCommandClearErrorsToJoints();
-	Control_SendCommandResetDevice();
-	Control_SendDataToJoints();
+//	LED1_OFF;
+//	LED2_OFF;
+//	LED3_OFF;
+//	
+//	Control_CheckErrorFlags();
+//	Control_JtcCheckState();
+//	
+//	if(pC->Jtc.currentFsm == JTC_FSM_Error)
+//	{
+//		LED3_ON;
+//		Control_JtcError();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
+//	{
+//		LED1_ON;
+//		Control_JtcInit();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
+//	{
+//		LED1_ON;
+//		LED2_ON;
+//		Control_JtcTeaching();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
+//	{
+//		LED2_ON;
+//		Control_JtcHoldPos();
+//	}
+//	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
+//	{
+//		LED2_ON;
+//		Control_JtcOperate();
+//	}
+//	
+//	Control_CheckLimits();
+//	Control_CheckErrorFlags();
+//	Control_SetNewTorqueValues();
+//	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
+//	Control_SendCommandClearErrorsToJoints();
+//	Control_SendCommandResetDevice();
+//	Control_SendDataToJoints();
+	#ifdef MODBUS
+	MBS_Act();
+	#endif
 }
 // ********************** Interrupts functions ***********************************
 void TIM7_IRQHandler(void)

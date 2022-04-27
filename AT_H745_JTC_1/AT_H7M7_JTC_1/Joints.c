@@ -56,7 +56,6 @@ static void Joints_SetDefaultFrictionTable(void)
 }
 static void Joints_SetDefaultFrictionPolynomial(void)
 {
-	
 	pC->Joints[0].fricCoeff[0] = 8.3511;
 	pC->Joints[0].fricCoeff[1] = 49.0592;
 	pC->Joints[0].fricCoeff[2] = -33.8717;
