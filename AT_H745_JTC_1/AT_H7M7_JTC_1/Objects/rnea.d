@@ -16,8 +16,8 @@
 .\objects\rnea.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\rnea.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\rnea.o: Com.h
-.\objects\rnea.o: Can.h
 .\objects\rnea.o: Control.h
+.\objects\rnea.o: Can.h
 .\objects\rnea.o: Joints.h
 .\objects\rnea.o: RNEA.h
 .\objects\rnea.o: Gripper.h

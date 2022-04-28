@@ -764,7 +764,7 @@ static void Control_JtcCheckStateInit(void)
 		pC->Jtc.jtcInitStatus &= ~(1 << 2);
 	
 	#ifdef TESTMODE
-	for(int num=1;num<JOINTS_MAX;num++)
+	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].cWPosNotAccurate = false;
 		pC->Joints[num].flagFirstPosRead = true;
@@ -878,6 +878,7 @@ static void Control_JtcCheckState(void)
 static void Control_JtcError(void)
 {
 	Control_TrajClear();
+	TG_SetDefaultVariables();
 	Joints_SetDefaultVariables();
 	pC->Jtc.teachingModeReq = false;
 	
@@ -896,7 +897,8 @@ static void Control_JtcError(void)
 }
 static void Control_JtcInit(void)
 {
-//	Control_TrajClear();
+	Control_TrajClear();
+	TG_SetDefaultVariables();
 	Joints_SetDefaultVariables();
 	pC->Jtc.teachingModeReq = false;
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -932,7 +934,7 @@ static void Control_JtcInit(void)
 		{
 			pC->Joints[num].flagConfirmChangeConf = false;
 			Control_JtcSetJointToModeTorque(num);
-			//Control_JtcSetJointToReadyToOperate(num);
+			Control_JtcSetJointToReadyToOperate(num);
 		}
 		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init && pC->Joints[num].currentMode == Joint_M_Torque)
 		{
@@ -982,6 +984,7 @@ static void Control_JtcInit(void)
 static void Control_JtcTeaching(void)
 {
 	Control_TrajClear();
+	TG_SetDefaultVariables();
 	
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
@@ -1049,47 +1052,47 @@ static void Control_JtcOperate(void)
 }
 static void Control_JtcAct(void)
 {
-//	LED1_OFF;
-//	LED2_OFF;
-//	LED3_OFF;
-//	
-//	Control_CheckErrorFlags();
-//	Control_JtcCheckState();
-//	
-//	if(pC->Jtc.currentFsm == JTC_FSM_Error)
-//	{
-//		LED3_ON;
-//		Control_JtcError();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
-//	{
-//		LED1_ON;
-//		Control_JtcInit();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
-//	{
-//		LED1_ON;
-//		LED2_ON;
-//		Control_JtcTeaching();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
-//	{
-//		LED2_ON;
-//		Control_JtcHoldPos();
-//	}
-//	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
-//	{
-//		LED2_ON;
-//		Control_JtcOperate();
-//	}
-//	
-//	Control_CheckLimits();
-//	Control_CheckErrorFlags();
-//	Control_SetNewTorqueValues();
-//	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
-//	Control_SendCommandClearErrorsToJoints();
-//	Control_SendCommandResetDevice();
-//	Control_SendDataToJoints();
+	LED1_OFF;
+	LED2_OFF;
+	LED3_OFF;
+	
+	Control_CheckErrorFlags();
+	Control_JtcCheckState();
+	
+	if(pC->Jtc.currentFsm == JTC_FSM_Error)
+	{
+		LED3_ON;
+		Control_JtcError();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_Init)
+	{
+		LED1_ON;
+		Control_JtcInit();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_Teaching)
+	{
+		LED1_ON;
+		LED2_ON;
+		Control_JtcTeaching();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
+	{
+		LED2_ON;
+		Control_JtcHoldPos();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_Operate)
+	{
+		LED2_ON;
+		Control_JtcOperate();
+	}
+	
+	Control_CheckLimits();
+	Control_CheckErrorFlags();
+	Control_SetNewTorqueValues();
+	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
+	Control_SendCommandClearErrorsToJoints();
+	Control_SendCommandResetDevice();
+	Control_SendDataToJoints();
 	#ifdef MODBUS
 	MBS_Act();
 	#endif

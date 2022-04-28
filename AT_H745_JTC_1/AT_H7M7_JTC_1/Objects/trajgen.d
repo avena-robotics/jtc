@@ -16,8 +16,8 @@
 .\objects\trajgen.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\trajgen.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\trajgen.o: Com.h
-.\objects\trajgen.o: Can.h
 .\objects\trajgen.o: Control.h
+.\objects\trajgen.o: Can.h
 .\objects\trajgen.o: Joints.h
 .\objects\trajgen.o: RNEA.h
 .\objects\trajgen.o: Gripper.h

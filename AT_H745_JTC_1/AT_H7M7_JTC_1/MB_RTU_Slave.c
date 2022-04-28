@@ -301,7 +301,9 @@ static void MBS_ActControlWords(void)
 	if(Mbs.hregs[idx++] == 0x01)		Traj.targetTES = TES_Stop;
 	if(Mbs.hregs[idx++] == 0x01)		Traj.targetTES = TES_Pause;
 	if(Mbs.hregs[idx++] == 0x01)		Traj.targetTES = TES_Execute;
+	if(Mbs.hregs[idx++] == 0x01)		pC->Tgen.reqTrajPrepare = true;
 	Traj.numTraj = Mbs.hregs[idx++];
+	if(Mbs.hregs[idx++] == 0x01)		pC->Tgen.reqTrajPrepare = true;
 	if(Mbs.hregs[idx++] == 0x01)		pC->Jtc.teachingModeReq = true;
 	if(Mbs.hregs[idx++] == 0x01)		pC->Jtc.teachingModeReq = false;
 	if(Mbs.hregs[idx++] == 0x01)		MBS_UseDefaultPidParam();

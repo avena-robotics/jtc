@@ -16,8 +16,8 @@
 .\objects\mb_rtu_slave.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\mb_rtu_slave.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\mb_rtu_slave.o: Com.h
-.\objects\mb_rtu_slave.o: Can.h
 .\objects\mb_rtu_slave.o: Control.h
+.\objects\mb_rtu_slave.o: Can.h
 .\objects\mb_rtu_slave.o: Joints.h
 .\objects\mb_rtu_slave.o: RNEA.h
 .\objects\mb_rtu_slave.o: Gripper.h

@@ -15,8 +15,8 @@
 .\objects\control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\control.o: Com.h
-.\objects\control.o: Can.h
 .\objects\control.o: Control.h
+.\objects\control.o: Can.h
 .\objects\control.o: Joints.h
 .\objects\control.o: RNEA.h
 .\objects\control.o: Gripper.h

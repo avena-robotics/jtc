@@ -173,7 +173,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].limitPosErrorMax = 0.09;
 		
 		pC->Joints[num].maxPosCom = M_PI;
-		pC->Joints[num].maxVelCom = 2.;
+		pC->Joints[num].maxVelCom = M_2_PI;
 		pC->Joints[num].maxAccCom = M_4_PI;
 		pC->Joints[num].maxTorqueCom = 360.0;
 		

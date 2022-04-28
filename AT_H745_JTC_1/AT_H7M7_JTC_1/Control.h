@@ -21,6 +21,12 @@
 #define LEDALL_OFF		LED_PORT->ODR &= ~LED1_PIN & ~LED2_PIN & ~LED3_PIN;
 #define LEDALL_TOG		LED_PORT->ODR ^= LED1_PIN | LED2_PIN | LED3_PIN;
 
+
+#define MBS_BUFMAX 									1000
+#define MBS_COMBAUDRATE							115200
+#define MBS_REGMAX									1500
+#define MBS_COILMAX									100
+
 typedef enum 
 {
 	MF_I = 0x00,
@@ -54,7 +60,7 @@ typedef enum
 	MRN_CfStart = 200,
 	MRN_CfFinish = 211,
 	MRN_CtrlStart = 300,
-	MRN_CtrlFinish = 329,
+	MRN_CtrlFinish = 330,
 	MRN_PidStart = 400,
 	MRN_PidFinish = 459,
 	MRN_ArmStart = 500,
@@ -62,6 +68,7 @@ typedef enum
 	MRN_FricStart = 800,
 	MRN_FricFinish = 871,
 	MRN_SeqStart = 900,
+	MRN_SeqFinish = MBS_REGMAX-1,
 }eMBRegsNum;
 typedef enum 
 {
@@ -90,9 +97,17 @@ typedef enum
 }eTrajComStatus;
 typedef enum
 {
-	SPT_Finish = 0,
+	SPT_Start = 0,
 	SPT_Way = 1,
+	SPT_Finish = 2,
 }eSeqPointType;
+typedef enum
+{
+	SPMT_Null = 0,
+	SPMT_Ptp = 1,
+	SPMT_Line = 2,
+	SPMT_Gripper = 3,
+}eSeqPointMoveType;
 typedef enum
 {
 	TGS_Idle = 0,
@@ -250,20 +265,14 @@ typedef enum
 #define MAXINT16										32767.0
 #define MAXINT32										2147483647.0
 
-#define TESTMODE
+//#define TESTMODE
 
 // #define MODBUS - komunikacja jako Modbus RTU Slave
 // #define RS422 - komunikacja tradycyjna poprzez RS422
-// #define UARTUSB - komunikacja tradycyjna poprzez USB (VCP)
-// Gdy wybrany MODBUS: RS422 i UARTUSB bez znaczenia
+// #define UARTUSB - komunikacja tradycyjna poprzez USB (Virtual COM Port)
 #define MODBUS
 //#define RS422
-#define UARTUSB
-
-#define MBS_BUFMAX 									1000
-#define MBS_COMBAUDRATE							115200
-#define MBS_REGMAX									1500
-#define MBS_COILMAX									100
+//#define UARTUSB
 
 #ifdef RS422
 #define HOST_COMBAUDRATE 						115200
@@ -388,6 +397,7 @@ typedef struct
 {
 	double						pos[JOINTS_MAX];
 	double						vel;
+	eSeqPointMoveType	moveType;
 	eSeqPointType			type;
 	bool							active;
 	double						tend;
@@ -395,6 +405,7 @@ typedef struct
 typedef struct
 {
 	eTrajGenStatus		status;
+	bool							reqTrajPrepare;
 	uint32_t					seqNum;
 	double						stepTime;
 	double 						path[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][5];

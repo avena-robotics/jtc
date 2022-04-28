@@ -1,10 +1,10 @@
-//#ifndef _COM
-//#define _COM
+#ifndef _COM
+#define _COM
 
-//#include "Control.h"
+#include "Control.h"
 
-//void Host_ComConf(void);
-//void Com_HostCheckGeneralTimeout(void);
+void Host_ComConf(void);
+void Com_HostCheckGeneralTimeout(void);
 
 
-//#endif
+#endif

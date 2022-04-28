@@ -2,12 +2,24 @@
 extern sControl* pC;
 extern sTrajectory Traj;
 extern sMB_RTUSlave	Mbs;
-static void TG_SetDefaultVariables(void)
+union conv32
+{
+    uint32_t u32; // here_write_bits
+    float    f32; // here_read_float
+};
+union conv64
+{
+    uint64_t u64; // here_write_bits
+    double   d64; // here_read_double
+};
+void TG_SetDefaultVariables(void)
 {
 	pC->Tgen.stepTime = 0.01;
 	pC->Tgen.seqNum = 0;
 	pC->Tgen.maxwaypoints = 0;
 	pC->Tgen.maxpoints = 0;
+	pC->Tgen.reqTrajPrepare = false;
+	
 	
 	for(int num=0;num<JOINTS_MAX;num++)
 		for(int i=0;i<TG_SEQWAYPOINTSSMAX;i++)
@@ -19,6 +31,7 @@ static void TG_SetDefaultVariables(void)
 		pC->Tgen.waypoints[i].active = false;
 		pC->Tgen.waypoints[i].tend = 0.0;
 		pC->Tgen.waypoints[i].type = SPT_Finish;
+		pC->Tgen.waypoints[i].moveType = SPMT_Null;
 		pC->Tgen.waypoints[i].vel = 0.0;
 		for(int num=0;num<JOINTS_MAX;num++)
 			pC->Tgen.waypoints[i].pos[num] = 0.0;
@@ -81,6 +94,45 @@ double trule(double qstart, double qend, double vstart, double vend, double tend
 {
 	return -(tend*(-5.*qend + 5.*qstart + 2.*tend*vend + 3.*tend*vstart))/(5.*(2.*qend - 2.*qstart - tend*(vend + vstart)));
 }
+bool TG_GetSeqFromMbs(void)
+{
+	uint32_t idx = MRN_SeqStart;
+	pC->Tgen.seqNum = Mbs.hregs[idx++];
+	pC->Tgen.maxwaypoints = Mbs.hregs[idx++];
+	
+	if(pC->Tgen.maxwaypoints == 0)
+		return false;
+	
+	for(uint32_t j=0;j<JOINTS_MAX;j++)
+		pC->Tgen.waypoints[0].pos[j] = pC->Joints[j].currentPos;
+	pC->Tgen.waypoints[0].vel = 0.0;
+	pC->Tgen.waypoints[0].type = SPT_Start;
+	pC->Tgen.waypoints[0].moveType = SPMT_Ptp;
+	
+	union conv32 x;
+	for(uint32_t i=0;i<pC->Tgen.maxwaypoints;i++)
+	{
+		pC->Tgen.waypoints[i+1].moveType = (eSeqPointMoveType)Mbs.hregs[idx++];
+		for(uint32_t j=0;j<JOINTS_MAX;j++)
+		{
+			x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+			x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+			pC->Tgen.waypoints[i+1].pos[j] = x.f32;
+		}
+		x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+		x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+		pC->Tgen.waypoints[i+1].vel = x.f32;
+		pC->Tgen.waypoints[i+1].type = SPT_Way;
+	}
+	
+	pC->Tgen.waypoints[pC->Tgen.maxwaypoints].type = SPT_Finish;
+	
+	for(uint32_t i=1;i<pC->Tgen.maxwaypoints;i++)
+		if(fabs(pC->Tgen.waypoints[i].vel) < 0.001)
+			return false;
+	
+	return true;
+}
 static void TG_FindPath(int num)
 {
 	for(uint32_t i=1;i<=pC->Tgen.maxwaypoints;i++)
@@ -135,6 +187,8 @@ static double TG_FindTend(double in[5])
 {
 	double t, tend, vv;
 	double qstart = in[0], qend = in[1], vstart = in[2], vend = in[3], vmax = in[4];
+	if(fabs(qend - qstart)<0.001)
+		qend += 0.001;
 	tend = 2.0 * fabs(qend - qstart) / vmax;
 	
 	t=trule(qstart, qend, vstart, vend, tend);
@@ -206,12 +260,17 @@ static void TG_Poly5V_1Drive(int num)
 }
 void TG_TrajGen(void)
 {
-	LED1_ON;
-	
-	if(pC->Tgen.status == TGS_Preparing)
+	if(pC->Jtc.currentFsm != JTC_FSM_HoldPos && pC->Jtc.currentFsm != JTC_FSM_Operate)
+		return;
+	if(pC->Tgen.reqTrajPrepare == false)
 		return;
 	
+	TG_SetDefaultVariables();
+	
+	if(TG_GetSeqFromMbs() == false)
+		return;
 	Control_TrajClear();
+	
 	
 	for(uint32_t num=0;num<JOINTS_MAX;num++)
 		TG_FindPath(num);
@@ -220,11 +279,9 @@ void TG_TrajGen(void)
 		TG_Poly5V_1Drive(num);
 	
 	pC->Tgen.status = TGS_Ready;
-	
+	Traj.stepTime = 1000.0  * pC->Tgen.stepTime; //W Tgen stepTime jest w sekundach (def 0.01), a w Traj stepTime jest w ilosci ms na punkt (def 10)
+	Traj.numRecPoints = pC->Tgen.maxpoints;
 	Traj.comStatus = TCS_WasRead;
 	Traj.targetTES = TES_Stop;
-	Traj.stepTime = pC->Tgen.stepTime;
-	Traj.numRecPoints = pC->Tgen.maxpoints;
-	
-	LED1_OFF;
+	pC->Tgen.reqTrajPrepare = false;
 }
