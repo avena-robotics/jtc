@@ -14,29 +14,29 @@ union conv64
 };
 void TG_SetDefaultVariables(void)
 {
-	pC->Tgen.stepTime = 0.01;
-	pC->Tgen.seqNum = 0;
-	pC->Tgen.maxwaypoints = 0;
-	pC->Tgen.maxpoints = 0;
-	pC->Tgen.reqTrajPrepare = false;
+	Traj.Tgen.stepTime = 0.01;
+	Traj.Tgen.seqNum = 0;
+	Traj.Tgen.maxwaypoints = 0;
+	Traj.Tgen.maxpoints = 0;
+	Traj.Tgen.reqTrajPrepare = false;
 	
 	
 	for(int num=0;num<JOINTS_MAX;num++)
 		for(int i=0;i<TG_SEQWAYPOINTSSMAX;i++)
 			for(int j=0;j<5;j++)
-				pC->Tgen.path[num][i][j] = 0.0;
+				Traj.Tgen.path[num][i][j] = 0.0;
 	
 	for(int i=0;i<TG_SEQWAYPOINTSSMAX;i++)
 	{
-		pC->Tgen.waypoints[i].active = false;
-		pC->Tgen.waypoints[i].tend = 0.0;
-		pC->Tgen.waypoints[i].type = SPT_Finish;
-		pC->Tgen.waypoints[i].moveType = SPMT_Null;
-		pC->Tgen.waypoints[i].vel = 0.0;
+		Traj.Tgen.waypoints[i].active = false;
+		Traj.Tgen.waypoints[i].tend = 0.0;
+		Traj.Tgen.waypoints[i].type = SPT_Finish;
+		Traj.Tgen.waypoints[i].moveType = SPMT_Null;
+		Traj.Tgen.waypoints[i].vel = 0.0;
 		for(int num=0;num<JOINTS_MAX;num++)
-			pC->Tgen.waypoints[i].pos[num] = 0.0;
+			Traj.Tgen.waypoints[i].pos[num] = 0.0;
 	}
-	pC->Tgen.status = TGS_Idle;
+	Traj.Tgen.status = TGS_Idle;
 }
 void TG_Conf(void)
 {
@@ -97,91 +97,91 @@ double trule(double qstart, double qend, double vstart, double vend, double tend
 bool TG_GetSeqFromMbs(void)
 {
 	uint32_t idx = MRN_SeqStart;
-	pC->Tgen.seqNum = Mbs.hregs[idx++];
-	pC->Tgen.maxwaypoints = Mbs.hregs[idx++];
+	Traj.Tgen.seqNum = Mbs.hregs[idx++];
+	Traj.Tgen.maxwaypoints = Mbs.hregs[idx++];
 	
-	if(pC->Tgen.maxwaypoints == 0)
+	if(Traj.Tgen.maxwaypoints == 0)
 		return false;
 	
 	for(uint32_t j=0;j<JOINTS_MAX;j++)
-		pC->Tgen.waypoints[0].pos[j] = pC->Joints[j].currentPos;
-	pC->Tgen.waypoints[0].vel = 0.0;
-	pC->Tgen.waypoints[0].type = SPT_Start;
-	pC->Tgen.waypoints[0].moveType = SPMT_Ptp;
+		Traj.Tgen.waypoints[0].pos[j] = pC->Joints[j].currentPos;
+	Traj.Tgen.waypoints[0].vel = 0.0;
+	Traj.Tgen.waypoints[0].type = SPT_Start;
+	Traj.Tgen.waypoints[0].moveType = SPMT_Ptp;
 	
 	union conv32 x;
-	for(uint32_t i=0;i<pC->Tgen.maxwaypoints;i++)
+	for(uint32_t i=0;i<Traj.Tgen.maxwaypoints;i++)
 	{
-		pC->Tgen.waypoints[i+1].moveType = (eSeqPointMoveType)Mbs.hregs[idx++];
+		Traj.Tgen.waypoints[i+1].moveType = (eSeqPointMoveType)Mbs.hregs[idx++];
 		for(uint32_t j=0;j<JOINTS_MAX;j++)
 		{
 			x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
 			x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
-			pC->Tgen.waypoints[i+1].pos[j] = x.f32;
+			Traj.Tgen.waypoints[i+1].pos[j] = x.f32;
 		}
 		x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
 		x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
-		pC->Tgen.waypoints[i+1].vel = x.f32;
-		pC->Tgen.waypoints[i+1].type = SPT_Way;
+		Traj.Tgen.waypoints[i+1].vel = x.f32;
+		Traj.Tgen.waypoints[i+1].type = SPT_Way;
 	}
 	
-	pC->Tgen.waypoints[pC->Tgen.maxwaypoints].type = SPT_Finish;
+	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints].type = SPT_Finish;
 	
-	for(uint32_t i=1;i<pC->Tgen.maxwaypoints;i++)
-		if(fabs(pC->Tgen.waypoints[i].vel) < 0.001)
+	for(uint32_t i=1;i<Traj.Tgen.maxwaypoints;i++)
+		if(fabs(Traj.Tgen.waypoints[i].vel) < 0.001)
 			return false;
 	
 	return true;
 }
 static void TG_FindPath(int num)
 {
-	for(uint32_t i=1;i<=pC->Tgen.maxwaypoints;i++)
+	for(uint32_t i=1;i<=Traj.Tgen.maxwaypoints;i++)
 	{
-		pC->Tgen.path[num][i-1][0] = pC->Tgen.waypoints[i-1].pos[num];
-		pC->Tgen.path[num][i-1][1] = pC->Tgen.waypoints[i].pos[num];
-		pC->Tgen.path[num][i-1][2] = pC->Tgen.waypoints[i-1].vel - 0.001;
-		pC->Tgen.path[num][i-1][3] = pC->Tgen.waypoints[i].vel - 0.001;
-		pC->Tgen.path[num][i-1][4] = pC->Tgen.waypoints[i].vel;
+		Traj.Tgen.path[num][i-1][0] = Traj.Tgen.waypoints[i-1].pos[num];
+		Traj.Tgen.path[num][i-1][1] = Traj.Tgen.waypoints[i].pos[num];
+		Traj.Tgen.path[num][i-1][2] = Traj.Tgen.waypoints[i-1].vel - 0.001;
+		Traj.Tgen.path[num][i-1][3] = Traj.Tgen.waypoints[i].vel - 0.001;
+		Traj.Tgen.path[num][i-1][4] = Traj.Tgen.waypoints[i].vel;
 	}
-	for(uint32_t i=1;i<pC->Tgen.maxwaypoints;i++)
+	for(uint32_t i=1;i<Traj.Tgen.maxwaypoints;i++)
 	{
-		if(pC->Tgen.path[num][i][4] < pC->Tgen.path[num][i-1][4])
+		if(Traj.Tgen.path[num][i][4] < Traj.Tgen.path[num][i-1][4])
 		{
-			pC->Tgen.path[num][i-1][3] = pC->Tgen.path[num][i][4] - 0.001;
-			pC->Tgen.path[num][i][2] = pC->Tgen.path[num][i][4] - 0.001;
+			Traj.Tgen.path[num][i-1][3] = Traj.Tgen.path[num][i][4] - 0.001;
+			Traj.Tgen.path[num][i][2] = Traj.Tgen.path[num][i][4] - 0.001;
 		}
 		else
 		{
-			pC->Tgen.path[num][i-1][3] = pC->Tgen.path[num][i-1][4] - 0.001;
-			pC->Tgen.path[num][i][2] = pC->Tgen.path[num][i-1][4] - 0.001;
+			Traj.Tgen.path[num][i-1][3] = Traj.Tgen.path[num][i-1][4] - 0.001;
+			Traj.Tgen.path[num][i][2] = Traj.Tgen.path[num][i-1][4] - 0.001;
 		}
 	}
-	for(uint32_t i=1;i<pC->Tgen.maxwaypoints;i++)
+	for(uint32_t i=1;i<Traj.Tgen.maxwaypoints;i++)
 	{
-		if(pC->Tgen.path[num][i][1] < pC->Tgen.path[num][i-1][0])
+		if(Traj.Tgen.path[num][i][1] < Traj.Tgen.path[num][i-1][0])
 		{
-			pC->Tgen.path[num][i][2] *= -1.0;
-			pC->Tgen.path[num][i-1][3] *= -1.0;
+			Traj.Tgen.path[num][i][2] *= -1.0;
+			Traj.Tgen.path[num][i-1][3] *= -1.0;
 		}
 	}
-	for(uint32_t i=1;i<pC->Tgen.maxwaypoints;i++)
+	for(uint32_t i=1;i<Traj.Tgen.maxwaypoints;i++)
 	{
-		if(pC->Tgen.path[num][i-1][1] > pC->Tgen.path[num][i-1][0] && pC->Tgen.path[num][i][1] < pC->Tgen.path[num][i][0])
+		if(Traj.Tgen.path[num][i-1][1] > Traj.Tgen.path[num][i-1][0] && Traj.Tgen.path[num][i][1] < Traj.Tgen.path[num][i][0])
 		{
-			pC->Tgen.path[num][i-1][3] = 0.0;
-			pC->Tgen.path[num][i][2] = 0.0;
+			Traj.Tgen.path[num][i-1][3] = 0.0;
+			Traj.Tgen.path[num][i][2] = 0.0;
 		}
 	}
-	for(uint32_t i=1;i<pC->Tgen.maxwaypoints;i++)
+	for(uint32_t i=1;i<Traj.Tgen.maxwaypoints;i++)
 	{
-		if(pC->Tgen.path[num][i-1][1] < pC->Tgen.path[num][i-1][0] && pC->Tgen.path[num][i][1] > pC->Tgen.path[num][i][0])
+		if(Traj.Tgen.path[num][i-1][1] < Traj.Tgen.path[num][i-1][0] && Traj.Tgen.path[num][i][1] > Traj.Tgen.path[num][i][0])
 		{
-			pC->Tgen.path[num][i-1][3] = 0.0;
-			pC->Tgen.path[num][i][2] = 0.0;
+			Traj.Tgen.path[num][i-1][3] = 0.0;
+			Traj.Tgen.path[num][i][2] = 0.0;
 		}
 	}
-	pC->Tgen.path[num][0][2]=0.0;
-	pC->Tgen.path[num][pC->Tgen.maxwaypoints-1][3]=0.0;
+	Traj.Tgen.path[num][0][2]=0.0;
+	Traj.Tgen.path[num][Traj.Tgen.maxwaypoints-1][3]=0.0;
 }
 static double TG_FindTend(double in[5])
 {
@@ -212,33 +212,33 @@ static void TG_FindTendAllDrives()
 {
 	double deltaq, deltaqmax;
 	int deltaqmax_num = 0;
-	for(uint32_t i=0;i<pC->Tgen.maxwaypoints;i++)
+	for(uint32_t i=0;i<Traj.Tgen.maxwaypoints;i++)
 	{
 		deltaqmax_num = 0;
-		deltaqmax = fabs(pC->Tgen.path[0][i][1] - pC->Tgen.path[0][i][0]); //dystans do pokonania dla napedu numer 0
+		deltaqmax = fabs(Traj.Tgen.path[0][i][1] - Traj.Tgen.path[0][i][0]); //dystans do pokonania dla napedu numer 0
 		for(uint32_t num=1;num<JOINTS_MAX;num++)
 		{
-			deltaq = fabs(pC->Tgen.path[num][i][1] - pC->Tgen.path[num][i][0]); //dystans do pokonania dla napedu numer num
+			deltaq = fabs(Traj.Tgen.path[num][i][1] - Traj.Tgen.path[num][i][0]); //dystans do pokonania dla napedu numer num
 			if(deltaq > deltaqmax)
 			{
 				deltaqmax = deltaq;
 				deltaqmax_num = num;
 			}
 		}
-		pC->Tgen.waypoints[i].tend = TG_FindTend(pC->Tgen.path[deltaqmax_num][i]);
+		Traj.Tgen.waypoints[i].tend = TG_FindTend(Traj.Tgen.path[deltaqmax_num][i]);
 	}
 }
 static void TG_Poly5V_1Drive(int num)
 {
 	double qstart, qend, vstart, vend, tend, t;
 	uint32_t idx = 0;
-	for(uint32_t x=0;x<pC->Tgen.maxwaypoints;x++)
+	for(uint32_t x=0;x<Traj.Tgen.maxwaypoints;x++)
 	{
-		qstart = pC->Tgen.path[num][x][0];
-		qend = pC->Tgen.path[num][x][1];
-		vstart = pC->Tgen.path[num][x][2];
-		vend = pC->Tgen.path[num][x][3];
-		tend = pC->Tgen.waypoints[x].tend;
+		qstart = Traj.Tgen.path[num][x][0];
+		qend = Traj.Tgen.path[num][x][1];
+		vstart = Traj.Tgen.path[num][x][2];
+		vend = Traj.Tgen.path[num][x][3];
+		tend = Traj.Tgen.waypoints[x].tend;
 		
 		double a0v = a0(qstart, qend, vstart, vend, tend);
 		double a1v = a1(qstart, qend, vstart, vend, tend);
@@ -247,22 +247,23 @@ static void TG_Poly5V_1Drive(int num)
 		double a4v = a4(qstart, qend, vstart, vend, tend);
 		double a5v = a5(qstart, qend, vstart, vend, tend);
 		
-		for(uint32_t i=pC->Tgen.stepTime;i<(tend/pC->Tgen.stepTime)-1;i++)
+		for(uint32_t i=Traj.Tgen.stepTime;i<(tend/Traj.Tgen.stepTime)-1;i++)
 		{
-			t = pC->Tgen.stepTime*(double)i;
+			t = Traj.Tgen.stepTime*(double)i;
 			Traj.points[idx].pos[num] = q_at(a0v, a1v, a2v, a3v, a4v, a5v, t) / pC->Joints[num].limitPosMax * MAXINT16;
 			Traj.points[idx].vel[num] = dq_at(a0v, a1v, a2v, a3v, a4v, a5v, t) / pC->Joints[num].limitVelMax * MAXINT16;
 			Traj.points[idx].acc[num] = ddq_at(a0v, a1v, a2v, a3v, a4v, a5v, t) / pC->Joints[num].limitAccMax * MAXINT16;
 			idx++;
 		}
 	}
-	pC->Tgen.maxpoints = idx;
+	Traj.Tgen.maxpoints = idx;
 }
+uint32_t time[5]={0,0,0,0,0};
 void TG_TrajGen(void)
 {
 	if(pC->Jtc.currentFsm != JTC_FSM_HoldPos && pC->Jtc.currentFsm != JTC_FSM_Operate)
 		return;
-	if(pC->Tgen.reqTrajPrepare == false)
+	if(Traj.Tgen.reqTrajPrepare == false)
 		return;
 	
 	TG_SetDefaultVariables();
@@ -270,18 +271,25 @@ void TG_TrajGen(void)
 	if(TG_GetSeqFromMbs() == false)
 		return;
 	Control_TrajClear();
-	
+	pC->tick= 0;
 	
 	for(uint32_t num=0;num<JOINTS_MAX;num++)
 		TG_FindPath(num);
+	time[0] = pC->tick;
+	
 	TG_FindTendAllDrives();
+	
+	time[1] = pC->tick;
+	
 	for(uint32_t num=0;num<JOINTS_MAX;num++)
 		TG_Poly5V_1Drive(num);
 	
-	pC->Tgen.status = TGS_Ready;
-	Traj.stepTime = 1000.0  * pC->Tgen.stepTime; //W Tgen stepTime jest w sekundach (def 0.01), a w Traj stepTime jest w ilosci ms na punkt (def 10)
-	Traj.numRecPoints = pC->Tgen.maxpoints;
+	time[2] = pC->tick;
+	
+	Traj.Tgen.status = TGS_Ready;
+	Traj.stepTime = 1000.0  * Traj.Tgen.stepTime; //W Tgen stepTime jest w sekundach (def 0.01), a w Traj stepTime jest w ilosci ms na punkt (def 10)
+	Traj.numRecPoints = Traj.Tgen.maxpoints;
 	Traj.comStatus = TCS_WasRead;
 	Traj.targetTES = TES_Stop;
-	pC->Tgen.reqTrajPrepare = false;
+	Traj.Tgen.reqTrajPrepare = false;
 }

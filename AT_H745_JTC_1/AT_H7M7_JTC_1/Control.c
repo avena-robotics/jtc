@@ -22,7 +22,7 @@ void Control_SetDefualtArmModel(void)
 	
 	Control_SetTable(pC->Arm.Links[0].origin, 0, -0.0129, 0.00034, 0, 0, 0);								//center of mass link 0 coordinate system
 	Control_SetTable(pC->Arm.Links[1].origin, -0.00005, -0.007, 0.0175, 0, 0, 1.570796);						//center of mass link 1 coordinate system
-	Control_SetTable(pC->Arm.Links[2].origin, -0.343, 0, 0.05884, 0, 3.14, 1.570796);						//center of mass link 2 coordinate system
+	Control_SetTable(pC->Arm.Links[2].origin, -0.343, 0, 0.05884, 0, 3.141592, 1.570796);						//center of mass link 2 coordinate system
 	Control_SetTable(pC->Arm.Links[3].origin, 0.38666, 0, 0.051, 0, 0, 1.570796);						//center of mass link 3 coordinate system
 	Control_SetTable(pC->Arm.Links[4].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 4 coordinate system
 	Control_SetTable(pC->Arm.Links[5].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 5 coordinate system

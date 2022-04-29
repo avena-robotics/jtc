@@ -64,7 +64,7 @@ typedef enum
 	MRN_PidStart = 400,
 	MRN_PidFinish = 459,
 	MRN_ArmStart = 500,
-	MRN_ArmFinish = 727,
+	MRN_ArmFinish = 765,
 	MRN_FricStart = 800,
 	MRN_FricFinish = 871,
 	MRN_SeqStart = 900,
@@ -265,7 +265,7 @@ typedef enum
 #define MAXINT16										32767.0
 #define MAXINT32										2147483647.0
 
-//#define TESTMODE
+#define TESTMODE
 
 // #define MODBUS - komunikacja jako Modbus RTU Slave
 // #define RS422 - komunikacja tradycyjna poprzez RS422
@@ -290,7 +290,7 @@ typedef enum
 #define HOST_COMTIMEOUTMAX					100
 #define TRAJ_POINTSMAX							12000
 #define TRAJ_SEGSSMAX								100
-#define TG_SEQWAYPOINTSSMAX					30
+#define TG_SEQWAYPOINTSSMAX					100
 
 #define JOINTS_MAX									6
 #define JOINTS_FRICTABVELSIZE				20
@@ -361,40 +361,6 @@ typedef struct
 }sHost_Com;
 typedef struct
 {
-	int16_t 					pos[JOINTS_MAX];
-	int16_t 					vel[JOINTS_MAX];
-	int16_t 					acc[JOINTS_MAX];
-}sTrajPoint;
-typedef struct
-{
-	double 						pos[JOINTS_MAX];
-	double 						vel[JOINTS_MAX];
-	double 						acc[JOINTS_MAX];
-}sTrajPointDouble;
-typedef struct
-{
-	eTrajComStatus		comStatus;
-	eTrajExecStatus		targetTES;
-	eTrajExecStatus		currentTES;
-	uint16_t					numTraj;
-	uint16_t					numSeg;
-	uint16_t					maxSeg;
-	uint16_t					maxPoints;
-	bool							flagReadSeg[TRAJ_SEGSSMAX];
-	uint16_t					numPointsSeg[TRAJ_SEGSSMAX];
-	uint16_t					numRecPoints;
-	
-	uint16_t					stepTime;
-	sTrajPoint				points[TRAJ_POINTSMAX];
-	
-	uint32_t					maxInterPoints;
-	uint32_t					numInterPoint;
-	sTrajPointDouble	startPoint;
-	sTrajPointDouble	interpolatePoint;
-	sTrajPointDouble	endPoint;
-}sTrajectory;
-typedef struct
-{
 	double						pos[JOINTS_MAX];
 	double						vel;
 	eSeqPointMoveType	moveType;
@@ -413,6 +379,42 @@ typedef struct
 	uint32_t					maxwaypoints;
 	uint32_t					maxpoints;
 }sTrajGen;
+typedef struct
+{
+	int16_t 					pos[JOINTS_MAX];
+	int16_t 					vel[JOINTS_MAX];
+	int16_t 					acc[JOINTS_MAX];
+}sTrajPoint;
+typedef struct
+{
+	double 						pos[JOINTS_MAX];
+	double 						vel[JOINTS_MAX];
+	double 						acc[JOINTS_MAX];
+}sTrajPointDouble;
+typedef struct
+{
+	sTrajGen					Tgen;
+	
+	eTrajComStatus		comStatus;
+	eTrajExecStatus		targetTES;
+	eTrajExecStatus		currentTES;
+	uint16_t					numTraj;
+	uint16_t					numSeg;
+	uint16_t					maxSeg;
+	uint16_t					maxPoints;
+	bool							flagReadSeg[TRAJ_SEGSSMAX];
+	uint16_t					numPointsSeg[TRAJ_SEGSSMAX];
+	uint16_t					numRecPoints;
+	
+	uint32_t					maxInterPoints;
+	uint32_t					numInterPoint;
+	sTrajPointDouble	startPoint;
+	sTrajPointDouble	interpolatePoint;
+	sTrajPointDouble	endPoint;
+	
+	uint16_t					stepTime;
+	sTrajPoint				points[TRAJ_POINTSMAX];
+}sTrajectory;
 typedef struct
 {
 	eJoint_Mode		targetMode;										//Zadany tryb pracy [0x01 - torque, 0x02 - speed]
@@ -673,7 +675,6 @@ typedef struct
 						sGripper			Gripper;
 						sCan					Can;
 						sArmModel			Arm;
-						sTrajGen			Tgen;
 }sControl;
 
 void Control_SystemConf(void);
