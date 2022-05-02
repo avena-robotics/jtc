@@ -78,15 +78,15 @@ double ddq(double qstart, double qend, double vstart, double vend, double tend, 
 {
 	return 2.*((3.*t*(0.+10.*qend-10.*qstart-4.*tend*vend-6.*tend*vstart))/pow(tend,3)+(6.*pow(t,2)*(0.-15.*qend+15.*qstart+7.*tend*vend+8.*tend*vstart))/pow(tend,4)+(10.*pow(t,3)*(6.*qend-6.*qstart+tend*(0.-3.*(vend+vstart))))/pow(tend,5));
 }
-double q_at(double a5, double a4, double a3, double a2, double a1, double a0, double t)
+double q_at(double a0, double a1, double a2, double a3, double a4, double a5, double t)
 {
 	return a0 + a1*t + a2*pow(t,2) + a3*pow(t,3) + a4*pow(t,4) + a5*pow(t,5);
 }
-double dq_at(double a5, double a4, double a3, double a2, double a1, double a0, double t)
+double dq_at(double a0, double a1, double a2, double a3, double a4, double a5, double t)
 {
 	return a1 + 2.0*a2*t + 3.0*a3*pow(t,2) + 4.0*a4*pow(t,3) + 5.0*a5*pow(t,4);
 }
-double ddq_at(double a5, double a4, double a3, double a2, double a1, double a0, double t)
+double ddq_at(double a0, double a1, double a2, double a3, double a4, double a5, double t)
 {
 	return 2.0*a2 + 6.0*a3*t + 12.0*a4*pow(t,2) + 20.0*a5*pow(t,3);
 }
