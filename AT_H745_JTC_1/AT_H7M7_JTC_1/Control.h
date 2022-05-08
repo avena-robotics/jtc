@@ -265,7 +265,7 @@ typedef enum
 #define MAXINT16										32767.0
 #define MAXINT32										2147483647.0
 
-#define TESTMODE
+//#define TESTMODE
 
 // #define MODBUS - komunikacja jako Modbus RTU Slave
 // #define RS422 - komunikacja tradycyjna poprzez RS422
