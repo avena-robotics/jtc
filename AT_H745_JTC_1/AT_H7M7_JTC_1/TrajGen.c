@@ -43,61 +43,6 @@ void TG_Conf(void)
 {
 	TG_SetDefaultVariables();
 }
-<<<<<<< HEAD
-=======
-double a0(double qstart, double qend, double vstart, double vend, double tend)
-{
-	return qstart;
-}
-double a1(double qstart, double qend, double vstart, double vend, double tend)
-{
-	return vstart;
-}
-double a2(double qstart, double qend, double vstart, double vend, double tend)
-{
-	return 0;
-}
-double a3(double qstart, double qend, double vstart, double vend, double tend)
-{
-	return (10.0*qend-10.0*qstart+tend*(0.-4.0*vend-6.0*vstart))/pow(tend,3);
-}
-double a4(double qstart, double qend, double vstart, double vend, double tend)
-{
-	return (-15.0*qend+15.0*qstart+tend*(0.+7.0*vend+8.0*vstart))/pow(tend,4);
-}
-double a5(double qstart, double qend, double vstart, double vend, double tend)
-{
-	return (6.0*qend-6.0*qstart+tend*(0.-3.0*vend-3.0*vstart))/pow(tend,5);
-}
-double q(double qstart, double qend, double vstart, double vend, double tend, double t)
-{
-	return qstart+t*vstart+(pow(t,3)*(0.+10.*qend-10.*qstart-4.*tend*vend-6.*tend*vstart))/pow(tend,3)+(pow(t,5)*(0.+6.*qend-6.*qstart-3.*tend*vend-3.*tend*vstart))/pow(tend,5)+(pow(t,4)*(0.-15.*qend+15.*qstart+7.*tend*vend+8.*tend*vstart))/pow(tend,4);
-}
-double dq(double qstart, double qend, double vstart, double vend, double tend, double t)
-{
-	return vstart+(3.*pow(t,2)*(0.+10.*qend-10.*qstart-4*tend*vend-6.*tend*vstart))/pow(tend,3)+(4*pow(t,3)*(0.-15.*qend+15.*qstart+7.*tend*vend+8.*tend*vstart))/pow(tend,4)+(5*pow(t,4)*(6.*qend-6.*qstart+tend*(0.-3.*(vend+vstart))))/pow(tend,5);
-}
-double ddq(double qstart, double qend, double vstart, double vend, double tend, double t)
-{
-	return 2.*((3.*t*(0.+10.*qend-10.*qstart-4.*tend*vend-6.*tend*vstart))/pow(tend,3)+(6.*pow(t,2)*(0.-15.*qend+15.*qstart+7.*tend*vend+8.*tend*vstart))/pow(tend,4)+(10.*pow(t,3)*(6.*qend-6.*qstart+tend*(0.-3.*(vend+vstart))))/pow(tend,5));
-}
-double q_at(double a0, double a1, double a2, double a3, double a4, double a5, double t)
-{
-	return a0 + a1*t + a2*pow(t,2) + a3*pow(t,3) + a4*pow(t,4) + a5*pow(t,5);
-}
-double dq_at(double a0, double a1, double a2, double a3, double a4, double a5, double t)
-{
-	return a1 + 2.0*a2*t + 3.0*a3*pow(t,2) + 4.0*a4*pow(t,3) + 5.0*a5*pow(t,4);
-}
-double ddq_at(double a0, double a1, double a2, double a3, double a4, double a5, double t)
-{
-	return 2.0*a2 + 6.0*a3*t + 12.0*a4*pow(t,2) + 20.0*a5*pow(t,3);
-}
-double trule(double qstart, double qend, double vstart, double vend, double tend)
-{
-	return -(tend*(-5.*qend + 5.*qstart + 2.*tend*vend + 3.*tend*vstart))/(5.*(2.*qend - 2.*qstart - tend*(vend + vstart)));
-}
->>>>>>> bb7ac83d3173125957930050a8fb46385e20b060
 bool TG_GetSeqFromMbs(void)
 {
 	uint32_t idx = MRN_SeqStart;
