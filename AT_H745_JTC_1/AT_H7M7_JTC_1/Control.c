@@ -311,6 +311,23 @@ static void Control_CheckErrorFlags(void)
 	// Check Joints internall and external errors
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
+		// Ignorowanie (kasowanie) błędów z danego jointa.
+		if(pC->Joints[num].reqIgnore == true)
+		{
+			pC->Joints[num].currentError = 0x00;
+			pC->Joints[num].mcCurrentError = 0x00;
+			
+			pC->Joints[num].flagSetTorqueOverlimit = false;
+			pC->Joints[num].flagFricTableValueOverlimit = false;
+			pC->Joints[num].flagSetPosOverlimit = false;
+			pC->Joints[num].flagSetVelOverlimit = false;
+			pC->Joints[num].flagSetAccOverlimit = false;
+			pC->Joints[num].flagPosErrorOverlimit = false;
+			
+			pC->Joints[num].cWPosNotAccurate = false;
+		}
+		
+		// Standardowa procedura obsługi błędów z danego jointa
 		pC->Joints[num].flagCanError = false;
 		pC->Joints[num].flagJtcError = false;
 		
@@ -329,12 +346,24 @@ static void Control_CheckErrorFlags(void)
 		if(pC->Joints[num].flagJtcError == true)										pC->Jtc.internalJointsError = true;
 	}
 	
+	if(pC->Gripper.reqIgnore == true)
+	{
+		pC->Gripper.currentError = 0x00;
+		pC->Gripper.flagCanError = false;
+		pC->Gripper.flagJtcError = false;
+	}
+	if(pC->Gripper.currentError != 0x00)													pC->Gripper.flagCanError = true;
+	if(pC->Gripper.flagCanError == true)													pC->Jtc.externalJointsError = true;
+	if(pC->Gripper.flagJtcError == true)													pC->Jtc.internalJointsError = true;
+	
+	
+	
 	// Check CAN comunication errors
 	if(pC->Can.statusId == Can_SId_Error)
 		pC->Jtc.internalCanError = true;
 	
 	// Check hardware emergency line
-	pC->Jtc.emergencyInput = Control_SafetyInRead();
+//	pC->Jtc.emergencyInput = Control_SafetyInRead();
 	
 	#ifdef TESTMODE
 	pC->Jtc.emergencyInput = false;
@@ -765,19 +794,31 @@ static void Control_JtcCheckStateInit(void)
 	
 	#ifdef TESTMODE
 	for(int num=0;num<JOINTS_MAX;num++)
-	{
-		pC->Joints[num].cWPosNotAccurate = false;
-		pC->Joints[num].flagFirstPosRead = true;
-		pC->Joints[num].currentMode = Joint_M_Torque;
-		pC->Joints[num].currentFsm = Joint_FSM_ReadyToOperate;
-		pC->Joints[num].flagConfirmChangeConf = true;
-	}
-	
-	pC->Gripper.flagFirstPosRead = true;
-	pC->Gripper.flagConfirmChangeConf = true;
-	pC->Gripper.currentFsm = Joint_FSM_ReadyToOperate;
+		pC->Joints[num].reqIgnore = true;
+	pC->Gripper.reqIgnore = true;
 	#endif
 	
+	// Ignorowanie danego jointa podczas inicjalizacji (wpisywane wartości tak jakby joint był poprawnie zainicjalizowany)
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		if(pC->Joints[num].reqIgnore == true)
+		{
+			pC->Joints[num].cWPosNotAccurate = false;
+			pC->Joints[num].flagFirstPosRead = true;
+			pC->Joints[num].currentMode = Joint_M_Torque;
+			pC->Joints[num].currentFsm = Joint_FSM_ReadyToOperate;
+			pC->Joints[num].flagConfirmChangeConf = true;
+		}
+	}
+	// Ignorowanie grippera podczas inicjalizacji (wpisywane wartości tak jakby gripper był poprawnie zainicjalizowany)
+	if(pC->Gripper.reqIgnore == true)
+	{
+		pC->Gripper.flagFirstPosRead = true;
+		pC->Gripper.flagConfirmChangeConf = true;
+		pC->Gripper.currentFsm = Joint_FSM_ReadyToOperate;
+	}
+	
+	//Standardowa procedura sprawdzania stanu inicjalizacji
 	// Check Gripper init status flags
 	if(pC->Gripper.flagConfirmChangeConf == true && (pC->Gripper.currentFsm == Joint_FSM_ReadyToOperate || pC->Gripper.currentFsm == Joint_FSM_OperationEnable))
 		pC->Jtc.jointsInitStatus &= ~(1 << Can_DN_Gripper);

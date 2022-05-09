@@ -293,7 +293,14 @@ static void MBS_ActTelemetry(void)
 }
 static void MBS_ActConfigWords(void)
 {
-//	uint16_t idx = MRN_CfStart;
+	uint16_t idx = MRN_CfStart + 12;
+	pC->Joints[0].reqIgnore = (bool)Mbs.hregs[idx++];
+	pC->Joints[1].reqIgnore = (bool)Mbs.hregs[idx++];
+	pC->Joints[2].reqIgnore = (bool)Mbs.hregs[idx++];
+	pC->Joints[3].reqIgnore = (bool)Mbs.hregs[idx++];
+	pC->Joints[4].reqIgnore = (bool)Mbs.hregs[idx++];
+	pC->Joints[5].reqIgnore = (bool)Mbs.hregs[idx++];
+	pC->Gripper.reqIgnore = (bool)Mbs.hregs[idx++];
 }
 static void MBS_ActControlWords(void)
 {

@@ -882,6 +882,29 @@ static void Can_CheckRxStatus(void)
 }
 static void Can_CheckCanStatus(void)
 {
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		if(pC->Joints[num].reqIgnore == true)
+		{
+			pC->Can.RxMsgs[num+0].flagTimeout = false;
+			pC->Can.RxMsgs[num+0].timeoutCnt = 0x00;
+			pC->Can.RxMsgs[num+7].flagTimeout = false;
+			pC->Can.RxMsgs[num+7].timeoutCnt = 0x00;
+			pC->Can.RxMsgs[num+14].flagTimeout = false;
+			pC->Can.RxMsgs[num+14].timeoutCnt = 0x00;
+		}
+	}
+	if(pC->Gripper.reqIgnore == true)
+	{
+		pC->Can.RxMsgs[6].flagTimeout = false;
+		pC->Can.RxMsgs[6].timeoutCnt = 0x00;
+		pC->Can.RxMsgs[13].flagTimeout = false;
+		pC->Can.RxMsgs[13].timeoutCnt = 0x00;
+		pC->Can.RxMsgs[20].flagTimeout = false;
+		pC->Can.RxMsgs[20].timeoutCnt = 0x00;
+	}
+	
+	
 	pC->Can.statusFlags = 0x00;
 	// Bajt 0 dla Tx Timeout
 	bool flag = true;

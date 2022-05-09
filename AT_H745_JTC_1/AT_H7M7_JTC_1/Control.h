@@ -58,7 +58,7 @@ typedef enum
 	MRN_TStart = 0,
 	MRN_TFinish = 121,
 	MRN_CfStart = 200,
-	MRN_CfFinish = 211,
+	MRN_CfFinish = 218,
 	MRN_CtrlStart = 300,
 	MRN_CtrlFinish = 330,
 	MRN_PidStart = 400,
@@ -429,6 +429,7 @@ typedef struct
 	uint16_t			internallErrors;							//Bledy - wszystkie flagi biezacych bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
 	uint16_t			internallOccuredErrors;				//Bledy - wszystkie flagi bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
 	
+	bool					reqIgnore;										//Żadanie ignorowania danego jointa
 	bool					reqCanReset;									//Żadanie resetu urządzenia
 	bool					reqCanClearErrors;						//Żadanie skasowania bledów w urządzeniu poprzez Can
 	
@@ -531,6 +532,7 @@ typedef struct
 	uint16_t			internallErrors;							//Bledy - wszystkie flagi biezacych bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
 	uint16_t			internallOccuredErrors;				//Bledy - wszystkie flagi bledów wewnetrznych zebrane w jeden rejestr do wyslania do hosta
 	
+	bool					reqIgnore;										//Żadanie ignorowania grippera
 	bool					reqCanReset;									//Żadanie resetu urządzenia
 	bool					reqCanClearErrors;						//Żadanie skasowania bledów w urządzeniu poprzez Can
 	
