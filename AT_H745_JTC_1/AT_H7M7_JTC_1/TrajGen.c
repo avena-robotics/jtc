@@ -15,7 +15,7 @@ union conv64
 };
 void TG_SetDefaultVariables(void)
 {
-	Traj.Tgen.stepTime = 0.01;
+	Traj.Tgen.stepTime = 0.001;
 	Traj.Tgen.seqNum = 0;
 	Traj.Tgen.maxwaypoints = 0;
 	Traj.Tgen.maxpoints = 0;
@@ -299,7 +299,7 @@ bool TG_GetSeqFromMbs(void)
 
 // ******************************** SLP ****************************************
 static const double accmax = 12.0;
-uint32_t idx = 0;
+uint32_t idx[JOINTS_MAX];
 static double TG_SLP_q1(double qstart, double qend, double vstart, double vend, double acc1, double acc2, double V1, double t)
 {
 	return qstart+(acc1*pow(t,2))/2.+t*vstart;
@@ -474,22 +474,22 @@ static void TG_SLP_FindTraj1Drive(int num, int x)
 	double tend = Traj.Tgen.waypoints[x].tend;
 	double q03 = qend - qstart;
 	if(q03 >= 0.0) 		V1 = fabs(vmax);
-	else				V1 = -fabs(vmax);
+	else							V1 = -fabs(vmax);
 	if(V1 > vstart)		acc1 = fabs(accmax);
-	else				acc1 = -fabs(accmax);
-	if(vend > V1)		acc2 = fabs(accmax);
-	else				acc2 = -fabs(accmax);
+	else							acc1 = -fabs(accmax);
+	if(vend > V1)			acc2 = fabs(accmax);
+	else							acc2 = -fabs(accmax);
 	if(acc1 == acc2)	acc2 -= 0.001;
 	
 	//***************************************
 	V1a = -((acc1*acc2*tend - acc1*vend + acc2*vstart + sqrt(acc1*acc2*(acc1*(2*q03 + tend*(acc2*tend - 2*vend)) + pow(vend - vstart,2) - 2*acc2*(q03 - tend*vstart))))/(acc1 - acc2));
 	vmax = fabs(V1a);
 	if(q03 >= 0.0) 		V1 = fabs(vmax);
-	else				V1 = -fabs(vmax);
+	else							V1 = -fabs(vmax);
 	if(V1 > vstart)		acc1 = fabs(accmax);
-	else				acc1 = -fabs(accmax);
-	if(vend > V1)		acc2 = fabs(accmax);
-	else				acc2 = -fabs(accmax);
+	else							acc1 = -fabs(accmax);
+	if(vend > V1)			acc2 = fabs(accmax);
+	else							acc2 = -fabs(accmax);
 	if(acc1 == acc2)	acc2 -= 0.001;
 	t1=fabs((V1-vstart)/acc1);
 	t3=fabs((vend-V1)/acc2);
@@ -502,11 +502,11 @@ static void TG_SLP_FindTraj1Drive(int num, int x)
 	V1b = (-(acc1*acc2*tend) + acc1*vend - acc2*vstart + sqrt(acc1*acc2*(acc1*(2*q03 + tend*(acc2*tend - 2*vend)) + pow(vend - vstart,2) - 2*acc2*(q03 - tend*vstart))))/(acc1 - acc2);
 	vmax = fabs(V1b);
 	if(q03 >= 0.0) 		V1 = fabs(vmax);
-	else				V1 = -fabs(vmax);
+	else							V1 = -fabs(vmax);
 	if(V1 > vstart)		acc1 = fabs(accmax);
-	else				acc1 = -fabs(accmax);
-	if(vend > V1)		acc2 = fabs(accmax);
-	else				acc2 = -fabs(accmax);
+	else							acc1 = -fabs(accmax);
+	if(vend > V1)			acc2 = fabs(accmax);
+	else							acc2 = -fabs(accmax);
 	if(acc1 == acc2)	acc2 -= 0.001;
 	t1=fabs((V1-vstart)/acc1);
 	t3=fabs((vend-V1)/acc2);
@@ -519,11 +519,11 @@ static void TG_SLP_FindTraj1Drive(int num, int x)
 	if(fabs(tend - t03a) <= (2.0*Traj.Tgen.stepTime))		vmax = fabs(V1a);
 	if(fabs(tend - t03b) <= (2.0*Traj.Tgen.stepTime))		vmax = fabs(V1b);
 	if(q03 >= 0.0) 		V1 = fabs(vmax);
-	else				V1 = -fabs(vmax);
+	else							V1 = -fabs(vmax);
 	if(V1 > vstart)		acc1 = fabs(accmax);
-	else				acc1 = -fabs(accmax);
-	if(vend > V1)		acc2 = fabs(accmax);
-	else				acc2 = -fabs(accmax);
+	else							acc1 = -fabs(accmax);
+	if(vend > V1)			acc2 = fabs(accmax);
+	else							acc2 = -fabs(accmax);
 	if(acc1 == acc2)	acc2 -= 0.001;
 	t1=fabs((V1-vstart)/acc1);
 	t3=fabs((vend-V1)/acc2);
@@ -537,28 +537,30 @@ static void TG_SLP_FindTraj1Drive(int num, int x)
 	for(int i=0;i<(t1/Traj.Tgen.stepTime);i++)
 	{
 		t = Traj.Tgen.stepTime*(double)i;
-		Traj.points[idx].pos[num] = TG_SLP_q1(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitPosMax * MAXINT16;
-		Traj.points[idx].vel[num] = TG_SLP_dq1(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitVelMax * MAXINT16;
-		Traj.points[idx].acc[num] = TG_SLP_ddq1(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitAccMax * MAXINT16;
-		idx++;
+		Traj.points[idx[num]].pos[num] = TG_SLP_q1(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitPosMax * MAXINT16;
+		Traj.points[idx[num]].vel[num] = TG_SLP_dq1(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitVelMax * MAXINT16;
+		Traj.points[idx[num]].acc[num] = TG_SLP_ddq1(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitAccMax * MAXINT16;
+		idx[num]++;
 	}
 	for(int i=0;i<(t2/Traj.Tgen.stepTime);i++)
 	{
 		t = Traj.Tgen.stepTime*(double)i;
-		Traj.points[idx].pos[num] = TG_SLP_q2(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitPosMax * MAXINT16;
-		Traj.points[idx].vel[num] = TG_SLP_dq2(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitVelMax * MAXINT16;
-		Traj.points[idx].acc[num] = TG_SLP_ddq2(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitAccMax * MAXINT16;
-		idx++;
+		Traj.points[idx[num]].pos[num] = TG_SLP_q2(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitPosMax * MAXINT16;
+		Traj.points[idx[num]].vel[num] = TG_SLP_dq2(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitVelMax * MAXINT16;
+		Traj.points[idx[num]].acc[num] = TG_SLP_ddq2(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitAccMax * MAXINT16;
+		idx[num]++;
 	}
 	for(int i=0;i<(t3/Traj.Tgen.stepTime)-1;i++)
 	{
 		t = Traj.Tgen.stepTime*(double)i;
-		Traj.points[idx].pos[num] = TG_SLP_q3(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitPosMax * MAXINT16;
-		Traj.points[idx].vel[num] = TG_SLP_dq3(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitVelMax * MAXINT16;
-		Traj.points[idx].acc[num] = TG_SLP_ddq3(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitAccMax * MAXINT16;
-		idx++;
+		Traj.points[idx[num]].pos[num] = TG_SLP_q3(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitPosMax * MAXINT16;
+		Traj.points[idx[num]].vel[num] = TG_SLP_dq3(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitVelMax * MAXINT16;
+		Traj.points[idx[num]].acc[num] = TG_SLP_ddq3(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitAccMax * MAXINT16;
+		idx[num]++;
 	}
 }
+uint32_t idxMin;
+uint32_t idxMax;
 void TG_TrajGen(void)
 {
 	if(pC->Jtc.currentFsm != JTC_FSM_HoldPos && pC->Jtc.currentFsm != JTC_FSM_Operate)
@@ -582,16 +584,32 @@ void TG_TrajGen(void)
 	
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
-		idx = 0;
+		idx[num] = 0;
 		for(uint32_t x=0;x<Traj.Tgen.maxwaypoints;x++)
 		{
 			TG_SLP_FindTraj1Drive(num, x);
 		}
 	}
 	
-	Traj.Tgen.maxpoints = idx;
-//	for(uint32_t x=0;x<Traj.Tgen.maxwaypoints;x++)
-//		Traj.Tgen.maxpoints += 100.0 * Traj.Tgen.waypoints[x].tend;
+	idxMin = idx[0];
+	idxMax = idx[0];
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		if(idx[num] < idxMin)
+			idxMin = idx[num];
+		if(idx[num] > idxMax)
+			idxMax = idx[num];
+	}
+	
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		for(uint32_t i = idx[num];i<idxMax;i++)
+		{
+			Traj.points[i].pos[num] = Traj.points[idx[num]-1].pos[num];
+		}
+	}
+	
+	Traj.Tgen.maxpoints = idxMax;
 	
 	time[2] = pC->tick;
 	
