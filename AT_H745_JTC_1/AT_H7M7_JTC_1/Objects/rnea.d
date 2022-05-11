@@ -23,3 +23,4 @@
 .\objects\rnea.o: Gripper.h
 .\objects\rnea.o: MB_RTU_Slave.h
 .\objects\rnea.o: TrajGen.h
+.\objects\rnea.o: InputsOutputs.h

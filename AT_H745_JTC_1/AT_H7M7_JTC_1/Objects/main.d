@@ -22,3 +22,4 @@
 .\objects\main.o: Gripper.h
 .\objects\main.o: MB_RTU_Slave.h
 .\objects\main.o: TrajGen.h
+.\objects\main.o: InputsOutputs.h

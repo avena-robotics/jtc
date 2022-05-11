@@ -23,3 +23,4 @@
 .\objects\mb_rtu_slave.o: Gripper.h
 .\objects\mb_rtu_slave.o: MB_RTU_Slave.h
 .\objects\mb_rtu_slave.o: TrajGen.h
+.\objects\mb_rtu_slave.o: InputsOutputs.h

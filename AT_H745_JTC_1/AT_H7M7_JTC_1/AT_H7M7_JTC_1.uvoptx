@@ -175,11 +175,6 @@
           <WinNumber>1</WinNumber>
           <ItemText>time,0x0A</ItemText>
         </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>idx,0x0A</ItemText>
-        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -655,6 +650,30 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\TrajGen.h</PathWithFileName>
       <FilenameWithoutPath>TrajGen.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>18</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\InputsOutputs.c</PathWithFileName>
+      <FilenameWithoutPath>InputsOutputs.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>19</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\InputsOutputs.h</PathWithFileName>
+      <FilenameWithoutPath>InputsOutputs.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

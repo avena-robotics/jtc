@@ -468,6 +468,16 @@
               <FileType>5</FileType>
               <FilePath>.\TrajGen.h</FilePath>
             </File>
+            <File>
+              <FileName>InputsOutputs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\InputsOutputs.c</FilePath>
+            </File>
+            <File>
+              <FileName>InputsOutputs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\InputsOutputs.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

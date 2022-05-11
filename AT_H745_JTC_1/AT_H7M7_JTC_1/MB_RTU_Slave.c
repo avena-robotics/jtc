@@ -277,19 +277,19 @@ static void MBS_ActTelemetry(void)
 	Mbs.hregs[idx++] = 0x0000;	//Rest of joint6 (gripper) data. Reserved for future use
 
 	//DI status
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
+	Mbs.hregs[idx++] = pC->IO.DIReg;
 	//DQ status
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
+	Mbs.hregs[idx++] = pC->IO.DQReg;
 	//AI status
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
+	Mbs.hregs[idx++] = pC->IO.AIRegs[0];
+	Mbs.hregs[idx++] = pC->IO.AIRegs[1];
+	Mbs.hregs[idx++] = pC->IO.AIRegs[2];
+	Mbs.hregs[idx++] = pC->IO.AIRegs[3];
 	//AQ status
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
-	Mbs.hregs[idx++] = 0x0000;	//Reserved for future use
+	Mbs.hregs[idx++] = pC->IO.AQRegs[0];
+	Mbs.hregs[idx++] = pC->IO.AQRegs[1];
+	Mbs.hregs[idx++] = pC->IO.AQRegs[2];
+	Mbs.hregs[idx++] = pC->IO.AQRegs[3];
 }
 static void MBS_ActConfigWords(void)
 {

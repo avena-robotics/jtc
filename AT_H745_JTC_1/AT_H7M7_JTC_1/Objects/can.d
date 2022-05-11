@@ -23,3 +23,4 @@
 .\objects\can.o: Gripper.h
 .\objects\can.o: MB_RTU_Slave.h
 .\objects\can.o: TrajGen.h
+.\objects\can.o: InputsOutputs.h

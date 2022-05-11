@@ -58,6 +58,7 @@ Section Cross References
     control.o(i.Control_ClearInternallErrorsInJtc) refers to control.o(i.Control_CheckErrorFlags) for Control_CheckErrorFlags
     control.o(i.Control_ClearInternallErrorsInJtc) refers to control.o(.data) for .data
     control.o(i.Control_Delay) refers to control.o(.data) for .data
+    control.o(i.Control_JtcAct) refers to inputsoutputs.o(i.IO_InputsAct) for IO_InputsAct
     control.o(i.Control_JtcAct) refers to control.o(i.Control_CheckErrorFlags) for Control_CheckErrorFlags
     control.o(i.Control_JtcAct) refers to control.o(i.Control_JtcCheckState) for Control_JtcCheckState
     control.o(i.Control_JtcAct) refers to control.o(i.Control_TrajClear) for Control_TrajClear
@@ -72,6 +73,7 @@ Section Cross References
     control.o(i.Control_JtcAct) refers to control.o(i.Control_SetNewTorqueValues) for Control_SetNewTorqueValues
     control.o(i.Control_JtcAct) refers to control.o(i.Control_SendCommandClearErrorsToJoints) for Control_SendCommandClearErrorsToJoints
     control.o(i.Control_JtcAct) refers to control.o(i.Control_SendCommandResetDevice) for Control_SendCommandResetDevice
+    control.o(i.Control_JtcAct) refers to inputsoutputs.o(i.IO_OutputsAct) for IO_OutputsAct
     control.o(i.Control_JtcAct) refers to can.o(i.Can_SendDataToJoints) for Can_SendDataToJoints
     control.o(i.Control_JtcAct) refers to mb_rtu_slave.o(i.MBS_Act) for MBS_Act
     control.o(i.Control_JtcAct) refers to control.o(.data) for .data
@@ -79,6 +81,7 @@ Section Cross References
     control.o(i.Control_JtcCheckState) refers to control.o(i.Control_TrajCheckState) for Control_TrajCheckState
     control.o(i.Control_JtcCheckState) refers to joints.o(i.Joints_SetDefaultVariables) for Joints_SetDefaultVariables
     control.o(i.Control_JtcCheckState) refers to control.o(.data) for .data
+    control.o(i.Control_JtcCheckStateInit) refers to inputsoutputs.o(i.IO_ParkBrakeInRead) for IO_ParkBrakeInRead
     control.o(i.Control_JtcCheckStateInit) refers to control.o(.data) for .data
     control.o(i.Control_JtcHoldPos) refers to control.o(i.Control_JtcSetJointToEnable) for Control_JtcSetJointToEnable
     control.o(i.Control_JtcHoldPos) refers to control.o(i.Control_JtcSetGripperToEnable) for Control_JtcSetGripperToEnable
@@ -91,13 +94,31 @@ Section Cross References
     control.o(i.Control_JtcInit) refers to control.o(i.Control_TrajClear) for Control_TrajClear
     control.o(i.Control_JtcInit) refers to trajgen.o(i.TG_SetDefaultVariables) for TG_SetDefaultVariables
     control.o(i.Control_JtcInit) refers to joints.o(i.Joints_SetDefaultVariables) for Joints_SetDefaultVariables
-    control.o(i.Control_JtcInit) refers to control.o(i.Control_JtcSetJointToReadyToOperate) for Control_JtcSetJointToReadyToOperate
-    control.o(i.Control_JtcInit) refers to joints.o(i.Joints_StartIrValuesVariables) for Joints_StartIrValuesVariables
-    control.o(i.Control_JtcInit) refers to control.o(i.Control_JtcSetJointToEnable) for Control_JtcSetJointToEnable
-    control.o(i.Control_JtcInit) refers to rnea.o(i.RNEA_CalcTorques) for RNEA_CalcTorques
-    control.o(i.Control_JtcInit) refers to joints.o(i.Joints_CalcInitRegsTorque) for Joints_CalcInitRegsTorque
+    control.o(i.Control_JtcInit) refers to control.o(i.Control_JtcInitPosAccurateStage) for Control_JtcInitPosAccurateStage
+    control.o(i.Control_JtcInit) refers to control.o(i.Control_JtcInitPreInitStage) for Control_JtcInitPreInitStage
+    control.o(i.Control_JtcInit) refers to control.o(i.Control_JtcInitDeparkStage) for Control_JtcInitDeparkStage
     control.o(i.Control_JtcInit) refers to joints.o(i.Joints_StopIrValuesVariables) for Joints_StopIrValuesVariables
+    control.o(i.Control_JtcInit) refers to control.o(i.Control_JtcSetJointToReadyToOperate) for Control_JtcSetJointToReadyToOperate
+    control.o(i.Control_JtcInit) refers to inputsoutputs.o(i.IO_ParkBrakeUnlock) for IO_ParkBrakeUnlock
     control.o(i.Control_JtcInit) refers to control.o(.data) for .data
+    control.o(i.Control_JtcInitDeparkStage) refers to joints.o(i.Joints_StartIrValuesVariables) for Joints_StartIrValuesVariables
+    control.o(i.Control_JtcInitDeparkStage) refers to control.o(i.Control_JtcSetJointToEnable) for Control_JtcSetJointToEnable
+    control.o(i.Control_JtcInitDeparkStage) refers to control.o(i.Control_JtcPrepareSetedValuesForInit) for Control_JtcPrepareSetedValuesForInit
+    control.o(i.Control_JtcInitDeparkStage) refers to rnea.o(i.RNEA_CalcTorques) for RNEA_CalcTorques
+    control.o(i.Control_JtcInitDeparkStage) refers to joints.o(i.Joints_CalcInitRegsTorque) for Joints_CalcInitRegsTorque
+    control.o(i.Control_JtcInitDeparkStage) refers to joints.o(i.Joints_StopIrValuesVariables) for Joints_StopIrValuesVariables
+    control.o(i.Control_JtcInitDeparkStage) refers to control.o(i.Control_JtcSetJointToReadyToOperate) for Control_JtcSetJointToReadyToOperate
+    control.o(i.Control_JtcInitDeparkStage) refers to control.o(.data) for .data
+    control.o(i.Control_JtcInitPosAccurateStage) refers to joints.o(i.Joints_StartIrValuesVariables) for Joints_StartIrValuesVariables
+    control.o(i.Control_JtcInitPosAccurateStage) refers to control.o(i.Control_JtcSetJointToEnable) for Control_JtcSetJointToEnable
+    control.o(i.Control_JtcInitPosAccurateStage) refers to control.o(i.Control_JtcPrepareSetedValuesForInit) for Control_JtcPrepareSetedValuesForInit
+    control.o(i.Control_JtcInitPosAccurateStage) refers to rnea.o(i.RNEA_CalcTorques) for RNEA_CalcTorques
+    control.o(i.Control_JtcInitPosAccurateStage) refers to joints.o(i.Joints_CalcInitRegsTorque) for Joints_CalcInitRegsTorque
+    control.o(i.Control_JtcInitPosAccurateStage) refers to joints.o(i.Joints_StopIrValuesVariables) for Joints_StopIrValuesVariables
+    control.o(i.Control_JtcInitPosAccurateStage) refers to control.o(i.Control_JtcSetJointToReadyToOperate) for Control_JtcSetJointToReadyToOperate
+    control.o(i.Control_JtcInitPosAccurateStage) refers to control.o(.data) for .data
+    control.o(i.Control_JtcInitPreInitStage) refers to control.o(i.Control_JtcSetJointToReadyToOperate) for Control_JtcSetJointToReadyToOperate
+    control.o(i.Control_JtcInitPreInitStage) refers to control.o(.data) for .data
     control.o(i.Control_JtcOperate) refers to control.o(i.Control_JtcSetJointToEnable) for Control_JtcSetJointToEnable
     control.o(i.Control_JtcOperate) refers to control.o(i.Control_JtcSetGripperToEnable) for Control_JtcSetGripperToEnable
     control.o(i.Control_JtcOperate) refers to control.o(i.Control_TrajInterpolate) for Control_TrajInterpolate
@@ -108,6 +129,7 @@ Section Cross References
     control.o(i.Control_JtcOperate) refers to control.o(.data) for .data
     control.o(i.Control_JtcOperate) refers to control.o(.ARM.__at_0x24000000) for .ARM.__at_0x24000000
     control.o(i.Control_JtcPrepareSetedValuesForHoldPos) refers to control.o(.data) for .data
+    control.o(i.Control_JtcPrepareSetedValuesForInit) refers to control.o(.data) for .data
     control.o(i.Control_JtcPrepareSetedValuesForOperate) refers to control.o(.data) for .data
     control.o(i.Control_JtcPrepareSetedValuesForOperate) refers to control.o(.ARM.__at_0x24000000) for .ARM.__at_0x24000000
     control.o(i.Control_JtcSetGripperToEnable) refers to control.o(.data) for .data
@@ -145,6 +167,7 @@ Section Cross References
     control.o(i.Control_SystemConf) refers to can.o(i.Can_Conf) for Can_Conf
     control.o(i.Control_SystemConf) refers to rnea.o(i.RNEA_Conf) for RNEA_Conf
     control.o(i.Control_SystemConf) refers to control.o(i.Control_SafetyOutOff) for Control_SafetyOutOff
+    control.o(i.Control_SystemConf) refers to inputsoutputs.o(i.IO_Conf) for IO_Conf
     control.o(i.Control_SystemConf) refers to control.o(.data) for .data
     control.o(i.Control_TrajCheckState) refers to control.o(.ARM.__at_0x24000000) for .ARM.__at_0x24000000
     control.o(i.Control_TrajCheckState) refers to control.o(.data) for .data
@@ -330,6 +353,11 @@ Section Cross References
     trajgen.o(i.TG_TrajGen) refers to control.o(.ARM.__at_0x24000000) for Traj
     trajgen.o(i.TG_TrajGen) refers to trajgen.o(.bss) for .bss
     trajgen.o(i.TG_TrajGen) refers to trajgen.o(.data) for .data
+    inputsoutputs.o(i.IO_InputsAct) refers to control.o(.data) for pC
+    inputsoutputs.o(i.IO_OutputsAct) refers to control.o(.data) for pC
+    inputsoutputs.o(i.IO_ParkBrakeInRead) refers to control.o(.data) for pC
+    inputsoutputs.o(i.IO_ParkBrakeLock) refers to control.o(.data) for pC
+    inputsoutputs.o(i.IO_ParkBrakeUnlock) refers to control.o(.data) for pC
     startup_stm32h745xx.o(STACK) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup_stm32h745xx.o(HEAP) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup_stm32h745xx.o(RESET) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
@@ -604,6 +632,10 @@ Removing Unused input sections from the image.
     Removing trajgen.o(.rev16_text), (4 bytes).
     Removing trajgen.o(.revsh_text), (4 bytes).
     Removing trajgen.o(.rrx_text), (6 bytes).
+    Removing inputsoutputs.o(.rev16_text), (4 bytes).
+    Removing inputsoutputs.o(.revsh_text), (4 bytes).
+    Removing inputsoutputs.o(.rrx_text), (6 bytes).
+    Removing inputsoutputs.o(i.IO_ParkBrakeLock), (20 bytes).
     Removing system_stm32h7xx_dualcore_boot_cm4_cm7.o(.rev16_text), (4 bytes).
     Removing system_stm32h7xx_dualcore_boot_cm4_cm7.o(.revsh_text), (4 bytes).
     Removing system_stm32h7xx_dualcore_boot_cm4_cm7.o(.rrx_text), (6 bytes).
@@ -611,14 +643,19 @@ Removing Unused input sections from the image.
     Removing system_stm32h7xx_dualcore_boot_cm4_cm7.o(.constdata), (16 bytes).
     Removing system_stm32h7xx_dualcore_boot_cm4_cm7.o(.data), (8 bytes).
 
-35 unused section(s) (total 508 bytes) removed from the image.
+39 unused section(s) (total 542 bytes) removed from the image.
 
 ==============================================================================
 
 Adding Veneers to the image
 
+    Adding TT veneer (10 bytes, Long) for call to 'IO_InputsAct' from control.o(i.Control_JtcAct).
+    Adding TT veneer (10 bytes, Long) for call to 'IO_OutputsAct' from control.o(i.Control_JtcAct).
     Adding TT veneer (10 bytes, Long) for call to 'MBS_Act' from control.o(i.Control_JtcAct).
+    Adding TT veneer (10 bytes, Long) for call to 'IO_ParkBrakeInRead' from control.o(i.Control_JtcCheckStateInit).
+    Adding TT veneer (10 bytes, Long) for call to 'IO_ParkBrakeUnlock' from control.o(i.Control_JtcInit).
     Adding TT veneer (10 bytes, Long) for call to 'MBS_Conf' from control.o(i.Control_SystemConf).
+    Adding TT veneer (10 bytes, Long) for call to 'IO_Conf' from control.o(i.Control_SystemConf).
     Adding TT veneer (10 bytes, Long) for call to '__aeabi_memcpy' from control.o(i.Control_TrajInterpolate).
     Adding TT veneer (10 bytes, Long) for call to '__hardfp_cos' from rnea.o(i.HRX).
     Adding TT veneer (10 bytes, Long) for call to '__hardfp_sin' from rnea.o(i.HRX).
@@ -635,7 +672,7 @@ Adding Veneers to the image
     Adding TT veneer (10 bytes, Long) for call to 'Control_SystemConf' from main.o(i.main).
     Adding TT veneer (10 bytes, Long) for call to 'TG_TrajGen' from main.o(i.main).
 
-17 Veneer(s) (total 170 bytes) added to the image.
+22 Veneer(s) (total 220 bytes) added to the image.
 
 ==============================================================================
 
@@ -645,57 +682,57 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit3.o ABSOLUTE
-    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit2.o ABSOLUTE
-    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit1.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardshut.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit1.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit2.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit3.o ABSOLUTE
     ../clib/angel/dczerorl2.s                0x00000000   Number         0  __dczerorl2.o ABSOLUTE
     ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_copy.o ABSOLUTE
     ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_zi.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit2.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry4.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry2.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry4.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit2.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry2.o ABSOLUTE
-    ../clib/angel/rt.s                       0x00000000   Number         0  rt_raise.o ABSOLUTE
     ../clib/angel/rt.s                       0x00000000   Number         0  rt_errno_addr.o ABSOLUTE
+    ../clib/angel/rt.s                       0x00000000   Number         0  rt_raise.o ABSOLUTE
     ../clib/angel/rt.s                       0x00000000   Number         0  rt_errno_addr_intlibspace.o ABSOLUTE
     ../clib/angel/scatter.s                  0x00000000   Number         0  __scatter.o ABSOLUTE
     ../clib/angel/startup.s                  0x00000000   Number         0  __main.o ABSOLUTE
-    ../clib/angel/sys.s                      0x00000000   Number         0  sys_stackheap_outer.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  use_no_semi.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  indicate_semi.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  libspace.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  sys_stackheap_outer.o ABSOLUTE
+    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_wrch.o ABSOLUTE
     ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_exit.o ABSOLUTE
     ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_command.o ABSOLUTE
-    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_wrch.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  no_argv.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  _get_argv_nomalloc.o ABSOLUTE
-    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
-    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/fenv.c                           0x00000000   Number         0  _rserrno.o ABSOLUTE
     ../clib/heapalloc.c                      0x00000000   Number         0  hrguard.o ABSOLUTE
     ../clib/heapaux.c                        0x00000000   Number         0  heapauxi.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libshutdown.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libinit.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libshutdown2.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libinit2.o ABSOLUTE
-    ../clib/libinit.s                        0x00000000   Number         0  libinit.o ABSOLUTE
     ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_w.o ABSOLUTE
     ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_v6.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_cppl_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_other.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_outer.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_other.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_cppl_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_general.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  __raise.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_fpe_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_general.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_fpe_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
     ../clib/signal.s                         0x00000000   Number         0  defsig.o ABSOLUTE
     ../clib/stdlib.c                         0x00000000   Number         0  exit.o ABSOLUTE
     ../fplib/dcheck1.s                       0x00000000   Number         0  dcheck1.o ABSOLUTE
@@ -715,12 +752,12 @@ Image Symbol Table
     ../mathlib/pow.c                         0x00000000   Number         0  pow_x.o ABSOLUTE
     ../mathlib/qnan.c                        0x00000000   Number         0  qnan.o ABSOLUTE
     ../mathlib/rred.c                        0x00000000   Number         0  rred.o ABSOLUTE
-    ../mathlib/sin.c                         0x00000000   Number         0  sin_x.o ABSOLUTE
     ../mathlib/sin.c                         0x00000000   Number         0  sin.o ABSOLUTE
+    ../mathlib/sin.c                         0x00000000   Number         0  sin_x.o ABSOLUTE
     ../mathlib/sin_i.c                       0x00000000   Number         0  sin_i.o ABSOLUTE
     ../mathlib/sin_i.c                       0x00000000   Number         0  sin_i_x.o ABSOLUTE
-    ../mathlib/sqrt.c                        0x00000000   Number         0  sqrt_x.o ABSOLUTE
     ../mathlib/sqrt.c                        0x00000000   Number         0  sqrt.o ABSOLUTE
+    ../mathlib/sqrt.c                        0x00000000   Number         0  sqrt_x.o ABSOLUTE
     Can.c                                    0x00000000   Number         0  can.o ABSOLUTE
     Can.c                                    0x00000000   Number         0  can.o ABSOLUTE
     Com.c                                    0x00000000   Number         0  com.o ABSOLUTE
@@ -729,6 +766,8 @@ Image Symbol Table
     Control.c                                0x00000000   Number         0  control.o ABSOLUTE
     Gripper.c                                0x00000000   Number         0  gripper.o ABSOLUTE
     Gripper.c                                0x00000000   Number         0  gripper.o ABSOLUTE
+    InputsOutputs.c                          0x00000000   Number         0  inputsoutputs.o ABSOLUTE
+    InputsOutputs.c                          0x00000000   Number         0  inputsoutputs.o ABSOLUTE
     Joints.c                                 0x00000000   Number         0  joints.o ABSOLUTE
     Joints.c                                 0x00000000   Number         0  joints.o ABSOLUTE
     MB_RTU_Slave.c                           0x00000000   Number         0  mb_rtu_slave.o ABSOLUTE
@@ -743,192 +782,200 @@ Image Symbol Table
     dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
     main.c                                   0x00000000   Number         0  main.o ABSOLUTE
     main.c                                   0x00000000   Number         0  main.o ABSOLUTE
-    i.Can_CheckCanStatus                     0x00000050   Section        0  can.o(i.Can_CheckCanStatus)
-    Can_CheckCanStatus                       0x00000051   Thumb Code   390  can.o(i.Can_CheckCanStatus)
-    i.Can_CheckStatus                        0x000001dc   Section        0  can.o(i.Can_CheckStatus)
-    Can_CheckStatus                          0x000001dd   Thumb Code   110  can.o(i.Can_CheckStatus)
-    i.Can_Conf                               0x00000250   Section        0  can.o(i.Can_Conf)
-    i.Can_FdcanConf                          0x00000274   Section        0  can.o(i.Can_FdcanConf)
-    Can_FdcanConf                            0x00000275   Thumb Code   190  can.o(i.Can_FdcanConf)
-    i.Can_FiltersConf                        0x00000348   Section        0  can.o(i.Can_FiltersConf)
-    Can_FiltersConf                          0x00000349   Thumb Code   404  can.o(i.Can_FiltersConf)
-    i.Can_ReadFrameChangeConfResponse        0x000004e0   Section        0  can.o(i.Can_ReadFrameChangeConfResponse)
-    Can_ReadFrameChangeConfResponse          0x000004e1   Thumb Code   362  can.o(i.Can_ReadFrameChangeConfResponse)
-    i.Can_ReadFrameChangeFsmResponse         0x00000650   Section        0  can.o(i.Can_ReadFrameChangeFsmResponse)
-    Can_ReadFrameChangeFsmResponse           0x00000651   Thumb Code   338  can.o(i.Can_ReadFrameChangeFsmResponse)
-    i.Can_ReadFrameMoveResponse              0x000007a8   Section        0  can.o(i.Can_ReadFrameMoveResponse)
-    Can_ReadFrameMoveResponse                0x000007a9   Thumb Code   598  can.o(i.Can_ReadFrameMoveResponse)
-    i.Can_ReadFramesFromBuffer               0x00000a14   Section        0  can.o(i.Can_ReadFramesFromBuffer)
-    Can_ReadFramesFromBuffer                 0x00000a15   Thumb Code   104  can.o(i.Can_ReadFramesFromBuffer)
-    i.Can_SendDataToJoints                   0x00000a80   Section        0  can.o(i.Can_SendDataToJoints)
-    i.Can_SendFrameChangeFsm                 0x00000adc   Section        0  can.o(i.Can_SendFrameChangeFsm)
-    Can_SendFrameChangeFsm                   0x00000add   Thumb Code   380  can.o(i.Can_SendFrameChangeFsm)
-    i.Can_SendFrameChangeMode                0x00000c60   Section        0  can.o(i.Can_SendFrameChangeMode)
-    Can_SendFrameChangeMode                  0x00000c61   Thumb Code   416  can.o(i.Can_SendFrameChangeMode)
-    i.Can_SendFrameMove                      0x00000e08   Section        0  can.o(i.Can_SendFrameMove)
-    Can_SendFrameMove                        0x00000e09   Thumb Code   444  can.o(i.Can_SendFrameMove)
-    i.Can_SendFrameOccurred                  0x00000fd4   Section        0  can.o(i.Can_SendFrameOccurred)
-    Can_SendFrameOccurred                    0x00000fd5   Thumb Code    94  can.o(i.Can_SendFrameOccurred)
-    i.Can_SendFrameResetAllDevices           0x0000103c   Section        0  can.o(i.Can_SendFrameResetAllDevices)
-    Can_SendFrameResetAllDevices             0x0000103d   Thumb Code   328  can.o(i.Can_SendFrameResetAllDevices)
-    i.Can_SendFrameResetGripper              0x0000118c   Section        0  can.o(i.Can_SendFrameResetGripper)
-    Can_SendFrameResetGripper                0x0000118d   Thumb Code   328  can.o(i.Can_SendFrameResetGripper)
-    i.Can_SendFrameResetJoint0               0x000012dc   Section        0  can.o(i.Can_SendFrameResetJoint0)
-    Can_SendFrameResetJoint0                 0x000012dd   Thumb Code   328  can.o(i.Can_SendFrameResetJoint0)
-    i.Can_SendFrameResetJoint1               0x0000142c   Section        0  can.o(i.Can_SendFrameResetJoint1)
-    Can_SendFrameResetJoint1                 0x0000142d   Thumb Code   328  can.o(i.Can_SendFrameResetJoint1)
-    i.Can_SendFrameResetJoint2               0x0000157c   Section        0  can.o(i.Can_SendFrameResetJoint2)
-    Can_SendFrameResetJoint2                 0x0000157d   Thumb Code   328  can.o(i.Can_SendFrameResetJoint2)
-    i.Can_SendFrameResetJoint3               0x000016cc   Section        0  can.o(i.Can_SendFrameResetJoint3)
-    Can_SendFrameResetJoint3                 0x000016cd   Thumb Code   328  can.o(i.Can_SendFrameResetJoint3)
-    i.Can_SendFrameResetJoint4               0x0000181c   Section        0  can.o(i.Can_SendFrameResetJoint4)
-    Can_SendFrameResetJoint4                 0x0000181d   Thumb Code   328  can.o(i.Can_SendFrameResetJoint4)
-    i.Can_SendFrameResetJoint5               0x0000196c   Section        0  can.o(i.Can_SendFrameResetJoint5)
-    Can_SendFrameResetJoint5                 0x0000196d   Thumb Code   328  can.o(i.Can_SendFrameResetJoint5)
-    i.Can_SendFrameToDevices                 0x00001abc   Section        0  can.o(i.Can_SendFrameToDevices)
-    Can_SendFrameToDevices                   0x00001abd   Thumb Code   126  can.o(i.Can_SendFrameToDevices)
-    i.Can_StructConf                         0x00001b40   Section        0  can.o(i.Can_StructConf)
-    Can_StructConf                           0x00001b41   Thumb Code    56  can.o(i.Can_StructConf)
-    i.Can_TxBufferConf                       0x00001b88   Section        0  can.o(i.Can_TxBufferConf)
-    Can_TxBufferConf                         0x00001b89   Thumb Code   538  can.o(i.Can_TxBufferConf)
-    i.Control_CheckErrorFlags                0x00001dd8   Section        0  control.o(i.Control_CheckErrorFlags)
-    Control_CheckErrorFlags                  0x00001dd9   Thumb Code   470  control.o(i.Control_CheckErrorFlags)
-    i.Control_CheckLimits                    0x00001fb4   Section        0  control.o(i.Control_CheckLimits)
-    Control_CheckLimits                      0x00001fb5   Thumb Code   340  control.o(i.Control_CheckLimits)
-    i.Control_ClearExternallErrorsViaCan     0x0000210c   Section        0  control.o(i.Control_ClearExternallErrorsViaCan)
-    i.Control_ClearInternallErrorsInJtc      0x00002160   Section        0  control.o(i.Control_ClearInternallErrorsInJtc)
-    i.Control_ClockConf                      0x0000223c   Section        0  control.o(i.Control_ClockConf)
-    Control_ClockConf                        0x0000223d   Thumb Code   212  control.o(i.Control_ClockConf)
-    i.Control_JtcAct                         0x00002318   Section        0  control.o(i.Control_JtcAct)
-    Control_JtcAct                           0x00002319   Thumb Code   222  control.o(i.Control_JtcAct)
-    i.Control_JtcCheckState                  0x00002404   Section        0  control.o(i.Control_JtcCheckState)
-    Control_JtcCheckState                    0x00002405   Thumb Code   260  control.o(i.Control_JtcCheckState)
-    i.Control_JtcCheckStateInit              0x00002514   Section        0  control.o(i.Control_JtcCheckStateInit)
-    Control_JtcCheckStateInit                0x00002515   Thumb Code   264  control.o(i.Control_JtcCheckStateInit)
-    i.Control_JtcHoldPos                     0x00002620   Section        0  control.o(i.Control_JtcHoldPos)
-    Control_JtcHoldPos                       0x00002621   Thumb Code   212  control.o(i.Control_JtcHoldPos)
-    i.Control_JtcInit                        0x0000270c   Section        0  control.o(i.Control_JtcInit)
-    Control_JtcInit                          0x0000270d   Thumb Code   476  control.o(i.Control_JtcInit)
-    i.Control_JtcOperate                     0x000028f4   Section        0  control.o(i.Control_JtcOperate)
-    Control_JtcOperate                       0x000028f5   Thumb Code   164  control.o(i.Control_JtcOperate)
-    i.Control_JtcPrepareSetedValuesForHoldPos 0x000029a8   Section        0  control.o(i.Control_JtcPrepareSetedValuesForHoldPos)
-    Control_JtcPrepareSetedValuesForHoldPos  0x000029a9   Thumb Code    76  control.o(i.Control_JtcPrepareSetedValuesForHoldPos)
-    i.Control_JtcPrepareSetedValuesForOperate 0x00002a00   Section        0  control.o(i.Control_JtcPrepareSetedValuesForOperate)
-    Control_JtcPrepareSetedValuesForOperate  0x00002a01   Thumb Code   120  control.o(i.Control_JtcPrepareSetedValuesForOperate)
-    i.Control_JtcSetGripperToEnable          0x00002a80   Section        0  control.o(i.Control_JtcSetGripperToEnable)
-    Control_JtcSetGripperToEnable            0x00002a81   Thumb Code    22  control.o(i.Control_JtcSetGripperToEnable)
-    i.Control_JtcSetJointToEnable            0x00002a9c   Section        0  control.o(i.Control_JtcSetJointToEnable)
-    Control_JtcSetJointToEnable              0x00002a9d   Thumb Code    30  control.o(i.Control_JtcSetJointToEnable)
-    i.Control_JtcSetJointToReadyToOperate    0x00002ac0   Section        0  control.o(i.Control_JtcSetJointToReadyToOperate)
-    Control_JtcSetJointToReadyToOperate      0x00002ac1   Thumb Code    40  control.o(i.Control_JtcSetJointToReadyToOperate)
-    i.Control_JtcTeaching                    0x00002af4   Section        0  control.o(i.Control_JtcTeaching)
-    Control_JtcTeaching                      0x00002af5   Thumb Code   148  control.o(i.Control_JtcTeaching)
-    i.Control_JtcVariableConf                0x00002b94   Section        0  control.o(i.Control_JtcVariableConf)
-    Control_JtcVariableConf                  0x00002b95   Thumb Code   118  control.o(i.Control_JtcVariableConf)
-    i.Control_ResetDevicesViaCan             0x00002c10   Section        0  control.o(i.Control_ResetDevicesViaCan)
-    i.Control_SafetyOutOff                   0x00002c80   Section        0  control.o(i.Control_SafetyOutOff)
-    Control_SafetyOutOff                     0x00002c81   Thumb Code    10  control.o(i.Control_SafetyOutOff)
-    i.Control_SendCommandClearErrorsToJoints 0x00002c90   Section        0  control.o(i.Control_SendCommandClearErrorsToJoints)
-    Control_SendCommandClearErrorsToJoints   0x00002c91   Thumb Code    88  control.o(i.Control_SendCommandClearErrorsToJoints)
-    i.Control_SendCommandResetDevice         0x00002cec   Section        0  control.o(i.Control_SendCommandResetDevice)
-    Control_SendCommandResetDevice           0x00002ced   Thumb Code   432  control.o(i.Control_SendCommandResetDevice)
-    i.Control_SetDefualtArmModel             0x00002ea0   Section        0  control.o(i.Control_SetDefualtArmModel)
-    i.Control_SetNewTorqueValues             0x00003368   Section        0  control.o(i.Control_SetNewTorqueValues)
-    Control_SetNewTorqueValues               0x00003369   Thumb Code    84  control.o(i.Control_SetNewTorqueValues)
-    i.Control_SetTable                       0x000033c8   Section        0  control.o(i.Control_SetTable)
-    Control_SetTable                         0x000033c9   Thumb Code     6  control.o(i.Control_SetTable)
-    i.Control_SystemConf                     0x000033d0   Section        0  control.o(i.Control_SystemConf)
-    i.Control_TrajCheckState                 0x0000356c   Section        0  control.o(i.Control_TrajCheckState)
-    Control_TrajCheckState                   0x0000356d   Thumb Code   144  control.o(i.Control_TrajCheckState)
-    i.Control_TrajClear                      0x00003604   Section        0  control.o(i.Control_TrajClear)
-    i.Control_TrajClearPointDouble           0x0000368c   Section        0  control.o(i.Control_TrajClearPointDouble)
-    Control_TrajClearPointDouble             0x0000368d   Thumb Code    32  control.o(i.Control_TrajClearPointDouble)
-    i.Control_TrajInterpolate                0x000036b4   Section        0  control.o(i.Control_TrajInterpolate)
-    Control_TrajInterpolate                  0x000036b5   Thumb Code   480  control.o(i.Control_TrajInterpolate)
-    i.FDCAN1_IT0_IRQHandler                  0x000038a4   Section        0  can.o(i.FDCAN1_IT0_IRQHandler)
-    i.FDCAN1_IT1_IRQHandler                  0x000038cc   Section        0  can.o(i.FDCAN1_IT1_IRQHandler)
-    i.Gripper_SetResetValuesVariables        0x00003938   Section        0  gripper.o(i.Gripper_SetResetValuesVariables)
-    i.Gripper_SetStartValuesVariables        0x0000393c   Section        0  gripper.o(i.Gripper_SetStartValuesVariables)
-    i.HRX                                    0x00003974   Section        0  rnea.o(i.HRX)
-    HRX                                      0x00003975   Thumb Code   138  rnea.o(i.HRX)
-    i.HRY                                    0x00003a08   Section        0  rnea.o(i.HRY)
-    HRY                                      0x00003a09   Thumb Code   138  rnea.o(i.HRY)
-    i.HRZ                                    0x00003a9c   Section        0  rnea.o(i.HRZ)
-    HRZ                                      0x00003a9d   Thumb Code   138  rnea.o(i.HRZ)
-    i.HT                                     0x00003b30   Section        0  rnea.o(i.HT)
-    HT                                       0x00003b31   Thumb Code    80  rnea.o(i.HT)
-    i.Joints_CalcFrictionCompensate          0x00003b88   Section        0  joints.o(i.Joints_CalcFrictionCompensate)
-    i.Joints_CalcFrictionCompensatePolynomial 0x00003ba4   Section        0  joints.o(i.Joints_CalcFrictionCompensatePolynomial)
-    Joints_CalcFrictionCompensatePolynomial  0x00003ba5   Thumb Code   252  joints.o(i.Joints_CalcFrictionCompensatePolynomial)
-    i.Joints_CalcFrictionCompensateTable     0x00003ca4   Section        0  joints.o(i.Joints_CalcFrictionCompensateTable)
-    Joints_CalcFrictionCompensateTable       0x00003ca5   Thumb Code   390  joints.o(i.Joints_CalcFrictionCompensateTable)
-    i.Joints_CalcInitRegsTorque              0x00003e30   Section        0  joints.o(i.Joints_CalcInitRegsTorque)
-    i.Joints_CalcPIDs                        0x00003eb0   Section        0  joints.o(i.Joints_CalcPIDs)
-    i.Joints_FindMinMaxVelTempInFrictionTabeIdx 0x00003fc0   Section        0  joints.o(i.Joints_FindMinMaxVelTempInFrictionTabeIdx)
-    i.Joints_SetDefaultFriction              0x00004068   Section        0  joints.o(i.Joints_SetDefaultFriction)
-    i.Joints_SetDefaultFrictionPolynomial    0x00004084   Section        0  joints.o(i.Joints_SetDefaultFrictionPolynomial)
-    Joints_SetDefaultFrictionPolynomial      0x00004085   Thumb Code   414  joints.o(i.Joints_SetDefaultFrictionPolynomial)
-    i.Joints_SetDefaultFrictionTable         0x00004348   Section        0  joints.o(i.Joints_SetDefaultFrictionTable)
-    Joints_SetDefaultFrictionTable           0x00004349   Thumb Code   160  joints.o(i.Joints_SetDefaultFrictionTable)
-    i.Joints_SetDefaultPidParam              0x000043f0   Section        0  joints.o(i.Joints_SetDefaultPidParam)
-    i.Joints_SetDefaultVariables             0x00004540   Section        0  joints.o(i.Joints_SetDefaultVariables)
-    i.Joints_SetResetValuesVariables         0x000045cc   Section        0  joints.o(i.Joints_SetResetValuesVariables)
-    i.Joints_SetStartValuesVariables         0x00004678   Section        0  joints.o(i.Joints_SetStartValuesVariables)
-    i.Joints_StartIrValuesVariables          0x00004820   Section        0  joints.o(i.Joints_StartIrValuesVariables)
-    i.Joints_StopIrValuesVariables           0x0000486c   Section        0  joints.o(i.Joints_StopIrValuesVariables)
-    i.Mat3Ones                               0x000048a0   Section        0  rnea.o(i.Mat3Ones)
-    Mat3Ones                                 0x000048a1   Thumb Code    72  rnea.o(i.Mat3Ones)
-    i.Mat3Transpose                          0x000048f0   Section        0  rnea.o(i.Mat3Transpose)
-    Mat3Transpose                            0x000048f1   Thumb Code    76  rnea.o(i.Mat3Transpose)
-    i.Mat3xMat3                              0x0000493c   Section        0  rnea.o(i.Mat3xMat3)
-    Mat3xMat3                                0x0000493d   Thumb Code   126  rnea.o(i.Mat3xMat3)
-    i.Mat3xVec3                              0x000049c4   Section        0  rnea.o(i.Mat3xVec3)
-    Mat3xVec3                                0x000049c5   Thumb Code    96  rnea.o(i.Mat3xVec3)
-    i.Mat4Ones                               0x00004a2c   Section        0  rnea.o(i.Mat4Ones)
-    Mat4Ones                                 0x00004a2d   Thumb Code    68  rnea.o(i.Mat4Ones)
-    i.Mat4ToMat3                             0x00004a78   Section        0  rnea.o(i.Mat4ToMat3)
-    Mat4ToMat3                               0x00004a79   Thumb Code    72  rnea.o(i.Mat4ToMat3)
-    i.Mat4ToVec3                             0x00004ac0   Section        0  rnea.o(i.Mat4ToVec3)
-    Mat4ToVec3                               0x00004ac1   Thumb Code    46  rnea.o(i.Mat4ToVec3)
-    i.Mat4xMat4                              0x00004af0   Section        0  rnea.o(i.Mat4xMat4)
-    Mat4xMat4                                0x00004af1   Thumb Code   118  rnea.o(i.Mat4xMat4)
-    i.RNEA_CalcTorques                       0x00004b70   Section        0  rnea.o(i.RNEA_CalcTorques)
-    i.RNEA_Conf                              0x00006020   Section        0  rnea.o(i.RNEA_Conf)
-    i.SysTick_Handler                        0x00006ee4   Section        0  control.o(i.SysTick_Handler)
-    i.TG_Conf                                0x00006ef4   Section        0  trajgen.o(i.TG_Conf)
-    i.TG_GetSeqFromMbs                       0x00006ef8   Section        0  trajgen.o(i.TG_GetSeqFromMbs)
-    i.TG_SLP_FindPath                        0x0000707c   Section        0  trajgen.o(i.TG_SLP_FindPath)
-    TG_SLP_FindPath                          0x0000707d   Thumb Code   486  trajgen.o(i.TG_SLP_FindPath)
-    i.TG_SLP_FindTime                        0x00007280   Section        0  trajgen.o(i.TG_SLP_FindTime)
-    TG_SLP_FindTime                          0x00007281   Thumb Code   196  trajgen.o(i.TG_SLP_FindTime)
-    i.TG_SLP_FindTimeMax                     0x0000734c   Section        0  trajgen.o(i.TG_SLP_FindTimeMax)
-    TG_SLP_FindTimeMax                       0x0000734d   Thumb Code   178  trajgen.o(i.TG_SLP_FindTimeMax)
-    i.TG_SLP_FindTraj1Drive                  0x00007408   Section        0  trajgen.o(i.TG_SLP_FindTraj1Drive)
-    TG_SLP_FindTraj1Drive                    0x00007409   Thumb Code  1566  trajgen.o(i.TG_SLP_FindTraj1Drive)
-    i.TG_SLP_FindVmax                        0x00007a30   Section        0  trajgen.o(i.TG_SLP_FindVmax)
-    TG_SLP_FindVmax                          0x00007a31   Thumb Code   278  trajgen.o(i.TG_SLP_FindVmax)
-    i.TG_SetDefaultVariables                 0x00007b50   Section        0  trajgen.o(i.TG_SetDefaultVariables)
-    i.TG_TrajGen                             0x00007c14   Section        0  trajgen.o(i.TG_TrajGen)
-    i.TIM7_IRQHandler                        0x00007cfc   Section        0  control.o(i.TIM7_IRQHandler)
-    i.Vec3AddVec3                            0x00007d18   Section        0  rnea.o(i.Vec3AddVec3)
-    Vec3AddVec3                              0x00007d19   Thumb Code    58  rnea.o(i.Vec3AddVec3)
-    i.Vec3Cross                              0x00007d52   Section        0  rnea.o(i.Vec3Cross)
-    Vec3Cross                                0x00007d53   Thumb Code    50  rnea.o(i.Vec3Cross)
-    i.Vec3SubVec3                            0x00007d84   Section        0  rnea.o(i.Vec3SubVec3)
-    Vec3SubVec3                              0x00007d85   Thumb Code    58  rnea.o(i.Vec3SubVec3)
-    i.Vec3Zeros                              0x00007dc0   Section        0  rnea.o(i.Vec3Zeros)
-    Vec3Zeros                                0x00007dc1   Thumb Code    34  rnea.o(i.Vec3Zeros)
-    i.Vec3xScalar                            0x00007dec   Section        0  rnea.o(i.Vec3xScalar)
-    Vec3xScalar                              0x00007ded   Thumb Code    50  rnea.o(i.Vec3xScalar)
-    i.__NVIC_EnableIRQ                       0x00007e1e   Section        0  can.o(i.__NVIC_EnableIRQ)
-    __NVIC_EnableIRQ                         0x00007e1f   Thumb Code    26  can.o(i.__NVIC_EnableIRQ)
-    .constdata                               0x00007e38   Section     3520  joints.o(.constdata)
-    .constdata                               0x00008bf8   Section     3520  joints.o(.constdata)
-    .constdata                               0x000099b8   Section     3520  joints.o(.constdata)
-    .constdata                               0x0000a778   Section     3520  joints.o(.constdata)
-    .constdata                               0x0000b538   Section     3520  joints.o(.constdata)
-    .constdata                               0x0000c2f8   Section     3520  joints.o(.constdata)
-    .constdata                               0x0000d0b8   Section       24  joints.o(.constdata)
+    i.Can_CheckCanStatus                     0x00000084   Section        0  can.o(i.Can_CheckCanStatus)
+    Can_CheckCanStatus                       0x00000085   Thumb Code   390  can.o(i.Can_CheckCanStatus)
+    i.Can_CheckStatus                        0x00000210   Section        0  can.o(i.Can_CheckStatus)
+    Can_CheckStatus                          0x00000211   Thumb Code   110  can.o(i.Can_CheckStatus)
+    i.Can_Conf                               0x00000284   Section        0  can.o(i.Can_Conf)
+    i.Can_FdcanConf                          0x000002a8   Section        0  can.o(i.Can_FdcanConf)
+    Can_FdcanConf                            0x000002a9   Thumb Code   190  can.o(i.Can_FdcanConf)
+    i.Can_FiltersConf                        0x0000037c   Section        0  can.o(i.Can_FiltersConf)
+    Can_FiltersConf                          0x0000037d   Thumb Code   406  can.o(i.Can_FiltersConf)
+    i.Can_ReadFrameChangeConfResponse        0x00000518   Section        0  can.o(i.Can_ReadFrameChangeConfResponse)
+    Can_ReadFrameChangeConfResponse          0x00000519   Thumb Code   362  can.o(i.Can_ReadFrameChangeConfResponse)
+    i.Can_ReadFrameChangeFsmResponse         0x00000688   Section        0  can.o(i.Can_ReadFrameChangeFsmResponse)
+    Can_ReadFrameChangeFsmResponse           0x00000689   Thumb Code   338  can.o(i.Can_ReadFrameChangeFsmResponse)
+    i.Can_ReadFrameMoveResponse              0x000007e0   Section        0  can.o(i.Can_ReadFrameMoveResponse)
+    Can_ReadFrameMoveResponse                0x000007e1   Thumb Code   598  can.o(i.Can_ReadFrameMoveResponse)
+    i.Can_ReadFramesFromBuffer               0x00000a4c   Section        0  can.o(i.Can_ReadFramesFromBuffer)
+    Can_ReadFramesFromBuffer                 0x00000a4d   Thumb Code   104  can.o(i.Can_ReadFramesFromBuffer)
+    i.Can_SendDataToJoints                   0x00000ab8   Section        0  can.o(i.Can_SendDataToJoints)
+    i.Can_SendFrameChangeFsm                 0x00000b14   Section        0  can.o(i.Can_SendFrameChangeFsm)
+    Can_SendFrameChangeFsm                   0x00000b15   Thumb Code   380  can.o(i.Can_SendFrameChangeFsm)
+    i.Can_SendFrameChangeMode                0x00000c98   Section        0  can.o(i.Can_SendFrameChangeMode)
+    Can_SendFrameChangeMode                  0x00000c99   Thumb Code   416  can.o(i.Can_SendFrameChangeMode)
+    i.Can_SendFrameMove                      0x00000e40   Section        0  can.o(i.Can_SendFrameMove)
+    Can_SendFrameMove                        0x00000e41   Thumb Code   444  can.o(i.Can_SendFrameMove)
+    i.Can_SendFrameOccurred                  0x0000100c   Section        0  can.o(i.Can_SendFrameOccurred)
+    Can_SendFrameOccurred                    0x0000100d   Thumb Code    94  can.o(i.Can_SendFrameOccurred)
+    i.Can_SendFrameResetAllDevices           0x00001074   Section        0  can.o(i.Can_SendFrameResetAllDevices)
+    Can_SendFrameResetAllDevices             0x00001075   Thumb Code   328  can.o(i.Can_SendFrameResetAllDevices)
+    i.Can_SendFrameResetGripper              0x000011c4   Section        0  can.o(i.Can_SendFrameResetGripper)
+    Can_SendFrameResetGripper                0x000011c5   Thumb Code   328  can.o(i.Can_SendFrameResetGripper)
+    i.Can_SendFrameResetJoint0               0x00001314   Section        0  can.o(i.Can_SendFrameResetJoint0)
+    Can_SendFrameResetJoint0                 0x00001315   Thumb Code   328  can.o(i.Can_SendFrameResetJoint0)
+    i.Can_SendFrameResetJoint1               0x00001464   Section        0  can.o(i.Can_SendFrameResetJoint1)
+    Can_SendFrameResetJoint1                 0x00001465   Thumb Code   328  can.o(i.Can_SendFrameResetJoint1)
+    i.Can_SendFrameResetJoint2               0x000015b4   Section        0  can.o(i.Can_SendFrameResetJoint2)
+    Can_SendFrameResetJoint2                 0x000015b5   Thumb Code   328  can.o(i.Can_SendFrameResetJoint2)
+    i.Can_SendFrameResetJoint3               0x00001704   Section        0  can.o(i.Can_SendFrameResetJoint3)
+    Can_SendFrameResetJoint3                 0x00001705   Thumb Code   328  can.o(i.Can_SendFrameResetJoint3)
+    i.Can_SendFrameResetJoint4               0x00001854   Section        0  can.o(i.Can_SendFrameResetJoint4)
+    Can_SendFrameResetJoint4                 0x00001855   Thumb Code   328  can.o(i.Can_SendFrameResetJoint4)
+    i.Can_SendFrameResetJoint5               0x000019a4   Section        0  can.o(i.Can_SendFrameResetJoint5)
+    Can_SendFrameResetJoint5                 0x000019a5   Thumb Code   328  can.o(i.Can_SendFrameResetJoint5)
+    i.Can_SendFrameToDevices                 0x00001af4   Section        0  can.o(i.Can_SendFrameToDevices)
+    Can_SendFrameToDevices                   0x00001af5   Thumb Code   126  can.o(i.Can_SendFrameToDevices)
+    i.Can_StructConf                         0x00001b78   Section        0  can.o(i.Can_StructConf)
+    Can_StructConf                           0x00001b79   Thumb Code    56  can.o(i.Can_StructConf)
+    i.Can_TxBufferConf                       0x00001bc0   Section        0  can.o(i.Can_TxBufferConf)
+    Can_TxBufferConf                         0x00001bc1   Thumb Code   518  can.o(i.Can_TxBufferConf)
+    i.Control_CheckErrorFlags                0x00001dfc   Section        0  control.o(i.Control_CheckErrorFlags)
+    Control_CheckErrorFlags                  0x00001dfd   Thumb Code   470  control.o(i.Control_CheckErrorFlags)
+    i.Control_CheckLimits                    0x00001fd8   Section        0  control.o(i.Control_CheckLimits)
+    Control_CheckLimits                      0x00001fd9   Thumb Code   340  control.o(i.Control_CheckLimits)
+    i.Control_ClearExternallErrorsViaCan     0x00002130   Section        0  control.o(i.Control_ClearExternallErrorsViaCan)
+    i.Control_ClearInternallErrorsInJtc      0x00002184   Section        0  control.o(i.Control_ClearInternallErrorsInJtc)
+    i.Control_ClockConf                      0x00002260   Section        0  control.o(i.Control_ClockConf)
+    Control_ClockConf                        0x00002261   Thumb Code   212  control.o(i.Control_ClockConf)
+    i.Control_JtcAct                         0x0000233c   Section        0  control.o(i.Control_JtcAct)
+    Control_JtcAct                           0x0000233d   Thumb Code   230  control.o(i.Control_JtcAct)
+    i.Control_JtcCheckState                  0x00002430   Section        0  control.o(i.Control_JtcCheckState)
+    Control_JtcCheckState                    0x00002431   Thumb Code   260  control.o(i.Control_JtcCheckState)
+    i.Control_JtcCheckStateInit              0x00002540   Section        0  control.o(i.Control_JtcCheckStateInit)
+    Control_JtcCheckStateInit                0x00002541   Thumb Code   554  control.o(i.Control_JtcCheckStateInit)
+    i.Control_JtcHoldPos                     0x00002770   Section        0  control.o(i.Control_JtcHoldPos)
+    Control_JtcHoldPos                       0x00002771   Thumb Code   212  control.o(i.Control_JtcHoldPos)
+    i.Control_JtcInit                        0x0000285c   Section        0  control.o(i.Control_JtcInit)
+    Control_JtcInit                          0x0000285d   Thumb Code   120  control.o(i.Control_JtcInit)
+    i.Control_JtcInitDeparkStage             0x000028e0   Section        0  control.o(i.Control_JtcInitDeparkStage)
+    Control_JtcInitDeparkStage               0x000028e1   Thumb Code   300  control.o(i.Control_JtcInitDeparkStage)
+    i.Control_JtcInitPosAccurateStage        0x00002a10   Section        0  control.o(i.Control_JtcInitPosAccurateStage)
+    Control_JtcInitPosAccurateStage          0x00002a11   Thumb Code   210  control.o(i.Control_JtcInitPosAccurateStage)
+    i.Control_JtcInitPreInitStage            0x00002af0   Section        0  control.o(i.Control_JtcInitPreInitStage)
+    Control_JtcInitPreInitStage              0x00002af1   Thumb Code   156  control.o(i.Control_JtcInitPreInitStage)
+    i.Control_JtcOperate                     0x00002b90   Section        0  control.o(i.Control_JtcOperate)
+    Control_JtcOperate                       0x00002b91   Thumb Code   164  control.o(i.Control_JtcOperate)
+    i.Control_JtcPrepareSetedValuesForHoldPos 0x00002c44   Section        0  control.o(i.Control_JtcPrepareSetedValuesForHoldPos)
+    Control_JtcPrepareSetedValuesForHoldPos  0x00002c45   Thumb Code    76  control.o(i.Control_JtcPrepareSetedValuesForHoldPos)
+    i.Control_JtcPrepareSetedValuesForInit   0x00002c9c   Section        0  control.o(i.Control_JtcPrepareSetedValuesForInit)
+    Control_JtcPrepareSetedValuesForInit     0x00002c9d   Thumb Code    48  control.o(i.Control_JtcPrepareSetedValuesForInit)
+    i.Control_JtcPrepareSetedValuesForOperate 0x00002cd8   Section        0  control.o(i.Control_JtcPrepareSetedValuesForOperate)
+    Control_JtcPrepareSetedValuesForOperate  0x00002cd9   Thumb Code   120  control.o(i.Control_JtcPrepareSetedValuesForOperate)
+    i.Control_JtcSetGripperToEnable          0x00002d58   Section        0  control.o(i.Control_JtcSetGripperToEnable)
+    Control_JtcSetGripperToEnable            0x00002d59   Thumb Code    22  control.o(i.Control_JtcSetGripperToEnable)
+    i.Control_JtcSetJointToEnable            0x00002d74   Section        0  control.o(i.Control_JtcSetJointToEnable)
+    Control_JtcSetJointToEnable              0x00002d75   Thumb Code    30  control.o(i.Control_JtcSetJointToEnable)
+    i.Control_JtcSetJointToReadyToOperate    0x00002d98   Section        0  control.o(i.Control_JtcSetJointToReadyToOperate)
+    Control_JtcSetJointToReadyToOperate      0x00002d99   Thumb Code    40  control.o(i.Control_JtcSetJointToReadyToOperate)
+    i.Control_JtcTeaching                    0x00002dcc   Section        0  control.o(i.Control_JtcTeaching)
+    Control_JtcTeaching                      0x00002dcd   Thumb Code   148  control.o(i.Control_JtcTeaching)
+    i.Control_JtcVariableConf                0x00002e6c   Section        0  control.o(i.Control_JtcVariableConf)
+    Control_JtcVariableConf                  0x00002e6d   Thumb Code   126  control.o(i.Control_JtcVariableConf)
+    i.Control_ResetDevicesViaCan             0x00002ef0   Section        0  control.o(i.Control_ResetDevicesViaCan)
+    i.Control_SafetyOutOff                   0x00002f60   Section        0  control.o(i.Control_SafetyOutOff)
+    Control_SafetyOutOff                     0x00002f61   Thumb Code    10  control.o(i.Control_SafetyOutOff)
+    i.Control_SendCommandClearErrorsToJoints 0x00002f70   Section        0  control.o(i.Control_SendCommandClearErrorsToJoints)
+    Control_SendCommandClearErrorsToJoints   0x00002f71   Thumb Code    88  control.o(i.Control_SendCommandClearErrorsToJoints)
+    i.Control_SendCommandResetDevice         0x00002fcc   Section        0  control.o(i.Control_SendCommandResetDevice)
+    Control_SendCommandResetDevice           0x00002fcd   Thumb Code   432  control.o(i.Control_SendCommandResetDevice)
+    i.Control_SetDefualtArmModel             0x00003180   Section        0  control.o(i.Control_SetDefualtArmModel)
+    i.Control_SetNewTorqueValues             0x00003648   Section        0  control.o(i.Control_SetNewTorqueValues)
+    Control_SetNewTorqueValues               0x00003649   Thumb Code    84  control.o(i.Control_SetNewTorqueValues)
+    i.Control_SetTable                       0x000036a8   Section        0  control.o(i.Control_SetTable)
+    Control_SetTable                         0x000036a9   Thumb Code     6  control.o(i.Control_SetTable)
+    i.Control_SystemConf                     0x000036b0   Section        0  control.o(i.Control_SystemConf)
+    i.Control_TrajCheckState                 0x00003850   Section        0  control.o(i.Control_TrajCheckState)
+    Control_TrajCheckState                   0x00003851   Thumb Code   144  control.o(i.Control_TrajCheckState)
+    i.Control_TrajClear                      0x000038e8   Section        0  control.o(i.Control_TrajClear)
+    i.Control_TrajClearPointDouble           0x00003970   Section        0  control.o(i.Control_TrajClearPointDouble)
+    Control_TrajClearPointDouble             0x00003971   Thumb Code    32  control.o(i.Control_TrajClearPointDouble)
+    i.Control_TrajInterpolate                0x00003998   Section        0  control.o(i.Control_TrajInterpolate)
+    Control_TrajInterpolate                  0x00003999   Thumb Code   480  control.o(i.Control_TrajInterpolate)
+    i.FDCAN1_IT0_IRQHandler                  0x00003b88   Section        0  can.o(i.FDCAN1_IT0_IRQHandler)
+    i.FDCAN1_IT1_IRQHandler                  0x00003bb0   Section        0  can.o(i.FDCAN1_IT1_IRQHandler)
+    i.Gripper_SetResetValuesVariables        0x00003c1c   Section        0  gripper.o(i.Gripper_SetResetValuesVariables)
+    i.Gripper_SetStartValuesVariables        0x00003c20   Section        0  gripper.o(i.Gripper_SetStartValuesVariables)
+    i.HRX                                    0x00003c58   Section        0  rnea.o(i.HRX)
+    HRX                                      0x00003c59   Thumb Code   138  rnea.o(i.HRX)
+    i.HRY                                    0x00003cec   Section        0  rnea.o(i.HRY)
+    HRY                                      0x00003ced   Thumb Code   138  rnea.o(i.HRY)
+    i.HRZ                                    0x00003d80   Section        0  rnea.o(i.HRZ)
+    HRZ                                      0x00003d81   Thumb Code   138  rnea.o(i.HRZ)
+    i.HT                                     0x00003e14   Section        0  rnea.o(i.HT)
+    HT                                       0x00003e15   Thumb Code    80  rnea.o(i.HT)
+    i.Joints_CalcFrictionCompensate          0x00003e6c   Section        0  joints.o(i.Joints_CalcFrictionCompensate)
+    i.Joints_CalcFrictionCompensatePolynomial 0x00003e88   Section        0  joints.o(i.Joints_CalcFrictionCompensatePolynomial)
+    Joints_CalcFrictionCompensatePolynomial  0x00003e89   Thumb Code   252  joints.o(i.Joints_CalcFrictionCompensatePolynomial)
+    i.Joints_CalcFrictionCompensateTable     0x00003f88   Section        0  joints.o(i.Joints_CalcFrictionCompensateTable)
+    Joints_CalcFrictionCompensateTable       0x00003f89   Thumb Code   390  joints.o(i.Joints_CalcFrictionCompensateTable)
+    i.Joints_CalcInitRegsTorque              0x00004114   Section        0  joints.o(i.Joints_CalcInitRegsTorque)
+    i.Joints_CalcPIDs                        0x00004194   Section        0  joints.o(i.Joints_CalcPIDs)
+    i.Joints_FindMinMaxVelTempInFrictionTabeIdx 0x000042a4   Section        0  joints.o(i.Joints_FindMinMaxVelTempInFrictionTabeIdx)
+    i.Joints_SetDefaultFriction              0x0000434c   Section        0  joints.o(i.Joints_SetDefaultFriction)
+    i.Joints_SetDefaultFrictionPolynomial    0x00004368   Section        0  joints.o(i.Joints_SetDefaultFrictionPolynomial)
+    Joints_SetDefaultFrictionPolynomial      0x00004369   Thumb Code   412  joints.o(i.Joints_SetDefaultFrictionPolynomial)
+    i.Joints_SetDefaultFrictionTable         0x00004628   Section        0  joints.o(i.Joints_SetDefaultFrictionTable)
+    Joints_SetDefaultFrictionTable           0x00004629   Thumb Code   160  joints.o(i.Joints_SetDefaultFrictionTable)
+    i.Joints_SetDefaultPidParam              0x000046d0   Section        0  joints.o(i.Joints_SetDefaultPidParam)
+    i.Joints_SetDefaultVariables             0x00004820   Section        0  joints.o(i.Joints_SetDefaultVariables)
+    i.Joints_SetResetValuesVariables         0x000048ac   Section        0  joints.o(i.Joints_SetResetValuesVariables)
+    i.Joints_SetStartValuesVariables         0x00004958   Section        0  joints.o(i.Joints_SetStartValuesVariables)
+    i.Joints_StartIrValuesVariables          0x00004b28   Section        0  joints.o(i.Joints_StartIrValuesVariables)
+    i.Joints_StopIrValuesVariables           0x00004b7c   Section        0  joints.o(i.Joints_StopIrValuesVariables)
+    i.Mat3Ones                               0x00004bb0   Section        0  rnea.o(i.Mat3Ones)
+    Mat3Ones                                 0x00004bb1   Thumb Code    72  rnea.o(i.Mat3Ones)
+    i.Mat3Transpose                          0x00004c00   Section        0  rnea.o(i.Mat3Transpose)
+    Mat3Transpose                            0x00004c01   Thumb Code    76  rnea.o(i.Mat3Transpose)
+    i.Mat3xMat3                              0x00004c4c   Section        0  rnea.o(i.Mat3xMat3)
+    Mat3xMat3                                0x00004c4d   Thumb Code   126  rnea.o(i.Mat3xMat3)
+    i.Mat3xVec3                              0x00004cd4   Section        0  rnea.o(i.Mat3xVec3)
+    Mat3xVec3                                0x00004cd5   Thumb Code    96  rnea.o(i.Mat3xVec3)
+    i.Mat4Ones                               0x00004d3c   Section        0  rnea.o(i.Mat4Ones)
+    Mat4Ones                                 0x00004d3d   Thumb Code    68  rnea.o(i.Mat4Ones)
+    i.Mat4ToMat3                             0x00004d88   Section        0  rnea.o(i.Mat4ToMat3)
+    Mat4ToMat3                               0x00004d89   Thumb Code    72  rnea.o(i.Mat4ToMat3)
+    i.Mat4ToVec3                             0x00004dd0   Section        0  rnea.o(i.Mat4ToVec3)
+    Mat4ToVec3                               0x00004dd1   Thumb Code    46  rnea.o(i.Mat4ToVec3)
+    i.Mat4xMat4                              0x00004e00   Section        0  rnea.o(i.Mat4xMat4)
+    Mat4xMat4                                0x00004e01   Thumb Code   118  rnea.o(i.Mat4xMat4)
+    i.RNEA_CalcTorques                       0x00004e80   Section        0  rnea.o(i.RNEA_CalcTorques)
+    i.RNEA_Conf                              0x00006330   Section        0  rnea.o(i.RNEA_Conf)
+    i.SysTick_Handler                        0x000071f4   Section        0  control.o(i.SysTick_Handler)
+    i.TG_Conf                                0x00007204   Section        0  trajgen.o(i.TG_Conf)
+    i.TG_GetSeqFromMbs                       0x00007208   Section        0  trajgen.o(i.TG_GetSeqFromMbs)
+    i.TG_SLP_FindPath                        0x00007374   Section        0  trajgen.o(i.TG_SLP_FindPath)
+    TG_SLP_FindPath                          0x00007375   Thumb Code   486  trajgen.o(i.TG_SLP_FindPath)
+    i.TG_SLP_FindTime                        0x00007578   Section        0  trajgen.o(i.TG_SLP_FindTime)
+    TG_SLP_FindTime                          0x00007579   Thumb Code   196  trajgen.o(i.TG_SLP_FindTime)
+    i.TG_SLP_FindTimeMax                     0x00007644   Section        0  trajgen.o(i.TG_SLP_FindTimeMax)
+    TG_SLP_FindTimeMax                       0x00007645   Thumb Code   178  trajgen.o(i.TG_SLP_FindTimeMax)
+    i.TG_SLP_FindTraj1Drive                  0x00007700   Section        0  trajgen.o(i.TG_SLP_FindTraj1Drive)
+    TG_SLP_FindTraj1Drive                    0x00007701   Thumb Code  1566  trajgen.o(i.TG_SLP_FindTraj1Drive)
+    i.TG_SLP_FindVmax                        0x00007d28   Section        0  trajgen.o(i.TG_SLP_FindVmax)
+    TG_SLP_FindVmax                          0x00007d29   Thumb Code   278  trajgen.o(i.TG_SLP_FindVmax)
+    i.TG_SetDefaultVariables                 0x00007e48   Section        0  trajgen.o(i.TG_SetDefaultVariables)
+    i.TG_TrajGen                             0x00007f0c   Section        0  trajgen.o(i.TG_TrajGen)
+    i.TIM7_IRQHandler                        0x00007ff4   Section        0  control.o(i.TIM7_IRQHandler)
+    i.Vec3AddVec3                            0x00008010   Section        0  rnea.o(i.Vec3AddVec3)
+    Vec3AddVec3                              0x00008011   Thumb Code    58  rnea.o(i.Vec3AddVec3)
+    i.Vec3Cross                              0x0000804a   Section        0  rnea.o(i.Vec3Cross)
+    Vec3Cross                                0x0000804b   Thumb Code    50  rnea.o(i.Vec3Cross)
+    i.Vec3SubVec3                            0x0000807c   Section        0  rnea.o(i.Vec3SubVec3)
+    Vec3SubVec3                              0x0000807d   Thumb Code    58  rnea.o(i.Vec3SubVec3)
+    i.Vec3Zeros                              0x000080b8   Section        0  rnea.o(i.Vec3Zeros)
+    Vec3Zeros                                0x000080b9   Thumb Code    34  rnea.o(i.Vec3Zeros)
+    i.Vec3xScalar                            0x000080e4   Section        0  rnea.o(i.Vec3xScalar)
+    Vec3xScalar                              0x000080e5   Thumb Code    50  rnea.o(i.Vec3xScalar)
+    i.__NVIC_EnableIRQ                       0x00008116   Section        0  can.o(i.__NVIC_EnableIRQ)
+    __NVIC_EnableIRQ                         0x00008117   Thumb Code    26  can.o(i.__NVIC_EnableIRQ)
+    .constdata                               0x00008130   Section     3520  joints.o(.constdata)
+    .constdata                               0x00008ef0   Section     3520  joints.o(.constdata)
+    .constdata                               0x00009cb0   Section     3520  joints.o(.constdata)
+    .constdata                               0x0000aa70   Section     3520  joints.o(.constdata)
+    .constdata                               0x0000b830   Section     3520  joints.o(.constdata)
+    .constdata                               0x0000c5f0   Section     3520  joints.o(.constdata)
+    .constdata                               0x0000d3b0   Section       24  joints.o(.constdata)
     RESET                                    0x08000000   Section      664  startup_stm32h745xx.o(RESET)
     !!!main                                  0x08000298   Section        8  __main.o(!!!main)
     !!!scatter                               0x080002a0   Section       52  __scatter.o(!!!scatter)
@@ -992,102 +1039,107 @@ Image Symbol Table
     .text                                    0x0800055a   Section        0  indicate_semi.o(.text)
     i.DMA1_Stream0_IRQHandler                0x080005b4   Section        0  mb_rtu_slave.o(i.DMA1_Stream0_IRQHandler)
     i.DMA1_Stream1_IRQHandler                0x080005d0   Section        0  mb_rtu_slave.o(i.DMA1_Stream1_IRQHandler)
-    i.MBS_Act                                0x080005e8   Section        0  mb_rtu_slave.o(i.MBS_Act)
-    i.MBS_ActConfigWords                     0x080005fc   Section        0  mb_rtu_slave.o(i.MBS_ActConfigWords)
-    MBS_ActConfigWords                       0x080005fd   Thumb Code   142  mb_rtu_slave.o(i.MBS_ActConfigWords)
-    i.MBS_ActControlWords                    0x08000694   Section        0  mb_rtu_slave.o(i.MBS_ActControlWords)
-    MBS_ActControlWords                      0x08000695   Thumb Code   748  mb_rtu_slave.o(i.MBS_ActControlWords)
-    i.MBS_ActTelemetry                       0x08000990   Section        0  mb_rtu_slave.o(i.MBS_ActTelemetry)
-    MBS_ActTelemetry                         0x08000991   Thumb Code   732  mb_rtu_slave.o(i.MBS_ActTelemetry)
-    i.MBS_ClrStr                             0x08000c78   Section        0  mb_rtu_slave.o(i.MBS_ClrStr)
-    MBS_ClrStr                               0x08000c79   Thumb Code    16  mb_rtu_slave.o(i.MBS_ClrStr)
-    i.MBS_ComUart2Conf                       0x08000c88   Section        0  mb_rtu_slave.o(i.MBS_ComUart2Conf)
-    MBS_ComUart2Conf                         0x08000c89   Thumb Code   164  mb_rtu_slave.o(i.MBS_ComUart2Conf)
-    i.MBS_Conf                               0x08000d4c   Section        0  mb_rtu_slave.o(i.MBS_Conf)
-    i.MBS_Crc16                              0x08000d98   Section        0  mb_rtu_slave.o(i.MBS_Crc16)
-    MBS_Crc16                                0x08000d99   Thumb Code    48  mb_rtu_slave.o(i.MBS_Crc16)
-    i.MBS_ReadRequest                        0x08000dc8   Section        0  mb_rtu_slave.o(i.MBS_ReadRequest)
-    MBS_ReadRequest                          0x08000dc9   Thumb Code   364  mb_rtu_slave.o(i.MBS_ReadRequest)
-    i.MBS_ReinitDmaReadStream                0x08000f38   Section        0  mb_rtu_slave.o(i.MBS_ReinitDmaReadStream)
-    MBS_ReinitDmaReadStream                  0x08000f39   Thumb Code    34  mb_rtu_slave.o(i.MBS_ReinitDmaReadStream)
-    i.MBS_ReinitDmaWriteStream               0x08000f60   Section        0  mb_rtu_slave.o(i.MBS_ReinitDmaWriteStream)
-    MBS_ReinitDmaWriteStream                 0x08000f61   Thumb Code    30  mb_rtu_slave.o(i.MBS_ReinitDmaWriteStream)
-    i.MBS_ResponseError_IDR                  0x08000f84   Section        0  mb_rtu_slave.o(i.MBS_ResponseError_IDR)
-    MBS_ResponseError_IDR                    0x08000f85   Thumb Code    68  mb_rtu_slave.o(i.MBS_ResponseError_IDR)
-    i.MBS_Response_RnDQ                      0x08000fcc   Section        0  mb_rtu_slave.o(i.MBS_Response_RnDQ)
-    MBS_Response_RnDQ                        0x08000fcd   Thumb Code   132  mb_rtu_slave.o(i.MBS_Response_RnDQ)
-    i.MBS_Response_RnHR                      0x08001054   Section        0  mb_rtu_slave.o(i.MBS_Response_RnHR)
-    MBS_Response_RnHR                        0x08001055   Thumb Code   132  mb_rtu_slave.o(i.MBS_Response_RnHR)
-    i.MBS_Response_W1HR                      0x080010dc   Section        0  mb_rtu_slave.o(i.MBS_Response_W1HR)
-    MBS_Response_W1HR                        0x080010dd   Thumb Code    96  mb_rtu_slave.o(i.MBS_Response_W1HR)
-    i.MBS_Response_WnDQ                      0x08001140   Section        0  mb_rtu_slave.o(i.MBS_Response_WnDQ)
-    MBS_Response_WnDQ                        0x08001141   Thumb Code   166  mb_rtu_slave.o(i.MBS_Response_WnDQ)
-    i.MBS_Response_WnHR                      0x080011ec   Section        0  mb_rtu_slave.o(i.MBS_Response_WnHR)
-    MBS_Response_WnHR                        0x080011ed   Thumb Code   124  mb_rtu_slave.o(i.MBS_Response_WnHR)
-    i.MBS_StructConf                         0x0800126c   Section        0  mb_rtu_slave.o(i.MBS_StructConf)
-    MBS_StructConf                           0x0800126d   Thumb Code    80  mb_rtu_slave.o(i.MBS_StructConf)
-    i.MBS_UseNewArmModel                     0x080012c8   Section        0  mb_rtu_slave.o(i.MBS_UseNewArmModel)
-    MBS_UseNewArmModel                       0x080012c9   Thumb Code   286  mb_rtu_slave.o(i.MBS_UseNewArmModel)
-    i.MBS_UseNewPidParam                     0x080013f0   Section        0  mb_rtu_slave.o(i.MBS_UseNewPidParam)
-    MBS_UseNewPidParam                       0x080013f1   Thumb Code   254  mb_rtu_slave.o(i.MBS_UseNewPidParam)
-    i.SystemInit                             0x080014f8   Section        0  system_stm32h7xx_dualcore_boot_cm4_cm7.o(i.SystemInit)
-    i.TIM5_IRQHandler                        0x080015f8   Section        0  mb_rtu_slave.o(i.TIM5_IRQHandler)
-    i.USART2_IRQHandler                      0x08001620   Section        0  mb_rtu_slave.o(i.USART2_IRQHandler)
-    i.__ARM_fpclassify                       0x08001664   Section        0  fpclassify.o(i.__ARM_fpclassify)
-    i.__NVIC_EnableIRQ                       0x08001694   Section        0  mb_rtu_slave.o(i.__NVIC_EnableIRQ)
-    __NVIC_EnableIRQ                         0x08001695   Thumb Code    26  mb_rtu_slave.o(i.__NVIC_EnableIRQ)
-    i.__hardfp_cos                           0x080016b0   Section        0  cos.o(i.__hardfp_cos)
-    i.__hardfp_pow                           0x08001760   Section        0  pow.o(i.__hardfp_pow)
-    i.__hardfp_sin                           0x08002058   Section        0  sin.o(i.__hardfp_sin)
-    i.__hardfp_sqrt                          0x08002108   Section        0  sqrt.o(i.__hardfp_sqrt)
-    i.__ieee754_rem_pio2                     0x08002170   Section        0  rred.o(i.__ieee754_rem_pio2)
-    i.__kernel_cos                           0x08002480   Section        0  cos_i.o(i.__kernel_cos)
-    i.__kernel_poly                          0x08002560   Section        0  poly.o(i.__kernel_poly)
-    i.__kernel_sin                           0x080025d0   Section        0  sin_i.o(i.__kernel_sin)
-    i.__mathlib_dbl_divzero                  0x08002678   Section        0  dunder.o(i.__mathlib_dbl_divzero)
-    i.__mathlib_dbl_infnan2                  0x08002698   Section        0  dunder.o(i.__mathlib_dbl_infnan2)
-    i.__mathlib_dbl_invalid                  0x080026a0   Section        0  dunder.o(i.__mathlib_dbl_invalid)
-    i.__mathlib_dbl_overflow                 0x080026b8   Section        0  dunder.o(i.__mathlib_dbl_overflow)
-    i.__mathlib_dbl_underflow                0x080026d0   Section        0  dunder.o(i.__mathlib_dbl_underflow)
-    i.fabs                                   0x080026e8   Section        0  fabs.o(i.fabs)
-    i.main                                   0x08002700   Section        0  main.o(i.main)
-    i.sqrt                                   0x0800270a   Section        0  sqrt.o(i.sqrt)
-    x$fpl$dcheck1                            0x08002774   Section       16  dcheck1.o(x$fpl$dcheck1)
-    $v0                                      0x08002774   Number         0  dcheck1.o(x$fpl$dcheck1)
-    x$fpl$fpinit                             0x08002784   Section       10  fpinit.o(x$fpl$fpinit)
-    $v0                                      0x08002784   Number         0  fpinit.o(x$fpl$fpinit)
-    x$fpl$retnan                             0x0800278e   Section      100  retnan.o(x$fpl$retnan)
-    $v0                                      0x0800278e   Number         0  retnan.o(x$fpl$retnan)
-    x$fpl$scalbn                             0x080027f2   Section       92  scalbn.o(x$fpl$scalbn)
-    $v0                                      0x080027f2   Number         0  scalbn.o(x$fpl$scalbn)
-    x$fpl$trapveneer                         0x0800284e   Section       48  trapv.o(x$fpl$trapveneer)
-    $v0                                      0x0800284e   Number         0  trapv.o(x$fpl$trapveneer)
-    x$fpl$usenofp                            0x0800287e   Section        0  usenofp.o(x$fpl$usenofp)
-    .constdata                               0x08002880   Section      136  pow.o(.constdata)
-    bp                                       0x08002880   Data          16  pow.o(.constdata)
-    dp_h                                     0x08002890   Data          16  pow.o(.constdata)
-    dp_l                                     0x080028a0   Data          16  pow.o(.constdata)
-    L                                        0x080028b0   Data          48  pow.o(.constdata)
-    P                                        0x080028e0   Data          40  pow.o(.constdata)
-    .constdata                               0x08002908   Section       48  cos_i.o(.constdata)
-    C                                        0x08002908   Data          48  cos_i.o(.constdata)
-    .constdata                               0x08002938   Section        8  qnan.o(.constdata)
-    .constdata                               0x08002940   Section      200  rred.o(.constdata)
-    pio2s                                    0x08002940   Data          48  rred.o(.constdata)
-    twooverpi                                0x08002970   Data         152  rred.o(.constdata)
-    .constdata                               0x08002a08   Section       40  sin_i.o(.constdata)
-    S                                        0x08002a08   Data          40  sin_i.o(.constdata)
+    i.IO_Conf                                0x080005e8   Section        0  inputsoutputs.o(i.IO_Conf)
+    i.IO_InputsAct                           0x0800061c   Section        0  inputsoutputs.o(i.IO_InputsAct)
+    i.IO_OutputsAct                          0x0800065c   Section        0  inputsoutputs.o(i.IO_OutputsAct)
+    i.IO_ParkBrakeInRead                     0x080006ac   Section        0  inputsoutputs.o(i.IO_ParkBrakeInRead)
+    i.IO_ParkBrakeUnlock                     0x080006c0   Section        0  inputsoutputs.o(i.IO_ParkBrakeUnlock)
+    i.MBS_Act                                0x080006d4   Section        0  mb_rtu_slave.o(i.MBS_Act)
+    i.MBS_ActConfigWords                     0x080006e8   Section        0  mb_rtu_slave.o(i.MBS_ActConfigWords)
+    MBS_ActConfigWords                       0x080006e9   Thumb Code   142  mb_rtu_slave.o(i.MBS_ActConfigWords)
+    i.MBS_ActControlWords                    0x08000780   Section        0  mb_rtu_slave.o(i.MBS_ActControlWords)
+    MBS_ActControlWords                      0x08000781   Thumb Code   748  mb_rtu_slave.o(i.MBS_ActControlWords)
+    i.MBS_ActTelemetry                       0x08000a7c   Section        0  mb_rtu_slave.o(i.MBS_ActTelemetry)
+    MBS_ActTelemetry                         0x08000a7d   Thumb Code   770  mb_rtu_slave.o(i.MBS_ActTelemetry)
+    i.MBS_ClrStr                             0x08000d8c   Section        0  mb_rtu_slave.o(i.MBS_ClrStr)
+    MBS_ClrStr                               0x08000d8d   Thumb Code    16  mb_rtu_slave.o(i.MBS_ClrStr)
+    i.MBS_ComUart2Conf                       0x08000d9c   Section        0  mb_rtu_slave.o(i.MBS_ComUart2Conf)
+    MBS_ComUart2Conf                         0x08000d9d   Thumb Code   164  mb_rtu_slave.o(i.MBS_ComUart2Conf)
+    i.MBS_Conf                               0x08000e60   Section        0  mb_rtu_slave.o(i.MBS_Conf)
+    i.MBS_Crc16                              0x08000eac   Section        0  mb_rtu_slave.o(i.MBS_Crc16)
+    MBS_Crc16                                0x08000ead   Thumb Code    48  mb_rtu_slave.o(i.MBS_Crc16)
+    i.MBS_ReadRequest                        0x08000edc   Section        0  mb_rtu_slave.o(i.MBS_ReadRequest)
+    MBS_ReadRequest                          0x08000edd   Thumb Code   364  mb_rtu_slave.o(i.MBS_ReadRequest)
+    i.MBS_ReinitDmaReadStream                0x0800104c   Section        0  mb_rtu_slave.o(i.MBS_ReinitDmaReadStream)
+    MBS_ReinitDmaReadStream                  0x0800104d   Thumb Code    34  mb_rtu_slave.o(i.MBS_ReinitDmaReadStream)
+    i.MBS_ReinitDmaWriteStream               0x08001074   Section        0  mb_rtu_slave.o(i.MBS_ReinitDmaWriteStream)
+    MBS_ReinitDmaWriteStream                 0x08001075   Thumb Code    30  mb_rtu_slave.o(i.MBS_ReinitDmaWriteStream)
+    i.MBS_ResponseError_IDR                  0x08001098   Section        0  mb_rtu_slave.o(i.MBS_ResponseError_IDR)
+    MBS_ResponseError_IDR                    0x08001099   Thumb Code    68  mb_rtu_slave.o(i.MBS_ResponseError_IDR)
+    i.MBS_Response_RnDQ                      0x080010e0   Section        0  mb_rtu_slave.o(i.MBS_Response_RnDQ)
+    MBS_Response_RnDQ                        0x080010e1   Thumb Code   132  mb_rtu_slave.o(i.MBS_Response_RnDQ)
+    i.MBS_Response_RnHR                      0x08001168   Section        0  mb_rtu_slave.o(i.MBS_Response_RnHR)
+    MBS_Response_RnHR                        0x08001169   Thumb Code   132  mb_rtu_slave.o(i.MBS_Response_RnHR)
+    i.MBS_Response_W1HR                      0x080011f0   Section        0  mb_rtu_slave.o(i.MBS_Response_W1HR)
+    MBS_Response_W1HR                        0x080011f1   Thumb Code    96  mb_rtu_slave.o(i.MBS_Response_W1HR)
+    i.MBS_Response_WnDQ                      0x08001254   Section        0  mb_rtu_slave.o(i.MBS_Response_WnDQ)
+    MBS_Response_WnDQ                        0x08001255   Thumb Code   166  mb_rtu_slave.o(i.MBS_Response_WnDQ)
+    i.MBS_Response_WnHR                      0x08001300   Section        0  mb_rtu_slave.o(i.MBS_Response_WnHR)
+    MBS_Response_WnHR                        0x08001301   Thumb Code   124  mb_rtu_slave.o(i.MBS_Response_WnHR)
+    i.MBS_StructConf                         0x08001380   Section        0  mb_rtu_slave.o(i.MBS_StructConf)
+    MBS_StructConf                           0x08001381   Thumb Code    80  mb_rtu_slave.o(i.MBS_StructConf)
+    i.MBS_UseNewArmModel                     0x080013dc   Section        0  mb_rtu_slave.o(i.MBS_UseNewArmModel)
+    MBS_UseNewArmModel                       0x080013dd   Thumb Code   288  mb_rtu_slave.o(i.MBS_UseNewArmModel)
+    i.MBS_UseNewPidParam                     0x08001504   Section        0  mb_rtu_slave.o(i.MBS_UseNewPidParam)
+    MBS_UseNewPidParam                       0x08001505   Thumb Code   254  mb_rtu_slave.o(i.MBS_UseNewPidParam)
+    i.SystemInit                             0x0800160c   Section        0  system_stm32h7xx_dualcore_boot_cm4_cm7.o(i.SystemInit)
+    i.TIM5_IRQHandler                        0x0800170c   Section        0  mb_rtu_slave.o(i.TIM5_IRQHandler)
+    i.USART2_IRQHandler                      0x08001734   Section        0  mb_rtu_slave.o(i.USART2_IRQHandler)
+    i.__ARM_fpclassify                       0x08001778   Section        0  fpclassify.o(i.__ARM_fpclassify)
+    i.__NVIC_EnableIRQ                       0x080017a8   Section        0  mb_rtu_slave.o(i.__NVIC_EnableIRQ)
+    __NVIC_EnableIRQ                         0x080017a9   Thumb Code    26  mb_rtu_slave.o(i.__NVIC_EnableIRQ)
+    i.__hardfp_cos                           0x080017c8   Section        0  cos.o(i.__hardfp_cos)
+    i.__hardfp_pow                           0x08001878   Section        0  pow.o(i.__hardfp_pow)
+    i.__hardfp_sin                           0x08002170   Section        0  sin.o(i.__hardfp_sin)
+    i.__hardfp_sqrt                          0x08002220   Section        0  sqrt.o(i.__hardfp_sqrt)
+    i.__ieee754_rem_pio2                     0x08002288   Section        0  rred.o(i.__ieee754_rem_pio2)
+    i.__kernel_cos                           0x08002598   Section        0  cos_i.o(i.__kernel_cos)
+    i.__kernel_poly                          0x08002678   Section        0  poly.o(i.__kernel_poly)
+    i.__kernel_sin                           0x080026e8   Section        0  sin_i.o(i.__kernel_sin)
+    i.__mathlib_dbl_divzero                  0x08002790   Section        0  dunder.o(i.__mathlib_dbl_divzero)
+    i.__mathlib_dbl_infnan2                  0x080027b0   Section        0  dunder.o(i.__mathlib_dbl_infnan2)
+    i.__mathlib_dbl_invalid                  0x080027b8   Section        0  dunder.o(i.__mathlib_dbl_invalid)
+    i.__mathlib_dbl_overflow                 0x080027d0   Section        0  dunder.o(i.__mathlib_dbl_overflow)
+    i.__mathlib_dbl_underflow                0x080027e8   Section        0  dunder.o(i.__mathlib_dbl_underflow)
+    i.fabs                                   0x08002800   Section        0  fabs.o(i.fabs)
+    i.main                                   0x08002818   Section        0  main.o(i.main)
+    i.sqrt                                   0x08002822   Section        0  sqrt.o(i.sqrt)
+    x$fpl$dcheck1                            0x0800288c   Section       16  dcheck1.o(x$fpl$dcheck1)
+    $v0                                      0x0800288c   Number         0  dcheck1.o(x$fpl$dcheck1)
+    x$fpl$fpinit                             0x0800289c   Section       10  fpinit.o(x$fpl$fpinit)
+    $v0                                      0x0800289c   Number         0  fpinit.o(x$fpl$fpinit)
+    x$fpl$retnan                             0x080028a6   Section      100  retnan.o(x$fpl$retnan)
+    $v0                                      0x080028a6   Number         0  retnan.o(x$fpl$retnan)
+    x$fpl$scalbn                             0x0800290a   Section       92  scalbn.o(x$fpl$scalbn)
+    $v0                                      0x0800290a   Number         0  scalbn.o(x$fpl$scalbn)
+    x$fpl$trapveneer                         0x08002966   Section       48  trapv.o(x$fpl$trapveneer)
+    $v0                                      0x08002966   Number         0  trapv.o(x$fpl$trapveneer)
+    x$fpl$usenofp                            0x08002996   Section        0  usenofp.o(x$fpl$usenofp)
+    .constdata                               0x08002998   Section      136  pow.o(.constdata)
+    bp                                       0x08002998   Data          16  pow.o(.constdata)
+    dp_h                                     0x080029a8   Data          16  pow.o(.constdata)
+    dp_l                                     0x080029b8   Data          16  pow.o(.constdata)
+    L                                        0x080029c8   Data          48  pow.o(.constdata)
+    P                                        0x080029f8   Data          40  pow.o(.constdata)
+    .constdata                               0x08002a20   Section       48  cos_i.o(.constdata)
+    C                                        0x08002a20   Data          48  cos_i.o(.constdata)
+    .constdata                               0x08002a50   Section        8  qnan.o(.constdata)
+    .constdata                               0x08002a58   Section      200  rred.o(.constdata)
+    pio2s                                    0x08002a58   Data          48  rred.o(.constdata)
+    twooverpi                                0x08002a88   Data         152  rred.o(.constdata)
+    .constdata                               0x08002b20   Section       40  sin_i.o(.constdata)
+    S                                        0x08002b20   Data          40  sin_i.o(.constdata)
     .data                                    0x20000000   Section        4  control.o(.data)
     .data                                    0x20000004   Section        4  trajgen.o(.data)
-    .bss                                     0x20000008   Section    28744  control.o(.bss)
-    .bss                                     0x20007050   Section     8736  rnea.o(.bss)
-    .bss                                     0x20009270   Section     4824  trajgen.o(.bss)
-    .bss                                     0x2000a548   Section       96  libspace.o(.bss)
-    HEAP                                     0x2000a5a8   Section     3840  startup_stm32h745xx.o(HEAP)
-    Heap_Mem                                 0x2000a5a8   Data        3840  startup_stm32h745xx.o(HEAP)
-    STACK                                    0x2000b4a8   Section    61440  startup_stm32h745xx.o(STACK)
-    Stack_Mem                                0x2000b4a8   Data       61440  startup_stm32h745xx.o(STACK)
-    __initial_sp                             0x2001a4a8   Data           0  startup_stm32h745xx.o(STACK)
+    .bss                                     0x20000008   Section    28936  control.o(.bss)
+    .bss                                     0x20007110   Section     8736  rnea.o(.bss)
+    .bss                                     0x20009330   Section     4824  trajgen.o(.bss)
+    .bss                                     0x2000a608   Section       96  libspace.o(.bss)
+    HEAP                                     0x2000a668   Section     3840  startup_stm32h745xx.o(HEAP)
+    Heap_Mem                                 0x2000a668   Data        3840  startup_stm32h745xx.o(HEAP)
+    STACK                                    0x2000b568   Section    61440  startup_stm32h745xx.o(STACK)
+    Stack_Mem                                0x2000b568   Data       61440  startup_stm32h745xx.o(STACK)
+    __initial_sp                             0x2001a568   Data           0  startup_stm32h745xx.o(STACK)
     .ARM.__at_0x24000000                     0x24000000   Section    463992  control.o(.ARM.__at_0x24000000)
     .ARM.__at_0x30000000                     0x30000000   Section    122032  control.o(.ARM.__at_0x30000000)
     .ARM.__at_0x38000000                     0x38000000   Section     5024  control.o(.ARM.__at_0x38000000)
@@ -1096,7 +1148,7 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    Long Thumb to Thumb Veneer to MBS_Act    0x00000001   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to IO_InputsAct 0x00000001   Thumb Code    10  anon$$obj.o(Veneer$$Code)
     BuildAttributes$$THM_ISAv4$E$P$D$K$B$S$7EM$VFPv5_D16$PE$PLD8$A:L22UL41UL21$X:L11$S22US41US21$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OTIME$ROPI$IEEEX$EBA8$UX$STANDARDLIB$REQ8$PRES8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
     __ARM_use_no_argv                        0x00000000   Number         0  main.o ABSOLUTE
     __ARM_exceptions_init                     - Undefined Weak Reference
@@ -1128,51 +1180,56 @@ Image Symbol Table
     _terminate_alloc                          - Undefined Weak Reference
     _terminate_user_alloc                     - Undefined Weak Reference
     _terminateio                              - Undefined Weak Reference
-    Long Thumb to Thumb Veneer to MBS_Conf   0x0000000b   Thumb Code    10  anon$$obj.o(Veneer$$Code)
-    Long Thumb to Thumb Veneer to __aeabi_memcpy 0x00000015   Thumb Code    10  anon$$obj.o(Veneer$$Code)
-    Long Thumb to Thumb Veneer to __hardfp_cos 0x0000001f   Thumb Code    10  anon$$obj.o(Veneer$$Code)
-    Long Thumb to Thumb Veneer to __hardfp_sin 0x00000029   Thumb Code    10  anon$$obj.o(Veneer$$Code)
-    Long Thumb to Thumb Veneer to __aeabi_memcpy4 0x00000033   Thumb Code    10  anon$$obj.o(Veneer$$Code)
-    Long Thumb to Thumb Veneer to __hardfp_pow 0x0000003d   Thumb Code    10  anon$$obj.o(Veneer$$Code)
-    Long Thumb to Thumb Veneer to __hardfp_sqrt 0x00000047   Thumb Code    10  anon$$obj.o(Veneer$$Code)
-    Can_Conf                                 0x00000251   Thumb Code    30  can.o(i.Can_Conf)
+    Long Thumb to Thumb Veneer to IO_OutputsAct 0x0000000b   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to MBS_Act    0x00000015   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to IO_ParkBrakeInRead 0x0000001f   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to IO_ParkBrakeUnlock 0x00000029   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to MBS_Conf   0x00000033   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to IO_Conf    0x0000003d   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to __aeabi_memcpy 0x00000047   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to __hardfp_cos 0x00000051   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to __hardfp_sin 0x0000005b   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to __aeabi_memcpy4 0x00000065   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to __hardfp_pow 0x0000006f   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Long Thumb to Thumb Veneer to __hardfp_sqrt 0x00000079   Thumb Code    10  anon$$obj.o(Veneer$$Code)
+    Can_Conf                                 0x00000285   Thumb Code    30  can.o(i.Can_Conf)
     __Vectors_Size                           0x00000298   Number         0  startup_stm32h745xx.o ABSOLUTE
-    Can_SendDataToJoints                     0x00000a81   Thumb Code    88  can.o(i.Can_SendDataToJoints)
-    Control_ClearExternallErrorsViaCan       0x0000210d   Thumb Code    80  control.o(i.Control_ClearExternallErrorsViaCan)
-    Control_ClearInternallErrorsInJtc        0x00002161   Thumb Code   214  control.o(i.Control_ClearInternallErrorsInJtc)
-    Control_ResetDevicesViaCan               0x00002c11   Thumb Code   106  control.o(i.Control_ResetDevicesViaCan)
-    Control_SetDefualtArmModel               0x00002ea1   Thumb Code   874  control.o(i.Control_SetDefualtArmModel)
-    Control_SystemConf                       0x000033d1   Thumb Code   374  control.o(i.Control_SystemConf)
-    Control_TrajClear                        0x00003605   Thumb Code   124  control.o(i.Control_TrajClear)
-    FDCAN1_IT0_IRQHandler                    0x000038a5   Thumb Code    36  can.o(i.FDCAN1_IT0_IRQHandler)
-    FDCAN1_IT1_IRQHandler                    0x000038cd   Thumb Code   102  can.o(i.FDCAN1_IT1_IRQHandler)
-    Gripper_SetResetValuesVariables          0x00003939   Thumb Code     4  gripper.o(i.Gripper_SetResetValuesVariables)
-    Gripper_SetStartValuesVariables          0x0000393d   Thumb Code    50  gripper.o(i.Gripper_SetStartValuesVariables)
-    Joints_CalcFrictionCompensate            0x00003b89   Thumb Code    22  joints.o(i.Joints_CalcFrictionCompensate)
-    Joints_CalcInitRegsTorque                0x00003e31   Thumb Code   122  joints.o(i.Joints_CalcInitRegsTorque)
-    Joints_CalcPIDs                          0x00003eb1   Thumb Code   258  joints.o(i.Joints_CalcPIDs)
-    Joints_FindMinMaxVelTempInFrictionTabeIdx 0x00003fc1   Thumb Code   162  joints.o(i.Joints_FindMinMaxVelTempInFrictionTabeIdx)
-    Joints_SetDefaultFriction                0x00004069   Thumb Code    22  joints.o(i.Joints_SetDefaultFriction)
-    Joints_SetDefaultPidParam                0x000043f1   Thumb Code   226  joints.o(i.Joints_SetDefaultPidParam)
-    Joints_SetDefaultVariables               0x00004541   Thumb Code   126  joints.o(i.Joints_SetDefaultVariables)
-    Joints_SetResetValuesVariables           0x000045cd   Thumb Code   160  joints.o(i.Joints_SetResetValuesVariables)
-    Joints_SetStartValuesVariables           0x00004679   Thumb Code   306  joints.o(i.Joints_SetStartValuesVariables)
-    Joints_StartIrValuesVariables            0x00004821   Thumb Code    62  joints.o(i.Joints_StartIrValuesVariables)
-    Joints_StopIrValuesVariables             0x0000486d   Thumb Code    40  joints.o(i.Joints_StopIrValuesVariables)
-    RNEA_CalcTorques                         0x00004b71   Thumb Code  5290  rnea.o(i.RNEA_CalcTorques)
-    RNEA_Conf                                0x00006021   Thumb Code  3762  rnea.o(i.RNEA_Conf)
-    SysTick_Handler                          0x00006ee5   Thumb Code    12  control.o(i.SysTick_Handler)
-    TG_Conf                                  0x00006ef5   Thumb Code     4  trajgen.o(i.TG_Conf)
-    TG_GetSeqFromMbs                         0x00006ef9   Thumb Code   354  trajgen.o(i.TG_GetSeqFromMbs)
-    TG_SetDefaultVariables                   0x00007b51   Thumb Code   176  trajgen.o(i.TG_SetDefaultVariables)
-    TG_TrajGen                               0x00007c15   Thumb Code   204  trajgen.o(i.TG_TrajGen)
-    TIM7_IRQHandler                          0x00007cfd   Thumb Code    24  control.o(i.TIM7_IRQHandler)
-    FricTabDefaultJoint0                     0x00007e38   Data        3520  joints.o(.constdata)
-    FricTabDefaultJoint1                     0x00008bf8   Data        3520  joints.o(.constdata)
-    FricTabDefaultJoint2                     0x000099b8   Data        3520  joints.o(.constdata)
-    FricTabDefaultJoint3                     0x0000a778   Data        3520  joints.o(.constdata)
-    FricTabDefaultJoint4                     0x0000b538   Data        3520  joints.o(.constdata)
-    FricTabDefaultJoint5                     0x0000c2f8   Data        3520  joints.o(.constdata)
+    Can_SendDataToJoints                     0x00000ab9   Thumb Code    88  can.o(i.Can_SendDataToJoints)
+    Control_ClearExternallErrorsViaCan       0x00002131   Thumb Code    80  control.o(i.Control_ClearExternallErrorsViaCan)
+    Control_ClearInternallErrorsInJtc        0x00002185   Thumb Code   216  control.o(i.Control_ClearInternallErrorsInJtc)
+    Control_ResetDevicesViaCan               0x00002ef1   Thumb Code   106  control.o(i.Control_ResetDevicesViaCan)
+    Control_SetDefualtArmModel               0x00003181   Thumb Code   876  control.o(i.Control_SetDefualtArmModel)
+    Control_SystemConf                       0x000036b1   Thumb Code   378  control.o(i.Control_SystemConf)
+    Control_TrajClear                        0x000038e9   Thumb Code   124  control.o(i.Control_TrajClear)
+    FDCAN1_IT0_IRQHandler                    0x00003b89   Thumb Code    36  can.o(i.FDCAN1_IT0_IRQHandler)
+    FDCAN1_IT1_IRQHandler                    0x00003bb1   Thumb Code   102  can.o(i.FDCAN1_IT1_IRQHandler)
+    Gripper_SetResetValuesVariables          0x00003c1d   Thumb Code     4  gripper.o(i.Gripper_SetResetValuesVariables)
+    Gripper_SetStartValuesVariables          0x00003c21   Thumb Code    50  gripper.o(i.Gripper_SetStartValuesVariables)
+    Joints_CalcFrictionCompensate            0x00003e6d   Thumb Code    22  joints.o(i.Joints_CalcFrictionCompensate)
+    Joints_CalcInitRegsTorque                0x00004115   Thumb Code   124  joints.o(i.Joints_CalcInitRegsTorque)
+    Joints_CalcPIDs                          0x00004195   Thumb Code   258  joints.o(i.Joints_CalcPIDs)
+    Joints_FindMinMaxVelTempInFrictionTabeIdx 0x000042a5   Thumb Code   162  joints.o(i.Joints_FindMinMaxVelTempInFrictionTabeIdx)
+    Joints_SetDefaultFriction                0x0000434d   Thumb Code    22  joints.o(i.Joints_SetDefaultFriction)
+    Joints_SetDefaultPidParam                0x000046d1   Thumb Code   228  joints.o(i.Joints_SetDefaultPidParam)
+    Joints_SetDefaultVariables               0x00004821   Thumb Code   126  joints.o(i.Joints_SetDefaultVariables)
+    Joints_SetResetValuesVariables           0x000048ad   Thumb Code   158  joints.o(i.Joints_SetResetValuesVariables)
+    Joints_SetStartValuesVariables           0x00004959   Thumb Code   338  joints.o(i.Joints_SetStartValuesVariables)
+    Joints_StartIrValuesVariables            0x00004b29   Thumb Code    70  joints.o(i.Joints_StartIrValuesVariables)
+    Joints_StopIrValuesVariables             0x00004b7d   Thumb Code    38  joints.o(i.Joints_StopIrValuesVariables)
+    RNEA_CalcTorques                         0x00004e81   Thumb Code  5290  rnea.o(i.RNEA_CalcTorques)
+    RNEA_Conf                                0x00006331   Thumb Code  3762  rnea.o(i.RNEA_Conf)
+    SysTick_Handler                          0x000071f5   Thumb Code    12  control.o(i.SysTick_Handler)
+    TG_Conf                                  0x00007205   Thumb Code     4  trajgen.o(i.TG_Conf)
+    TG_GetSeqFromMbs                         0x00007209   Thumb Code   330  trajgen.o(i.TG_GetSeqFromMbs)
+    TG_SetDefaultVariables                   0x00007e49   Thumb Code   176  trajgen.o(i.TG_SetDefaultVariables)
+    TG_TrajGen                               0x00007f0d   Thumb Code   204  trajgen.o(i.TG_TrajGen)
+    TIM7_IRQHandler                          0x00007ff5   Thumb Code    24  control.o(i.TIM7_IRQHandler)
+    FricTabDefaultJoint0                     0x00008130   Data        3520  joints.o(.constdata)
+    FricTabDefaultJoint1                     0x00008ef0   Data        3520  joints.o(.constdata)
+    FricTabDefaultJoint2                     0x00009cb0   Data        3520  joints.o(.constdata)
+    FricTabDefaultJoint3                     0x0000aa70   Data        3520  joints.o(.constdata)
+    FricTabDefaultJoint4                     0x0000b830   Data        3520  joints.o(.constdata)
+    FricTabDefaultJoint5                     0x0000c5f0   Data        3520  joints.o(.constdata)
     __Vectors                                0x08000000   Data           4  startup_stm32h745xx.o(RESET)
     __Vectors_End                            0x08000298   Data           0  startup_stm32h745xx.o(RESET)
     __main                                   0x08000299   Thumb Code     8  __main.o(!!!main)
@@ -1408,67 +1465,72 @@ Image Symbol Table
     Long Thumb to Thumb Veneer to TG_TrajGen 0x080005ab   Thumb Code    10  anon$$obj.o(Veneer$$Code)
     DMA1_Stream0_IRQHandler                  0x080005b5   Thumb Code    24  mb_rtu_slave.o(i.DMA1_Stream0_IRQHandler)
     DMA1_Stream1_IRQHandler                  0x080005d1   Thumb Code    18  mb_rtu_slave.o(i.DMA1_Stream1_IRQHandler)
-    MBS_Act                                  0x080005e9   Thumb Code    18  mb_rtu_slave.o(i.MBS_Act)
-    MBS_Conf                                 0x08000d4d   Thumb Code    70  mb_rtu_slave.o(i.MBS_Conf)
-    SystemInit                               0x080014f9   Thumb Code   216  system_stm32h7xx_dualcore_boot_cm4_cm7.o(i.SystemInit)
-    TIM5_IRQHandler                          0x080015f9   Thumb Code    36  mb_rtu_slave.o(i.TIM5_IRQHandler)
-    USART2_IRQHandler                        0x08001621   Thumb Code    50  mb_rtu_slave.o(i.USART2_IRQHandler)
-    __ARM_fpclassify                         0x08001665   Thumb Code    48  fpclassify.o(i.__ARM_fpclassify)
-    __hardfp_cos                             0x080016b1   Thumb Code   158  cos.o(i.__hardfp_cos)
-    __hardfp_pow                             0x08001761   Thumb Code  2140  pow.o(i.__hardfp_pow)
-    __hardfp_sin                             0x08002059   Thumb Code   158  sin.o(i.__hardfp_sin)
-    __hardfp_sqrt                            0x08002109   Thumb Code   102  sqrt.o(i.__hardfp_sqrt)
-    __ieee754_rem_pio2                       0x08002171   Thumb Code   646  rred.o(i.__ieee754_rem_pio2)
-    __kernel_cos                             0x08002481   Thumb Code   182  cos_i.o(i.__kernel_cos)
-    __kernel_poly                            0x08002561   Thumb Code   112  poly.o(i.__kernel_poly)
-    __kernel_sin                             0x080025d1   Thumb Code   144  sin_i.o(i.__kernel_sin)
-    __mathlib_dbl_divzero                    0x08002679   Thumb Code    14  dunder.o(i.__mathlib_dbl_divzero)
-    __mathlib_dbl_infnan2                    0x08002699   Thumb Code     6  dunder.o(i.__mathlib_dbl_infnan2)
-    __mathlib_dbl_invalid                    0x080026a1   Thumb Code    10  dunder.o(i.__mathlib_dbl_invalid)
-    __mathlib_dbl_overflow                   0x080026b9   Thumb Code    10  dunder.o(i.__mathlib_dbl_overflow)
-    __mathlib_dbl_underflow                  0x080026d1   Thumb Code    10  dunder.o(i.__mathlib_dbl_underflow)
-    fabs                                     0x080026e9   Thumb Code    24  fabs.o(i.fabs)
-    main                                     0x08002701   Thumb Code    10  main.o(i.main)
-    sqrt                                     0x0800270b   Thumb Code   106  sqrt.o(i.sqrt)
-    __fpl_dcheck_NaN1                        0x08002775   Thumb Code    10  dcheck1.o(x$fpl$dcheck1)
-    _fp_init                                 0x08002785   Thumb Code    10  fpinit.o(x$fpl$fpinit)
-    __fplib_config_fpu_vfp                   0x0800278d   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fplib_config_pureend_doubles           0x0800278d   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fpl_return_NaN                         0x0800278f   Thumb Code   100  retnan.o(x$fpl$retnan)
-    __ARM_scalbn                             0x080027f3   Thumb Code    92  scalbn.o(x$fpl$scalbn)
-    __fpl_cmpreturn                          0x0800284f   Thumb Code    48  trapv.o(x$fpl$trapveneer)
-    __I$use$fp                               0x0800287e   Number         0  usenofp.o(x$fpl$usenofp)
-    __mathlib_zero                           0x08002938   Data           8  qnan.o(.constdata)
-    Region$$Table$$Base                      0x08002a30   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08002a90   Number         0  anon$$obj.o(Region$$Table)
+    IO_Conf                                  0x080005e9   Thumb Code    42  inputsoutputs.o(i.IO_Conf)
+    IO_InputsAct                             0x0800061d   Thumb Code    56  inputsoutputs.o(i.IO_InputsAct)
+    IO_OutputsAct                            0x0800065d   Thumb Code    72  inputsoutputs.o(i.IO_OutputsAct)
+    IO_ParkBrakeInRead                       0x080006ad   Thumb Code    14  inputsoutputs.o(i.IO_ParkBrakeInRead)
+    IO_ParkBrakeUnlock                       0x080006c1   Thumb Code    16  inputsoutputs.o(i.IO_ParkBrakeUnlock)
+    MBS_Act                                  0x080006d5   Thumb Code    18  mb_rtu_slave.o(i.MBS_Act)
+    MBS_Conf                                 0x08000e61   Thumb Code    70  mb_rtu_slave.o(i.MBS_Conf)
+    SystemInit                               0x0800160d   Thumb Code   216  system_stm32h7xx_dualcore_boot_cm4_cm7.o(i.SystemInit)
+    TIM5_IRQHandler                          0x0800170d   Thumb Code    36  mb_rtu_slave.o(i.TIM5_IRQHandler)
+    USART2_IRQHandler                        0x08001735   Thumb Code    50  mb_rtu_slave.o(i.USART2_IRQHandler)
+    __ARM_fpclassify                         0x08001779   Thumb Code    48  fpclassify.o(i.__ARM_fpclassify)
+    __hardfp_cos                             0x080017c9   Thumb Code   158  cos.o(i.__hardfp_cos)
+    __hardfp_pow                             0x08001879   Thumb Code  2140  pow.o(i.__hardfp_pow)
+    __hardfp_sin                             0x08002171   Thumb Code   158  sin.o(i.__hardfp_sin)
+    __hardfp_sqrt                            0x08002221   Thumb Code   102  sqrt.o(i.__hardfp_sqrt)
+    __ieee754_rem_pio2                       0x08002289   Thumb Code   646  rred.o(i.__ieee754_rem_pio2)
+    __kernel_cos                             0x08002599   Thumb Code   182  cos_i.o(i.__kernel_cos)
+    __kernel_poly                            0x08002679   Thumb Code   112  poly.o(i.__kernel_poly)
+    __kernel_sin                             0x080026e9   Thumb Code   144  sin_i.o(i.__kernel_sin)
+    __mathlib_dbl_divzero                    0x08002791   Thumb Code    14  dunder.o(i.__mathlib_dbl_divzero)
+    __mathlib_dbl_infnan2                    0x080027b1   Thumb Code     6  dunder.o(i.__mathlib_dbl_infnan2)
+    __mathlib_dbl_invalid                    0x080027b9   Thumb Code    10  dunder.o(i.__mathlib_dbl_invalid)
+    __mathlib_dbl_overflow                   0x080027d1   Thumb Code    10  dunder.o(i.__mathlib_dbl_overflow)
+    __mathlib_dbl_underflow                  0x080027e9   Thumb Code    10  dunder.o(i.__mathlib_dbl_underflow)
+    fabs                                     0x08002801   Thumb Code    24  fabs.o(i.fabs)
+    main                                     0x08002819   Thumb Code    10  main.o(i.main)
+    sqrt                                     0x08002823   Thumb Code   106  sqrt.o(i.sqrt)
+    __fpl_dcheck_NaN1                        0x0800288d   Thumb Code    10  dcheck1.o(x$fpl$dcheck1)
+    _fp_init                                 0x0800289d   Thumb Code    10  fpinit.o(x$fpl$fpinit)
+    __fplib_config_fpu_vfp                   0x080028a5   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fplib_config_pureend_doubles           0x080028a5   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fpl_return_NaN                         0x080028a7   Thumb Code   100  retnan.o(x$fpl$retnan)
+    __ARM_scalbn                             0x0800290b   Thumb Code    92  scalbn.o(x$fpl$scalbn)
+    __fpl_cmpreturn                          0x08002967   Thumb Code    48  trapv.o(x$fpl$trapveneer)
+    __I$use$fp                               0x08002996   Number         0  usenofp.o(x$fpl$usenofp)
+    __mathlib_zero                           0x08002a50   Data           8  qnan.o(.constdata)
+    Region$$Table$$Base                      0x08002b48   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08002ba8   Number         0  anon$$obj.o(Region$$Table)
     pC                                       0x20000000   Data           4  control.o(.data)
     idx                                      0x20000004   Data           4  trajgen.o(.data)
-    Control                                  0x20000008   Data       28744  control.o(.bss)
-    mxDim                                    0x20007050   Data         336  rnea.o(.bss)
-    mxcDim                                   0x200071a0   Data         288  rnea.o(.bss)
-    m                                        0x200072c0   Data          48  rnea.o(.bss)
-    g0                                       0x200072f0   Data          24  rnea.o(.bss)
-    MIvec                                    0x20007308   Data         288  rnea.o(.bss)
-    MI                                       0x20007428   Data         432  rnea.o(.bss)
-    Mxtemp                                   0x200075d8   Data         896  rnea.o(.bss)
-    Mx                                       0x20007958   Data         896  rnea.o(.bss)
-    Mxc                                      0x20007cd8   Data         896  rnea.o(.bss)
-    Rx                                       0x20008058   Data         504  rnea.o(.bss)
-    Rxc                                      0x20008250   Data         504  rnea.o(.bss)
-    R                                        0x20008448   Data         504  rnea.o(.bss)
-    Rc                                       0x20008640   Data         504  rnea.o(.bss)
-    Rxt                                      0x20008838   Data         504  rnea.o(.bss)
-    Rxct                                     0x20008a30   Data         504  rnea.o(.bss)
-    Rt                                       0x20008c28   Data         504  rnea.o(.bss)
-    Rct                                      0x20008e20   Data         504  rnea.o(.bss)
-    g                                        0x20009018   Data         168  rnea.o(.bss)
-    r                                        0x200090c0   Data         144  rnea.o(.bss)
-    rc                                       0x20009150   Data         144  rnea.o(.bss)
-    rcinv                                    0x200091e0   Data         144  rnea.o(.bss)
-    time                                     0x20009270   Data          20  trajgen.o(.bss)
-    times                                    0x20009288   Data        4800  trajgen.o(.bss)
-    __libspace_start                         0x2000a548   Data          96  libspace.o(.bss)
-    __temporary_stack_top$libspace           0x2000a5a8   Data           0  libspace.o(.bss)
+    Control                                  0x20000008   Data       28936  control.o(.bss)
+    mxDim                                    0x20007110   Data         336  rnea.o(.bss)
+    mxcDim                                   0x20007260   Data         288  rnea.o(.bss)
+    m                                        0x20007380   Data          48  rnea.o(.bss)
+    g0                                       0x200073b0   Data          24  rnea.o(.bss)
+    MIvec                                    0x200073c8   Data         288  rnea.o(.bss)
+    MI                                       0x200074e8   Data         432  rnea.o(.bss)
+    Mxtemp                                   0x20007698   Data         896  rnea.o(.bss)
+    Mx                                       0x20007a18   Data         896  rnea.o(.bss)
+    Mxc                                      0x20007d98   Data         896  rnea.o(.bss)
+    Rx                                       0x20008118   Data         504  rnea.o(.bss)
+    Rxc                                      0x20008310   Data         504  rnea.o(.bss)
+    R                                        0x20008508   Data         504  rnea.o(.bss)
+    Rc                                       0x20008700   Data         504  rnea.o(.bss)
+    Rxt                                      0x200088f8   Data         504  rnea.o(.bss)
+    Rxct                                     0x20008af0   Data         504  rnea.o(.bss)
+    Rt                                       0x20008ce8   Data         504  rnea.o(.bss)
+    Rct                                      0x20008ee0   Data         504  rnea.o(.bss)
+    g                                        0x200090d8   Data         168  rnea.o(.bss)
+    r                                        0x20009180   Data         144  rnea.o(.bss)
+    rc                                       0x20009210   Data         144  rnea.o(.bss)
+    rcinv                                    0x200092a0   Data         144  rnea.o(.bss)
+    time                                     0x20009330   Data          20  trajgen.o(.bss)
+    times                                    0x20009348   Data        4800  trajgen.o(.bss)
+    __libspace_start                         0x2000a608   Data          96  libspace.o(.bss)
+    __temporary_stack_top$libspace           0x2000a668   Data           0  libspace.o(.bss)
     Traj                                     0x24000000   Data       463992  control.o(.ARM.__at_0x24000000)
     Com                                      0x30000000   Data       122032  control.o(.ARM.__at_0x30000000)
     Mbs                                      0x38000000   Data        5024  control.o(.ARM.__at_0x38000000)
@@ -1481,309 +1543,324 @@ Memory Map of the image
 
   Image Entry point : 0x08000299
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000a0030, Max: 0x00100000, ABSOLUTE, COMPRESSED[0x00010d88])
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000a0440, Max: 0x00100000, ABSOLUTE, COMPRESSED[0x00011198])
 
-    Execution Region RW_IRAM4 (Exec base: 0x00000000, Load base: 0x08003c90, Size: 0x0000d0d0, Max: 0x00010000, ABSOLUTE)
-
-    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x00000000   0x08003c90   0x0000000a   Ven    RO         1307    Veneer$$Code        anon$$obj.o
-    0x0000000a   0x08003c9a   0x0000000a   Ven    RO         1308    Veneer$$Code        anon$$obj.o
-    0x00000014   0x08003ca4   0x0000000a   Ven    RO         1309    Veneer$$Code        anon$$obj.o
-    0x0000001e   0x08003cae   0x0000000a   Ven    RO         1310    Veneer$$Code        anon$$obj.o
-    0x00000028   0x08003cb8   0x0000000a   Ven    RO         1311    Veneer$$Code        anon$$obj.o
-    0x00000032   0x08003cc2   0x0000000a   Ven    RO         1312    Veneer$$Code        anon$$obj.o
-    0x0000003c   0x08003ccc   0x0000000a   Ven    RO         1313    Veneer$$Code        anon$$obj.o
-    0x00000046   0x08003cd6   0x0000000a   Ven    RO         1314    Veneer$$Code        anon$$obj.o
-    0x00000050   0x08003ce0   0x0000018c   Code   RO            4    i.Can_CheckCanStatus  can.o
-    0x000001dc   0x08003e6c   0x00000074   Code   RO            5    i.Can_CheckStatus   can.o
-    0x00000250   0x08003ee0   0x00000024   Code   RO            6    i.Can_Conf          can.o
-    0x00000274   0x08003f04   0x000000d4   Code   RO            7    i.Can_FdcanConf     can.o
-    0x00000348   0x08003fd8   0x00000198   Code   RO            8    i.Can_FiltersConf   can.o
-    0x000004e0   0x08004170   0x00000170   Code   RO            9    i.Can_ReadFrameChangeConfResponse  can.o
-    0x00000650   0x080042e0   0x00000158   Code   RO           10    i.Can_ReadFrameChangeFsmResponse  can.o
-    0x000007a8   0x08004438   0x0000026c   Code   RO           11    i.Can_ReadFrameMoveResponse  can.o
-    0x00000a14   0x080046a4   0x0000006c   Code   RO           12    i.Can_ReadFramesFromBuffer  can.o
-    0x00000a80   0x08004710   0x0000005c   Code   RO           13    i.Can_SendDataToJoints  can.o
-    0x00000adc   0x0800476c   0x00000184   Code   RO           14    i.Can_SendFrameChangeFsm  can.o
-    0x00000c60   0x080048f0   0x000001a8   Code   RO           15    i.Can_SendFrameChangeMode  can.o
-    0x00000e08   0x08004a98   0x000001cc   Code   RO           16    i.Can_SendFrameMove  can.o
-    0x00000fd4   0x08004c64   0x00000068   Code   RO           17    i.Can_SendFrameOccurred  can.o
-    0x0000103c   0x08004ccc   0x00000150   Code   RO           18    i.Can_SendFrameResetAllDevices  can.o
-    0x0000118c   0x08004e1c   0x00000150   Code   RO           19    i.Can_SendFrameResetGripper  can.o
-    0x000012dc   0x08004f6c   0x00000150   Code   RO           20    i.Can_SendFrameResetJoint0  can.o
-    0x0000142c   0x080050bc   0x00000150   Code   RO           21    i.Can_SendFrameResetJoint1  can.o
-    0x0000157c   0x0800520c   0x00000150   Code   RO           22    i.Can_SendFrameResetJoint2  can.o
-    0x000016cc   0x0800535c   0x00000150   Code   RO           23    i.Can_SendFrameResetJoint3  can.o
-    0x0000181c   0x080054ac   0x00000150   Code   RO           24    i.Can_SendFrameResetJoint4  can.o
-    0x0000196c   0x080055fc   0x00000150   Code   RO           25    i.Can_SendFrameResetJoint5  can.o
-    0x00001abc   0x0800574c   0x00000084   Code   RO           26    i.Can_SendFrameToDevices  can.o
-    0x00001b40   0x080057d0   0x00000048   Code   RO           27    i.Can_StructConf    can.o
-    0x00001b88   0x08005818   0x00000250   Code   RO           28    i.Can_TxBufferConf  can.o
-    0x00001dd8   0x08005a68   0x000001dc   Code   RO          262    i.Control_CheckErrorFlags  control.o
-    0x00001fb4   0x08005c44   0x00000158   Code   RO          263    i.Control_CheckLimits  control.o
-    0x0000210c   0x08005d9c   0x00000054   Code   RO          264    i.Control_ClearExternallErrorsViaCan  control.o
-    0x00002160   0x08005df0   0x000000dc   Code   RO          265    i.Control_ClearInternallErrorsInJtc  control.o
-    0x0000223c   0x08005ecc   0x000000dc   Code   RO          266    i.Control_ClockConf  control.o
-    0x00002318   0x08005fa8   0x000000ec   Code   RO          268    i.Control_JtcAct    control.o
-    0x00002404   0x08006094   0x00000110   Code   RO          269    i.Control_JtcCheckState  control.o
-    0x00002514   0x080061a4   0x0000010c   Code   RO          270    i.Control_JtcCheckStateInit  control.o
-    0x00002620   0x080062b0   0x000000ec   Code   RO          271    i.Control_JtcHoldPos  control.o
-    0x0000270c   0x0800639c   0x000001e8   Code   RO          272    i.Control_JtcInit   control.o
-    0x000028f4   0x08006584   0x000000b4   Code   RO          273    i.Control_JtcOperate  control.o
-    0x000029a8   0x08006638   0x00000058   Code   RO          274    i.Control_JtcPrepareSetedValuesForHoldPos  control.o
-    0x00002a00   0x08006690   0x00000080   Code   RO          275    i.Control_JtcPrepareSetedValuesForOperate  control.o
-    0x00002a80   0x08006710   0x0000001c   Code   RO          276    i.Control_JtcSetGripperToEnable  control.o
-    0x00002a9c   0x0800672c   0x00000024   Code   RO          277    i.Control_JtcSetJointToEnable  control.o
-    0x00002ac0   0x08006750   0x00000034   Code   RO          278    i.Control_JtcSetJointToReadyToOperate  control.o
-    0x00002af4   0x08006784   0x000000a0   Code   RO          279    i.Control_JtcTeaching  control.o
-    0x00002b94   0x08006824   0x0000007c   Code   RO          280    i.Control_JtcVariableConf  control.o
-    0x00002c10   0x080068a0   0x00000070   Code   RO          281    i.Control_ResetDevicesViaCan  control.o
-    0x00002c80   0x08006910   0x00000010   Code   RO          282    i.Control_SafetyOutOff  control.o
-    0x00002c90   0x08006920   0x0000005c   Code   RO          283    i.Control_SendCommandClearErrorsToJoints  control.o
-    0x00002cec   0x0800697c   0x000001b4   Code   RO          284    i.Control_SendCommandResetDevice  control.o
-    0x00002ea0   0x08006b30   0x000004c8   Code   RO          285    i.Control_SetDefualtArmModel  control.o
-    0x00003368   0x08006ff8   0x00000060   Code   RO          286    i.Control_SetNewTorqueValues  control.o
-    0x000033c8   0x08007058   0x00000006   Code   RO          287    i.Control_SetTable  control.o
-    0x000033ce   0x0800705e   0x00000002   PAD
-    0x000033d0   0x08007060   0x0000019c   Code   RO          288    i.Control_SystemConf  control.o
-    0x0000356c   0x080071fc   0x00000098   Code   RO          289    i.Control_TrajCheckState  control.o
-    0x00003604   0x08007294   0x00000088   Code   RO          290    i.Control_TrajClear  control.o
-    0x0000368c   0x0800731c   0x00000028   Code   RO          291    i.Control_TrajClearPointDouble  control.o
-    0x000036b4   0x08007344   0x000001f0   Code   RO          292    i.Control_TrajInterpolate  control.o
-    0x000038a4   0x08007534   0x00000028   Code   RO           29    i.FDCAN1_IT0_IRQHandler  can.o
-    0x000038cc   0x0800755c   0x0000006c   Code   RO           30    i.FDCAN1_IT1_IRQHandler  can.o
-    0x00003938   0x080075c8   0x00000004   Code   RO          724    i.Gripper_SetResetValuesVariables  gripper.o
-    0x0000393c   0x080075cc   0x00000038   Code   RO          725    i.Gripper_SetStartValuesVariables  gripper.o
-    0x00003974   0x08007604   0x00000094   Code   RO          604    i.HRX               rnea.o
-    0x00003a08   0x08007698   0x00000094   Code   RO          605    i.HRY               rnea.o
-    0x00003a9c   0x0800772c   0x00000094   Code   RO          606    i.HRZ               rnea.o
-    0x00003b30   0x080077c0   0x00000058   Code   RO          607    i.HT                rnea.o
-    0x00003b88   0x08007818   0x0000001c   Code   RO          490    i.Joints_CalcFrictionCompensate  joints.o
-    0x00003ba4   0x08007834   0x00000100   Code   RO          491    i.Joints_CalcFrictionCompensatePolynomial  joints.o
-    0x00003ca4   0x08007934   0x0000018c   Code   RO          492    i.Joints_CalcFrictionCompensateTable  joints.o
-    0x00003e30   0x08007ac0   0x00000080   Code   RO          493    i.Joints_CalcInitRegsTorque  joints.o
-    0x00003eb0   0x08007b40   0x00000110   Code   RO          494    i.Joints_CalcPIDs   joints.o
-    0x00003fc0   0x08007c50   0x000000a8   Code   RO          495    i.Joints_FindMinMaxVelTempInFrictionTabeIdx  joints.o
-    0x00004068   0x08007cf8   0x0000001c   Code   RO          496    i.Joints_SetDefaultFriction  joints.o
-    0x00004084   0x08007d14   0x000002c4   Code   RO          497    i.Joints_SetDefaultFrictionPolynomial  joints.o
-    0x00004348   0x08007fd8   0x000000a8   Code   RO          498    i.Joints_SetDefaultFrictionTable  joints.o
-    0x000043f0   0x08008080   0x00000150   Code   RO          499    i.Joints_SetDefaultPidParam  joints.o
-    0x00004540   0x080081d0   0x0000008c   Code   RO          500    i.Joints_SetDefaultVariables  joints.o
-    0x000045cc   0x0800825c   0x000000ac   Code   RO          501    i.Joints_SetResetValuesVariables  joints.o
-    0x00004678   0x08008308   0x000001a8   Code   RO          502    i.Joints_SetStartValuesVariables  joints.o
-    0x00004820   0x080084b0   0x0000004c   Code   RO          503    i.Joints_StartIrValuesVariables  joints.o
-    0x0000486c   0x080084fc   0x00000034   Code   RO          504    i.Joints_StopIrValuesVariables  joints.o
-    0x000048a0   0x08008530   0x00000050   Code   RO          608    i.Mat3Ones          rnea.o
-    0x000048f0   0x08008580   0x0000004c   Code   RO          609    i.Mat3Transpose     rnea.o
-    0x0000493c   0x080085cc   0x00000088   Code   RO          610    i.Mat3xMat3         rnea.o
-    0x000049c4   0x08008654   0x00000068   Code   RO          611    i.Mat3xVec3         rnea.o
-    0x00004a2c   0x080086bc   0x0000004c   Code   RO          612    i.Mat4Ones          rnea.o
-    0x00004a78   0x08008708   0x00000048   Code   RO          613    i.Mat4ToMat3        rnea.o
-    0x00004ac0   0x08008750   0x0000002e   Code   RO          614    i.Mat4ToVec3        rnea.o
-    0x00004aee   0x0800877e   0x00000002   PAD
-    0x00004af0   0x08008780   0x00000080   Code   RO          615    i.Mat4xMat4         rnea.o
-    0x00004b70   0x08008800   0x000014b0   Code   RO          616    i.RNEA_CalcTorques  rnea.o
-    0x00006020   0x08009cb0   0x00000ec4   Code   RO          617    i.RNEA_Conf         rnea.o
-    0x00006ee4   0x0800ab74   0x00000010   Code   RO          293    i.SysTick_Handler   control.o
-    0x00006ef4   0x0800ab84   0x00000004   Code   RO          905    i.TG_Conf           trajgen.o
-    0x00006ef8   0x0800ab88   0x00000184   Code   RO          906    i.TG_GetSeqFromMbs  trajgen.o
-    0x0000707c   0x0800ad0c   0x00000204   Code   RO          907    i.TG_SLP_FindPath   trajgen.o
-    0x00007280   0x0800af10   0x000000cc   Code   RO          908    i.TG_SLP_FindTime   trajgen.o
-    0x0000734c   0x0800afdc   0x000000bc   Code   RO          909    i.TG_SLP_FindTimeMax  trajgen.o
-    0x00007408   0x0800b098   0x00000628   Code   RO          910    i.TG_SLP_FindTraj1Drive  trajgen.o
-    0x00007a30   0x0800b6c0   0x00000120   Code   RO          911    i.TG_SLP_FindVmax   trajgen.o
-    0x00007b50   0x0800b7e0   0x000000c4   Code   RO          912    i.TG_SetDefaultVariables  trajgen.o
-    0x00007c14   0x0800b8a4   0x000000e8   Code   RO          913    i.TG_TrajGen        trajgen.o
-    0x00007cfc   0x0800b98c   0x0000001c   Code   RO          294    i.TIM7_IRQHandler   control.o
-    0x00007d18   0x0800b9a8   0x0000003a   Code   RO          618    i.Vec3AddVec3       rnea.o
-    0x00007d52   0x0800b9e2   0x00000032   Code   RO          619    i.Vec3Cross         rnea.o
-    0x00007d84   0x0800ba14   0x0000003a   Code   RO          620    i.Vec3SubVec3       rnea.o
-    0x00007dbe   0x0800ba4e   0x00000002   PAD
-    0x00007dc0   0x0800ba50   0x0000002c   Code   RO          621    i.Vec3Zeros         rnea.o
-    0x00007dec   0x0800ba7c   0x00000032   Code   RO          622    i.Vec3xScalar       rnea.o
-    0x00007e1e   0x0800baae   0x0000001a   Code   RO           31    i.__NVIC_EnableIRQ  can.o
-    0x00007e38   0x0800bac8   0x00000dc0   Data   RO          505    .constdata          joints.o
-    0x00008bf8   0x0800c888   0x00000dc0   Data   RO          506    .constdata          joints.o
-    0x000099b8   0x0800d648   0x00000dc0   Data   RO          507    .constdata          joints.o
-    0x0000a778   0x0800e408   0x00000dc0   Data   RO          508    .constdata          joints.o
-    0x0000b538   0x0800f1c8   0x00000dc0   Data   RO          509    .constdata          joints.o
-    0x0000c2f8   0x0800ff88   0x00000dc0   Data   RO          510    .constdata          joints.o
-    0x0000d0b8   0x08010d48   0x00000018   Data   RO          511    .constdata          joints.o
-
-
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00002a90, Max: 0x00100000, ABSOLUTE)
+    Execution Region RW_IRAM4 (Exec base: 0x00000000, Load base: 0x08003da8, Size: 0x0000d3c8, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x08000000   0x08000000   0x00000298   Data   RO          976    RESET               startup_stm32h745xx.o
-    0x08000298   0x08000298   0x00000008   Code   RO         1026  * !!!main             c_w.l(__main.o)
-    0x080002a0   0x080002a0   0x00000034   Code   RO         1292    !!!scatter          c_w.l(__scatter.o)
-    0x080002d4   0x080002d4   0x0000005a   Code   RO         1290    !!dczerorl2         c_w.l(__dczerorl2.o)
+    0x00000000   0x08003da8   0x0000000a   Ven    RO         1385    Veneer$$Code        anon$$obj.o
+    0x0000000a   0x08003db2   0x0000000a   Ven    RO         1386    Veneer$$Code        anon$$obj.o
+    0x00000014   0x08003dbc   0x0000000a   Ven    RO         1387    Veneer$$Code        anon$$obj.o
+    0x0000001e   0x08003dc6   0x0000000a   Ven    RO         1388    Veneer$$Code        anon$$obj.o
+    0x00000028   0x08003dd0   0x0000000a   Ven    RO         1389    Veneer$$Code        anon$$obj.o
+    0x00000032   0x08003dda   0x0000000a   Ven    RO         1390    Veneer$$Code        anon$$obj.o
+    0x0000003c   0x08003de4   0x0000000a   Ven    RO         1391    Veneer$$Code        anon$$obj.o
+    0x00000046   0x08003dee   0x0000000a   Ven    RO         1392    Veneer$$Code        anon$$obj.o
+    0x00000050   0x08003df8   0x0000000a   Ven    RO         1393    Veneer$$Code        anon$$obj.o
+    0x0000005a   0x08003e02   0x0000000a   Ven    RO         1394    Veneer$$Code        anon$$obj.o
+    0x00000064   0x08003e0c   0x0000000a   Ven    RO         1395    Veneer$$Code        anon$$obj.o
+    0x0000006e   0x08003e16   0x0000000a   Ven    RO         1396    Veneer$$Code        anon$$obj.o
+    0x00000078   0x08003e20   0x0000000a   Ven    RO         1397    Veneer$$Code        anon$$obj.o
+    0x00000082   0x08003e2a   0x00000002   PAD
+    0x00000084   0x08003e2c   0x0000018c   Code   RO            4    i.Can_CheckCanStatus  can.o
+    0x00000210   0x08003fb8   0x00000074   Code   RO            5    i.Can_CheckStatus   can.o
+    0x00000284   0x0800402c   0x00000024   Code   RO            6    i.Can_Conf          can.o
+    0x000002a8   0x08004050   0x000000d4   Code   RO            7    i.Can_FdcanConf     can.o
+    0x0000037c   0x08004124   0x0000019c   Code   RO            8    i.Can_FiltersConf   can.o
+    0x00000518   0x080042c0   0x00000170   Code   RO            9    i.Can_ReadFrameChangeConfResponse  can.o
+    0x00000688   0x08004430   0x00000158   Code   RO           10    i.Can_ReadFrameChangeFsmResponse  can.o
+    0x000007e0   0x08004588   0x0000026c   Code   RO           11    i.Can_ReadFrameMoveResponse  can.o
+    0x00000a4c   0x080047f4   0x0000006c   Code   RO           12    i.Can_ReadFramesFromBuffer  can.o
+    0x00000ab8   0x08004860   0x0000005c   Code   RO           13    i.Can_SendDataToJoints  can.o
+    0x00000b14   0x080048bc   0x00000184   Code   RO           14    i.Can_SendFrameChangeFsm  can.o
+    0x00000c98   0x08004a40   0x000001a8   Code   RO           15    i.Can_SendFrameChangeMode  can.o
+    0x00000e40   0x08004be8   0x000001cc   Code   RO           16    i.Can_SendFrameMove  can.o
+    0x0000100c   0x08004db4   0x00000068   Code   RO           17    i.Can_SendFrameOccurred  can.o
+    0x00001074   0x08004e1c   0x00000150   Code   RO           18    i.Can_SendFrameResetAllDevices  can.o
+    0x000011c4   0x08004f6c   0x00000150   Code   RO           19    i.Can_SendFrameResetGripper  can.o
+    0x00001314   0x080050bc   0x00000150   Code   RO           20    i.Can_SendFrameResetJoint0  can.o
+    0x00001464   0x0800520c   0x00000150   Code   RO           21    i.Can_SendFrameResetJoint1  can.o
+    0x000015b4   0x0800535c   0x00000150   Code   RO           22    i.Can_SendFrameResetJoint2  can.o
+    0x00001704   0x080054ac   0x00000150   Code   RO           23    i.Can_SendFrameResetJoint3  can.o
+    0x00001854   0x080055fc   0x00000150   Code   RO           24    i.Can_SendFrameResetJoint4  can.o
+    0x000019a4   0x0800574c   0x00000150   Code   RO           25    i.Can_SendFrameResetJoint5  can.o
+    0x00001af4   0x0800589c   0x00000084   Code   RO           26    i.Can_SendFrameToDevices  can.o
+    0x00001b78   0x08005920   0x00000048   Code   RO           27    i.Can_StructConf    can.o
+    0x00001bc0   0x08005968   0x0000023c   Code   RO           28    i.Can_TxBufferConf  can.o
+    0x00001dfc   0x08005ba4   0x000001dc   Code   RO          265    i.Control_CheckErrorFlags  control.o
+    0x00001fd8   0x08005d80   0x00000158   Code   RO          266    i.Control_CheckLimits  control.o
+    0x00002130   0x08005ed8   0x00000054   Code   RO          267    i.Control_ClearExternallErrorsViaCan  control.o
+    0x00002184   0x08005f2c   0x000000dc   Code   RO          268    i.Control_ClearInternallErrorsInJtc  control.o
+    0x00002260   0x08006008   0x000000dc   Code   RO          269    i.Control_ClockConf  control.o
+    0x0000233c   0x080060e4   0x000000f4   Code   RO          271    i.Control_JtcAct    control.o
+    0x00002430   0x080061d8   0x00000110   Code   RO          272    i.Control_JtcCheckState  control.o
+    0x00002540   0x080062e8   0x00000230   Code   RO          273    i.Control_JtcCheckStateInit  control.o
+    0x00002770   0x08006518   0x000000ec   Code   RO          274    i.Control_JtcHoldPos  control.o
+    0x0000285c   0x08006604   0x00000084   Code   RO          275    i.Control_JtcInit   control.o
+    0x000028e0   0x08006688   0x00000130   Code   RO          276    i.Control_JtcInitDeparkStage  control.o
+    0x00002a10   0x080067b8   0x000000e0   Code   RO          277    i.Control_JtcInitPosAccurateStage  control.o
+    0x00002af0   0x08006898   0x000000a0   Code   RO          278    i.Control_JtcInitPreInitStage  control.o
+    0x00002b90   0x08006938   0x000000b4   Code   RO          279    i.Control_JtcOperate  control.o
+    0x00002c44   0x080069ec   0x00000058   Code   RO          280    i.Control_JtcPrepareSetedValuesForHoldPos  control.o
+    0x00002c9c   0x08006a44   0x0000003c   Code   RO          281    i.Control_JtcPrepareSetedValuesForInit  control.o
+    0x00002cd8   0x08006a80   0x00000080   Code   RO          282    i.Control_JtcPrepareSetedValuesForOperate  control.o
+    0x00002d58   0x08006b00   0x0000001c   Code   RO          283    i.Control_JtcSetGripperToEnable  control.o
+    0x00002d74   0x08006b1c   0x00000024   Code   RO          284    i.Control_JtcSetJointToEnable  control.o
+    0x00002d98   0x08006b40   0x00000034   Code   RO          285    i.Control_JtcSetJointToReadyToOperate  control.o
+    0x00002dcc   0x08006b74   0x000000a0   Code   RO          286    i.Control_JtcTeaching  control.o
+    0x00002e6c   0x08006c14   0x00000084   Code   RO          287    i.Control_JtcVariableConf  control.o
+    0x00002ef0   0x08006c98   0x00000070   Code   RO          288    i.Control_ResetDevicesViaCan  control.o
+    0x00002f60   0x08006d08   0x00000010   Code   RO          289    i.Control_SafetyOutOff  control.o
+    0x00002f70   0x08006d18   0x0000005c   Code   RO          290    i.Control_SendCommandClearErrorsToJoints  control.o
+    0x00002fcc   0x08006d74   0x000001b4   Code   RO          291    i.Control_SendCommandResetDevice  control.o
+    0x00003180   0x08006f28   0x000004c8   Code   RO          292    i.Control_SetDefualtArmModel  control.o
+    0x00003648   0x080073f0   0x00000060   Code   RO          293    i.Control_SetNewTorqueValues  control.o
+    0x000036a8   0x08007450   0x00000006   Code   RO          294    i.Control_SetTable  control.o
+    0x000036ae   0x08007456   0x00000002   PAD
+    0x000036b0   0x08007458   0x000001a0   Code   RO          295    i.Control_SystemConf  control.o
+    0x00003850   0x080075f8   0x00000098   Code   RO          296    i.Control_TrajCheckState  control.o
+    0x000038e8   0x08007690   0x00000088   Code   RO          297    i.Control_TrajClear  control.o
+    0x00003970   0x08007718   0x00000028   Code   RO          298    i.Control_TrajClearPointDouble  control.o
+    0x00003998   0x08007740   0x000001f0   Code   RO          299    i.Control_TrajInterpolate  control.o
+    0x00003b88   0x08007930   0x00000028   Code   RO           29    i.FDCAN1_IT0_IRQHandler  can.o
+    0x00003bb0   0x08007958   0x0000006c   Code   RO           30    i.FDCAN1_IT1_IRQHandler  can.o
+    0x00003c1c   0x080079c4   0x00000004   Code   RO          747    i.Gripper_SetResetValuesVariables  gripper.o
+    0x00003c20   0x080079c8   0x00000038   Code   RO          748    i.Gripper_SetStartValuesVariables  gripper.o
+    0x00003c58   0x08007a00   0x00000094   Code   RO          627    i.HRX               rnea.o
+    0x00003cec   0x08007a94   0x00000094   Code   RO          628    i.HRY               rnea.o
+    0x00003d80   0x08007b28   0x00000094   Code   RO          629    i.HRZ               rnea.o
+    0x00003e14   0x08007bbc   0x00000058   Code   RO          630    i.HT                rnea.o
+    0x00003e6c   0x08007c14   0x0000001c   Code   RO          513    i.Joints_CalcFrictionCompensate  joints.o
+    0x00003e88   0x08007c30   0x00000100   Code   RO          514    i.Joints_CalcFrictionCompensatePolynomial  joints.o
+    0x00003f88   0x08007d30   0x0000018c   Code   RO          515    i.Joints_CalcFrictionCompensateTable  joints.o
+    0x00004114   0x08007ebc   0x00000080   Code   RO          516    i.Joints_CalcInitRegsTorque  joints.o
+    0x00004194   0x08007f3c   0x00000110   Code   RO          517    i.Joints_CalcPIDs   joints.o
+    0x000042a4   0x0800804c   0x000000a8   Code   RO          518    i.Joints_FindMinMaxVelTempInFrictionTabeIdx  joints.o
+    0x0000434c   0x080080f4   0x0000001c   Code   RO          519    i.Joints_SetDefaultFriction  joints.o
+    0x00004368   0x08008110   0x000002c0   Code   RO          520    i.Joints_SetDefaultFrictionPolynomial  joints.o
+    0x00004628   0x080083d0   0x000000a8   Code   RO          521    i.Joints_SetDefaultFrictionTable  joints.o
+    0x000046d0   0x08008478   0x00000150   Code   RO          522    i.Joints_SetDefaultPidParam  joints.o
+    0x00004820   0x080085c8   0x0000008c   Code   RO          523    i.Joints_SetDefaultVariables  joints.o
+    0x000048ac   0x08008654   0x000000ac   Code   RO          524    i.Joints_SetResetValuesVariables  joints.o
+    0x00004958   0x08008700   0x000001d0   Code   RO          525    i.Joints_SetStartValuesVariables  joints.o
+    0x00004b28   0x080088d0   0x00000054   Code   RO          526    i.Joints_StartIrValuesVariables  joints.o
+    0x00004b7c   0x08008924   0x00000034   Code   RO          527    i.Joints_StopIrValuesVariables  joints.o
+    0x00004bb0   0x08008958   0x00000050   Code   RO          631    i.Mat3Ones          rnea.o
+    0x00004c00   0x080089a8   0x0000004c   Code   RO          632    i.Mat3Transpose     rnea.o
+    0x00004c4c   0x080089f4   0x00000088   Code   RO          633    i.Mat3xMat3         rnea.o
+    0x00004cd4   0x08008a7c   0x00000068   Code   RO          634    i.Mat3xVec3         rnea.o
+    0x00004d3c   0x08008ae4   0x0000004c   Code   RO          635    i.Mat4Ones          rnea.o
+    0x00004d88   0x08008b30   0x00000048   Code   RO          636    i.Mat4ToMat3        rnea.o
+    0x00004dd0   0x08008b78   0x0000002e   Code   RO          637    i.Mat4ToVec3        rnea.o
+    0x00004dfe   0x08008ba6   0x00000002   PAD
+    0x00004e00   0x08008ba8   0x00000080   Code   RO          638    i.Mat4xMat4         rnea.o
+    0x00004e80   0x08008c28   0x000014b0   Code   RO          639    i.RNEA_CalcTorques  rnea.o
+    0x00006330   0x0800a0d8   0x00000ec4   Code   RO          640    i.RNEA_Conf         rnea.o
+    0x000071f4   0x0800af9c   0x00000010   Code   RO          300    i.SysTick_Handler   control.o
+    0x00007204   0x0800afac   0x00000004   Code   RO          928    i.TG_Conf           trajgen.o
+    0x00007208   0x0800afb0   0x0000016c   Code   RO          929    i.TG_GetSeqFromMbs  trajgen.o
+    0x00007374   0x0800b11c   0x00000204   Code   RO          930    i.TG_SLP_FindPath   trajgen.o
+    0x00007578   0x0800b320   0x000000cc   Code   RO          931    i.TG_SLP_FindTime   trajgen.o
+    0x00007644   0x0800b3ec   0x000000bc   Code   RO          932    i.TG_SLP_FindTimeMax  trajgen.o
+    0x00007700   0x0800b4a8   0x00000628   Code   RO          933    i.TG_SLP_FindTraj1Drive  trajgen.o
+    0x00007d28   0x0800bad0   0x00000120   Code   RO          934    i.TG_SLP_FindVmax   trajgen.o
+    0x00007e48   0x0800bbf0   0x000000c4   Code   RO          935    i.TG_SetDefaultVariables  trajgen.o
+    0x00007f0c   0x0800bcb4   0x000000e8   Code   RO          936    i.TG_TrajGen        trajgen.o
+    0x00007ff4   0x0800bd9c   0x0000001c   Code   RO          301    i.TIM7_IRQHandler   control.o
+    0x00008010   0x0800bdb8   0x0000003a   Code   RO          641    i.Vec3AddVec3       rnea.o
+    0x0000804a   0x0800bdf2   0x00000032   Code   RO          642    i.Vec3Cross         rnea.o
+    0x0000807c   0x0800be24   0x0000003a   Code   RO          643    i.Vec3SubVec3       rnea.o
+    0x000080b6   0x0800be5e   0x00000002   PAD
+    0x000080b8   0x0800be60   0x0000002c   Code   RO          644    i.Vec3Zeros         rnea.o
+    0x000080e4   0x0800be8c   0x00000032   Code   RO          645    i.Vec3xScalar       rnea.o
+    0x00008116   0x0800bebe   0x0000001a   Code   RO           31    i.__NVIC_EnableIRQ  can.o
+    0x00008130   0x0800bed8   0x00000dc0   Data   RO          528    .constdata          joints.o
+    0x00008ef0   0x0800cc98   0x00000dc0   Data   RO          529    .constdata          joints.o
+    0x00009cb0   0x0800da58   0x00000dc0   Data   RO          530    .constdata          joints.o
+    0x0000aa70   0x0800e818   0x00000dc0   Data   RO          531    .constdata          joints.o
+    0x0000b830   0x0800f5d8   0x00000dc0   Data   RO          532    .constdata          joints.o
+    0x0000c5f0   0x08010398   0x00000dc0   Data   RO          533    .constdata          joints.o
+    0x0000d3b0   0x08011158   0x00000018   Data   RO          534    .constdata          joints.o
+
+
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00002ba8, Max: 0x00100000, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x08000000   0x08000000   0x00000298   Data   RO         1054    RESET               startup_stm32h745xx.o
+    0x08000298   0x08000298   0x00000008   Code   RO         1104  * !!!main             c_w.l(__main.o)
+    0x080002a0   0x080002a0   0x00000034   Code   RO         1370    !!!scatter          c_w.l(__scatter.o)
+    0x080002d4   0x080002d4   0x0000005a   Code   RO         1368    !!dczerorl2         c_w.l(__dczerorl2.o)
     0x0800032e   0x0800032e   0x00000002   PAD
-    0x08000330   0x08000330   0x0000001a   Code   RO         1294    !!handler_copy      c_w.l(__scatter_copy.o)
+    0x08000330   0x08000330   0x0000001a   Code   RO         1372    !!handler_copy      c_w.l(__scatter_copy.o)
     0x0800034a   0x0800034a   0x00000002   PAD
-    0x0800034c   0x0800034c   0x0000001c   Code   RO         1296    !!handler_zi        c_w.l(__scatter_zi.o)
-    0x08000368   0x08000368   0x00000002   Code   RO         1157    .ARM.Collect$$libinit$$00000000  c_w.l(libinit.o)
-    0x0800036a   0x0800036a   0x00000004   Code   RO         1162    .ARM.Collect$$libinit$$00000001  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1165    .ARM.Collect$$libinit$$00000004  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1168    .ARM.Collect$$libinit$$0000000A  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1170    .ARM.Collect$$libinit$$0000000C  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1172    .ARM.Collect$$libinit$$0000000E  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1175    .ARM.Collect$$libinit$$00000011  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1177    .ARM.Collect$$libinit$$00000013  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1179    .ARM.Collect$$libinit$$00000015  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1181    .ARM.Collect$$libinit$$00000017  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1183    .ARM.Collect$$libinit$$00000019  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1185    .ARM.Collect$$libinit$$0000001B  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1187    .ARM.Collect$$libinit$$0000001D  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1189    .ARM.Collect$$libinit$$0000001F  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1191    .ARM.Collect$$libinit$$00000021  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1193    .ARM.Collect$$libinit$$00000023  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1195    .ARM.Collect$$libinit$$00000025  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1199    .ARM.Collect$$libinit$$0000002C  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1201    .ARM.Collect$$libinit$$0000002E  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1203    .ARM.Collect$$libinit$$00000030  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000000   Code   RO         1205    .ARM.Collect$$libinit$$00000032  c_w.l(libinit2.o)
-    0x0800036e   0x0800036e   0x00000002   Code   RO         1206    .ARM.Collect$$libinit$$00000033  c_w.l(libinit2.o)
-    0x08000370   0x08000370   0x00000002   Code   RO         1228    .ARM.Collect$$libshutdown$$00000000  c_w.l(libshutdown.o)
-    0x08000372   0x08000372   0x00000000   Code   RO         1241    .ARM.Collect$$libshutdown$$00000002  c_w.l(libshutdown2.o)
-    0x08000372   0x08000372   0x00000000   Code   RO         1243    .ARM.Collect$$libshutdown$$00000004  c_w.l(libshutdown2.o)
-    0x08000372   0x08000372   0x00000000   Code   RO         1245    .ARM.Collect$$libshutdown$$00000006  c_w.l(libshutdown2.o)
-    0x08000372   0x08000372   0x00000000   Code   RO         1248    .ARM.Collect$$libshutdown$$00000009  c_w.l(libshutdown2.o)
-    0x08000372   0x08000372   0x00000000   Code   RO         1251    .ARM.Collect$$libshutdown$$0000000C  c_w.l(libshutdown2.o)
-    0x08000372   0x08000372   0x00000000   Code   RO         1253    .ARM.Collect$$libshutdown$$0000000E  c_w.l(libshutdown2.o)
-    0x08000372   0x08000372   0x00000000   Code   RO         1256    .ARM.Collect$$libshutdown$$00000011  c_w.l(libshutdown2.o)
-    0x08000372   0x08000372   0x00000002   Code   RO         1257    .ARM.Collect$$libshutdown$$00000012  c_w.l(libshutdown2.o)
-    0x08000374   0x08000374   0x00000000   Code   RO         1078    .ARM.Collect$$rtentry$$00000000  c_w.l(__rtentry.o)
-    0x08000374   0x08000374   0x00000000   Code   RO         1124    .ARM.Collect$$rtentry$$00000002  c_w.l(__rtentry2.o)
-    0x08000374   0x08000374   0x00000006   Code   RO         1136    .ARM.Collect$$rtentry$$00000004  c_w.l(__rtentry4.o)
-    0x0800037a   0x0800037a   0x00000000   Code   RO         1126    .ARM.Collect$$rtentry$$00000009  c_w.l(__rtentry2.o)
-    0x0800037a   0x0800037a   0x00000004   Code   RO         1127    .ARM.Collect$$rtentry$$0000000A  c_w.l(__rtentry2.o)
-    0x0800037e   0x0800037e   0x00000000   Code   RO         1129    .ARM.Collect$$rtentry$$0000000C  c_w.l(__rtentry2.o)
-    0x0800037e   0x0800037e   0x00000008   Code   RO         1130    .ARM.Collect$$rtentry$$0000000D  c_w.l(__rtentry2.o)
-    0x08000386   0x08000386   0x00000002   Code   RO         1160    .ARM.Collect$$rtexit$$00000000  c_w.l(rtexit.o)
-    0x08000388   0x08000388   0x00000000   Code   RO         1210    .ARM.Collect$$rtexit$$00000002  c_w.l(rtexit2.o)
-    0x08000388   0x08000388   0x00000004   Code   RO         1211    .ARM.Collect$$rtexit$$00000003  c_w.l(rtexit2.o)
-    0x0800038c   0x0800038c   0x00000006   Code   RO         1212    .ARM.Collect$$rtexit$$00000004  c_w.l(rtexit2.o)
+    0x0800034c   0x0800034c   0x0000001c   Code   RO         1374    !!handler_zi        c_w.l(__scatter_zi.o)
+    0x08000368   0x08000368   0x00000002   Code   RO         1235    .ARM.Collect$$libinit$$00000000  c_w.l(libinit.o)
+    0x0800036a   0x0800036a   0x00000004   Code   RO         1240    .ARM.Collect$$libinit$$00000001  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1243    .ARM.Collect$$libinit$$00000004  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1246    .ARM.Collect$$libinit$$0000000A  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1248    .ARM.Collect$$libinit$$0000000C  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1250    .ARM.Collect$$libinit$$0000000E  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1253    .ARM.Collect$$libinit$$00000011  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1255    .ARM.Collect$$libinit$$00000013  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1257    .ARM.Collect$$libinit$$00000015  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1259    .ARM.Collect$$libinit$$00000017  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1261    .ARM.Collect$$libinit$$00000019  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1263    .ARM.Collect$$libinit$$0000001B  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1265    .ARM.Collect$$libinit$$0000001D  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1267    .ARM.Collect$$libinit$$0000001F  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1269    .ARM.Collect$$libinit$$00000021  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1271    .ARM.Collect$$libinit$$00000023  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1273    .ARM.Collect$$libinit$$00000025  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1277    .ARM.Collect$$libinit$$0000002C  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1279    .ARM.Collect$$libinit$$0000002E  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1281    .ARM.Collect$$libinit$$00000030  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000000   Code   RO         1283    .ARM.Collect$$libinit$$00000032  c_w.l(libinit2.o)
+    0x0800036e   0x0800036e   0x00000002   Code   RO         1284    .ARM.Collect$$libinit$$00000033  c_w.l(libinit2.o)
+    0x08000370   0x08000370   0x00000002   Code   RO         1306    .ARM.Collect$$libshutdown$$00000000  c_w.l(libshutdown.o)
+    0x08000372   0x08000372   0x00000000   Code   RO         1319    .ARM.Collect$$libshutdown$$00000002  c_w.l(libshutdown2.o)
+    0x08000372   0x08000372   0x00000000   Code   RO         1321    .ARM.Collect$$libshutdown$$00000004  c_w.l(libshutdown2.o)
+    0x08000372   0x08000372   0x00000000   Code   RO         1323    .ARM.Collect$$libshutdown$$00000006  c_w.l(libshutdown2.o)
+    0x08000372   0x08000372   0x00000000   Code   RO         1326    .ARM.Collect$$libshutdown$$00000009  c_w.l(libshutdown2.o)
+    0x08000372   0x08000372   0x00000000   Code   RO         1329    .ARM.Collect$$libshutdown$$0000000C  c_w.l(libshutdown2.o)
+    0x08000372   0x08000372   0x00000000   Code   RO         1331    .ARM.Collect$$libshutdown$$0000000E  c_w.l(libshutdown2.o)
+    0x08000372   0x08000372   0x00000000   Code   RO         1334    .ARM.Collect$$libshutdown$$00000011  c_w.l(libshutdown2.o)
+    0x08000372   0x08000372   0x00000002   Code   RO         1335    .ARM.Collect$$libshutdown$$00000012  c_w.l(libshutdown2.o)
+    0x08000374   0x08000374   0x00000000   Code   RO         1156    .ARM.Collect$$rtentry$$00000000  c_w.l(__rtentry.o)
+    0x08000374   0x08000374   0x00000000   Code   RO         1202    .ARM.Collect$$rtentry$$00000002  c_w.l(__rtentry2.o)
+    0x08000374   0x08000374   0x00000006   Code   RO         1214    .ARM.Collect$$rtentry$$00000004  c_w.l(__rtentry4.o)
+    0x0800037a   0x0800037a   0x00000000   Code   RO         1204    .ARM.Collect$$rtentry$$00000009  c_w.l(__rtentry2.o)
+    0x0800037a   0x0800037a   0x00000004   Code   RO         1205    .ARM.Collect$$rtentry$$0000000A  c_w.l(__rtentry2.o)
+    0x0800037e   0x0800037e   0x00000000   Code   RO         1207    .ARM.Collect$$rtentry$$0000000C  c_w.l(__rtentry2.o)
+    0x0800037e   0x0800037e   0x00000008   Code   RO         1208    .ARM.Collect$$rtentry$$0000000D  c_w.l(__rtentry2.o)
+    0x08000386   0x08000386   0x00000002   Code   RO         1238    .ARM.Collect$$rtexit$$00000000  c_w.l(rtexit.o)
+    0x08000388   0x08000388   0x00000000   Code   RO         1288    .ARM.Collect$$rtexit$$00000002  c_w.l(rtexit2.o)
+    0x08000388   0x08000388   0x00000004   Code   RO         1289    .ARM.Collect$$rtexit$$00000003  c_w.l(rtexit2.o)
+    0x0800038c   0x0800038c   0x00000006   Code   RO         1290    .ARM.Collect$$rtexit$$00000004  c_w.l(rtexit2.o)
     0x08000392   0x08000392   0x00000002   PAD
-    0x08000394   0x08000394   0x00000040   Code   RO          977    .text               startup_stm32h745xx.o
-    0x080003d4   0x080003d4   0x0000008a   Code   RO         1020    .text               c_w.l(rt_memcpy_v6.o)
-    0x0800045e   0x0800045e   0x00000064   Code   RO         1022    .text               c_w.l(rt_memcpy_w.o)
-    0x080004c2   0x080004c2   0x00000006   Code   RO         1024    .text               c_w.l(heapauxi.o)
-    0x080004c8   0x080004c8   0x00000016   Code   RO         1079    .text               c_w.l(_rserrno.o)
+    0x08000394   0x08000394   0x00000040   Code   RO         1055    .text               startup_stm32h745xx.o
+    0x080003d4   0x080003d4   0x0000008a   Code   RO         1098    .text               c_w.l(rt_memcpy_v6.o)
+    0x0800045e   0x0800045e   0x00000064   Code   RO         1100    .text               c_w.l(rt_memcpy_w.o)
+    0x080004c2   0x080004c2   0x00000006   Code   RO         1102    .text               c_w.l(heapauxi.o)
+    0x080004c8   0x080004c8   0x00000016   Code   RO         1157    .text               c_w.l(_rserrno.o)
     0x080004de   0x080004de   0x00000002   PAD
-    0x080004e0   0x080004e0   0x00000008   Code   RO         1141    .text               c_w.l(rt_errno_addr_intlibspace.o)
-    0x080004e8   0x080004e8   0x00000008   Code   RO         1145    .text               c_w.l(libspace.o)
-    0x080004f0   0x080004f0   0x0000004a   Code   RO         1148    .text               c_w.l(sys_stackheap_outer.o)
-    0x0800053a   0x0800053a   0x00000012   Code   RO         1150    .text               c_w.l(exit.o)
-    0x0800054c   0x0800054c   0x0000000c   Code   RO         1220    .text               c_w.l(sys_exit.o)
-    0x08000558   0x08000558   0x00000002   Code   RO         1231    .text               c_w.l(use_no_semi.o)
-    0x0800055a   0x0800055a   0x00000000   Code   RO         1233    .text               c_w.l(indicate_semi.o)
-    0x0800055a   0x0800055a   0x0000000a   Ven    RO         1298    Veneer$$Code        anon$$obj.o
-    0x08000564   0x08000564   0x0000000a   Ven    RO         1299    Veneer$$Code        anon$$obj.o
-    0x0800056e   0x0800056e   0x0000000a   Ven    RO         1300    Veneer$$Code        anon$$obj.o
-    0x08000578   0x08000578   0x0000000a   Ven    RO         1301    Veneer$$Code        anon$$obj.o
-    0x08000582   0x08000582   0x0000000a   Ven    RO         1302    Veneer$$Code        anon$$obj.o
-    0x0800058c   0x0800058c   0x0000000a   Ven    RO         1303    Veneer$$Code        anon$$obj.o
-    0x08000596   0x08000596   0x0000000a   Ven    RO         1304    Veneer$$Code        anon$$obj.o
-    0x080005a0   0x080005a0   0x0000000a   Ven    RO         1305    Veneer$$Code        anon$$obj.o
-    0x080005aa   0x080005aa   0x0000000a   Ven    RO         1306    Veneer$$Code        anon$$obj.o
-    0x080005b4   0x080005b4   0x0000001c   Code   RO          755    i.DMA1_Stream0_IRQHandler  mb_rtu_slave.o
-    0x080005d0   0x080005d0   0x00000018   Code   RO          756    i.DMA1_Stream1_IRQHandler  mb_rtu_slave.o
-    0x080005e8   0x080005e8   0x00000012   Code   RO          757    i.MBS_Act           mb_rtu_slave.o
-    0x080005fa   0x080005fa   0x00000002   PAD
-    0x080005fc   0x080005fc   0x00000098   Code   RO          758    i.MBS_ActConfigWords  mb_rtu_slave.o
-    0x08000694   0x08000694   0x000002fc   Code   RO          759    i.MBS_ActControlWords  mb_rtu_slave.o
-    0x08000990   0x08000990   0x000002e8   Code   RO          760    i.MBS_ActTelemetry  mb_rtu_slave.o
-    0x08000c78   0x08000c78   0x00000010   Code   RO          761    i.MBS_ClrStr        mb_rtu_slave.o
-    0x08000c88   0x08000c88   0x000000c4   Code   RO          762    i.MBS_ComUart2Conf  mb_rtu_slave.o
-    0x08000d4c   0x08000d4c   0x0000004c   Code   RO          763    i.MBS_Conf          mb_rtu_slave.o
-    0x08000d98   0x08000d98   0x00000030   Code   RO          764    i.MBS_Crc16         mb_rtu_slave.o
-    0x08000dc8   0x08000dc8   0x00000170   Code   RO          765    i.MBS_ReadRequest   mb_rtu_slave.o
-    0x08000f38   0x08000f38   0x00000028   Code   RO          766    i.MBS_ReinitDmaReadStream  mb_rtu_slave.o
-    0x08000f60   0x08000f60   0x00000024   Code   RO          767    i.MBS_ReinitDmaWriteStream  mb_rtu_slave.o
-    0x08000f84   0x08000f84   0x00000048   Code   RO          768    i.MBS_ResponseError_IDR  mb_rtu_slave.o
-    0x08000fcc   0x08000fcc   0x00000088   Code   RO          769    i.MBS_Response_RnDQ  mb_rtu_slave.o
-    0x08001054   0x08001054   0x00000088   Code   RO          770    i.MBS_Response_RnHR  mb_rtu_slave.o
-    0x080010dc   0x080010dc   0x00000064   Code   RO          771    i.MBS_Response_W1HR  mb_rtu_slave.o
-    0x08001140   0x08001140   0x000000ac   Code   RO          772    i.MBS_Response_WnDQ  mb_rtu_slave.o
-    0x080011ec   0x080011ec   0x00000080   Code   RO          773    i.MBS_Response_WnHR  mb_rtu_slave.o
-    0x0800126c   0x0800126c   0x0000005c   Code   RO          774    i.MBS_StructConf    mb_rtu_slave.o
-    0x080012c8   0x080012c8   0x00000128   Code   RO          775    i.MBS_UseNewArmModel  mb_rtu_slave.o
-    0x080013f0   0x080013f0   0x00000108   Code   RO          776    i.MBS_UseNewPidParam  mb_rtu_slave.o
-    0x080014f8   0x080014f8   0x00000100   Code   RO          985    i.SystemInit        system_stm32h7xx_dualcore_boot_cm4_cm7.o
-    0x080015f8   0x080015f8   0x00000028   Code   RO          777    i.TIM5_IRQHandler   mb_rtu_slave.o
-    0x08001620   0x08001620   0x00000044   Code   RO          778    i.USART2_IRQHandler  mb_rtu_slave.o
-    0x08001664   0x08001664   0x00000030   Code   RO         1107    i.__ARM_fpclassify  m_wv.l(fpclassify.o)
-    0x08001694   0x08001694   0x0000001a   Code   RO          779    i.__NVIC_EnableIRQ  mb_rtu_slave.o
-    0x080016ae   0x080016ae   0x00000002   PAD
-    0x080016b0   0x080016b0   0x000000b0   Code   RO         1028    i.__hardfp_cos      m_wv.l(cos.o)
-    0x08001760   0x08001760   0x000008f8   Code   RO         1040    i.__hardfp_pow      m_wv.l(pow.o)
-    0x08002058   0x08002058   0x000000b0   Code   RO         1054    i.__hardfp_sin      m_wv.l(sin.o)
-    0x08002108   0x08002108   0x00000066   Code   RO         1066    i.__hardfp_sqrt     m_wv.l(sqrt.o)
-    0x0800216e   0x0800216e   0x00000002   PAD
-    0x08002170   0x08002170   0x00000310   Code   RO         1112    i.__ieee754_rem_pio2  m_wv.l(rred.o)
-    0x08002480   0x08002480   0x000000e0   Code   RO         1084    i.__kernel_cos      m_wv.l(cos_i.o)
-    0x08002560   0x08002560   0x00000070   Code   RO         1109    i.__kernel_poly     m_wv.l(poly.o)
-    0x080025d0   0x080025d0   0x000000a8   Code   RO         1117    i.__kernel_sin      m_wv.l(sin_i.o)
-    0x08002678   0x08002678   0x00000020   Code   RO         1087    i.__mathlib_dbl_divzero  m_wv.l(dunder.o)
-    0x08002698   0x08002698   0x00000006   Code   RO         1089    i.__mathlib_dbl_infnan2  m_wv.l(dunder.o)
-    0x0800269e   0x0800269e   0x00000002   PAD
-    0x080026a0   0x080026a0   0x00000018   Code   RO         1090    i.__mathlib_dbl_invalid  m_wv.l(dunder.o)
-    0x080026b8   0x080026b8   0x00000018   Code   RO         1091    i.__mathlib_dbl_overflow  m_wv.l(dunder.o)
-    0x080026d0   0x080026d0   0x00000018   Code   RO         1093    i.__mathlib_dbl_underflow  m_wv.l(dunder.o)
-    0x080026e8   0x080026e8   0x00000018   Code   RO         1103    i.fabs              m_wv.l(fabs.o)
-    0x08002700   0x08002700   0x0000000a   Code   RO          465    i.main              main.o
-    0x0800270a   0x0800270a   0x0000006a   Code   RO         1068    i.sqrt              m_wv.l(sqrt.o)
-    0x08002774   0x08002774   0x00000010   Code   RO         1143    x$fpl$dcheck1       fz_wv.l(dcheck1.o)
-    0x08002784   0x08002784   0x0000000a   Code   RO         1218    x$fpl$fpinit        fz_wv.l(fpinit.o)
-    0x0800278e   0x0800278e   0x00000064   Code   RO         1158    x$fpl$retnan        fz_wv.l(retnan.o)
-    0x080027f2   0x080027f2   0x0000005c   Code   RO         1081    x$fpl$scalbn        fz_wv.l(scalbn.o)
-    0x0800284e   0x0800284e   0x00000030   Code   RO         1207    x$fpl$trapveneer    fz_wv.l(trapv.o)
-    0x0800287e   0x0800287e   0x00000000   Code   RO         1083    x$fpl$usenofp       fz_wv.l(usenofp.o)
-    0x0800287e   0x0800287e   0x00000002   PAD
-    0x08002880   0x08002880   0x00000088   Data   RO         1043    .constdata          m_wv.l(pow.o)
-    0x08002908   0x08002908   0x00000030   Data   RO         1085    .constdata          m_wv.l(cos_i.o)
-    0x08002938   0x08002938   0x00000008   Data   RO         1111    .constdata          m_wv.l(qnan.o)
-    0x08002940   0x08002940   0x000000c8   Data   RO         1114    .constdata          m_wv.l(rred.o)
-    0x08002a08   0x08002a08   0x00000028   Data   RO         1118    .constdata          m_wv.l(sin_i.o)
-    0x08002a30   0x08002a30   0x00000060   Data   RO         1288    Region$$Table       anon$$obj.o
+    0x080004e0   0x080004e0   0x00000008   Code   RO         1219    .text               c_w.l(rt_errno_addr_intlibspace.o)
+    0x080004e8   0x080004e8   0x00000008   Code   RO         1223    .text               c_w.l(libspace.o)
+    0x080004f0   0x080004f0   0x0000004a   Code   RO         1226    .text               c_w.l(sys_stackheap_outer.o)
+    0x0800053a   0x0800053a   0x00000012   Code   RO         1228    .text               c_w.l(exit.o)
+    0x0800054c   0x0800054c   0x0000000c   Code   RO         1298    .text               c_w.l(sys_exit.o)
+    0x08000558   0x08000558   0x00000002   Code   RO         1309    .text               c_w.l(use_no_semi.o)
+    0x0800055a   0x0800055a   0x00000000   Code   RO         1311    .text               c_w.l(indicate_semi.o)
+    0x0800055a   0x0800055a   0x0000000a   Ven    RO         1376    Veneer$$Code        anon$$obj.o
+    0x08000564   0x08000564   0x0000000a   Ven    RO         1377    Veneer$$Code        anon$$obj.o
+    0x0800056e   0x0800056e   0x0000000a   Ven    RO         1378    Veneer$$Code        anon$$obj.o
+    0x08000578   0x08000578   0x0000000a   Ven    RO         1379    Veneer$$Code        anon$$obj.o
+    0x08000582   0x08000582   0x0000000a   Ven    RO         1380    Veneer$$Code        anon$$obj.o
+    0x0800058c   0x0800058c   0x0000000a   Ven    RO         1381    Veneer$$Code        anon$$obj.o
+    0x08000596   0x08000596   0x0000000a   Ven    RO         1382    Veneer$$Code        anon$$obj.o
+    0x080005a0   0x080005a0   0x0000000a   Ven    RO         1383    Veneer$$Code        anon$$obj.o
+    0x080005aa   0x080005aa   0x0000000a   Ven    RO         1384    Veneer$$Code        anon$$obj.o
+    0x080005b4   0x080005b4   0x0000001c   Code   RO          778    i.DMA1_Stream0_IRQHandler  mb_rtu_slave.o
+    0x080005d0   0x080005d0   0x00000018   Code   RO          779    i.DMA1_Stream1_IRQHandler  mb_rtu_slave.o
+    0x080005e8   0x080005e8   0x00000034   Code   RO         1000    i.IO_Conf           inputsoutputs.o
+    0x0800061c   0x0800061c   0x00000040   Code   RO         1001    i.IO_InputsAct      inputsoutputs.o
+    0x0800065c   0x0800065c   0x00000050   Code   RO         1002    i.IO_OutputsAct     inputsoutputs.o
+    0x080006ac   0x080006ac   0x00000014   Code   RO         1003    i.IO_ParkBrakeInRead  inputsoutputs.o
+    0x080006c0   0x080006c0   0x00000014   Code   RO         1005    i.IO_ParkBrakeUnlock  inputsoutputs.o
+    0x080006d4   0x080006d4   0x00000012   Code   RO          780    i.MBS_Act           mb_rtu_slave.o
+    0x080006e6   0x080006e6   0x00000002   PAD
+    0x080006e8   0x080006e8   0x00000098   Code   RO          781    i.MBS_ActConfigWords  mb_rtu_slave.o
+    0x08000780   0x08000780   0x000002fc   Code   RO          782    i.MBS_ActControlWords  mb_rtu_slave.o
+    0x08000a7c   0x08000a7c   0x00000310   Code   RO          783    i.MBS_ActTelemetry  mb_rtu_slave.o
+    0x08000d8c   0x08000d8c   0x00000010   Code   RO          784    i.MBS_ClrStr        mb_rtu_slave.o
+    0x08000d9c   0x08000d9c   0x000000c4   Code   RO          785    i.MBS_ComUart2Conf  mb_rtu_slave.o
+    0x08000e60   0x08000e60   0x0000004c   Code   RO          786    i.MBS_Conf          mb_rtu_slave.o
+    0x08000eac   0x08000eac   0x00000030   Code   RO          787    i.MBS_Crc16         mb_rtu_slave.o
+    0x08000edc   0x08000edc   0x00000170   Code   RO          788    i.MBS_ReadRequest   mb_rtu_slave.o
+    0x0800104c   0x0800104c   0x00000028   Code   RO          789    i.MBS_ReinitDmaReadStream  mb_rtu_slave.o
+    0x08001074   0x08001074   0x00000024   Code   RO          790    i.MBS_ReinitDmaWriteStream  mb_rtu_slave.o
+    0x08001098   0x08001098   0x00000048   Code   RO          791    i.MBS_ResponseError_IDR  mb_rtu_slave.o
+    0x080010e0   0x080010e0   0x00000088   Code   RO          792    i.MBS_Response_RnDQ  mb_rtu_slave.o
+    0x08001168   0x08001168   0x00000088   Code   RO          793    i.MBS_Response_RnHR  mb_rtu_slave.o
+    0x080011f0   0x080011f0   0x00000064   Code   RO          794    i.MBS_Response_W1HR  mb_rtu_slave.o
+    0x08001254   0x08001254   0x000000ac   Code   RO          795    i.MBS_Response_WnDQ  mb_rtu_slave.o
+    0x08001300   0x08001300   0x00000080   Code   RO          796    i.MBS_Response_WnHR  mb_rtu_slave.o
+    0x08001380   0x08001380   0x0000005c   Code   RO          797    i.MBS_StructConf    mb_rtu_slave.o
+    0x080013dc   0x080013dc   0x00000128   Code   RO          798    i.MBS_UseNewArmModel  mb_rtu_slave.o
+    0x08001504   0x08001504   0x00000108   Code   RO          799    i.MBS_UseNewPidParam  mb_rtu_slave.o
+    0x0800160c   0x0800160c   0x00000100   Code   RO         1063    i.SystemInit        system_stm32h7xx_dualcore_boot_cm4_cm7.o
+    0x0800170c   0x0800170c   0x00000028   Code   RO          800    i.TIM5_IRQHandler   mb_rtu_slave.o
+    0x08001734   0x08001734   0x00000044   Code   RO          801    i.USART2_IRQHandler  mb_rtu_slave.o
+    0x08001778   0x08001778   0x00000030   Code   RO         1185    i.__ARM_fpclassify  m_wv.l(fpclassify.o)
+    0x080017a8   0x080017a8   0x0000001a   Code   RO          802    i.__NVIC_EnableIRQ  mb_rtu_slave.o
+    0x080017c2   0x080017c2   0x00000006   PAD
+    0x080017c8   0x080017c8   0x000000b0   Code   RO         1106    i.__hardfp_cos      m_wv.l(cos.o)
+    0x08001878   0x08001878   0x000008f8   Code   RO         1118    i.__hardfp_pow      m_wv.l(pow.o)
+    0x08002170   0x08002170   0x000000b0   Code   RO         1132    i.__hardfp_sin      m_wv.l(sin.o)
+    0x08002220   0x08002220   0x00000066   Code   RO         1144    i.__hardfp_sqrt     m_wv.l(sqrt.o)
+    0x08002286   0x08002286   0x00000002   PAD
+    0x08002288   0x08002288   0x00000310   Code   RO         1190    i.__ieee754_rem_pio2  m_wv.l(rred.o)
+    0x08002598   0x08002598   0x000000e0   Code   RO         1162    i.__kernel_cos      m_wv.l(cos_i.o)
+    0x08002678   0x08002678   0x00000070   Code   RO         1187    i.__kernel_poly     m_wv.l(poly.o)
+    0x080026e8   0x080026e8   0x000000a8   Code   RO         1195    i.__kernel_sin      m_wv.l(sin_i.o)
+    0x08002790   0x08002790   0x00000020   Code   RO         1165    i.__mathlib_dbl_divzero  m_wv.l(dunder.o)
+    0x080027b0   0x080027b0   0x00000006   Code   RO         1167    i.__mathlib_dbl_infnan2  m_wv.l(dunder.o)
+    0x080027b6   0x080027b6   0x00000002   PAD
+    0x080027b8   0x080027b8   0x00000018   Code   RO         1168    i.__mathlib_dbl_invalid  m_wv.l(dunder.o)
+    0x080027d0   0x080027d0   0x00000018   Code   RO         1169    i.__mathlib_dbl_overflow  m_wv.l(dunder.o)
+    0x080027e8   0x080027e8   0x00000018   Code   RO         1171    i.__mathlib_dbl_underflow  m_wv.l(dunder.o)
+    0x08002800   0x08002800   0x00000018   Code   RO         1181    i.fabs              m_wv.l(fabs.o)
+    0x08002818   0x08002818   0x0000000a   Code   RO          488    i.main              main.o
+    0x08002822   0x08002822   0x0000006a   Code   RO         1146    i.sqrt              m_wv.l(sqrt.o)
+    0x0800288c   0x0800288c   0x00000010   Code   RO         1221    x$fpl$dcheck1       fz_wv.l(dcheck1.o)
+    0x0800289c   0x0800289c   0x0000000a   Code   RO         1296    x$fpl$fpinit        fz_wv.l(fpinit.o)
+    0x080028a6   0x080028a6   0x00000064   Code   RO         1236    x$fpl$retnan        fz_wv.l(retnan.o)
+    0x0800290a   0x0800290a   0x0000005c   Code   RO         1159    x$fpl$scalbn        fz_wv.l(scalbn.o)
+    0x08002966   0x08002966   0x00000030   Code   RO         1285    x$fpl$trapveneer    fz_wv.l(trapv.o)
+    0x08002996   0x08002996   0x00000000   Code   RO         1161    x$fpl$usenofp       fz_wv.l(usenofp.o)
+    0x08002996   0x08002996   0x00000002   PAD
+    0x08002998   0x08002998   0x00000088   Data   RO         1121    .constdata          m_wv.l(pow.o)
+    0x08002a20   0x08002a20   0x00000030   Data   RO         1163    .constdata          m_wv.l(cos_i.o)
+    0x08002a50   0x08002a50   0x00000008   Data   RO         1189    .constdata          m_wv.l(qnan.o)
+    0x08002a58   0x08002a58   0x000000c8   Data   RO         1192    .constdata          m_wv.l(rred.o)
+    0x08002b20   0x08002b20   0x00000028   Data   RO         1196    .constdata          m_wv.l(sin_i.o)
+    0x08002b48   0x08002b48   0x00000060   Data   RO         1366    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002a90, Size: 0x0001a4a8, Max: 0x00020000, ABSOLUTE)
-
-    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x20000000   0x08002a90   0x00000004   Data   RW          299    .data               control.o
-    0x20000004   0x08002a94   0x00000004   Data   RW          915    .data               trajgen.o
-    0x20000008        -       0x00007048   Zero   RW          298    .bss                control.o
-    0x20007050        -       0x00002220   Zero   RW          623    .bss                rnea.o
-    0x20009270        -       0x000012d8   Zero   RW          914    .bss                trajgen.o
-    0x2000a548        -       0x00000060   Zero   RW         1146    .bss                c_w.l(libspace.o)
-    0x2000a5a8        -       0x00000f00   Zero   RW          975    HEAP                startup_stm32h745xx.o
-    0x2000b4a8        -       0x0000f000   Zero   RW          974    STACK               startup_stm32h745xx.o
-
-
-    Execution Region RW_IRAM2 (Exec base: 0x24000000, Load base: 0x08002a98, Size: 0x00071478, Max: 0x00080000, ABSOLUTE, COMPRESSED[0x00000e38])
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002ba8, Size: 0x0001a568, Max: 0x00020000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x24000000   COMPRESSED   0x00071478   Data   RW          295    .ARM.__at_0x24000000  control.o
+    0x20000000   0x08002ba8   0x00000004   Data   RW          306    .data               control.o
+    0x20000004   0x08002bac   0x00000004   Data   RW          938    .data               trajgen.o
+    0x20000008        -       0x00007108   Zero   RW          305    .bss                control.o
+    0x20007110        -       0x00002220   Zero   RW          646    .bss                rnea.o
+    0x20009330        -       0x000012d8   Zero   RW          937    .bss                trajgen.o
+    0x2000a608        -       0x00000060   Zero   RW         1224    .bss                c_w.l(libspace.o)
+    0x2000a668        -       0x00000f00   Zero   RW         1053    HEAP                startup_stm32h745xx.o
+    0x2000b568        -       0x0000f000   Zero   RW         1052    STACK               startup_stm32h745xx.o
 
 
-    Execution Region RW_IRAM3 (Exec base: 0x30000000, Load base: 0x080038d0, Size: 0x0001dcb0, Max: 0x00048000, ABSOLUTE, COMPRESSED[0x000003c0])
+    Execution Region RW_IRAM2 (Exec base: 0x24000000, Load base: 0x08002bb0, Size: 0x00071478, Max: 0x00080000, ABSOLUTE, COMPRESSED[0x00000e38])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x30000000   COMPRESSED   0x0001dcb0   Data   RW          296    .ARM.__at_0x30000000  control.o
+    0x24000000   COMPRESSED   0x00071478   Data   RW          302    .ARM.__at_0x24000000  control.o
 
 
-    Execution Region RW_IRAM5 (Exec base: 0x38000000, Load base: 0x08010d60, Size: 0x000013a0, Max: 0x00010000, ABSOLUTE, COMPRESSED[0x00000028])
+    Execution Region RW_IRAM3 (Exec base: 0x30000000, Load base: 0x080039e8, Size: 0x0001dcb0, Max: 0x00048000, ABSOLUTE, COMPRESSED[0x000003c0])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x38000000   COMPRESSED   0x000013a0   Data   RW          297    .ARM.__at_0x38000000  control.o
+    0x30000000   COMPRESSED   0x0001dcb0   Data   RW          303    .ARM.__at_0x30000000  control.o
+
+
+    Execution Region RW_IRAM5 (Exec base: 0x38000000, Load base: 0x08011170, Size: 0x000013a0, Max: 0x00010000, ABSOLUTE, COMPRESSED[0x00000028])
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x38000000   COMPRESSED   0x000013a0   Data   RW          304    .ARM.__at_0x38000000  control.o
 
 
 ==============================================================================
@@ -1793,21 +1870,22 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      7734        278          0          0          0    1086794   can.o
-      6902        644          0     591052      28744      60421   control.o
+      7718        280          0          0          0    1087366   can.o
+      7606        676          0     591052      28936      63453   control.o
         60          6          0          0          0       1024   gripper.o
-      3352        630      21144          0          0      12773   joints.o
+       236         36          0          0          0       3132   inputsoutputs.o
+      3396        636      21144          0          0      12829   joints.o
         10          0          0          0          0        475   main.o
-      4040        182          0          0          0      19877   mb_rtu_slave.o
+      4080        182          0          0          0      19905   mb_rtu_slave.o
      10586        232          0          0       8736      17768   rnea.o
         64         26        664          0      65280        908   startup_stm32h745xx.o
        256         40          0          0          0        821   system_stm32h7xx_dualcore_boot_cm4_cm7.o
-      3592        180          0          4       4824      12274   trajgen.o
+      3568        180          0          4       4824      12190   trajgen.o
 
     ----------------------------------------------------------------------
-     36776       2218      21904     591056     107584    1213135   Object Totals
-       170          0         96          0          0          0   (incl. Generated)
-        10          0          0          0          0          0   (incl. Padding)
+     37816       2294      21904     591056     107776    1219871   Object Totals
+       220          0         96          0          0          0   (incl. Generated)
+        16          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -1879,15 +1957,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     42016       2846      22336     591056     107680    1202931   Grand Totals
-     42016       2846      22336       4648     107680    1202931   ELF Image Totals (compressed)
-     42016       2846      22336       4648          0          0   ROM Totals
+     43056       2922      22336     591056     107872    1208867   Grand Totals
+     43056       2922      22336       4648     107872    1208867   ELF Image Totals (compressed)
+     43056       2922      22336       4648          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                64352 (  62.84kB)
-    Total RW  Size (RW Data + ZI Data)            698736 ( 682.36kB)
-    Total ROM Size (Code + RO Data + RW Data)      69000 (  67.38kB)
+    Total RO  Size (Code + RO Data)                65392 (  63.86kB)
+    Total RW  Size (RW Data + ZI Data)            698928 ( 682.55kB)
+    Total ROM Size (Code + RO Data + RW Data)      70040 (  68.40kB)
 
 ==============================================================================
 

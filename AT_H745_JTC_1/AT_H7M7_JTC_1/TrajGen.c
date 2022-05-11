@@ -54,8 +54,8 @@ bool TG_GetSeqFromMbs(void)
 	
 	for(uint32_t j=0;j<JOINTS_MAX;j++)
 		Traj.Tgen.waypoints[0].pos[j] = pC->Joints[j].currentPos;
-	for(uint32_t j=0;j<JOINTS_MAX;j++)
-		Traj.Tgen.waypoints[0].pos[j] = 0;
+//	for(uint32_t j=0;j<JOINTS_MAX;j++)
+//		Traj.Tgen.waypoints[0].pos[j] = 0;
 	Traj.Tgen.waypoints[0].vel = 0.0;
 	Traj.Tgen.waypoints[0].type = SPT_Start;
 	Traj.Tgen.waypoints[0].moveType = SPMT_Ptp;

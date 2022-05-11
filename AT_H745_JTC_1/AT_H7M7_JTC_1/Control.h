@@ -82,6 +82,14 @@ typedef enum
 }eJTC_FSM;
 typedef enum 
 {
+	JTC_IS_PreInit = 0,
+	JTC_IS_Depark,
+	JTC_IS_RemoveBrake,
+	JTC_IS_PosAccurate,
+	JTC_IS_Finish,
+}eJTC_InitStage;
+typedef enum 
+{
 	TES_Null = 0,
 	TES_Stop,
 	TES_Pause,
@@ -255,6 +263,17 @@ typedef enum
     JTC_FT_Polynomial = 0,
     JTC_FT_Table = 1,
 }eJTC_FricType;
+typedef enum
+{
+	//DQ
+	DQNum_ParkBrake = 0,
+	
+	//DI
+	DINum_ParkBrake = 0,
+	
+	//AQ - currently not used
+	//AI - currently not used
+}eIONum;
 
 #define M_4_PI											12.566370
 #define M_2_PI											6.283185
@@ -312,6 +331,11 @@ typedef enum
 #define CAN_RXDATA_LEN							16
 #define CAN_TIMEOUTMAX							500
 #define CAN_RESETTIMEOUT						300
+
+#define AI_MAX											4
+#define AQ_MAX											4
+#define DI_MAX											16
+#define DQ_MAX											16
 
 typedef struct	//modbus rtu slave
 {
@@ -447,6 +471,7 @@ typedef struct
 	bool					flagJtcError;									// Flaga - dowolny blad jointa powstaly w JTC (suma logiczna wszystkich flg bledow wewnetrznych)
 	
 	bool					cWPosNotAccurate;							//Flaga - warning odebrany z CAN - [1 - pozycja z enkodera nie jest dokladna, 0 - popozycja z enkodera  jest dokladna]
+	bool					flagDeparkPosAchieved;				//Flaga - oznacza nie osiągnięcie zadanej pozycji przy procedurze deparkowania - [0 - pozycja nieosiągnięta, 1 - pozycja osiągnięta]
 	
 	double 				setPos;							//Pozycja - wartosc zadana
 	double				setVel;							//Predkosc - wartosc zadana
@@ -521,6 +546,8 @@ typedef struct
 	double				irErrorTorque;												//Init Reg - uchyb momentu - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
 	double				irHyst;																//Init Reg - histereza momentu - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
 	double				irRampTorque;													//Init Reg - predkosc zmiany momentu [Unit: Nm/sek] - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
+	double				irTargetPos;													//Init Reg - docelowa pozycja - pozycja na którą ma jechać joint podczas fazy inicjalizacji
+	double				deparkDist;														//Pozycja - dystans o jaki dany joint ma się odsunąć od początkowej pozycji podczas deparkowania
 }sJoint;
 typedef struct
 {
@@ -624,35 +651,38 @@ typedef struct
 }sCan;
 typedef struct
 {
-	eJTC_FSM			targetFsm;
-	eJTC_FSM			currentFsm;
-	bool					errorModeReq;
-	bool					initModeReq;
-	bool					teachingModeReq;
-	bool					holdposModeReq;
-	bool					operateModeReq;
+	eJTC_FSM				targetFsm;
+	eJTC_FSM				currentFsm;
+	eJTC_InitStage	initStage;
+	bool						errorModeReq;
+	bool						initModeReq;
+	bool						teachingModeReq;
+	bool						holdposModeReq;
+	bool						operateModeReq;
 	
-	eJTC_FricType	fricType;								//Rodzaj uzywanej kompensacji tarcia: 0 - wielomian 3 stopnia, 1 - tablica wspólczynników 20x20
+	eJTC_FricType		fricType;								//Rodzaj uzywanej kompensacji tarcia: 0 - wielomian 3 stopnia, 1 - tablica wspólczynników 20x20
 	
-	uint16_t			errors;									// Wszystkie flagi biezacych bledow
-	uint16_t			occuredErrors;					// Wszystkie flagi bledow
-	bool					emergencyInput;					 
-	bool					emergencyOutput;
-	bool					internalError;					// Dowolny wewnetrzny Blad w pracy JTC - powoduje ustawienie emergencyOutput
-	bool					externalError;					// Dowolny zewnetrzny Blad w pracy JTC - nie powoduje ustawienia emergencyOutput
-	bool					externalWarning;				// Dowolny zewnetrzny warning w pracy JTC - nie powoduje ustawienia emergencyOutput
-	bool					internalJointsError;		// Blad w pracy JTC zwiazany z jointami - powoduje ustawienie emergencyOutput
-	bool					internalCanError;				// Blad w pracy JTC zwiazany z CAN - powoduje ustawienie emergencyOutput
-	bool					internalComError;				// Blad w pracy JTC zwiazany z COM - powoduje ustawienie emergencyOutput
-	bool					externalJointsError;		// Blad w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
-	bool					externalJointsWarning;	// Warning w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
+	uint16_t				errors;									// Wszystkie flagi biezacych bledow
+	uint16_t				occuredErrors;					// Wszystkie flagi bledow
+	bool						emergencyInput;					 
+	bool						emergencyOutput;
+	bool						internalError;					// Dowolny wewnetrzny Blad w pracy JTC - powoduje ustawienie emergencyOutput
+	bool						externalError;					// Dowolny zewnetrzny Blad w pracy JTC - nie powoduje ustawienia emergencyOutput
+	bool						externalWarning;				// Dowolny zewnetrzny warning w pracy JTC - nie powoduje ustawienia emergencyOutput
+	bool						internalJointsError;		// Blad w pracy JTC zwiazany z jointami - powoduje ustawienie emergencyOutput
+	bool						internalCanError;				// Blad w pracy JTC zwiazany z CAN - powoduje ustawienie emergencyOutput
+	bool						internalComError;				// Blad w pracy JTC zwiazany z COM - powoduje ustawienie emergencyOutput
+	bool						externalJointsError;		// Blad w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
+	bool						externalJointsWarning;	// Warning w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
 
-	uint8_t				jtcInitStatus;
-	uint8_t				jointsInitStatus;
-	bool					flagInitGetFrictionTable;
-	bool					flagInitGetPidParam;
-	bool					flagInitGetArmModel;
-	bool					flagInitJointsTab[JOINTS_MAX];
+	uint8_t					jtcInitStatus;
+	uint8_t					jointsInitStatus;
+	bool						flagInitGetFrictionTable;
+	bool						flagInitGetPidParam;
+	bool						flagInitGetArmModel;
+	bool						flagInitJointsTab[JOINTS_MAX];
+	bool						flagParked;
+	bool						flagParkBrake;
 }sJtc;
 typedef struct
 {
@@ -671,12 +701,24 @@ typedef struct
 }sArmModel;
 typedef struct
 {
+	float						AI[AI_MAX];
+	uint16_t				AIRegs[AI_MAX];
+	float						AQ[AQ_MAX];
+	uint16_t				AQRegs[AQ_MAX];
+	bool						DI[DI_MAX];
+	uint16_t				DIReg;
+	bool						DQ[DQ_MAX];
+	uint16_t				DQReg;
+}sIO;
+typedef struct
+{
 	volatile 	uint32_t 			tick;
 						sJtc					Jtc;
 						sJoint				Joints[JOINTS_MAX];
 						sGripper			Gripper;
 						sCan					Can;
 						sArmModel			Arm;
+						sIO						IO;
 }sControl;
 
 void Control_SystemConf(void);
@@ -694,5 +736,6 @@ void Control_ResetDevicesViaCan(uint8_t byte);
 #include "Gripper.h"
 #include "MB_RTU_Slave.h"
 #include "TrajGen.h"
+#include "InputsOutputs.h"
 
 #endif

@@ -122,7 +122,7 @@ static void Control_RccConf(void)
 {
 	RCC->AHB2ENR |= (RCC_AHB2ENR_SRAM1EN | RCC_AHB2ENR_SRAM2EN | RCC_AHB2ENR_SRAM3EN);
 	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN | RCC_AHB1ENR_DMA2EN;
-	RCC->AHB4ENR |= RCC_AHB4ENR_GPIOBEN | RCC_AHB4ENR_GPIODEN | RCC_AHB4ENR_GPIOEEN;
+	RCC->AHB4ENR |= RCC_AHB4ENR_GPIOAEN | RCC_AHB4ENR_GPIOBEN | RCC_AHB4ENR_GPIOCEN | RCC_AHB4ENR_GPIODEN | RCC_AHB4ENR_GPIOEEN;
 	RCC->APB1LENR |= RCC_APB1LENR_USART2EN | RCC_APB1LENR_USART3EN | RCC_APB1LENR_TIM6EN | RCC_APB1LENR_TIM7EN | RCC_APB1LENR_TIM13EN | RCC_APB1LENR_TIM5EN;
 	RCC->APB4ENR |= RCC_APB4ENR_SYSCFGEN;
 	RCC->APB1HENR |= RCC_APB1HENR_FDCANEN;
@@ -203,6 +203,7 @@ void Control_SystemConf(void)
 	Can_Conf();
 	RNEA_Conf();
 	Cotrol_SafetyConf();
+	IO_Conf();
 	Control_ResetCanDevicesAtBeginig();
 	Control_TimerConf();
 	pC->Jtc.currentFsm = JTC_FSM_Init;
@@ -784,6 +785,126 @@ static void Control_JtcCheckStateError(void)
 }
 static void Control_JtcCheckStateInit(void)
 {
+	bool flag = true;
+	#ifdef TESTMODE
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].reqIgnore = true;
+	pC->Gripper.reqIgnore = true;
+	#endif
+	
+	// **************************************************************************************************************************************************
+	// Sprawdzanie w jakiej fazie inicjalizacji jest JTC. Możliwe fazy: JTC_IS_PreInit, JTC_IS_Depark, JTC_IS_PosAccurate, JTC_IS_Finish
+	pC->Jtc.initStage = JTC_IS_PreInit; //Startowe ustalenie wartości
+	
+	// ----------- Faza inicjalizacji JTC_IS_PreInit ----------------------------------------------------------------------------------------------------
+	if(pC->Jtc.initStage == JTC_IS_PreInit)
+	{
+		// Ignorowanie grippera podczas wstępnej inicjalizacji (wpisywane wartości tak jakby gripper przeszedł poprawnie fazę wstępnej inicjalizacji)
+		if(pC->Gripper.reqIgnore == true)
+		{
+			pC->Gripper.flagFirstPosRead = true;
+			pC->Gripper.flagConfirmChangeConf = true;
+			pC->Gripper.currentFsm = Joint_FSM_ReadyToOperate;
+		}
+		// Ignorowanie danego jointa podczas wstępnej inicjalizacji (wpisywane wartości tak jakby joint przeszedł poprawnie fazę wstępnej inicjalizacji)
+		for(int num=0;num<JOINTS_MAX;num++)
+		{
+			if(pC->Joints[num].reqIgnore == true)
+			{
+				pC->Joints[num].flagFirstPosRead = true;
+				pC->Joints[num].flagConfirmChangeConf = true;
+				pC->Joints[num].currentFsm = Joint_FSM_ReadyToOperate;
+				pC->Joints[num].currentMode = Joint_M_Torque;
+			}
+		}
+		// Sprawdzanie parametrów grippera i jointów
+		flag = true;
+		if(pC->Gripper.flagConfirmChangeConf != true)							flag = false;
+		if(pC->Gripper.currentFsm == Joint_FSM_Init)							flag = false;
+		if(pC->Gripper.currentFsm == Joint_FSM_Start)							flag = false;
+		for(uint8_t num=0;num<JOINTS_MAX;num++)
+		{
+			if(pC->Joints[num].flagConfirmChangeConf != true)				flag = false;
+			if(pC->Joints[num].currentFsm == Joint_FSM_Init)				flag = false;
+			if(pC->Joints[num].currentFsm == Joint_FSM_Start)				flag = false;
+		}
+		// Można przejść do następnej fazy inicjalizacji Jtc
+		if(flag == true)
+			pC->Jtc.initStage = JTC_IS_Depark;
+	}
+	
+	// ----------- Faza inicjalizacji JTC_IS_Depark ----------------------------------------------------------------------------------------------------
+	if(pC->Jtc.initStage == JTC_IS_Depark)
+	{
+		// Ignorowanie grippera - w tej fazie inicjalizacji nie ma znaczenia
+		// Ignorowanie danego jointa podczas inicjalizacji JTC_IS_Depark (wpisywane wartości tak jakby joint przeszedł poprawnie fazę inicjalizacji JTC_IS_Depark)
+		for(int num=0;num<JOINTS_MAX;num++)
+			if(pC->Joints[num].reqIgnore == true)
+				pC->Joints[num].flagDeparkPosAchieved = true;
+		
+		// Sprawdzanie parametrów jointów i odblokowanie hamulca
+		flag = true;
+		for(int num=0;num<JOINTS_MAX;num++)
+			if(pC->Joints[num].flagDeparkPosAchieved == false)
+				flag = false; //Joint nie osiągnął zadanej pozycji odsunięcia się od sworznia hamulca
+		
+		// Można przejść do następnej fazy inicjalizacji Jtc
+		if(flag == true)
+		{
+			if(pC->Jtc.currentFsm == JTC_FSM_Init)
+				pC->Jtc.initStage = JTC_IS_RemoveBrake;
+			else
+				pC->Jtc.initStage = JTC_IS_PosAccurate;
+		}
+	}
+	
+	// ----------- Faza inicjalizacji JTC_IS_RemoveBrake ----------------------------------------------------------------------------------------------------
+	if(pC->Jtc.initStage == JTC_IS_RemoveBrake)
+	{
+		if(IO_ParkBrakeInRead() == false)
+			pC->Jtc.initStage = JTC_IS_PosAccurate; //Hamulec został odblokowany
+	}
+	
+	// ----------- Faza inicjalizacji JTC_IS_PosAccurate ----------------------------------------------------------------------------------------------------
+	if(pC->Jtc.initStage == JTC_IS_PosAccurate)
+	{
+		// Ignorowanie grippera - w tej fazie inicjalizacji nie ma znaczenia
+		// Ignorowanie danego jointa podczas inicjalizacji JTC_IS_PosAccurate (wpisywane wartości tak jakby joint przeszedł poprawnie fazę inicjalizacji JTC_IS_PosAccurate)
+		for(int num=0;num<JOINTS_MAX;num++)
+			if(pC->Joints[num].reqIgnore == true)
+				pC->Joints[num].cWPosNotAccurate = false;
+		
+		// Sprawdzanie parametrów jointów
+		flag = true;
+		for(int num=0;num<JOINTS_MAX;num++)
+			if(pC->Joints[num].cWPosNotAccurate == true || pC->Joints[num].irIsRun == true)
+				flag = false;
+		
+		// Można przejść do następnej fazy inicjalizacji Jtc
+		if(flag == true)
+			pC->Jtc.initStage = JTC_IS_Finish;
+	}
+	
+	// ----------- Faza inicjalizacji JTC_IS_Finish ----------------------------------------------------------------------------------------------------
+	if(pC->Jtc.initStage == JTC_IS_Finish)
+	{
+		// Koniec inicjalizacji. Nic tu nie ma
+	}
+
+	// Check Gripper init status flags
+	if(pC->Gripper.flagConfirmChangeConf == true && (pC->Gripper.currentFsm == Joint_FSM_ReadyToOperate || pC->Gripper.currentFsm == Joint_FSM_OperationEnable))
+		pC->Jtc.jointsInitStatus &= ~(1 << Can_DN_Gripper);
+	else if(pC->Gripper.flagConfirmChangeConf != true || pC->Gripper.currentFsm == Joint_FSM_Init || pC->Gripper.currentFsm == Joint_FSM_Start)
+		pC->Jtc.jointsInitStatus |= (1 << Can_DN_Gripper);
+	// Check Joints init status flags
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+	{
+		if(pC->Joints[num].flagDeparkPosAchieved == true && pC->Joints[num].flagConfirmChangeConf == true && (pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate || pC->Joints[num].currentFsm == Joint_FSM_OperationEnable) && pC->Joints[num].cWPosNotAccurate == false)
+			pC->Jtc.jointsInitStatus &= ~(1 << num);
+		else if(pC->Joints[num].flagDeparkPosAchieved != true || pC->Joints[num].flagConfirmChangeConf != true || pC->Joints[num].currentFsm == Joint_FSM_Init || pC->Joints[num].currentFsm == Joint_FSM_Start || pC->Joints[num].cWPosNotAccurate == true)
+			pC->Jtc.jointsInitStatus |= (1 << num);
+	}
+	
 	// Check JTC init status flags
 	if(pC->Jtc.flagInitGetFrictionTable == false)
 		pC->Jtc.jtcInitStatus &= ~(1 << 0);
@@ -792,53 +913,11 @@ static void Control_JtcCheckStateInit(void)
 	if(pC->Jtc.flagInitGetArmModel == false)
 		pC->Jtc.jtcInitStatus &= ~(1 << 2);
 	
-	#ifdef TESTMODE
-	for(int num=0;num<JOINTS_MAX;num++)
-		pC->Joints[num].reqIgnore = true;
-	pC->Gripper.reqIgnore = true;
-	#endif
-	
-	// Ignorowanie danego jointa podczas inicjalizacji (wpisywane wartości tak jakby joint był poprawnie zainicjalizowany)
-	for(int num=0;num<JOINTS_MAX;num++)
-	{
-		if(pC->Joints[num].reqIgnore == true)
-		{
-			pC->Joints[num].cWPosNotAccurate = false;
-			pC->Joints[num].flagFirstPosRead = true;
-			pC->Joints[num].currentMode = Joint_M_Torque;
-			pC->Joints[num].currentFsm = Joint_FSM_ReadyToOperate;
-			pC->Joints[num].flagConfirmChangeConf = true;
-		}
-	}
-	// Ignorowanie grippera podczas inicjalizacji (wpisywane wartości tak jakby gripper był poprawnie zainicjalizowany)
-	if(pC->Gripper.reqIgnore == true)
-	{
-		pC->Gripper.flagFirstPosRead = true;
-		pC->Gripper.flagConfirmChangeConf = true;
-		pC->Gripper.currentFsm = Joint_FSM_ReadyToOperate;
-	}
-	
-	//Standardowa procedura sprawdzania stanu inicjalizacji
-	// Check Gripper init status flags
-	if(pC->Gripper.flagConfirmChangeConf == true && (pC->Gripper.currentFsm == Joint_FSM_ReadyToOperate || pC->Gripper.currentFsm == Joint_FSM_OperationEnable))
-		pC->Jtc.jointsInitStatus &= ~(1 << Can_DN_Gripper);
-	else if(pC->Gripper.flagConfirmChangeConf != true || pC->Gripper.currentFsm == Joint_FSM_Init || pC->Gripper.currentFsm == Joint_FSM_Start)
-		pC->Jtc.jointsInitStatus |= (1 << Can_DN_Gripper);
-	
-	// Check Joints init status flags
-	for(uint8_t num=0;num<JOINTS_MAX;num++)
-	{
-		if(pC->Joints[num].flagConfirmChangeConf == true && (pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate || pC->Joints[num].currentFsm == Joint_FSM_OperationEnable) && pC->Joints[num].cWPosNotAccurate == false)
-			pC->Jtc.jointsInitStatus &= ~(1 << num);
-		else if(pC->Joints[num].flagConfirmChangeConf != true || pC->Joints[num].currentFsm == Joint_FSM_Init || pC->Joints[num].currentFsm == Joint_FSM_Start || pC->Joints[num].cWPosNotAccurate == true)
-			pC->Jtc.jointsInitStatus |= (1 << num);
-	}
-	
-	// na czas testów dla Arka wyłączona konieczność przesyłanai tarcia, modelu manipulatora i pidów
+	// na czas testów dla Arka wyłączona konieczność przesyłania tarcia, modelu manipulatora i pidów
 	pC->Jtc.jtcInitStatus = 0x00;
 	
 	// Check JTC init status and Joints and Gripper init status
-	if(pC->Jtc.jtcInitStatus != 0x00 || pC->Jtc.jointsInitStatus != 0x00)
+	if(pC->Jtc.jtcInitStatus != 0x00 || pC->Jtc.jointsInitStatus != 0x00 || pC->Jtc.initStage != JTC_IS_Finish)
 		pC->Jtc.initModeReq = true;			// Continue of Init state
 	else
 		pC->Jtc.initModeReq = false;		// Finish of Init state
@@ -936,16 +1015,9 @@ static void Control_JtcError(void)
 		//Waiting for host reaction
 	}
 }
-static void Control_JtcInit(void)
+static void Control_JtcInitPreInitStage(void)
 {
-	Control_TrajClear();
-	TG_SetDefaultVariables();
-	Joints_SetDefaultVariables();
-	pC->Jtc.teachingModeReq = false;
-	for(int num=0;num<JOINTS_MAX;num++)
-		pC->Joints[num].setTorqueTemp = 0.0;
-	
-	// --------- inicjalizacja grippera
+	// --------- inicjalizacja grippera ---------------------------------------------------------------------------------------------------------------------------------------
 	Control_JtcSetGripperToCurrentFsm();
 	if(pC->Gripper.flagFirstPosRead == false)
 	{
@@ -961,7 +1033,7 @@ static void Control_JtcInit(void)
 		Control_JtcSetGripperToTargetConf();
 	}
 	
-	// ------- podstawowa inicjalizacja jointów do momentu gdy: Tryb = Joint_M_Torque, Fsm = Joint_FSM_ReadyToOperate, nie odczytano jeszcze pozycji z jointa
+	// ------- podstawowa inicjalizacja jointów do momentu gdy: Tryb = Joint_M_Torque, Fsm = Joint_FSM_ReadyToOperate, nie odczytano jeszcze pozycji z jointa -----------------
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
 		Control_JtcSetJointToCurrentFsm(num);
@@ -971,56 +1043,109 @@ static void Control_JtcInit(void)
 		{
 			//Czekam na odpowiedź na ramke Move z danego jointa. Jeżeli nie nastapi to zapewne będzie TIMEOUT na Can
 		}
-		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init && pC->Joints[num].currentMode != Joint_M_Torque)
+		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init)
 		{
 			pC->Joints[num].flagConfirmChangeConf = false;
-			Control_JtcSetJointToModeTorque(num);
 			Control_JtcSetJointToReadyToOperate(num);
 		}
-		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init && pC->Joints[num].currentMode == Joint_M_Torque)
+		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate && pC->Joints[num].flagConfirmChangeConf == false)
 		{
-			Control_JtcSetJointToReadyToOperate(num);
+			Control_JtcSetJointToModeTorque(num);
 		}
 	}
+}
+static void Control_JtcInitDeparkStage(void)
+{
+	// Procedura deparkowania. Ruch jointem numer 1 o wartość -0.05236 rad (pozostale jointy aktualnie mają ruch o wartość 0.0). Następnie odblokowanie sworznia hamulca i potwierdzenie tego
+	// Przyjęcie wartości dla ruchu
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		if(pC->Joints[num].irIsRun == false && pC->Joints[num].flagDeparkPosAchieved == false)
+			Joints_StartIrValuesVariables(num, pC->Joints[num].currentPos + pC->Joints[num].deparkDist);
 	
-	// -------- dodatkowa inicjalizacja jointów do momentu gdy EncoderPositionAccurate
-	bool flag = true;
+	// Realizacja ruchu na zadaną pozycje dla kazdego jointa, w celu odusnięcia od sworznia hamulca
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		if(pC->Joints[num].irIsRun == true && pC->Joints[num].flagDeparkPosAchieved == false)
+			Control_JtcSetJointToEnable(num);
+		
+	Control_JtcPrepareSetedValuesForInit();
+	RNEA_CalcTorques();
+	Joints_CalcInitRegsTorque();
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = pC->Joints[num].idTorque + pC->Joints[num].irCurrentTorque;
+	
+	// Sprawdzenie osiągnięcia zadanej pozycji przy deparkowaniu. Docelowo należy to przenieść do pliku z obsluga jointów i ujednolicić robiąc jakiś sensowny regulator z rozpędzaniem
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		if(pC->Joints[num].irIsRun == true && pC->Joints[num].irTargetTorque < 0.0 && pC->Joints[num].currentPos < pC->Joints[num].irTargetPos)
+			pC->Joints[num].flagDeparkPosAchieved = true;
+		if(pC->Joints[num].irIsRun == true && pC->Joints[num].irTargetTorque > 0.0 && pC->Joints[num].currentPos > pC->Joints[num].irTargetPos)
+			pC->Joints[num].flagDeparkPosAchieved = true;
+	}
+	
+	// Koniec ruchu dla danego jointa i przejście w ReadyToOperate gdy flaga flagDeparkPosAchieved == true
+	// docelowo można rozszerzyć o zatrzymanie na zadanej pozycji aby nie przejechać
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		if(pC->Joints[num].flagDeparkPosAchieved == true)
+		{
+			Joints_StopIrValuesVariables(num);
+			Control_JtcSetJointToReadyToOperate(num);
+		}
+}
+static void Control_JtcInitRemoveBrakeStage(void)
+{
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
-		if(pC->Joints[num].flagConfirmChangeConf != true)
-			flag = false;
-		if(pC->Joints[num].currentFsm != Joint_FSM_ReadyToOperate && pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
-			flag = false;
-		if(pC->Joints[num].flagFirstPosRead != true)
-			flag = false;
-	}
-
-	if(flag == true)
-	{
-		// ustalenie kierunku ruchu
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
-			if(pC->Joints[num].irIsRun == false && pC->Joints[num].cWPosNotAccurate == true)
-				Joints_StartIrValuesVariables(num);
-			
-		// Realizacja ruchu na pozycje 0.0 dla kazdego jointa, w celu inicjalizacji enkodera
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
-			if(pC->Joints[num].irIsRun == true)
-				Control_JtcSetJointToEnable(num);
-			
-		Control_JtcPrepareSetedValuesForInit();
-		RNEA_CalcTorques();
-		Joints_CalcInitRegsTorque();
-		for(uint8_t num=0;num<JOINTS_MAX;num++)
-			pC->Joints[num].setTorqueTemp = pC->Joints[num].idTorque + pC->Joints[num].irCurrentTorque;
+		Joints_StopIrValuesVariables(num);
+		Control_JtcSetJointToReadyToOperate(num);
 	}
 	
-	// Koniec inicjalizacji danego jointa
+	IO_ParkBrakeUnlock();
+}
+static void Control_JtcInitPosAccurateStage(void)
+{
+	// Ustalenie kierunku ruchu i docelowej wartości pozycji
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		if(pC->Joints[num].irIsRun == false && pC->Joints[num].cWPosNotAccurate == true)
+			Joints_StartIrValuesVariables(num, 0.0);
+		
+	// Realizacja ruchu na zadaną pozycje (w tym wypadku 0.0) dla kazdego jointa, w celu inicjalizacji enkodera
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		if(pC->Joints[num].irIsRun == true)
+			Control_JtcSetJointToEnable(num);
+
+	Control_JtcPrepareSetedValuesForInit();
+	RNEA_CalcTorques();
+	Joints_CalcInitRegsTorque();
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = pC->Joints[num].idTorque + pC->Joints[num].irCurrentTorque;
+	
+	// Koniec inicjalizacji dla danego jointa i przejście w ReadyToOperate gdy flaga cWPosNotAccurate == false
+	// docelowo można rozszerzyć o zatrzymanie na zadanej pozycji aby nie przejechać
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 		if(pC->Joints[num].cWPosNotAccurate == false && pC->Joints[num].currentFsm == Joint_FSM_OperationEnable)
 		{
 			Joints_StopIrValuesVariables(num);
 			Control_JtcSetJointToReadyToOperate(num);
 		}
+}
+static void Control_JtcInit(void)
+{
+	Control_TrajClear();
+	TG_SetDefaultVariables();
+	Joints_SetDefaultVariables();
+	pC->Jtc.teachingModeReq = false;
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = 0.0;
+	
+	// trzy możiwe fazy inicjalizacji Jtc: JTC_IS_PreInit, JTC_IS_Depark, JTC_IS_PosAccurate, JTC_IS_Finish. Zmiana wartości zmiennej pC->Jtc.initStage w funkcji Control_JtcCheckStateInit
+	if(pC->Jtc.initStage == JTC_IS_PreInit)
+		Control_JtcInitPreInitStage();
+	else if(pC->Jtc.initStage == JTC_IS_Depark)
+		Control_JtcInitDeparkStage();
+	else if(pC->Jtc.initStage == JTC_IS_RemoveBrake)
+		Control_JtcInitRemoveBrakeStage();
+	else if(pC->Jtc.initStage == JTC_IS_PosAccurate)
+		Control_JtcInitPosAccurateStage();
 }
 static void Control_JtcTeaching(void)
 {
@@ -1097,6 +1222,7 @@ static void Control_JtcAct(void)
 	LED2_OFF;
 	LED3_OFF;
 	
+	IO_InputsAct();
 	Control_CheckErrorFlags();
 	Control_JtcCheckState();
 	
@@ -1133,6 +1259,7 @@ static void Control_JtcAct(void)
 	pC->Can.TxMsgs[Can_TxF_Move].reqSend = true;
 	Control_SendCommandClearErrorsToJoints();
 	Control_SendCommandResetDevice();
+	IO_OutputsAct();
 	Control_SendDataToJoints();
 	#ifdef MODBUS
 	MBS_Act();

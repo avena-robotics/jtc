@@ -154,6 +154,9 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].targetMode = Joint_M_Torque;
 		pC->Joints[num].confFun = 0x07; //[0x01 - wlaczenie ograniczenia zakresu pracy, 0x02 - wlaczenie MA730, 0x04 - obsluga safety]
 		
+		pC->Joints[num].flagDeparkPosAchieved = false;
+		pC->Joints[num].deparkDist = 0.0;
+		
 		pC->Joints[num].setPos = 0.0;
 		pC->Joints[num].setVel = 0.0;
 		pC->Joints[num].setAcc = 0.0;
@@ -204,6 +207,8 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].irHyst = 0.2;
 		pC->Joints[num].irRampTorque = 1.0;	//Unit: Nm/sek
 	}
+	
+	pC->Joints[1].deparkDist = -0.05236;
 }
 void Joints_SetResetValuesVariables(uint8_t num)
 {
@@ -242,11 +247,13 @@ void Joints_SetResetValuesVariables(uint8_t num)
 	pC->Joints[num].irTargetTorque = 0.0;
 	pC->Joints[num].irErrorTorque = 0.0;
 }
-void Joints_StartIrValuesVariables(uint8_t num)
+void Joints_StartIrValuesVariables(uint8_t num, double targetPos)
 {
 	pC->Joints[num].irIsRun = true;
 	
-	if(pC->Joints[num].currentPos > 0.0)
+	pC->Joints[num].irTargetPos = targetPos;
+	
+	if(pC->Joints[num].currentPos > pC->Joints[num].irTargetPos)
 		pC->Joints[num].irTargetTorque = -pC->Joints[num].irMaxTorque;
 	else
 		pC->Joints[num].irTargetTorque = pC->Joints[num].irMaxTorque;
