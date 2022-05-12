@@ -43,6 +43,7 @@ void IO_InputsAct(void)
 	if((GPIOC->IDR & GPIO_IDR_ID0) == RESET)			pC->IO.DI[0] = false;
 	else																					pC->IO.DI[0] = true;
 	
+	pC->IO.DIReg = 0x00;
 	for(int i=0;i<DI_MAX;i++)
 		pC->IO.DIReg |= (pC->IO.DI[i] << i);
 	
@@ -51,10 +52,13 @@ void IO_InputsAct(void)
 void IO_ParkBrakeUnlock(void)
 {
 	pC->IO.DQ[DQNum_ParkBrake] = true; //Stan wysoki na wyjsciu (3.3V) - hamulec odblokowany
+	pC->Jtc.parkBrakeTimeoutRun = true; // Wlaczenie mechanizmu timeout dla odblokowania hamulca parkowania [0 - nie uruchomiony, 1 - uruchomiony]
 }
 void IO_ParkBrakeLock(void)
 {
 	pC->IO.DQ[DQNum_ParkBrake] = false;	//Stan niski na wyjsciu (0.0V) - hamulec zablokowany
+	pC->Jtc.parkBrakeTimeoutRun = false; // Wylaczenie mechanizmu timeout dla odblokowania hamulca parkowania [0 - nie uruchomiony, 1 - uruchomiony]
+	pC->Jtc.parkBrakeTimoeutCnt = 0;
 }
 bool IO_ParkBrakeInRead(void)
 {

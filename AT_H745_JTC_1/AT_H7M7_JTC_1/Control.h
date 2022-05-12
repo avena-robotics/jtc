@@ -336,6 +336,7 @@ typedef enum
 #define AQ_MAX											4
 #define DI_MAX											16
 #define DQ_MAX											16
+#define PARKBRAKETIMEOUT						2000
 
 typedef struct	//modbus rtu slave
 {
@@ -674,6 +675,7 @@ typedef struct
 	bool						internalComError;				// Blad w pracy JTC zwiazany z COM - powoduje ustawienie emergencyOutput
 	bool						externalJointsError;		// Blad w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
 	bool						externalJointsWarning;	// Warning w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
+	bool						internalParkBrakeError;	// Blad w pracy JTC zwiazany hamulcem parkowania - powoduje ustawienie emergencyOutput
 
 	uint8_t					jtcInitStatus;
 	uint8_t					jointsInitStatus;
@@ -683,6 +685,9 @@ typedef struct
 	bool						flagInitJointsTab[JOINTS_MAX];
 	bool						flagParked;
 	bool						flagParkBrake;
+	
+	bool						parkBrakeTimeoutRun;		// Uruchomienie mechanizmu timeout dla odblokowania hamulca parkowania [0 - nie uruchomiony, 1 - uruchomiony]
+	uint32_t				parkBrakeTimoeutCnt;		// Licznik czasu dla timout odblokowania hamulca parkowania
 }sJtc;
 typedef struct
 {

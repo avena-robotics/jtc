@@ -295,6 +295,26 @@ static void Control_CheckLimits(void)
 			pC->Joints[num].flagPosErrorOverlimit = true;
 	}
 }
+static void Control_CheckParkBrakeTimeout(void)
+{
+	if(pC->Jtc.parkBrakeTimeoutRun == true && IO_ParkBrakeInRead() == true)
+	{
+		pC->Jtc.parkBrakeTimoeutCnt++;
+		if(pC->Jtc.parkBrakeTimoeutCnt > PARKBRAKETIMEOUT)
+		{
+			pC->Jtc.parkBrakeTimoeutCnt = PARKBRAKETIMEOUT;
+			pC->Jtc.internalParkBrakeError = true;
+		}
+		else
+		{
+			pC->Jtc.internalParkBrakeError = false;
+		}
+	}
+	else
+	{
+		pC->Jtc.parkBrakeTimoeutCnt = 0;
+	}
+}
 static void Control_CheckErrorFlags(void)
 {
 	pC->Jtc.internalError = false;
@@ -305,9 +325,7 @@ static void Control_CheckErrorFlags(void)
 	pC->Jtc.internalJointsError = false;
 	pC->Jtc.internalCanError = false;
 	pC->Jtc.internalComError = false;
-	
-	// Check Host comuniaction (PC by RS422)
-//	Com_HostCheckGeneralTimeout();
+	pC->Jtc.internalParkBrakeError = false;
 	
 	// Check Joints internall and external errors
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -357,7 +375,8 @@ static void Control_CheckErrorFlags(void)
 	if(pC->Gripper.flagCanError == true)													pC->Jtc.externalJointsError = true;
 	if(pC->Gripper.flagJtcError == true)													pC->Jtc.internalJointsError = true;
 	
-	
+	// Check Park Brake Timeout
+	Control_CheckParkBrakeTimeout();
 	
 	// Check CAN comunication errors
 	if(pC->Can.statusId == Can_SId_Error)
@@ -374,7 +393,7 @@ static void Control_CheckErrorFlags(void)
 	#endif
 	
 	//Check global internall error
-	if(pC->Jtc.internalJointsError == true || pC->Jtc.internalCanError == true || pC->Jtc.internalComError == true)
+	if(pC->Jtc.internalJointsError == true || pC->Jtc.internalCanError == true || pC->Jtc.internalComError == true || pC->Jtc.internalParkBrakeError == true)
 	{
 		pC->Jtc.internalError = true;
 		Control_SafetyOutOn();
@@ -396,11 +415,12 @@ static void Control_CheckErrorFlags(void)
 	pC->Jtc.errors |= pC->Jtc.emergencyInput << 0; 				// bit 0
 	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 			// bit 1
 	pC->Jtc.errors |= pC->Jtc.internalError << 2; 				// bit 2
-	pC->Jtc.errors |= pC->Jtc.externalError << 3; 				// bit 3 
+	pC->Jtc.errors |= pC->Jtc.externalError << 3; 				// bit 3
 	pC->Jtc.errors |= pC->Jtc.internalJointsError << 4; 	// bit 4
 	pC->Jtc.errors |= pC->Jtc.internalCanError << 5; 			// bit 5
 	pC->Jtc.errors |= pC->Jtc.internalComError << 6; 			// bit 6
 	pC->Jtc.errors |= pC->Jtc.externalJointsError << 7; 	// bit 7
+	pC->Jtc.errors |= pC->Jtc.internalParkBrakeError << 8; // bit 8
 	
 	pC->Jtc.occuredErrors |= pC->Jtc.errors;
 	
@@ -705,6 +725,8 @@ void Control_ClearInternallErrorsInJtc(void)
 	pC->Jtc.internalComError = false;
 	pC->Jtc.externalJointsError = false;
 	pC->Jtc.externalJointsWarning = false;
+	pC->Jtc.parkBrakeTimoeutCnt = 0;
+	pC->Jtc.internalParkBrakeError = false;
 	pC->Jtc.errors = 0x00;
 	pC->Jtc.occuredErrors = 0x00;
 	
@@ -851,7 +873,7 @@ static void Control_JtcCheckStateInit(void)
 		// Można przejść do następnej fazy inicjalizacji Jtc
 		if(flag == true)
 		{
-			if(pC->Jtc.currentFsm == JTC_FSM_Init)
+			if(pC->Jtc.currentFsm == JTC_FSM_Init || pC->Jtc.currentFsm == JTC_FSM_Error)
 				pC->Jtc.initStage = JTC_IS_RemoveBrake;
 			else
 				pC->Jtc.initStage = JTC_IS_PosAccurate;
@@ -888,7 +910,7 @@ static void Control_JtcCheckStateInit(void)
 	// ----------- Faza inicjalizacji JTC_IS_Finish ----------------------------------------------------------------------------------------------------
 	if(pC->Jtc.initStage == JTC_IS_Finish)
 	{
-		// Koniec inicjalizacji. Nic tu nie ma
+		IO_ParkBrakeLock();
 	}
 
 	// Check Gripper init status flags
