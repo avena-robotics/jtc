@@ -298,7 +298,7 @@ bool TG_GetSeqFromMbs(void)
 //}
 
 // ******************************** SLP ****************************************
-static const double accmax = 12.0;
+static const double accmax = 0.3;
 uint32_t idx[JOINTS_MAX];
 static double TG_SLP_q1(double qstart, double qend, double vstart, double vend, double acc1, double acc2, double V1, double t)
 {
