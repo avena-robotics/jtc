@@ -56,47 +56,91 @@ static void Joints_SetDefaultFrictionTable(void)
 }
 static void Joints_SetDefaultFrictionPolynomial(void)
 {
-	pC->Joints[0].fricCoeff[0] = 8.3511;
-	pC->Joints[0].fricCoeff[1] = 49.0592;
-	pC->Joints[0].fricCoeff[2] = -33.8717;
-	pC->Joints[0].fricCoeff[3] = 14.5622;
-	pC->Joints[0].fricCoeff[4] = -0.016903;
-	pC->Joints[0].fricCoeff[5] = 14.01489;
+	//J1
+//	pC->Joints[0].fricCoeff[0] = 8.3511;
+//	pC->Joints[0].fricCoeff[1] = 49.0592;
+//	pC->Joints[0].fricCoeff[2] = -33.8717;
+//	pC->Joints[0].fricCoeff[3] = 14.5622;
+//	pC->Joints[0].fricCoeff[4] = -0.016903;
+//	pC->Joints[0].fricCoeff[5] = 14.01489;
+//	
+//	pC->Joints[1].fricCoeff[0] = 6.524288;
+//	pC->Joints[1].fricCoeff[1] = 46.54229369287933;
+//	pC->Joints[1].fricCoeff[2] = -37.98456500960326;
+//	pC->Joints[1].fricCoeff[3] = 21.0199476124962;
+//	pC->Joints[1].fricCoeff[4] = -0.027194946468284284;
+//	pC->Joints[1].fricCoeff[5] = 19.88786510460206;
+//	
+//	pC->Joints[2].fricCoeff[0] = 5.906889543057651;
+//	pC->Joints[2].fricCoeff[1] = 46.74362364518938;
+//	pC->Joints[2].fricCoeff[2] = -51.63074061579354;
+//	pC->Joints[2].fricCoeff[3] = 37.849346936033356;
+//	pC->Joints[2].fricCoeff[4] = -0.02898496744241571;
+//	pC->Joints[2].fricCoeff[5] = 24.734728760729638;
+//	
+//	pC->Joints[3].fricCoeff[0] = 2.6687306340217645;
+//	pC->Joints[3].fricCoeff[1] = 12.573326515302712;
+//	pC->Joints[3].fricCoeff[2] = -3.716488061498839;
+//	pC->Joints[3].fricCoeff[3] = -0.6543677283056056;
+//	pC->Joints[3].fricCoeff[4] = -0.023931660300091872;
+//	pC->Joints[3].fricCoeff[5] = 25.619160826675138;
+//	
+//	pC->Joints[4].fricCoeff[0] = 2.888895376338052;
+//	pC->Joints[4].fricCoeff[1] = 18.96976439814303;
+//	pC->Joints[4].fricCoeff[2] = -22.293583023278945;
+//	pC->Joints[4].fricCoeff[3] = 16.941868944179486;
+//	pC->Joints[4].fricCoeff[4] = -0.018687413997168847;
+//	pC->Joints[4].fricCoeff[5] = 31.076305032122963;
+//	
+//	pC->Joints[5].fricCoeff[0] = 3.0290731310886185;
+//	pC->Joints[5].fricCoeff[1] = 21.98125488265331;
+//	pC->Joints[5].fricCoeff[2] = -20.186097814102737;
+//	pC->Joints[5].fricCoeff[3] = 12.648620008379257;
+//	pC->Joints[5].fricCoeff[4] = -0.02301637403516809;
+//	pC->Joints[5].fricCoeff[5] = 19.112761551382018;
+//	
+	//J2
+	pC->Joints[0].fricCoeff[0] = 4.93588;
+	pC->Joints[0].fricCoeff[1] = 38.31554;
+	pC->Joints[0].fricCoeff[2] = -36.30966;
+	pC->Joints[0].fricCoeff[3] = 22.156883;
+	pC->Joints[0].fricCoeff[4] = -0.03728;
+	pC->Joints[0].fricCoeff[5] = 29.39539;
 	
-	pC->Joints[1].fricCoeff[0] = 6.524288;
-	pC->Joints[1].fricCoeff[1] = 46.54229369287933;
-	pC->Joints[1].fricCoeff[2] = -37.98456500960326;
-	pC->Joints[1].fricCoeff[3] = 21.0199476124962;
-	pC->Joints[1].fricCoeff[4] = -0.027194946468284284;
-	pC->Joints[1].fricCoeff[5] = 19.88786510460206;
+	pC->Joints[1].fricCoeff[0] = 3.7557695071018817;
+	pC->Joints[1].fricCoeff[1] = 32.88390062972518;
+	pC->Joints[1].fricCoeff[2] = -45.42756793785036;
+	pC->Joints[1].fricCoeff[3] = 36.71164726130435;
+	pC->Joints[1].fricCoeff[4] = -0.07448704781806412;
+	pC->Joints[1].fricCoeff[5] = 37.274508595534286;
 	
-	pC->Joints[2].fricCoeff[0] = 5.906889543057651;
-	pC->Joints[2].fricCoeff[1] = 46.74362364518938;
-	pC->Joints[2].fricCoeff[2] = -51.63074061579354;
-	pC->Joints[2].fricCoeff[3] = 37.849346936033356;
-	pC->Joints[2].fricCoeff[4] = -0.02898496744241571;
-	pC->Joints[2].fricCoeff[5] = 24.734728760729638;
+	pC->Joints[2].fricCoeff[0] = 5.121409854381762;
+	pC->Joints[2].fricCoeff[1] = 36.90630225186322;
+	pC->Joints[2].fricCoeff[2] = -33.77905899259529;
+	pC->Joints[2].fricCoeff[3] = 19.092281381375987;
+	pC->Joints[2].fricCoeff[4] = -0.03338800832321824;
+	pC->Joints[2].fricCoeff[5] = 28.75503460003772;
 	
-	pC->Joints[3].fricCoeff[0] = 2.6687306340217645;
-	pC->Joints[3].fricCoeff[1] = 12.573326515302712;
-	pC->Joints[3].fricCoeff[2] = -3.716488061498839;
-	pC->Joints[3].fricCoeff[3] = -0.6543677283056056;
-	pC->Joints[3].fricCoeff[4] = -0.023931660300091872;
-	pC->Joints[3].fricCoeff[5] = 25.619160826675138;
+	pC->Joints[3].fricCoeff[0] = 3.634361182476341;
+	pC->Joints[3].fricCoeff[1] = 16.367108106695177;
+	pC->Joints[3].fricCoeff[2] = -7.535778971936864;
+	pC->Joints[3].fricCoeff[3] = 0.4903211032620818;
+	pC->Joints[3].fricCoeff[4] = -0.0376143000898514;
+	pC->Joints[3].fricCoeff[5] = 20.98337065936175;
 	
-	pC->Joints[4].fricCoeff[0] = 2.888895376338052;
-	pC->Joints[4].fricCoeff[1] = 18.96976439814303;
-	pC->Joints[4].fricCoeff[2] = -22.293583023278945;
-	pC->Joints[4].fricCoeff[3] = 16.941868944179486;
-	pC->Joints[4].fricCoeff[4] = -0.018687413997168847;
-	pC->Joints[4].fricCoeff[5] = 31.076305032122963;
+	pC->Joints[4].fricCoeff[0] = 2.644900549836491;
+	pC->Joints[4].fricCoeff[1] = 13.470815934063692;
+	pC->Joints[4].fricCoeff[2] = -11.533519586705612;
+	pC->Joints[4].fricCoeff[3] = 6.1002408416911305;
+	pC->Joints[4].fricCoeff[4] = -0.03576808486611048;
+	pC->Joints[4].fricCoeff[5] = 18.98088635678911;
 	
-	pC->Joints[5].fricCoeff[0] = 3.0290731310886185;
-	pC->Joints[5].fricCoeff[1] = 21.98125488265331;
-	pC->Joints[5].fricCoeff[2] = -20.186097814102737;
-	pC->Joints[5].fricCoeff[3] = 12.648620008379257;
-	pC->Joints[5].fricCoeff[4] = -0.02301637403516809;
-	pC->Joints[5].fricCoeff[5] = 19.112761551382018;
+	pC->Joints[5].fricCoeff[0] = 2.4254685647398695;
+	pC->Joints[5].fricCoeff[1] = 15.749754158317014;
+	pC->Joints[5].fricCoeff[2] = -12.106454476243666;
+	pC->Joints[5].fricCoeff[3] = 5.493472586452902;
+	pC->Joints[5].fricCoeff[4] = -0.024242620835343617;
+	pC->Joints[5].fricCoeff[5] = 19.044821862593533;
 }
 void Joints_SetDefaultFriction(void)
 {
