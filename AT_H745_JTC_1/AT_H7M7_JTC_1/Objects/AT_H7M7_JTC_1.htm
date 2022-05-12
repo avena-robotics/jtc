@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\AT_H7M7_JTC_1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\AT_H7M7_JTC_1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu May 12 11:54:06 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu May 12 14:38:36 2022
 <BR><P>
 <H3>Maximum Stack Usage =       2784 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -444,13 +444,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[152]"></a>TG_GetSeqFromMbs</STRONG> (Thumb, 330 bytes, Stack size 32 bytes, trajgen.o(i.TG_GetSeqFromMbs))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = TG_GetSeqFromMbs
+<P><STRONG><a name="[152]"></a>TG_GetSeqFromMbs</STRONG> (Thumb, 378 bytes, Stack size 40 bytes, trajgen.o(i.TG_GetSeqFromMbs))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = TG_GetSeqFromMbs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_TrajGen
 </UL>
 
-<P><STRONG><a name="[10c]"></a>TG_SetDefaultVariables</STRONG> (Thumb, 176 bytes, Stack size 20 bytes, trajgen.o(i.TG_SetDefaultVariables))
+<P><STRONG><a name="[10c]"></a>TG_SetDefaultVariables</STRONG> (Thumb, 192 bytes, Stack size 20 bytes, trajgen.o(i.TG_SetDefaultVariables))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = TG_SetDefaultVariables
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_TrajGen
@@ -460,8 +460,8 @@ Global Symbols
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[f2]"></a>TG_TrajGen</STRONG> (Thumb, 308 bytes, Stack size 40 bytes, trajgen.o(i.TG_TrajGen))
-<BR><BR>[Stack]<UL><LI>Max Depth = 544<LI>Call Chain = TG_TrajGen &rArr; TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
+<P><STRONG><a name="[f2]"></a>TG_TrajGen</STRONG> (Thumb, 310 bytes, Stack size 40 bytes, trajgen.o(i.TG_TrajGen))
+<BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = TG_TrajGen &rArr; TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_SetDefaultVariables
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
@@ -2039,7 +2039,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_Act
 </UL>
 
-<P><STRONG><a name="[c8]"></a>MBS_ActTelemetry</STRONG> (Thumb, 770 bytes, Stack size 28 bytes, mb_rtu_slave.o(i.MBS_ActTelemetry))
+<P><STRONG><a name="[c8]"></a>MBS_ActTelemetry</STRONG> (Thumb, 768 bytes, Stack size 28 bytes, mb_rtu_slave.o(i.MBS_ActTelemetry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = MBS_ActTelemetry
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_Act
@@ -2191,7 +2191,7 @@ Local Symbols
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_ComUart2Conf
 </UL>
 
-<P><STRONG><a name="[14d]"></a>TG_SLP_FindPath</STRONG> (Thumb, 486 bytes, Stack size 32 bytes, trajgen.o(i.TG_SLP_FindPath))
+<P><STRONG><a name="[14d]"></a>TG_SLP_FindPath</STRONG> (Thumb, 478 bytes, Stack size 32 bytes, trajgen.o(i.TG_SLP_FindPath))
 <BR><BR>[Stack]<UL><LI>Max Depth = 304<LI>Call Chain = TG_SLP_FindPath &rArr; TG_SLP_FindVmax &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_SLP_FindVmax
@@ -2213,8 +2213,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_TrajGen
 </UL>
 
-<P><STRONG><a name="[151]"></a>TG_SLP_FindTraj1Drive</STRONG> (Thumb, 1574 bytes, Stack size 280 bytes, trajgen.o(i.TG_SLP_FindTraj1Drive))
-<BR><BR>[Stack]<UL><LI>Max Depth = 504<LI>Call Chain = TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
+<P><STRONG><a name="[151]"></a>TG_SLP_FindTraj1Drive</STRONG> (Thumb, 1648 bytes, Stack size 144 bytes, trajgen.o(i.TG_SLP_FindTraj1Drive))
+<BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt (via Veneer)
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow (via Veneer)

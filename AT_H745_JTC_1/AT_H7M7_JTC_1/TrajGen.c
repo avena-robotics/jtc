@@ -20,6 +20,8 @@ void TG_SetDefaultVariables(void)
 	Traj.Tgen.maxwaypoints = 0;
 	Traj.Tgen.maxpoints = 0;
 	Traj.Tgen.reqTrajPrepare = false;
+	Traj.Tgen.minVelocity = 0.01; //Unit: rad/sek
+	Traj.Tgen.maxVelocity = M_2_PI; //Unit: rad/sek
 	
 	
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -50,7 +52,16 @@ bool TG_GetSeqFromMbs(void)
 	Traj.Tgen.maxwaypoints = Mbs.hregs[idx++];
 	
 	if(Traj.Tgen.maxwaypoints == 0)
+	{
+		Traj.Tgen.trajPrepStatus = TPS_NotEnoughWaypoints;
 		return false;
+	}
+	
+	if(Traj.Tgen.maxwaypoints > TG_SEQWAYPOINTSSMAX)
+	{
+		Traj.Tgen.trajPrepStatus = TPS_ToMuchWaypoints;
+		return false;
+	}
 	
 	for(uint32_t j=0;j<JOINTS_MAX;j++)
 		Traj.Tgen.waypoints[0].pos[j] = pC->Joints[j].currentPos;
@@ -69,19 +80,34 @@ bool TG_GetSeqFromMbs(void)
 			x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
 			x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
 			Traj.Tgen.waypoints[i+1].pos[j] = x.f32;
+			if(Traj.Tgen.waypoints[i+1].pos[j] < pC->Joints[j].limitPosMin)
+			{
+				Traj.Tgen.trajPrepStatus = TPS_PosToLow;
+				return false;
+			}
+			if(Traj.Tgen.waypoints[i+1].pos[j] > pC->Joints[j].limitPosMax)
+			{
+				Traj.Tgen.trajPrepStatus = TPS_PosToHigh;
+				return false;
+			}
 		}
 		x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
 		x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
 		Traj.Tgen.waypoints[i+1].vel = x.f32;
+		if(fabs(Traj.Tgen.waypoints[i+1].vel) < Traj.Tgen.minVelocity)
+		{
+			Traj.Tgen.trajPrepStatus = TPS_VelocityToLow;
+			return false;
+		}
+		if(fabs(Traj.Tgen.waypoints[i+1].vel) > Traj.Tgen.maxVelocity)
+		{
+			Traj.Tgen.trajPrepStatus = TPS_VelocityToHigh;
+			return false;
+		}
 		Traj.Tgen.waypoints[i+1].type = SPT_Way;
 	}
 	
 	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints].type = SPT_Finish;
-	
-	for(uint32_t i=1;i<Traj.Tgen.maxwaypoints;i++)
-		if(fabs(Traj.Tgen.waypoints[i].vel) < 0.001)
-			return false;
-	
 	return true;
 }
 // ******************************** Wielomian 5 stopnia ****************************************
@@ -467,7 +493,7 @@ static void TG_SLP_FindPath(int num)
 	Traj.Tgen.path[num][0][2]=0.0;
 	Traj.Tgen.path[num][Traj.Tgen.maxwaypoints-1][3]=0.0;
 }
-static void TG_SLP_FindTraj1Drive(int num, int x)
+static bool TG_SLP_FindTraj1Drive(int num, int x)
 {
 	double V1, acc1, acc2, t1, t2, t3, q01, q12, q23, V1a, V1b, t03a, t03b;
 	double qstart=Traj.Tgen.path[num][x][0], qend=Traj.Tgen.path[num][x][1], vstart=Traj.Tgen.path[num][x][2], vend=Traj.Tgen.path[num][x][3], vmax=Traj.Tgen.path[num][x][4];
@@ -533,6 +559,13 @@ static void TG_SLP_FindTraj1Drive(int num, int x)
 	t2 = fabs(q12 / V1);
 	
 	//***************************************
+	double trajLen = (t1+t2+t3) / Traj.Tgen.stepTime;
+	if(trajLen > TRAJ_POINTSMAX)
+	{
+		Traj.Tgen.trajPrepStatus = TPS_TrajToLong;
+		return false;
+	}
+	//***************************************
 	double t;
 	for(int i=0;i<(t1/Traj.Tgen.stepTime);i++)
 	{
@@ -558,8 +591,8 @@ static void TG_SLP_FindTraj1Drive(int num, int x)
 		Traj.points[idx[num]].acc[num] = TG_SLP_ddq3(qstart, qend, vstart, vend, acc1, acc2, V1, t) / pC->Joints[num].limitAccMax * MAXINT16;
 		idx[num]++;
 	}
+	return true;
 }
-uint32_t idxMin;
 uint32_t idxMax;
 void TG_TrajGen(void)
 {
@@ -571,7 +604,10 @@ void TG_TrajGen(void)
 	TG_SetDefaultVariables();
 	
 	if(TG_GetSeqFromMbs() == false)
+	{
+		Control_TrajClear();
 		return;
+	}
 	Control_TrajClear();
 	pC->tick = 0;
 	
@@ -587,27 +623,24 @@ void TG_TrajGen(void)
 		idx[num] = 0;
 		for(uint32_t x=0;x<Traj.Tgen.maxwaypoints;x++)
 		{
-			TG_SLP_FindTraj1Drive(num, x);
+			if(TG_SLP_FindTraj1Drive(num, x) == false)
+			{
+				Control_TrajClear();
+				return;
+			}
 		}
 	}
 	
-	idxMin = idx[0];
 	idxMax = idx[0];
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
-		if(idx[num] < idxMin)
-			idxMin = idx[num];
 		if(idx[num] > idxMax)
 			idxMax = idx[num];
 	}
 	
 	for(int num=0;num<JOINTS_MAX;num++)
-	{
 		for(uint32_t i = idx[num];i<idxMax;i++)
-		{
 			Traj.points[i].pos[num] = Traj.points[idx[num]-1].pos[num];
-		}
-	}
 	
 	Traj.Tgen.maxpoints = idxMax;
 	
@@ -619,4 +652,5 @@ void TG_TrajGen(void)
 	Traj.comStatus = TCS_WasRead;
 	Traj.targetTES = TES_Stop;
 	Traj.Tgen.reqTrajPrepare = false;
+	Traj.Tgen.trajPrepStatus = TPS_Ok;
 }

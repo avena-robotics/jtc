@@ -56,7 +56,7 @@ typedef enum
 typedef enum 
 {
 	MRN_TStart = 0,
-	MRN_TFinish = 121,
+	MRN_TFinish = 122,
 	MRN_CfStart = 200,
 	MRN_CfFinish = 218,
 	MRN_CtrlStart = 300,
@@ -97,6 +97,20 @@ typedef enum
 	TES_Finish,
 	TES_TransNullToStop,
 }eTrajExecStatus;
+typedef enum 
+{
+	TPS_Null = 0x00,
+	TPS_Ok,
+	TPS_NotEnoughWaypoints,
+	TPS_ToMuchWaypoints,
+	TPS_TrajToLong,
+	TPS_VelocityToLow,
+	TPS_VelocityToHigh,
+	TPS_PosToLow,
+	TPS_PosToHigh,
+	TPS_InvalidData,
+	TPS_UnknownError,
+}eTrajPrepareStatus;
 typedef enum
 {
 	TCS_Null = 0,
@@ -395,14 +409,17 @@ typedef struct
 }sSeqPoint;
 typedef struct
 {
-	eTrajGenStatus		status;
-	bool							reqTrajPrepare;
-	uint32_t					seqNum;
-	double						stepTime;
-	double 						path[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][5];
-	sSeqPoint					waypoints[TG_SEQWAYPOINTSSMAX];
-	uint32_t					maxwaypoints;
-	uint32_t					maxpoints;
+	eTrajGenStatus			status;
+	eTrajPrepareStatus	trajPrepStatus;
+	bool								reqTrajPrepare;
+	double							minVelocity;
+	double							maxVelocity;
+	uint32_t						seqNum;
+	double							stepTime;
+	double 							path[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][5];
+	sSeqPoint						waypoints[TG_SEQWAYPOINTSSMAX];
+	uint32_t						maxwaypoints;
+	uint32_t						maxpoints;
 }sTrajGen;
 typedef struct
 {

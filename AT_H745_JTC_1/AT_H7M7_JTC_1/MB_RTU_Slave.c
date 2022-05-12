@@ -223,6 +223,7 @@ static void MBS_ActTelemetry(void)
 	Mbs.hregs[idx++] = (uint16_t)(pC->Jtc.jtcInitStatus >> 0);
 	Mbs.hregs[idx++] = (uint16_t)(pC->Jtc.jointsInitStatus >> 0);
 	Mbs.hregs[idx++] = (uint16_t)(Traj.currentTES >> 0);
+	Mbs.hregs[idx++] = (uint16_t)(Traj.Tgen.trajPrepStatus >> 0);
 	Mbs.hregs[idx++] = (uint16_t)(Traj.numInterPoint >> 16);
 	Mbs.hregs[idx++] = (uint16_t)(Traj.numInterPoint >> 0);
 	Mbs.hregs[idx++] = (uint16_t)(pC->Jtc.fricType >> 0);
