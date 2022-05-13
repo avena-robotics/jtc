@@ -289,6 +289,14 @@ typedef enum
 	//AI - currently not used
 }eIONum;
 
+typedef enum 
+{
+	Debug_FT_Header = 155,
+	Debug_FT_null = 0,
+	Debug_FT_EnableSending = 1,
+	Debug_FT_DisableSending = 2,
+}eDebug_FrameType;
+
 #define M_4_PI											12.566370
 #define M_2_PI											6.283185
 #define M_PI												3.141592
@@ -301,11 +309,17 @@ typedef enum
 //#define TESTMODE
 
 // #define MODBUS - komunikacja jako Modbus RTU Slave
+// #define DEBUG - komunikacja poprzez USB (Virtual COM Port) do wysyłania danych diagnostycznych
 // #define RS422 - komunikacja tradycyjna poprzez RS422
 // #define UARTUSB - komunikacja tradycyjna poprzez USB (Virtual COM Port)
 #define MODBUS
+#define DEBUG
 //#define RS422
 //#define UARTUSB
+
+#ifdef DEBUG
+#define DEBUG_COMBAUDRATE 					921600
+#endif
 
 #ifdef RS422
 #define HOST_COMBAUDRATE 						115200
@@ -316,6 +330,9 @@ typedef enum
 #define HOST_COMBAUDRATE 						115200
 #define HOST_COMTIMSEND							40
 #endif
+
+#define DEBUG_COMBUFREADSIZE 				100
+#define DEBUG_COMBUFWRITESIZE 			20000
 
 #define HOST_COMBUFREADSIZE 				60000
 #define HOST_COMBUFWRITESIZE 				1000
@@ -554,6 +571,9 @@ typedef struct
 	double				pidErrorInt;													//PID - calka uchybu
 	double				pidErrorIntMin;												//PID - saturacja calki uchybu - wartosc minimalna
 	double				pidErrorIntMax;												//PID - saturacja calki uchybu - wartosc maksymalna
+	double				pidTorqueP;														//PID - wyjscie z regulatora - człon proporcjonalny
+	double				pidTorqueI;														//PID - wyjscie z regulatora - człon całkujący
+	double				pidTorqueD;														//PID - wyjscie z regulatora - człon różniczkujący
 	double				pidTorque;														//PID - wyjscie z regulatora
 	
 	bool					irIsRun;															//Init Reg - flaga sygnalizujaca prace - prosty regulator momentu w fazie inicjalizacji enkoderów jointów
@@ -732,6 +752,23 @@ typedef struct
 	bool						DQ[DQ_MAX];
 	uint16_t				DQReg;
 }sIO;
+
+typedef struct
+{
+	bool										enableSending;											//Włączenie wysyłania ramek
+	uint32_t								tick;
+	double									timeStamp;													//znacznik czasu - początkowa wartość w ramce
+	uint16_t								sampleTime;													//krok czasowy zbierania danych - Unit: ms
+	uint16_t								frameLen;														//Ilość bajtów w pojedynczej ramce
+	uint8_t									bufread[DEBUG_COMBUFREADSIZE];
+	uint8_t 								bufwrite0[DEBUG_COMBUFWRITESIZE];
+	uint8_t 								bufwrite1[DEBUG_COMBUFWRITESIZE];
+	uint8_t									bufNumber;
+	uint16_t								frameCnt;
+	uint16_t								numFrames;
+	uint16_t								packetLen;													//Liczba bajtów w całym pakiecie
+}sDebug;
+
 typedef struct
 {
 	volatile 	uint32_t 			tick;
@@ -759,5 +796,6 @@ void Control_ResetDevicesViaCan(uint8_t byte);
 #include "MB_RTU_Slave.h"
 #include "TrajGen.h"
 #include "InputsOutputs.h"
+#include "Debug.h"
 
 #endif

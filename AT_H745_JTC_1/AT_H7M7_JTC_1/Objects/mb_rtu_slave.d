@@ -24,3 +24,4 @@
 .\objects\mb_rtu_slave.o: MB_RTU_Slave.h
 .\objects\mb_rtu_slave.o: TrajGen.h
 .\objects\mb_rtu_slave.o: InputsOutputs.h
+.\objects\mb_rtu_slave.o: Debug.h

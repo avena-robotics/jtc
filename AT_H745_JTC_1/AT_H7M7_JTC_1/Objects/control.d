@@ -23,3 +23,4 @@
 .\objects\control.o: MB_RTU_Slave.h
 .\objects\control.o: TrajGen.h
 .\objects\control.o: InputsOutputs.h
+.\objects\control.o: Debug.h

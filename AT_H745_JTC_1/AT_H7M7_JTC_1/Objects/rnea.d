@@ -24,3 +24,4 @@
 .\objects\rnea.o: MB_RTU_Slave.h
 .\objects\rnea.o: TrajGen.h
 .\objects\rnea.o: InputsOutputs.h
+.\objects\rnea.o: Debug.h

@@ -478,6 +478,16 @@
               <FileType>5</FileType>
               <FilePath>.\InputsOutputs.h</FilePath>
             </File>
+            <File>
+              <FileName>Debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>Debug.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Debug.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

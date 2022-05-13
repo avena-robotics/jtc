@@ -1,5 +1,6 @@
 #include "Control.h"
 #ifndef MODBUS
+
 extern sControl* pC;
 extern sTrajectory Traj;
 extern sHost_Com Com;

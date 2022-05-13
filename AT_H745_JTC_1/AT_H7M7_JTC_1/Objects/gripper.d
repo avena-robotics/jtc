@@ -24,3 +24,4 @@
 .\objects\gripper.o: MB_RTU_Slave.h
 .\objects\gripper.o: TrajGen.h
 .\objects\gripper.o: InputsOutputs.h
+.\objects\gripper.o: Debug.h

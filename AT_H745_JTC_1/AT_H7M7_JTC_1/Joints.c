@@ -473,10 +473,10 @@ void Joints_CalcPIDs(void)
 			pC->Joints[num].pidErrorInt = pC->Joints[num].pidErrorIntMax;
 		
 		//wyjscie z regulatora
-		double P = pC->Joints[num].pidKp * pC->Joints[num].pidErrorCurrent;
-		double I = pC->Joints[num].pidKi * pC->Joints[num].pidErrorInt;
-		double D = pC->Joints[num].pidKd * pC->Joints[num].pidErrorDiv;
-		pC->Joints[num].pidTorque = P + I + D;
+		pC->Joints[num].pidTorqueP = pC->Joints[num].pidKp * pC->Joints[num].pidErrorCurrent;
+		pC->Joints[num].pidTorqueI = pC->Joints[num].pidKi * pC->Joints[num].pidErrorInt;
+		pC->Joints[num].pidTorqueD = pC->Joints[num].pidKd * pC->Joints[num].pidErrorDiv;
+		pC->Joints[num].pidTorque = pC->Joints[num].pidTorqueP + pC->Joints[num].pidTorqueI + pC->Joints[num].pidTorqueD;
 	}
 }
 void Joints_CalcInitRegsTorque(void)

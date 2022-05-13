@@ -1,8 +1,13 @@
 #include "Control.h"
 sControl Control;
 sTrajectory Traj __attribute__((section (".ARM.__at_0x24000000"))); // Trajektoria, w pamieci AXI_RAM, max 512kB
+#ifndef DEBUG
 sHost_Com Com  __attribute__((section (".ARM.__at_0x30000000"))); // Bufory komunikacji z hostem, w pamieci SRAM1 do SRAM3, max 288kB
-sMB_RTUSlave	Mbs __attribute__((section (".ARM.__at_0x38000000"))); // Bufory komunikacji z poprzez ModBus, w pamieci SRAM4, max 64kB
+#endif
+#ifdef DEBUG
+sDebug Debug  __attribute__((section (".ARM.__at_0x30000000"))); // Bufory komunikacji debugowania, w pamieci SRAM1 do SRAM3, max 288kB
+#endif
+sMB_RTUSlave	Mbs __attribute__((section (".ARM.__at_0x38000000"))); // Bufory komunikacji poprzez ModBus, w pamieci SRAM4, max 64kB
 sControl* pC = &Control;
 
 // *********************** General functions ***************************************
@@ -197,6 +202,10 @@ void Control_SystemConf(void)
 	
 	#ifdef MODBUS
 	MBS_Conf();
+	#endif
+	
+	#ifdef DEBUG
+	Debug_Conf();
 	#endif
 	
 	TG_Conf();
@@ -1285,6 +1294,9 @@ static void Control_JtcAct(void)
 	Control_SendDataToJoints();
 	#ifdef MODBUS
 	MBS_Act();
+	#endif
+	#ifdef DEBUG
+	Debug_PrepareFrame();
 	#endif
 }
 // ********************** Interrupts functions ***********************************

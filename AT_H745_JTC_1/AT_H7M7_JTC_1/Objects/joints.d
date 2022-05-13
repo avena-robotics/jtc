@@ -24,3 +24,4 @@
 .\objects\joints.o: MB_RTU_Slave.h
 .\objects\joints.o: TrajGen.h
 .\objects\joints.o: InputsOutputs.h
+.\objects\joints.o: Debug.h
