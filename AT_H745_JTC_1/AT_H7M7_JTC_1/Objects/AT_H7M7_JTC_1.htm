@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\AT_H7M7_JTC_1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\AT_H7M7_JTC_1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu May 12 14:38:36 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri May 13 08:52:16 2022
 <BR><P>
 <H3>Maximum Stack Usage =       2784 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -450,7 +450,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_TrajGen
 </UL>
 
-<P><STRONG><a name="[10c]"></a>TG_SetDefaultVariables</STRONG> (Thumb, 192 bytes, Stack size 20 bytes, trajgen.o(i.TG_SetDefaultVariables))
+<P><STRONG><a name="[10c]"></a>TG_SetDefaultVariables</STRONG> (Thumb, 240 bytes, Stack size 20 bytes, trajgen.o(i.TG_SetDefaultVariables))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = TG_SetDefaultVariables
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_TrajGen
@@ -460,8 +460,8 @@ Global Symbols
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[f2]"></a>TG_TrajGen</STRONG> (Thumb, 310 bytes, Stack size 40 bytes, trajgen.o(i.TG_TrajGen))
-<BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = TG_TrajGen &rArr; TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
+<P><STRONG><a name="[f2]"></a>TG_TrajGen</STRONG> (Thumb, 378 bytes, Stack size 40 bytes, trajgen.o(i.TG_TrajGen))
+<BR><BR>[Stack]<UL><LI>Max Depth = 544<LI>Call Chain = TG_TrajGen &rArr; TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_SetDefaultVariables
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_TrajClear
@@ -2213,8 +2213,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_TrajGen
 </UL>
 
-<P><STRONG><a name="[151]"></a>TG_SLP_FindTraj1Drive</STRONG> (Thumb, 1648 bytes, Stack size 144 bytes, trajgen.o(i.TG_SLP_FindTraj1Drive))
-<BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
+<P><STRONG><a name="[151]"></a>TG_SLP_FindTraj1Drive</STRONG> (Thumb, 1592 bytes, Stack size 280 bytes, trajgen.o(i.TG_SLP_FindTraj1Drive))
+<BR><BR>[Stack]<UL><LI>Max Depth = 504<LI>Call Chain = TG_SLP_FindTraj1Drive &rArr; __hardfp_pow &rArr; sqrt &rArr; __set_errno
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sqrt (via Veneer)
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow (via Veneer)

@@ -21,8 +21,12 @@ void TG_SetDefaultVariables(void)
 	Traj.Tgen.maxpoints = 0;
 	Traj.Tgen.reqTrajPrepare = false;
 	Traj.Tgen.minVelocity = 0.01; //Unit: rad/sek
-	Traj.Tgen.maxVelocity = M_2_PI; //Unit: rad/sek
 	
+	//Znajdujemy najmniejszy z górnych limitów predkosci jointów i te wartosc przyjmujemy jako maksymalna dla ruchu w trajektorii Unit: rad/sek
+	Traj.Tgen.maxVelocity = fabs(pC->Joints[0].limitVelMax);
+	for(int num=0;num<JOINTS_MAX;num++)
+		if(fabs(pC->Joints[num].limitVelMax) < Traj.Tgen.maxVelocity)
+			Traj.Tgen.maxVelocity = fabs(pC->Joints[num].limitVelMax);
 	
 	for(int num=0;num<JOINTS_MAX;num++)
 		for(int i=0;i<TG_SEQWAYPOINTSSMAX;i++)
@@ -559,13 +563,6 @@ static bool TG_SLP_FindTraj1Drive(int num, int x)
 	t2 = fabs(q12 / V1);
 	
 	//***************************************
-	double trajLen = (t1+t2+t3) / Traj.Tgen.stepTime;
-	if(trajLen > TRAJ_POINTSMAX)
-	{
-		Traj.Tgen.trajPrepStatus = TPS_TrajToLong;
-		return false;
-	}
-	//***************************************
 	double t;
 	for(int i=0;i<(t1/Traj.Tgen.stepTime);i++)
 	{
@@ -618,6 +615,20 @@ void TG_TrajGen(void)
 	TG_SLP_FindTimeMax();
 	time[1] = pC->tick;
 	
+	//Sprawdzenie dlugosci calej trajektorii
+	double totalTime = 0.0;
+	for(uint32_t x=0;x<Traj.Tgen.maxwaypoints;x++)
+		totalTime += Traj.Tgen.waypoints[x].tend;
+	
+	double trajLen = totalTime / Traj.Tgen.stepTime;
+	if(trajLen > TRAJ_POINTSMAX)
+	{
+		Traj.Tgen.trajPrepStatus = TPS_TrajToLong;
+		Control_TrajClear();
+		return;
+	}
+	
+	//Generowanie punktów trajektorii
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		idx[num] = 0;
