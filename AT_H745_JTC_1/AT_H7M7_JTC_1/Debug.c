@@ -84,6 +84,12 @@ static void Debug_SendFrame(void)
 	uint16_t idx = 0;
 	uint16_t val;
 	
+	//Header - 4 bajty: 155, 156, 157, 158
+	buf[idx++] = 155;
+	buf[idx++] = 156;
+	buf[idx++] = 157;
+	buf[idx++] = 158;
+	
 	val = Debug.numFrames;
 	buf[idx++] = val >> 8;
 	buf[idx++] = val >> 0;
@@ -129,7 +135,7 @@ void Debug_PrepareFrame(void)
 	
 	uint16_t val = 0;
 	union conv32 x;
-	uint16_t idx = Debug.frameLen * Debug.frameCnt + 4;
+	uint16_t idx = Debug.frameLen * Debug.frameCnt + 8;
 	
 	//znacznik czasu
 	Debug.timeStamp += (double)Debug.sampleTime / 1000.0;
