@@ -94,12 +94,12 @@ static void Debug_SendFrame(void)
 	buf[idx++] = val >> 8;
 	buf[idx++] = val >> 0;
 	
-	Debug.packetLen = Debug.frameLen * Debug.frameCnt + 6;
+	Debug.packetLen = Debug.frameLen * Debug.frameCnt + 10;
 	val = Debug.packetLen;
 	buf[idx++] = val >> 8;
 	buf[idx++] = val >> 0;
 	
-	idx = Debug.frameLen * Debug.frameCnt + 4;
+	idx = Debug.frameLen * Debug.frameCnt + 8;
 	uint16_t crc = Debug_Crc16(buf, idx);
 	buf[idx++] = crc >> 8;
 	buf[idx++] = crc >> 0;
