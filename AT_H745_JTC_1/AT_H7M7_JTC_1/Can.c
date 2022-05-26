@@ -696,12 +696,14 @@ static void Can_ReadFrameMoveResponse(uint8_t num)
 			pC->Joints[devNum].currentVel = (double)((int16_t)(((uint16_t)pC->Can.RxMsgs[num].bytes[4] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[5] << 0))) * pC->Joints[num].maxVelCom / MAXINT16;
 			// moment obrotowy jest w Nm
 			pC->Joints[devNum].currentTorque = (double)((int16_t)(((uint16_t)pC->Can.RxMsgs[num].bytes[6] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[7] << 0))) * pC->Joints[num].maxTorqueCom / MAXINT16;
-			pC->Joints[devNum].currentTemp = (double)pC->Can.RxMsgs[num].bytes[8];
+			pC->Joints[devNum].currentBearingTemp = (double)pC->Can.RxMsgs[num].bytes[8];
 			pC->Joints[devNum].currentFsm = (eJoint_FSM)pC->Can.RxMsgs[num].bytes[9];
 			pC->Joints[devNum].mcCurrentError = pC->Can.RxMsgs[num].bytes[10];
 			pC->Joints[devNum].mcOccuredError = pC->Can.RxMsgs[num].bytes[11];
 			pC->Joints[devNum].currentError = pC->Can.RxMsgs[num].bytes[12];
 			pC->Joints[devNum].currentWarning = pC->Can.RxMsgs[num].bytes[13];
+			pC->Joints[devNum].ma70CurrentValue = ((uint16_t)pC->Can.RxMsgs[num].bytes[14] << 8) + ((uint16_t)pC->Can.RxMsgs[num].bytes[15] << 0);
+			pC->Joints[devNum].currentBearingTemp = (double)pC->Can.RxMsgs[num].bytes[16];
 			
 			pC->Joints[devNum].flagFirstPosRead = true;
 			pC->Joints[devNum].cWPosNotAccurate = pC->Joints[devNum].currentWarning & 0x01;

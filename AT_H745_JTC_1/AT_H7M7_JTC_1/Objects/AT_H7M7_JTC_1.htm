@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\AT_H7M7_JTC_1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\AT_H7M7_JTC_1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon May 16 10:27:51 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu May 26 11:15:15 2022
 <BR><P>
 <H3>Maximum Stack Usage =       2784 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -215,7 +215,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[102]"></a>Can_SendDataToJoints</STRONG> (Thumb, 88 bytes, Stack size 8 bytes, can.o(i.Can_SendDataToJoints))
+<P><STRONG><a name="[102]"></a>Can_SendDataToJoints</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, can.o(i.Can_SendDataToJoints))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Can_SendDataToJoints &rArr; Can_CheckStatus &rArr; Can_CheckCanStatus
 </UL>
 <BR>[Calls]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_SendFrameToDevices
@@ -228,7 +228,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_ActControlWords (via Veneer)
 </UL>
 
-<P><STRONG><a name="[cf]"></a>Control_ClearInternallErrorsInJtc</STRONG> (Thumb, 224 bytes, Stack size 8 bytes, control.o(i.Control_ClearInternallErrorsInJtc))
+<P><STRONG><a name="[cf]"></a>Control_ClearInternallErrorsInJtc</STRONG> (Thumb, 228 bytes, Stack size 8 bytes, control.o(i.Control_ClearInternallErrorsInJtc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Control_ClearInternallErrorsInJtc &rArr; Control_CheckErrorFlags &rArr; Control_CheckParkBrakeTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_CheckErrorFlags
@@ -245,7 +245,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_ActControlWords (via Veneer)
 </UL>
 
-<P><STRONG><a name="[cb]"></a>Control_SetDefualtArmModel</STRONG> (Thumb, 878 bytes, Stack size 48 bytes, control.o(i.Control_SetDefualtArmModel))
+<P><STRONG><a name="[cb]"></a>Control_SetDefualtArmModel</STRONG> (Thumb, 874 bytes, Stack size 48 bytes, control.o(i.Control_SetDefualtArmModel))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Control_SetDefualtArmModel
 </UL>
 <BR>[Calls]<UL><LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SetTable
@@ -323,7 +323,7 @@ Global Symbols
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice
 </UL>
 
-<P><STRONG><a name="[133]"></a>Gripper_SetStartValuesVariables</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, gripper.o(i.Gripper_SetStartValuesVariables))
+<P><STRONG><a name="[133]"></a>Gripper_SetStartValuesVariables</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, gripper.o(i.Gripper_SetStartValuesVariables))
 <BR><BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
@@ -365,7 +365,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
 </UL>
 
-<P><STRONG><a name="[129]"></a>Joints_CalcInitRegsTorque</STRONG> (Thumb, 124 bytes, Stack size 12 bytes, joints.o(i.Joints_CalcInitRegsTorque))
+<P><STRONG><a name="[129]"></a>Joints_CalcInitRegsTorque</STRONG> (Thumb, 126 bytes, Stack size 12 bytes, joints.o(i.Joints_CalcInitRegsTorque))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Joints_CalcInitRegsTorque
 </UL>
 <BR>[Calls]<UL><LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_StopIrValuesVariables
@@ -374,7 +374,7 @@ Global Symbols
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInitDeparkStage
 </UL>
 
-<P><STRONG><a name="[121]"></a>Joints_CalcPIDs</STRONG> (Thumb, 282 bytes, Stack size 16 bytes, joints.o(i.Joints_CalcPIDs))
+<P><STRONG><a name="[121]"></a>Joints_CalcPIDs</STRONG> (Thumb, 280 bytes, Stack size 16 bytes, joints.o(i.Joints_CalcPIDs))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Joints_CalcPIDs
 </UL>
 <BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcOperate
@@ -397,8 +397,8 @@ Global Symbols
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_ActControlWords (via Veneer)
 </UL>
 
-<P><STRONG><a name="[c9]"></a>Joints_SetDefaultPidParam</STRONG> (Thumb, 208 bytes, Stack size 48 bytes, joints.o(i.Joints_SetDefaultPidParam))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Joints_SetDefaultPidParam
+<P><STRONG><a name="[c9]"></a>Joints_SetDefaultPidParam</STRONG> (Thumb, 208 bytes, Stack size 52 bytes, joints.o(i.Joints_SetDefaultPidParam))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = Joints_SetDefaultPidParam
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_ActControlWords (via Veneer)
@@ -412,25 +412,25 @@ Global Symbols
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[12d]"></a>Joints_SetResetValuesVariables</STRONG> (Thumb, 162 bytes, Stack size 8 bytes, joints.o(i.Joints_SetResetValuesVariables))
+<P><STRONG><a name="[12d]"></a>Joints_SetResetValuesVariables</STRONG> (Thumb, 164 bytes, Stack size 8 bytes, joints.o(i.Joints_SetResetValuesVariables))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Joints_SetResetValuesVariables
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_ResetDevicesViaCan
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SendCommandResetDevice
 </UL>
 
-<P><STRONG><a name="[132]"></a>Joints_SetStartValuesVariables</STRONG> (Thumb, 344 bytes, Stack size 88 bytes, joints.o(i.Joints_SetStartValuesVariables))
+<P><STRONG><a name="[132]"></a>Joints_SetStartValuesVariables</STRONG> (Thumb, 346 bytes, Stack size 88 bytes, joints.o(i.Joints_SetStartValuesVariables))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Joints_SetStartValuesVariables
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_SystemConf
 </UL>
 
-<P><STRONG><a name="[127]"></a>Joints_StartIrValuesVariables</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, joints.o(i.Joints_StartIrValuesVariables))
+<P><STRONG><a name="[127]"></a>Joints_StartIrValuesVariables</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, joints.o(i.Joints_StartIrValuesVariables))
 <BR><BR>[Called By]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInitPosAccurateStage
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInitDeparkStage
 </UL>
 
-<P><STRONG><a name="[125]"></a>Joints_StopIrValuesVariables</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, joints.o(i.Joints_StopIrValuesVariables))
+<P><STRONG><a name="[125]"></a>Joints_StopIrValuesVariables</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, joints.o(i.Joints_StopIrValuesVariables))
 <BR><BR>[Called By]<UL><LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcInitRegsTorque
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInitPosAccurateStage
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInitDeparkStage
@@ -1476,13 +1476,13 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[f7]"></a>Can_CheckCanStatus</STRONG> (Thumb, 394 bytes, Stack size 12 bytes, can.o(i.Can_CheckCanStatus))
+<P><STRONG><a name="[f7]"></a>Can_CheckCanStatus</STRONG> (Thumb, 398 bytes, Stack size 12 bytes, can.o(i.Can_CheckCanStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = Can_CheckCanStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckStatus
 </UL>
 
-<P><STRONG><a name="[f6]"></a>Can_CheckStatus</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, can.o(i.Can_CheckStatus))
+<P><STRONG><a name="[f6]"></a>Can_CheckStatus</STRONG> (Thumb, 114 bytes, Stack size 16 bytes, can.o(i.Can_CheckStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_CheckStatus &rArr; Can_CheckCanStatus
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_CheckCanStatus
@@ -1504,19 +1504,19 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_Conf
 </UL>
 
-<P><STRONG><a name="[101]"></a>Can_ReadFrameChangeConfResponse</STRONG> (Thumb, 366 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeConfResponse))
+<P><STRONG><a name="[101]"></a>Can_ReadFrameChangeConfResponse</STRONG> (Thumb, 370 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeConfResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_ReadFrameChangeConfResponse
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
 </UL>
 
-<P><STRONG><a name="[100]"></a>Can_ReadFrameChangeFsmResponse</STRONG> (Thumb, 342 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeFsmResponse))
+<P><STRONG><a name="[100]"></a>Can_ReadFrameChangeFsmResponse</STRONG> (Thumb, 350 bytes, Stack size 28 bytes, can.o(i.Can_ReadFrameChangeFsmResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = Can_ReadFrameChangeFsmResponse
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
 </UL>
 
-<P><STRONG><a name="[ff]"></a>Can_ReadFrameMoveResponse</STRONG> (Thumb, 608 bytes, Stack size 32 bytes, can.o(i.Can_ReadFrameMoveResponse))
+<P><STRONG><a name="[ff]"></a>Can_ReadFrameMoveResponse</STRONG> (Thumb, 644 bytes, Stack size 32 bytes, can.o(i.Can_ReadFrameMoveResponse))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Can_ReadFrameMoveResponse
 </UL>
 <BR>[Called By]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can_ReadFramesFromBuffer
@@ -1719,7 +1719,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcAct
 </UL>
 
-<P><STRONG><a name="[124]"></a>Control_JtcInitDeparkStage</STRONG> (Thumb, 320 bytes, Stack size 16 bytes, control.o(i.Control_JtcInitDeparkStage))
+<P><STRONG><a name="[124]"></a>Control_JtcInitDeparkStage</STRONG> (Thumb, 324 bytes, Stack size 16 bytes, control.o(i.Control_JtcInitDeparkStage))
 <BR><BR>[Stack]<UL><LI>Max Depth = 2744<LI>Call Chain = Control_JtcInitDeparkStage &rArr; RNEA_CalcTorques &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RNEA_CalcTorques
@@ -1892,7 +1892,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_CalcFrictionCompensate
 </UL>
 
-<P><STRONG><a name="[145]"></a>Joints_SetDefaultFrictionPolynomial</STRONG> (Thumb, 414 bytes, Stack size 192 bytes, joints.o(i.Joints_SetDefaultFrictionPolynomial))
+<P><STRONG><a name="[145]"></a>Joints_SetDefaultFrictionPolynomial</STRONG> (Thumb, 410 bytes, Stack size 192 bytes, joints.o(i.Joints_SetDefaultFrictionPolynomial))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = Joints_SetDefaultFrictionPolynomial
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joints_SetDefaultFriction
@@ -2202,7 +2202,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_ActControlWords
 </UL>
 
-<P><STRONG><a name="[ca]"></a>MBS_UseNewPidParam</STRONG> (Thumb, 266 bytes, Stack size 20 bytes, mb_rtu_slave.o(i.MBS_UseNewPidParam))
+<P><STRONG><a name="[ca]"></a>MBS_UseNewPidParam</STRONG> (Thumb, 268 bytes, Stack size 20 bytes, mb_rtu_slave.o(i.MBS_UseNewPidParam))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = MBS_UseNewPidParam
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MBS_ActControlWords

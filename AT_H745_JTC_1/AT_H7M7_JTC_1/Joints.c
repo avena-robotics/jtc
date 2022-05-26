@@ -208,8 +208,10 @@ void Joints_SetStartValuesVariables(void)
 		
 		pC->Joints[num].limitPosMin = -M_PI;
 		pC->Joints[num].limitPosMax = M_PI;
-		pC->Joints[num].limitVelMin = -M_2_PI;
-		pC->Joints[num].limitVelMax = M_2_PI;
+//		pC->Joints[num].limitVelMin = -M_2_PI;
+//		pC->Joints[num].limitVelMax = M_2_PI;
+		pC->Joints[num].limitVelMin = -2.0;
+		pC->Joints[num].limitVelMax = 2.0;
 		pC->Joints[num].limitAccMin = -M_4_PI;
 		pC->Joints[num].limitAccMax = M_4_PI;
 		pC->Joints[num].limitTorqueMin = -360.0;
@@ -220,7 +222,8 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].limitPosErrorMax = 0.09;
 		
 		pC->Joints[num].maxPosCom = M_PI;
-		pC->Joints[num].maxVelCom = M_2_PI;
+//		pC->Joints[num].maxVelCom = M_2_PI;
+		pC->Joints[num].maxVelCom = 2.0;
 		pC->Joints[num].maxAccCom = M_4_PI;
 		pC->Joints[num].maxTorqueCom = 360.0;
 		
@@ -355,12 +358,12 @@ static void Joints_CalcFrictionCompensateTable(void)
 			pC->Joints[num].flagFricTableValueOverlimit = true;
 			return;
 		}
-		if(pC->Joints[num].currentTemp < pC->Joints[num].fricTableTempMin)
+		if(pC->Joints[num].currentBearingTemp < pC->Joints[num].fricTableTempMin)
 		{
 			pC->Joints[num].flagFricTableValueOverlimit = true;
 			return;
 		}
-		if(pC->Joints[num].currentTemp > pC->Joints[num].fricTableTempMax)
+		if(pC->Joints[num].currentBearingTemp > pC->Joints[num].fricTableTempMax)
 		{
 			pC->Joints[num].flagFricTableValueOverlimit = true;
 			return;
@@ -381,7 +384,7 @@ static void Joints_CalcFrictionCompensateTable(void)
 		}
 		for(int i=0;i<JOINTS_FRICTABTEMPSIZE - 1;i++)
 		{
-			if(pC->Joints[num].currentTemp > pC->Joints[num].fricTableTempIdx[i] && pC->Joints[num].currentTemp < pC->Joints[num].fricTableTempIdx[i+1])
+			if(pC->Joints[num].currentBearingTemp > pC->Joints[num].fricTableTempIdx[i] && pC->Joints[num].currentBearingTemp < pC->Joints[num].fricTableTempIdx[i+1])
 			{
 				t0idx = i;
 				t1idx = i+1;
@@ -410,7 +413,7 @@ static void Joints_CalcFrictionCompensateTable(void)
 		
 		double tRatio = (Mvb - Mva) / fabs(t1 - t0);
 		
-		pC->Joints[num].fricTorque = tRatio * (pC->Joints[num].currentTemp - t0) + Mva;
+		pC->Joints[num].fricTorque = tRatio * (pC->Joints[num].currentBearingTemp - t0) + Mva;
 	}
 }
 static void Joints_CalcFrictionCompensatePolynomial(void)
@@ -418,7 +421,7 @@ static void Joints_CalcFrictionCompensatePolynomial(void)
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
 		double vel = pC->Joints[num].setVelTemp;
-		double t = pC->Joints[num].currentTemp;
+		double t = pC->Joints[num].currentBearingTemp;
 		double coeffs[JOINTS_FRICCOEFFMAX];
 		for(int i=0;i<JOINTS_FRICCOEFFMAX;i++)
 			coeffs[i] = pC->Joints[num].fricCoeff[i];

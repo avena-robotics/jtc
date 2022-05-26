@@ -133,7 +133,7 @@ void Debug_PrepareFrame(void)
 	else if(Debug.bufNumber == 1)
 		buf = Debug.bufwrite1;
 	
-	uint16_t val = 0;
+	int16_t val = 0;
 	union conv32 x;
 	uint16_t idx = Debug.frameLen * Debug.frameCnt + 8;
 	
@@ -168,7 +168,7 @@ void Debug_PrepareFrame(void)
 		val = pC->Joints[num].currentTorque / pC->Joints[num].maxTorqueCom * MAXINT16;
 		buf[idx++] = val >> 8;
 		buf[idx++] = val >> 0;
-		val = pC->Joints[num].currentTemp;
+		val = pC->Joints[num].currentBearingTemp;
 		buf[idx++] = val >> 0;
 		
 		//Wartosci zadana momentu
@@ -211,10 +211,12 @@ static void Debug_ReadFrame(void)
 		{
 			if(buf[1] == Debug_FT_EnableSending)
 			{
+				//155 1 212 48 - polecenie do wlaczenia
 				Debug.enableSending = true;
 			}
 			if(buf[1] == Debug_FT_DisableSending)
 			{
+				//155 2 228 83 - polecenie do wylaczenia
 				Debug.enableSending = false;
 			}
 		}

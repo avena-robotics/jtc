@@ -259,7 +259,7 @@ static void MBS_ActTelemetry(void)
 		Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
 		Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
 		
-		Mbs.hregs[idx++] = (uint16_t)pC->Joints[num].currentTemp;
+		Mbs.hregs[idx++] = (uint16_t)pC->Joints[num].currentBearingTemp;
 	}
 	//Gripper status
 	Mbs.hregs[idx++] = (uint16_t)(pC->Gripper.currentFsm);

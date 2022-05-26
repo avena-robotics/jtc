@@ -358,8 +358,8 @@ typedef enum
 #define CAN_TXDATA_LEN							16
 #define CAN_RXBUF_MAX								21
 #define CAN_RXFIFO0_MAX							(64 - CAN_RXBUF_MAX)
-#define CAN_RXBUFSIZE_CODE					0x02
-#define CAN_RXDATA_LEN							16
+#define CAN_RXBUFSIZE_CODE					0x03
+#define CAN_RXDATA_LEN							20
 #define CAN_TIMEOUTMAX							500
 #define CAN_RESETTIMEOUT						300
 
@@ -522,7 +522,9 @@ typedef struct
 	double 				currentVel;					//Predkosc - wartosc aktualna
 	double 				currentAcc;					//Przyspieszenie - wartosc aktualna
 	double				currentTorque;			//Moment - wartosc aktualna
-	double				currentTemp;				//Teperatura - wartosc aktualna
+	double				currentBearingTemp;	//Teperatura łożyska - wartosc aktualna
+	double				currentMotorTemp;		//Teperatura silnika - wartosc aktualna
+	uint16_t			ma70CurrentValue;		//Aktualna wartość z MA730
 	
 	double				limitPosMin;				//Limit wartosci pozycji dla danego jointa - wartosc minimum
 	double				limitPosMax;				//Limit wartosci pozycji dla danego jointa - wartosc maximum
