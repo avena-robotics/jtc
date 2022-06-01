@@ -417,12 +417,11 @@ typedef struct
 }sHost_Com;
 typedef struct
 {
-	double						pos[JOINTS_MAX];
-	double						vel;
-	eSeqPointMoveType	moveType;
-	eSeqPointType			type;
-	bool							active;
-	double						tend;
+	double							pos[JOINTS_MAX];
+	double							vel;
+	eSeqPointMoveType		moveType;
+	eSeqPointType				type;
+	bool								active;
 }sSeqPoint;
 typedef struct
 {
@@ -433,9 +432,14 @@ typedef struct
 	double							maxVelocity;
 	uint32_t						seqNum;
 	double							stepTime;
-	double 							path[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][5];
+	double 							path[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][2];
+	double							trace[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][3];
+	double							stamps[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][6];
+	double 							p1[TG_SEQWAYPOINTSSMAX+1][JOINTS_MAX+2];
+	
 	sSeqPoint						waypoints[TG_SEQWAYPOINTSSMAX];
-	uint32_t						maxwaypoints;
+	uint32_t						recwaypoints;	//liczba odebranych waypointów z Modbus. Nie zawiera punktu startu i pomocniczych
+	uint32_t						maxwaypoints; //liczba wszystkich waypointów = recwaypoints + 3
 	uint32_t						maxpoints;
 }sTrajGen;
 typedef struct
