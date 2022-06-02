@@ -659,7 +659,7 @@ static void Can_SendFrameToDevices(void)
 }
 static void Can_ReadFrameMoveResponse(uint8_t num)
 {
-		uint16_t idx = 6 * num;
+		uint16_t idx = ((CAN_RXDATA_LEN/4)+2) * num;
 		uint16_t devNum = num % CAN_DEVICESMAX;
 		pC->Can.RxMsgs[num].r0 = *(pC->Can.rxBufAddr + idx + 0);
 		pC->Can.RxMsgs[num].r1 = *(pC->Can.rxBufAddr + idx + 1);
@@ -667,6 +667,7 @@ static void Can_ReadFrameMoveResponse(uint8_t num)
 		pC->Can.RxMsgs[num].data[1] = *(pC->Can.rxBufAddr + idx + 3);
 		pC->Can.RxMsgs[num].data[2] = *(pC->Can.rxBufAddr + idx + 4);
 		pC->Can.RxMsgs[num].data[3] = *(pC->Can.rxBufAddr + idx + 5);
+		pC->Can.RxMsgs[num].data[4] = *(pC->Can.rxBufAddr + idx + 6);
 		
 		pC->Can.RxMsgs[num].esi = (pC->Can.RxMsgs[num].r0 >> 31) & 0x01;
 		pC->Can.RxMsgs[num].xtd = (pC->Can.RxMsgs[num].r0 >> 30) & 0x01;
@@ -680,7 +681,7 @@ static void Can_ReadFrameMoveResponse(uint8_t num)
 		pC->Can.RxMsgs[num].dlc = (pC->Can.RxMsgs[num].r1 >> 16) & 0x0F;
 		pC->Can.RxMsgs[num].rxts = (pC->Can.RxMsgs[num].r1 >> 16) & 0xFFFF;
 		
-		for(int i=0;i<4;i++)
+		for(int i=0;i<(CAN_RXDATA_LEN/4);i++)
 		{
 			pC->Can.RxMsgs[num].bytes[4*i+0] = pC->Can.RxMsgs[num].data[i] >> 0;
 			pC->Can.RxMsgs[num].bytes[4*i+1] = pC->Can.RxMsgs[num].data[i] >> 8;

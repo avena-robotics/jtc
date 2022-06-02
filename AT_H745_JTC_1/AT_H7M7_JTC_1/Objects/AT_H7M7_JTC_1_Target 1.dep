@@ -1,6 +1,6 @@
 Dependencies for Project 'AT_H7M7_JTC_1', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\Can.c)(0x6296092C)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
+F (.\Can.c)(0x62987B49)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
 I (Can.h)(0x62542FB3)
 I (Control.h)(0x62971CC1)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
@@ -52,7 +52,7 @@ I (TrajGen.h)(0x626AA6C9)
 I (InputsOutputs.h)(0x627B801A)
 I (Debug.h)(0x627E3D13)
 F (.\Com.h)(0x626AA7AC)()
-F (.\Control.c)(0x629718D6)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\control.o --omf_browse .\objects\control.crf --depend .\objects\control.d)
+F (.\Control.c)(0x62987961)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\control.o --omf_browse .\objects\control.crf --depend .\objects\control.d)
 I (Control.h)(0x62971CC1)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
@@ -285,7 +285,7 @@ I (MB_RTU_Slave.h)(0x62613FBB)
 I (TrajGen.h)(0x626AA6C9)
 I (InputsOutputs.h)(0x627B801A)
 F (.\Debug.h)(0x627E3D13)()
-F (RTE\Device\STM32H745ZITx_CM7\startup_stm32h745xx.s)(0x627BBAB6)(--cpu Cortex-M7.fp.dp -g --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include--pd "__UVISION_VERSION SETA 536" --pd "_RTE_ SETA 1" --pd "CORE_CM7 SETA 1" --pd "STM32H745xx SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_stm32h745xx.lst --xref -o .\objects\startup_stm32h745xx.o --depend .\objects\startup_stm32h745xx.d)
+F (RTE\Device\STM32H745ZITx_CM7\startup_stm32h745xx.s)(0x62987959)(--cpu Cortex-M7.fp.dp -g --apcs=interwork -I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include--pd "__UVISION_VERSION SETA 536" --pd "_RTE_ SETA 1" --pd "CORE_CM7 SETA 1" --pd "STM32H745xx SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_stm32h745xx.lst --xref -o .\objects\startup_stm32h745xx.o --depend .\objects\startup_stm32h745xx.d)
 F (RTE\Device\STM32H745ZITx_CM7\system_stm32h7xx_dualcore_boot_cm4_cm7.c)(0x60658432)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\system_stm32h7xx_dualcore_boot_cm4_cm7.o --omf_browse .\objects\system_stm32h7xx_dualcore_boot_cm4_cm7.crf --depend .\objects\system_stm32h7xx_dualcore_boot_cm4_cm7.d)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
