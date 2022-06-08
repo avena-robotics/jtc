@@ -291,6 +291,60 @@ static void MBS_ActTelemetry(void)
 	Mbs.hregs[idx++] = pC->IO.AQRegs[1];
 	Mbs.hregs[idx++] = pC->IO.AQRegs[2];
 	Mbs.hregs[idx++] = pC->IO.AQRegs[3];
+	
+	// Pozycja efektora w ukladzie kartezjanskim - numer ukladu odniesienia
+	Mbs.hregs[idx++] = 0;
+	// Pozycja efektora w ukladzie kartezjanskim
+	x.f32 = pC->Jtc.robPos.mat.v[0][3];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[1][3];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[2][3];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	// Pozycja efektora w ukladzie kartezjanskim w kwaternionach
+	x.f32 = pC->Jtc.robPos.quat.v[0];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.quat.v[1];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.quat.v[2];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.quat.v[3];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	// Pozycja efektora w ukladzie kartezjanskim jako macierz rotacji
+	x.f32 = pC->Jtc.robPos.mat.v[0][0];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[0][1];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[0][2];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[1][0];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[1][1];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[1][2];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[2][0];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[2][1];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	x.f32 = pC->Jtc.robPos.mat.v[2][2];
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
+	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
 }
 static void MBS_ActConfigWords(void)
 {

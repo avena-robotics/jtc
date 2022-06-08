@@ -56,7 +56,7 @@ typedef enum
 typedef enum 
 {
 	MRN_TStart = 0,
-	MRN_TFinish = 122,
+	MRN_TFinish = 155,
 	MRN_CfStart = 200,
 	MRN_CfFinish = 218,
 	MRN_CtrlStart = 300,
@@ -126,9 +126,11 @@ typedef enum
 typedef enum
 {
 	SPMT_Null = 0,
-	SPMT_Ptp = 1,
-	SPMT_Line = 2,
-	SPMT_Gripper = 3,
+	SPMT_ConfSpacePtp = 1,
+	SPMT_ConfSpaceLine = 2,
+	SPMT_KartSpacePtp = 3,
+	SPMT_KartSpaceLine = 4,
+	SPMT_Gripper = 5,
 }eSeqPointMoveType;
 typedef enum
 {
@@ -340,7 +342,7 @@ typedef enum
 #define HOST_COMTIMEOUTMAX					100
 #define TRAJ_POINTSMAX							12000
 #define TRAJ_SEGSSMAX								100
-#define TG_SEQWAYPOINTSSMAX					100
+#define TG_SEQWAYPOINTSSMAX					50
 
 #define JOINTS_MAX									6
 #define JOINTS_FRICTABVELSIZE				20
@@ -369,6 +371,20 @@ typedef enum
 #define DQ_MAX											16
 #define PARKBRAKETIMEOUT						2000
 
+#define IK_SOLNUM										16
+#define IK_SOLNUMREAL								8
+
+typedef struct 	{	double v[3][3];	}sMatrix3;
+typedef struct	{ double v[4][4];	}sMatrix4;
+typedef struct	{ double v[6];		}sVector6;
+typedef struct 	{ double v[4];		}sVector4;
+typedef struct 	{ uint16_t v[4];	}sVector4UIn16t;
+typedef struct	{	double v[3];		}sVector3;
+typedef struct	
+{	
+	sVector6 	v[IK_SOLNUMREAL]; //Rozwiazanie - max 8 rozwiazan
+	int				isRealSolNum; 		//Liczba rzeczywistych rozwiazan kinematyki odwrotnej
+}sIKSol;
 typedef struct	//modbus rtu slave
 {
 	uint32_t			baud;
@@ -417,12 +433,19 @@ typedef struct
 }sHost_Com;
 typedef struct
 {
-	double							pos[JOINTS_MAX];
-	double							vel;
 	eSeqPointMoveType		moveType;
 	eSeqPointType				type;
 	bool								active;
-}sSeqPoint;
+	sVector6 						pos;						//Wektor pozycji we współrzędnych konfiguracyjnych (jointy) - unit: [rad]
+	sMatrix4						mat;						//Macierz pozycji i orientacji kartezjanskiej 4x4
+	sVector4						quat;						//Wektor orientacji kartezjanskiej w quaternionach
+	sVector4UIn16t			conf;						//Wektor konfiguracji rozwiazania kinematyki
+	sIKSol							sol;						//Tablica 8 wektorów z rozwiązaniami kinematyki. Maksymalnie 8 rozwiazań
+	sVector6 						qSol;						//Wybrane rozwiazanie kinematyki - unit: [rad]
+	uint16_t						refSystem;			//Numer układu współrzędnych względem którego jest podawana pozycja i orientacja: 0 - układ bazowy robota
+	double							vel;						//Maksymalna predkosc ruchu do danej pozycji (uzywana tylko w sekwencji i ewentualnie jogowaniu)
+	double							zone;						//Promień okręgu w jakimma zmieścić się robot przy omijaniu waypointów. Wartość 0.0 oznacza brak omijania w tym punkcie.
+}sRobPos;
 typedef struct
 {
 	eTrajGenStatus			status;
@@ -437,7 +460,7 @@ typedef struct
 	double							stamps[JOINTS_MAX][TG_SEQWAYPOINTSSMAX][6];
 	double 							p1[TG_SEQWAYPOINTSSMAX+1][JOINTS_MAX+2];
 	
-	sSeqPoint						waypoints[TG_SEQWAYPOINTSSMAX];
+	sRobPos							waypoints[TG_SEQWAYPOINTSSMAX];
 	uint32_t						recwaypoints;	//liczba odebranych waypointów z Modbus. Nie zawiera punktu startu i pomocniczych
 	uint32_t						maxwaypoints; //liczba wszystkich waypointów = recwaypoints + 3
 	uint32_t						maxpoints;
@@ -731,6 +754,8 @@ typedef struct
 	
 	bool						parkBrakeTimeoutRun;		// Uruchomienie mechanizmu timeout dla odblokowania hamulca parkowania [0 - nie uruchomiony, 1 - uruchomiony]
 	uint32_t				parkBrakeTimoeutCnt;		// Licznik czasu dla timout odblokowania hamulca parkowania
+	
+	sRobPos					robPos;									//Aktualna pozycja robota w róznych rodzajach współrzędnych
 }sJtc;
 typedef struct
 {
@@ -758,7 +783,6 @@ typedef struct
 	bool						DQ[DQ_MAX];
 	uint16_t				DQReg;
 }sIO;
-
 typedef struct
 {
 	bool										enableSending;											//Włączenie wysyłania ramek
@@ -774,7 +798,6 @@ typedef struct
 	uint16_t								numFrames;
 	uint16_t								packetLen;													//Liczba bajtów w całym pakiecie
 }sDebug;
-
 typedef struct
 {
 	volatile 	uint32_t 			tick;

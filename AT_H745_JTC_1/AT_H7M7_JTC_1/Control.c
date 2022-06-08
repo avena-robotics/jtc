@@ -17,17 +17,49 @@ static void Control_SetTable(double* t, double a0, double a1, double a2, double 
 }
 void Control_SetDefualtArmModel(void)
 {
-	Control_SetTable(pC->Arm.Joints[0].origin, 0, 0, 0.063, 0, 0, -0.1963);									//joint 0 coordinate system
+//	Control_SetTable(pC->Arm.Joints[0].origin, 0, 0, 0.063, 0, 0, -0.1963);									//joint 0 coordinate system
+//	Control_SetTable(pC->Arm.Joints[1].origin, 0.063, 0, 0.0763, 0, 1.570796, 0);						//joint 1 coordinate system
+//	Control_SetTable(pC->Arm.Joints[2].origin, -0.686, 0, 0, 0, 3.141592, 0);								//joint 2 coordinate system
+//	Control_SetTable(pC->Arm.Joints[3].origin, 0.671, 0, 0.005, 3.141592, 0, 0);						//joint 3 coordinate system
+//	Control_SetTable(pC->Arm.Joints[4].origin, 0.0495, 0, 0.064, 0, -1.570796, 3.141592);		//joint 4 coordinate system
+//	Control_SetTable(pC->Arm.Joints[5].origin, 0.0495, 0, 0.064, 0, 1.570796, 0);						//joint 5 coordinate system
+//	Control_SetTable(pC->Arm.Joints[6].origin, 0, 0, 0.0181, 0, 0, 0);											//joint 6 coordinate system
+//	
+//	Control_SetTable(pC->Arm.Links[0].origin, 0, -0.0129, 0.00034, 0, 0, 0);								//center of mass link 0 coordinate system
+//	Control_SetTable(pC->Arm.Links[1].origin, -0.00005, -0.007, 0.0175, 0, 0, 1.570796);		//center of mass link 1 coordinate system
+//	Control_SetTable(pC->Arm.Links[2].origin, -0.343, 0, 0.05884, 0, 3.141592, 1.570796);		//center of mass link 2 coordinate system
+//	Control_SetTable(pC->Arm.Links[3].origin, 0.38666, 0, 0.051, 0, 0, 1.570796);						//center of mass link 3 coordinate system
+//	Control_SetTable(pC->Arm.Links[4].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 4 coordinate system
+//	Control_SetTable(pC->Arm.Links[5].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 5 coordinate system
+//	Control_SetTable(pC->Arm.Links[6].origin, 0, 0, 0, 0, 0, 0);														//center of mass link 6 coordinate system
+//	
+//	Control_SetTable(pC->Arm.Links[0].innertia, 1, 0, 0, 1, 0, 1);													//link 0 innertial values
+//	Control_SetTable(pC->Arm.Links[1].innertia, 0.005372, 0, 0, 0.004691, 0, 0.005059);			//link 1 innertial values
+//	Control_SetTable(pC->Arm.Links[2].innertia, 0.8437, 0, 0, 0.01143, 0, 0.8428);					//link 2 innertial values
+//	Control_SetTable(pC->Arm.Links[3].innertia, 0.3605, 0, 0, 0.006825, 0, 0.3606);					//link 3 innertial values
+//	Control_SetTable(pC->Arm.Links[4].innertia, 0.002233, 0, 0, 0.002047, 0, 0.002384);			//link 4 innertial values
+//	Control_SetTable(pC->Arm.Links[5].innertia, 0.002233, 0, 0, 0.002047, 0, 0.002384);			//link 5 innertial values
+//	Control_SetTable(pC->Arm.Links[6].innertia, 0.000041, 0, 0, 0.000042, 0, 0.00008);			//link 6 innertial values
+//	
+//	pC->Arm.Links[0].mass = 0.750;		//mass of link 0
+//	pC->Arm.Links[1].mass = 3.800;		//mass of link 1
+//	pC->Arm.Links[2].mass = 7.500;		//mass of link 2
+//	pC->Arm.Links[3].mass = 4.800;		//mass of link 3
+//	pC->Arm.Links[4].mass = 1.960;		//mass of link 4
+//	pC->Arm.Links[5].mass = 1.960;		//mass of link 5
+//	pC->Arm.Links[6].mass = 0.082;		//mass of link 6
+
+	Control_SetTable(pC->Arm.Joints[0].origin, 0, 0, 0.063, 0, 0, 0);												//joint 0 coordinate system
 	Control_SetTable(pC->Arm.Joints[1].origin, 0.063, 0, 0.0763, 0, 1.570796, 0);						//joint 1 coordinate system
 	Control_SetTable(pC->Arm.Joints[2].origin, -0.686, 0, 0, 0, 3.141592, 0);								//joint 2 coordinate system
-	Control_SetTable(pC->Arm.Joints[3].origin, 0.671, 0, 0.005, 3.141592, 0, 0);						//joint 3 coordinate system
+	Control_SetTable(pC->Arm.Joints[3].origin, 0.671, 0, -0.005, 3.141592, 0, 0);						//joint 3 coordinate system
 	Control_SetTable(pC->Arm.Joints[4].origin, 0.0495, 0, 0.064, 0, -1.570796, 3.141592);		//joint 4 coordinate system
 	Control_SetTable(pC->Arm.Joints[5].origin, 0.0495, 0, 0.064, 0, 1.570796, 0);						//joint 5 coordinate system
 	Control_SetTable(pC->Arm.Joints[6].origin, 0, 0, 0.0181, 0, 0, 0);											//joint 6 coordinate system
 	
 	Control_SetTable(pC->Arm.Links[0].origin, 0, -0.0129, 0.00034, 0, 0, 0);								//center of mass link 0 coordinate system
-	Control_SetTable(pC->Arm.Links[1].origin, -0.00005, -0.007, 0.0175, 0, 0, 1.570796);						//center of mass link 1 coordinate system
-	Control_SetTable(pC->Arm.Links[2].origin, -0.343, 0, 0.05884, 0, 3.141592, 1.570796);						//center of mass link 2 coordinate system
+	Control_SetTable(pC->Arm.Links[1].origin, -0.00005, -0.007, 0.0175, 0, 0, 1.570796);		//center of mass link 1 coordinate system
+	Control_SetTable(pC->Arm.Links[2].origin, -0.343, 0, 0.05884, 0, 3.141592, 1.570796);		//center of mass link 2 coordinate system
 	Control_SetTable(pC->Arm.Links[3].origin, 0.38666, 0, 0.051, 0, 0, 1.570796);						//center of mass link 3 coordinate system
 	Control_SetTable(pC->Arm.Links[4].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 4 coordinate system
 	Control_SetTable(pC->Arm.Links[5].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 5 coordinate system
@@ -128,7 +160,7 @@ static void Control_RccConf(void)
 	RCC->AHB2ENR |= (RCC_AHB2ENR_SRAM1EN | RCC_AHB2ENR_SRAM2EN | RCC_AHB2ENR_SRAM3EN);
 	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN | RCC_AHB1ENR_DMA2EN;
 	RCC->AHB4ENR |= RCC_AHB4ENR_GPIOAEN | RCC_AHB4ENR_GPIOBEN | RCC_AHB4ENR_GPIOCEN | RCC_AHB4ENR_GPIODEN | RCC_AHB4ENR_GPIOEEN;
-	RCC->APB1LENR |= RCC_APB1LENR_USART2EN | RCC_APB1LENR_USART3EN | RCC_APB1LENR_TIM6EN | RCC_APB1LENR_TIM7EN | RCC_APB1LENR_TIM13EN | RCC_APB1LENR_TIM5EN;
+	RCC->APB1LENR |= RCC_APB1LENR_USART2EN | RCC_APB1LENR_USART3EN | RCC_APB1LENR_TIM6EN | RCC_APB1LENR_TIM7EN | RCC_APB1LENR_TIM13EN | RCC_APB1LENR_TIM12EN | RCC_APB1LENR_TIM5EN;
 	RCC->APB4ENR |= RCC_APB4ENR_SYSCFGEN;
 	RCC->APB1HENR |= RCC_APB1HENR_FDCANEN;
 	RCC->D2CCIP1R |= RCC_D2CCIP1R_FDCANSEL_1;
@@ -211,6 +243,7 @@ void Control_SystemConf(void)
 	TG_Conf();
 	Can_Conf();
 	RNEA_Conf();
+	Kin_Conf();
 	Cotrol_SafetyConf();
 	IO_Conf();
 	Control_ResetCanDevicesAtBeginig();
@@ -1256,6 +1289,7 @@ static void Control_JtcAct(void)
 	IO_InputsAct();
 	Control_CheckErrorFlags();
 	Control_JtcCheckState();
+	Kin_RobPosAct();
 	
 	if(pC->Jtc.currentFsm == JTC_FSM_Error)
 	{

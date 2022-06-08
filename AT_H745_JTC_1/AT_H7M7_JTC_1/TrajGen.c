@@ -2,7 +2,6 @@
 extern sControl* pC;
 extern sTrajectory Traj;
 extern sMB_RTUSlave	Mbs;
-uint32_t time[5]={0,0,0,0,0};
 double accmax = 1.0; //minimum 1.0, maximum 4*pi
 union conv32
 {
@@ -57,7 +56,7 @@ void TG_SetDefaultVariables(void)
 		Traj.Tgen.waypoints[i].moveType = SPMT_Null;
 		Traj.Tgen.waypoints[i].vel = 0.0;
 		for(int num=0;num<JOINTS_MAX;num++)
-			Traj.Tgen.waypoints[i].pos[num] = 0.0;
+			Traj.Tgen.waypoints[i].pos.v[num] = 0.0;
 	}
 	Traj.Tgen.status = TGS_Idle;
 }
@@ -65,7 +64,84 @@ void TG_Conf(void)
 {
 	TG_SetDefaultVariables();
 }
-bool TG_GetSeqFromMbs(void)
+static sRobPos TG_GetSeqPointConfSpace(uint16_t numidx)
+{
+	uint16_t idx = numidx;
+	sRobPos p;
+	union conv32 x;
+	p.moveType = (eSeqPointMoveType)Mbs.hregs[idx++];
+	for(uint32_t j=0;j<JOINTS_MAX;j++)
+	{
+		x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+		x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+		p.pos.v[j] = x.f32;
+	}
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.vel = x.f32;
+	p.type = SPT_Way;
+	
+	return p;
+}
+static sRobPos TG_GetSeqPointKartesianSpace(uint16_t numidx)
+{
+	uint16_t idx = numidx;
+	sRobPos p;
+	union conv32 x;
+	p.moveType = (eSeqPointMoveType)Mbs.hregs[idx++];
+	
+	//Wektor pozycji XYZ
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.mat.v[0][3] = x.f32;
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.mat.v[1][3] = x.f32;
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.mat.v[2][3] = x.f32;
+	
+	//Wektor orientacji w kwaternionach
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.quat.v[0] = x.f32;
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.quat.v[1] = x.f32;
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.quat.v[2] = x.f32;
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.quat.v[3] = x.f32;
+	
+	//Wektor konfiguracji rozwiazania kinematyki
+	p.conf.v[0] = Mbs.hregs[idx++];
+	p.conf.v[1] = Mbs.hregs[idx++];
+	p.conf.v[2] = Mbs.hregs[idx++];
+	p.conf.v[3] = Mbs.hregs[idx++];
+	
+	//Numer ukladu wspólrzednych wzgledem którego jest podawana pozycja i orientacja: 0 - uklad bazowy robota
+	p.refSystem = Mbs.hregs[idx++];
+	
+	//Predkosc maksymalna dla tego punktu
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.vel = x.f32;
+	
+	//Promien okregu w jakimma zmiescic sie robot przy omijaniu waypointów. Wartosc 0.0 oznacza brak omijania w tym punkcie.
+	x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
+	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
+	p.zone = x.f32;
+	
+	p = Kin_IKCalc(p);
+	p.pos = p.qSol;
+	
+	p.type = SPT_Way;
+	
+	return p;
+}
+static bool TG_GetSeqFromMbs(void)
 {
 	uint32_t idx = MRN_SeqStart;
 	Traj.Tgen.seqNum = Mbs.hregs[idx++];
@@ -85,40 +161,39 @@ bool TG_GetSeqFromMbs(void)
 	}
 	
 	for(uint32_t j=0;j<JOINTS_MAX;j++)
-		Traj.Tgen.waypoints[0].pos[j] = pC->Joints[j].currentPos;
+		Traj.Tgen.waypoints[0].pos.v[j] = pC->Joints[j].currentPos;
 	
-	for(uint32_t j=0;j<JOINTS_MAX;j++)
-		Traj.Tgen.waypoints[0].pos[j] = 0;
+//	for(uint32_t j=0;j<JOINTS_MAX;j++)
+//		Traj.Tgen.waypoints[0].pos[j] = 0;
+	
 	Traj.Tgen.waypoints[0].vel = 0.0;
 	Traj.Tgen.waypoints[0].type = SPT_Start;
-	Traj.Tgen.waypoints[0].moveType = SPMT_Ptp;
+	Traj.Tgen.waypoints[0].moveType = SPMT_ConfSpacePtp;
 	
 	//pomocniczy waypoint bliko punktu startowego
 	for(uint32_t j=0;j<JOINTS_MAX;j++)
-		Traj.Tgen.waypoints[1].pos[j] = Traj.Tgen.waypoints[0].pos[j];
+		Traj.Tgen.waypoints[1].pos.v[j] = Traj.Tgen.waypoints[0].pos.v[j];
 	Traj.Tgen.waypoints[1].vel = 0.2 * accmax;
 	Traj.Tgen.waypoints[1].type = SPT_Way;
 	Traj.Tgen.waypoints[1].moveType = Traj.Tgen.waypoints[0].moveType;
 	
-	union conv32 x;
 	for(uint32_t i=2;i<Traj.Tgen.maxwaypoints-1;i++)
 	{
-		Traj.Tgen.waypoints[i].moveType = (eSeqPointMoveType)Mbs.hregs[idx++];
-		for(uint32_t j=0;j<JOINTS_MAX;j++)
+		if((eSeqPointMoveType)Mbs.hregs[idx] == SPMT_ConfSpacePtp)
 		{
-			x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
-			x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
-			Traj.Tgen.waypoints[i].pos[j] = x.f32;
+			Traj.Tgen.waypoints[i] = TG_GetSeqPointConfSpace(idx);
+			idx += 15;
 		}
-		x.u32 = (uint32_t)Mbs.hregs[idx++] << 16;
-		x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
-		Traj.Tgen.waypoints[i].vel = x.f32;
-		Traj.Tgen.waypoints[i].type = SPT_Way;
+		else if((eSeqPointMoveType)Mbs.hregs[idx] == SPMT_KartSpacePtp)
+		{
+			Traj.Tgen.waypoints[i] = TG_GetSeqPointKartesianSpace(idx);
+			idx += 24;
+		}
 	}
 	
 	//pomocniczy waypoint na koncu
 	for(uint32_t j=0;j<JOINTS_MAX;j++)
-		Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].pos[j] = Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-2].pos[j];
+		Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].pos.v[j] = Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-2].pos.v[j];
 	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].vel = 0.2 * accmax;
 	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].type = SPT_Finish;
 	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].moveType = Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-2].moveType;
@@ -128,12 +203,12 @@ bool TG_GetSeqFromMbs(void)
 	{
 		for(uint32_t j=0;j<JOINTS_MAX;j++)
 		{
-			if(Traj.Tgen.waypoints[i].pos[j] < pC->Joints[j].limitPosMin)
+			if(Traj.Tgen.waypoints[i].pos.v[j] < pC->Joints[j].limitPosMin)
 			{
 				Traj.Tgen.trajPrepStatus = TPS_PosToLow;
 				return false;
 			}
-			if(Traj.Tgen.waypoints[i].pos[j] > pC->Joints[j].limitPosMax)
+			if(Traj.Tgen.waypoints[i].pos.v[j] > pC->Joints[j].limitPosMax)
 			{
 				Traj.Tgen.trajPrepStatus = TPS_PosToHigh;
 				return false;
@@ -273,7 +348,7 @@ static bool TG_SLP_FindAllTimeStamps(void)
 		for(int i=0;i<Traj.Tgen.maxwaypoints+1;i++)
 		{
 			for(int k=0;k<JOINTS_MAX;k++)
-				Traj.Tgen.p1[i][k] = Traj.Tgen.waypoints[i].pos[k];
+				Traj.Tgen.p1[i][k] = Traj.Tgen.waypoints[i].pos.v[k];
 			
 			Traj.Tgen.p1[i][JOINTS_MAX] = Traj.Tgen.waypoints[i].vel;
 		}
