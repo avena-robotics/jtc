@@ -436,15 +436,15 @@ typedef struct
 	eSeqPointMoveType		moveType;
 	eSeqPointType				type;
 	bool								active;
+	uint16_t						refSystem;			//Numer układu współrzędnych względem którego jest podawana pozycja i orientacja: 0 - układ bazowy robota
+	double							vel;						//Maksymalna predkosc ruchu do danej pozycji (uzywana tylko w sekwencji i ewentualnie jogowaniu)
+	double							zone;						//Promień okręgu w jakimma zmieścić się robot przy omijaniu waypointów. Wartość 0.0 oznacza brak omijania w tym punkcie.
 	sVector6 						pos;						//Wektor pozycji we współrzędnych konfiguracyjnych (jointy) - unit: [rad]
 	sMatrix4						mat;						//Macierz pozycji i orientacji kartezjanskiej 4x4
 	sVector4						quat;						//Wektor orientacji kartezjanskiej w quaternionach
 	sVector4UIn16t			conf;						//Wektor konfiguracji rozwiazania kinematyki
 	sIKSol							sol;						//Tablica 8 wektorów z rozwiązaniami kinematyki. Maksymalnie 8 rozwiazań
 	sVector6 						qSol;						//Wybrane rozwiazanie kinematyki - unit: [rad]
-	uint16_t						refSystem;			//Numer układu współrzędnych względem którego jest podawana pozycja i orientacja: 0 - układ bazowy robota
-	double							vel;						//Maksymalna predkosc ruchu do danej pozycji (uzywana tylko w sekwencji i ewentualnie jogowaniu)
-	double							zone;						//Promień okręgu w jakimma zmieścić się robot przy omijaniu waypointów. Wartość 0.0 oznacza brak omijania w tym punkcie.
 }sRobPos;
 typedef struct
 {

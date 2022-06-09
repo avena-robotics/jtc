@@ -55,8 +55,18 @@ void TG_SetDefaultVariables(void)
 		Traj.Tgen.waypoints[i].type = SPT_Finish;
 		Traj.Tgen.waypoints[i].moveType = SPMT_Null;
 		Traj.Tgen.waypoints[i].vel = 0.0;
-		for(int num=0;num<JOINTS_MAX;num++)
-			Traj.Tgen.waypoints[i].pos.v[num] = 0.0;
+		Traj.Tgen.waypoints[i].zone = 0.0;
+		Traj.Tgen.waypoints[i].refSystem = 0;
+		
+		Traj.Tgen.waypoints[i].pos = Vec6Zeros();
+		Traj.Tgen.waypoints[i].qSol = Vec6Zeros();
+		Traj.Tgen.waypoints[i].pos = Vec6Zeros();
+		Traj.Tgen.waypoints[i].quat = Vec4Zeros();
+		Traj.Tgen.waypoints[i].mat = Mat4Ones();
+		for(int j=0;j<IK_SOLNUMREAL;j++)
+		{
+			Traj.Tgen.waypoints[i].sol.v[j] = Vec6Zeros();
+		}
 	}
 	Traj.Tgen.status = TGS_Idle;
 }
@@ -87,6 +97,7 @@ static sRobPos TG_GetSeqPointKartesianSpace(uint16_t numidx)
 {
 	uint16_t idx = numidx;
 	sRobPos p;
+	p.mat = Mat4Ones();
 	union conv32 x;
 	p.moveType = (eSeqPointMoveType)Mbs.hregs[idx++];
 	
@@ -148,7 +159,7 @@ static bool TG_GetSeqFromMbs(void)
 	Traj.Tgen.recwaypoints = Mbs.hregs[idx++];
 	Traj.Tgen.maxwaypoints = Traj.Tgen.recwaypoints + 3;
 	
-	if(Traj.Tgen.maxwaypoints == 0)
+	if(Traj.Tgen.recwaypoints == 0)
 	{
 		Traj.Tgen.trajPrepStatus = TPS_NotEnoughWaypoints;
 		return false;
@@ -196,7 +207,7 @@ static bool TG_GetSeqFromMbs(void)
 		Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].pos.v[j] = Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-2].pos.v[j];
 	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].vel = 0.2 * accmax;
 	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].type = SPT_Finish;
-	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].moveType = Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-2].moveType;
+	Traj.Tgen.waypoints[Traj.Tgen.maxwaypoints-1].moveType = SPMT_ConfSpacePtp;
 	
 	//Sprawdzenie zadanych pozycji i predkosci pod katem limitów
 	for(uint32_t i=0;i<Traj.Tgen.maxwaypoints;i++)

@@ -1,21 +1,28 @@
 #include "RNEA.h"
 extern sControl* pC;
 // general function for matrix and vectors
-static sVector3 Vec3Zeros(void)
+sVector3 Vec3Zeros(void)
 {
 	sVector3 t;
 	for(int i=0;i<3;i++)
 		t.v[i] = 0.0;
 	return t;
 }
-static sVector6 Vec6Zeros(void)
+sVector4 Vec4Zeros(void)
+{
+	sVector4 t;
+	for(int i=0;i<4;i++)
+		t.v[i] = 0.0;
+	return t;
+}
+sVector6 Vec6Zeros(void)
 {
 	sVector6 t;
 	for(int i=0;i<6;i++)
 		t.v[i] = 0.0;
 	return t;
 }
-static sMatrix3 Mat3Ones(void)
+sMatrix3 Mat3Ones(void)
 {
 	sMatrix3 t;
 	for(int i=0;i<3;i++)
@@ -26,7 +33,7 @@ static sMatrix3 Mat3Ones(void)
 				t.v[i][j] = 0.0;
 	return t;
 }
-static sMatrix4 Mat4Ones(void)
+sMatrix4 Mat4Ones(void)
 {
 	sMatrix4 t;
 	for(int i=0;i<4;i++)
