@@ -75,8 +75,8 @@ void Control_SetDefualtArmModel(void)
 	
 	pC->Arm.Links[0].mass = 0.750;		//mass of link 0
 	pC->Arm.Links[1].mass = 3.800;		//mass of link 1
-	pC->Arm.Links[2].mass = 7.500;		//mass of link 2
-	pC->Arm.Links[3].mass = 4.800;		//mass of link 3
+	pC->Arm.Links[2].mass = 6.900;		//mass of link 2
+	pC->Arm.Links[3].mass = 4.600;		//mass of link 3
 	pC->Arm.Links[4].mass = 1.960;		//mass of link 4
 	pC->Arm.Links[5].mass = 1.960;		//mass of link 5
 	pC->Arm.Links[6].mass = 0.082;		//mass of link 6
@@ -1249,7 +1249,7 @@ static void Control_JtcHoldPos(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque;
-		pC->Joints[num].setTorqueTemp *= 1.3;
+
 	}
 }
 static void Control_JtcOperate(void)
@@ -1277,7 +1277,7 @@ static void Control_JtcOperate(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque + pC->Joints[num].fricTorque;
-		pC->Joints[num].setTorqueTemp *= 1.3;
+
 	}
 }
 static void Control_JtcAct(void)
