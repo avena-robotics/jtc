@@ -56,11 +56,13 @@ typedef enum
 typedef enum 
 {
 	MRN_TStart = 0,
-	MRN_TFinish = 155,
+	MRN_TFinish = 156,
 	MRN_CfStart = 200,
-	MRN_CfFinish = 218,
+	MRN_CfFinish = 219,
 	MRN_CtrlStart = 300,
 	MRN_CtrlFinish = 330,
+	MRN_JogStart = 387,
+	MRN_JogFinish = 399,
 	MRN_PidStart = 400,
 	MRN_PidFinish = 459,
 	MRN_ArmStart = 500,
@@ -291,6 +293,20 @@ typedef enum
 	//AI - currently not used
 }eIONum;
 
+typedef enum
+{
+	JRS_Joints = 0,
+	JRS_Base = 1,
+	JRS_Tool = 2,
+}eJogRefSystem;
+typedef enum
+{
+	JKS_Idle = 0,
+	JKS_InputIsReady,
+	JKS_IsBusy,
+	JKS_OutputIsReady,
+}eJogKinStatus;
+
 typedef enum 
 {
 	Debug_FT_Header = 155,
@@ -318,6 +334,11 @@ typedef enum
 #define DEBUG
 //#define RS422
 //#define UARTUSB
+//#define MATLABSIM
+
+#ifdef MATLABSIM
+#define MATLABSIM_COMBAUDRATE 			57600
+#endif
 
 #ifdef DEBUG
 #define DEBUG_COMBAUDRATE 					921600
@@ -332,6 +353,9 @@ typedef enum
 #define HOST_COMBAUDRATE 						115200
 #define HOST_COMTIMSEND							40
 #endif
+
+#define MATLABSIM_COMBUFREADSIZE 		100
+#define MATLABSIM_COMBUFWRITESIZE 	100
 
 #define DEBUG_COMBUFREADSIZE 				100
 #define DEBUG_COMBUFWRITESIZE 			20000
@@ -373,6 +397,9 @@ typedef enum
 
 #define IK_SOLNUM										16
 #define IK_SOLNUMREAL								8
+
+#define JOG_MAXREFSYS								3
+#define	ROBTOOLMAX									10
 
 typedef struct 	{	double v[3][3];	}sMatrix3;
 typedef struct	{ double v[4][4];	}sMatrix4;
@@ -446,6 +473,24 @@ typedef struct
 	sIKSol							sol;						//Tablica 8 wektorów z rozwiązaniami kinematyki. Maksymalnie 8 rozwiazań
 	sVector6 						qSol;						//Wybrane rozwiazanie kinematyki - unit: [rad]
 }sRobPos;
+typedef struct
+{
+	sMatrix4						mat;						//macierz pozycji i orientacji układu narzedzia wzgledem podstawy narzedzia (flanszy ostatniego jointa robota)
+	sVector6						dim;						//wymiary odsuniecia i obrotu układu narzedzia wzgledem podstawy narzedzia (flanszy ostatniego jointa robota)
+	sMatrix4						matInv;					//macierz pozycji i orientacji układu podstawy narzedzia (flanszy ostatniego jointa robota) wzgledem układu narzedzia 
+}sRobTool;
+typedef struct
+{
+	bool								active[JOG_MAXREFSYS];
+	eJogKinStatus				kinStatus;							//stan obliczeń kinematyki odwrotnej podczas jogowania
+	double							stepTime;								//krok czasowy odświeżania jogowania. Domyślnie taki sam jak krok czasowy głównej pętli programu czyli 0.001 sek
+	double							percentVelPrec;					//Minimalna wartość bezwzgledna zadanej predkosci
+	eJogRefSystem				refSystem;							//Numer układu względem którego realizowany jest ruch
+	sVector6						percentVel;							//Prędkość jogowania w danej osi. Wyrażona jako % prędkości maksymalnej.
+	sVector6						maxVel[JOG_MAXREFSYS];	//Maksymalna prędkość jogowania w danej osi dla danego układu odniesienia.
+	sRobPos							currentPos;							//Aktualna pozycja robota podczas jogowania
+	sRobPos							targetPos;							//Docelowa pozycja robota podczas jogowania
+}sRobJog;
 typedef struct
 {
 	eTrajGenStatus			status;
@@ -733,15 +778,16 @@ typedef struct
 	uint16_t				occuredErrors;					// Wszystkie flagi bledow
 	bool						emergencyInput;					 
 	bool						emergencyOutput;
-	bool						internalError;					// Dowolny wewnetrzny Blad w pracy JTC - powoduje ustawienie emergencyOutput
-	bool						externalError;					// Dowolny zewnetrzny Blad w pracy JTC - nie powoduje ustawienia emergencyOutput
-	bool						externalWarning;				// Dowolny zewnetrzny warning w pracy JTC - nie powoduje ustawienia emergencyOutput
-	bool						internalJointsError;		// Blad w pracy JTC zwiazany z jointami - powoduje ustawienie emergencyOutput
-	bool						internalCanError;				// Blad w pracy JTC zwiazany z CAN - powoduje ustawienie emergencyOutput
-	bool						internalComError;				// Blad w pracy JTC zwiazany z COM - powoduje ustawienie emergencyOutput
-	bool						externalJointsError;		// Blad w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
-	bool						externalJointsWarning;	// Warning w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
-	bool						internalParkBrakeError;	// Blad w pracy JTC zwiazany hamulcem parkowania - powoduje ustawienie emergencyOutput
+	bool						internalError;							// Dowolny wewnetrzny Blad w pracy JTC - powoduje ustawienie emergencyOutput
+	bool						externalError;							// Dowolny zewnetrzny Blad w pracy JTC - nie powoduje ustawienia emergencyOutput
+	bool						externalWarning;						// Dowolny zewnetrzny warning w pracy JTC - nie powoduje ustawienia emergencyOutput
+	bool						internalJointsError;				// Blad w pracy JTC zwiazany z jointami - powoduje ustawienie emergencyOutput
+	bool						internalCanError;						// Blad w pracy JTC zwiazany z CAN - powoduje ustawienie emergencyOutput
+	bool						internalComError;						// Blad w pracy JTC zwiazany z COM - powoduje ustawienie emergencyOutput
+	bool						externalJointsError;				// Blad w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
+	bool						externalJointsWarning;			// Warning w dowolnym joint odebrany przez CAN - nie powoduje ustawienia emergencyOutput
+	bool						internalParkBrakeError;			// Blad w pracy JTC zwiazany z hamulcem parkowania - powoduje ustawienie emergencyOutput
+	bool						internalKinNoRealSoution;		// Blad w pracy JTC zwiazany z liczeniem kinematki odwrotnej: brak rzeczywistych rozwiązań - powoduje ustawienie emergencyOutput
 
 	uint8_t					jtcInitStatus;
 	uint8_t					jointsInitStatus;
@@ -756,16 +802,19 @@ typedef struct
 	uint32_t				parkBrakeTimoeutCnt;		// Licznik czasu dla timout odblokowania hamulca parkowania
 	
 	sRobPos					robPos;									//Aktualna pozycja robota w róznych rodzajach współrzędnych
+	sRobJog					robJog;									//Zmienne dotyczace jogowania robota
+	sRobTool				robTools[ROBTOOLMAX];		//Zdefiniowane narzedzia montowane na robocie - dane narzedzi potrzebne do kinematyki
+	uint16_t				robToolNum;							//numer aktualnie wybranego narzędzia. Od 0 do 9. Numer 0 oznacza brak narzędzia (czyli TCP jest na flanszy statniego jointa).
 }sJtc;
 typedef struct
 {
-	double				origin[6];
+	double					origin[6];
 }sArmModelJoint;
 typedef struct
 {
-	double				origin[6];
-	double				mass;
-	double				innertia[6];
+	double					origin[6];
+	double					mass;
+	double					innertia[6];
 }sArmModelLink;
 typedef struct
 {
@@ -785,19 +834,25 @@ typedef struct
 }sIO;
 typedef struct
 {
-	bool										enableSending;											//Włączenie wysyłania ramek
-	uint32_t								tick;
-	double									timeStamp;													//znacznik czasu - początkowa wartość w ramce
-	uint16_t								sampleTime;													//krok czasowy zbierania danych - Unit: ms
-	uint16_t								frameLen;														//Ilość bajtów w pojedynczej ramce
-	uint8_t									bufread[DEBUG_COMBUFREADSIZE];
-	uint8_t 								bufwrite0[DEBUG_COMBUFWRITESIZE];
-	uint8_t 								bufwrite1[DEBUG_COMBUFWRITESIZE];
-	uint8_t									bufNumber;
-	uint16_t								frameCnt;
-	uint16_t								numFrames;
-	uint16_t								packetLen;													//Liczba bajtów w całym pakiecie
+	bool						enableSending;											//Włączenie wysyłania ramek
+	uint32_t				tick;
+	double					timeStamp;													//znacznik czasu - początkowa wartość w ramce
+	uint16_t				sampleTime;													//krok czasowy zbierania danych - Unit: ms
+	uint16_t				frameLen;														//Ilość bajtów w pojedynczej ramce
+	uint8_t					bufread[DEBUG_COMBUFREADSIZE];
+	uint8_t 				bufwrite0[DEBUG_COMBUFWRITESIZE];
+	uint8_t 				bufwrite1[DEBUG_COMBUFWRITESIZE];
+	uint8_t					bufNumber;
+	uint16_t				frameCnt;
+	uint16_t				numFrames;
+	uint16_t				packetLen;													//Liczba bajtów w całym pakiecie
 }sDebug;
+typedef struct
+{
+	uint32_t				tick;
+	uint8_t					bufread[MATLABSIM_COMBUFREADSIZE];
+	char 						bufwrite[MATLABSIM_COMBUFWRITESIZE];
+}sMatSim;
 typedef struct
 {
 	volatile 	uint32_t 			tick;
@@ -816,6 +871,7 @@ void Control_SetDefualtArmModel(void);
 void Control_ClearInternallErrorsInJtc(void);
 void Control_ClearExternallErrorsViaCan(uint8_t byte);
 void Control_ResetDevicesViaCan(uint8_t byte);
+void ControlJtcJogKinCalc(void);
 
 #include "Com.h"
 #include "Can.h"
@@ -826,5 +882,6 @@ void Control_ResetDevicesViaCan(uint8_t byte);
 #include "TrajGen.h"
 #include "InputsOutputs.h"
 #include "Debug.h"
+#include "MatlabSim.h"
 
 #endif

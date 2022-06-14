@@ -25,3 +25,4 @@
 .\objects\rnea.o: TrajGen.h
 .\objects\rnea.o: InputsOutputs.h
 .\objects\rnea.o: Debug.h
+.\objects\rnea.o: MatlabSim.h

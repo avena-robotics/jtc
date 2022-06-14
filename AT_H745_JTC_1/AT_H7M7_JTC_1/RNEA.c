@@ -44,7 +44,7 @@ sMatrix4 Mat4Ones(void)
 				t.v[i][j] = 0.0;
 	return t;
 }
-static sMatrix4 HT(double x, double y, double z)
+sMatrix4 HT(double x, double y, double z)
 {
 	sMatrix4 t;
 	for(int i=0;i<4;i++)
@@ -60,7 +60,7 @@ static sMatrix4 HT(double x, double y, double z)
 	
 	return t;
 }
-static sMatrix4 HRX(double alpha)
+sMatrix4 HRX(double alpha)
 {
 	sMatrix4 t;
 	for(int i=0;i<4;i++)
@@ -77,7 +77,7 @@ static sMatrix4 HRX(double alpha)
 	
 	return t;
 }
-static sMatrix4 HRY(double betha)
+sMatrix4 HRY(double betha)
 {
 	sMatrix4 t;
 	for(int i=0;i<4;i++)
@@ -94,7 +94,7 @@ static sMatrix4 HRY(double betha)
 	
 	return t;
 }
-static sMatrix4 HRZ(double gamma)
+sMatrix4 HRZ(double gamma)
 {
 	sMatrix4 t;
 	for(int i=0;i<4;i++)
@@ -119,7 +119,7 @@ static sMatrix3 Mat3Transpose(sMatrix3 m)
 			t.v[j][i] = m.v[i][j];
 	return t;
 }
-static sMatrix3 Mat3xMat3(sMatrix3 m1, sMatrix3 m2)
+sMatrix3 Mat3xMat3(sMatrix3 m1, sMatrix3 m2)
 {
 	sMatrix3 t;
 	for(int i=0;i<3;i++)
@@ -133,7 +133,7 @@ static sMatrix3 Mat3xMat3(sMatrix3 m1, sMatrix3 m2)
 	}
 	return t;
 }
-static sMatrix4 Mat4xMat4(sMatrix4 m1, sMatrix4 m2)
+sMatrix4 Mat4xMat4(sMatrix4 m1, sMatrix4 m2)
 {
 	sMatrix4 t;
 	for(int i=0;i<4;i++)
@@ -158,7 +158,7 @@ static sVector3 Mat3xVec3(sMatrix3 m, sVector3 v)
 	}
 	return t;
 }
-static sMatrix3 Mat4ToMat3(sMatrix4 m)
+sMatrix3 Mat4ToMat3(sMatrix4 m)
 {
 	sMatrix3 t;
 	for(int i=0;i<3;i++)
@@ -166,7 +166,7 @@ static sMatrix3 Mat4ToMat3(sMatrix4 m)
 			t.v[i][j] = m.v[i][j];
 	return t;
 }
-static sMatrix4 Mat3ToMat4(sMatrix3 m3, sMatrix4 m4)
+sMatrix4 Mat3ToMat4(sMatrix3 m3, sMatrix4 m4)
 {
 	sMatrix4 t = m4;
 	for(int i=0;i<3;i++)
@@ -223,7 +223,7 @@ static sVector3 Vec3SetValues(double a0, double a1, double a2)
 	t.v[0] = a0; t.v[1] = a1; t.v[2] = a2;
 	return t;
 }
-static sVector6 Vec6SetValues(double a0, double a1, double a2, double a3, double a4, double a5)
+sVector6 Vec6SetValues(double a0, double a1, double a2, double a3, double a4, double a5)
 {
 	sVector6 t;
 	t.v[0] = a0; t.v[1] = a1; t.v[2] = a2; t.v[3] = a3; t.v[4] = a4; t.v[5] = a5;
@@ -246,7 +246,7 @@ static sMatrix3 InvMat3(sMatrix3 m)
 	out.v[2][2] = 	(m01*m10-m00*m11)/(m02*m11*m20-m01*m12*m20-m02*m10*m21+m00*m12*m21+m01*m10*m22-m00*m11*m22);
 	return out;
 }
-static sMatrix4 InvMat4(sMatrix4 m)
+sMatrix4 InvMat4(sMatrix4 m)
 {
 	sMatrix4 out = Mat4Ones();
 	double m00 = m.v[0][0], m01 = m.v[0][1], m02 = m.v[0][2], m03 = m.v[0][3];
@@ -266,7 +266,6 @@ static sMatrix4 InvMat4(sMatrix4 m)
 	out.v[2][3] = 	(m03*m11*m20-m01*m13*m20-m03*m10*m21+m00*m13*m21+m01*m10*m23-m00*m11*m23)/(-(m02*m11*m20)+m01*m12*m20+m02*m10*m21-m00*m12*m21-m01*m10*m22+m00*m11*m22);
 	return out;
 }
-
 
 // ------------------ Inverse dynamic by RNEA ------------------
 const int DOF = 6;
@@ -453,7 +452,7 @@ static bool Kin_SolIsReal(sVector6 v)
 	}
 	return true;
 }
-static sMatrix3 Kin_QuatToRotmat(sVector4 v)
+sMatrix3 Kin_QuatToRotmat(sVector4 v)
 {
 	double qw = v.v[0], qx = v.v[1], qy = v.v[2], qz = v.v[3];
 	sMatrix3 mat = Mat3Ones();
@@ -470,7 +469,7 @@ static sMatrix3 Kin_QuatToRotmat(sVector4 v)
 	
 	return mat;
 }
-static sVector4 Kin_RotmatToQuat(sMatrix3 m)
+sVector4 Kin_RotmatToQuat(sMatrix3 m)
 {
 	sVector4 v;
 	double qw, qx, qy, qz;
@@ -550,6 +549,7 @@ static sMatrix4 Kin_FKRaw(sVector6 qv)
 	
 	return mat;
 }
+
 static sIKSol Kin_IKRaw(sMatrix4 mzad)
 {
 	sIKSol sol;
@@ -678,28 +678,46 @@ static sIKSol Kin_IKRaw(sMatrix4 mzad)
 }
 void Kin_Conf(void)
 {
-	qq1 = pC->Arm.Joints[0].origin[5]; // j1yaw
 	d1 = pC->Arm.Joints[0].origin[2] + pC->Arm.Joints[1].origin[2]; // j1z + j2z;
 	a2 = -pC->Arm.Joints[2].origin[0]; // -j3x; 
 	a3 = pC->Arm.Joints[3].origin[0]; // j4x; 
 	d4 = pC->Arm.Joints[1].origin[0] + pC->Arm.Joints[2].origin[2] - pC->Arm.Joints[3].origin[2] + pC->Arm.Joints[4].origin[2]; // j2x + j3z - j4z + j5z; 
 	d5 = pC->Arm.Joints[4].origin[0] + pC->Arm.Joints[5].origin[2]; // j5x + j6z; 
 	d6 = pC->Arm.Joints[5].origin[0] + pC->Arm.Joints[6].origin[2]; // j6x + j7z;
-	offset = Vec6SetValues(M_PI_2 + qq1, M_PI_2, 0, M_PI_2, 0, M_PI_2);
+	offset = Vec6SetValues(M_PI_2, M_PI_2, 0, M_PI_2, 0, M_PI_2);
 	dir = Vec6SetValues(1.0, 1.0, -1.0, 1.0, 1.0, 1.0);
+}
+static void Kin_CheckNoRealSolutionError(sRobPos pointIn)
+{
+	if(pointIn.sol.isRealSolNum == 0)
+		pC->Jtc.internalKinNoRealSoution = true;
+	else
+		pC->Jtc.internalKinNoRealSoution = false;
 }
 sRobPos Kin_FKCalc(sRobPos pointIn)
 {
 	sRobPos pointOut = pointIn;
 	pointOut.mat = Kin_FKRaw(pointIn.pos); //pozycja we wsp. konf. na macierz pozycji i rotacji 4x4
+	pointOut.mat = Mat4xMat4(pointOut.mat, pC->Jtc.robTools[pC->Jtc.robToolNum].mat); //uwzglednienie aktualnie wybranego narzedzia
 	pointOut.quat = Kin_RotmatToQuat(Mat4ToMat3(pointOut.mat)); //macierz pozycji i rotacji na quaterniony
 	return pointOut;
 }
-sRobPos Kin_IKCalc(sRobPos pointIn)
+sRobPos Kin_IKCalcFromQuat(sRobPos pointIn)
 {
 	sRobPos pointOut = pointIn;
 	pointOut.mat = Mat3ToMat4(Kin_QuatToRotmat(pointIn.quat), pointOut.mat);
-	pointOut.sol = Kin_IKRaw(pointOut.mat);
+	sMatrix4 matTemp = Mat4xMat4(pointOut.mat, pC->Jtc.robTools[pC->Jtc.robToolNum].matInv); //uwzglednienie aktualnie wybranego narzedzia
+	pointOut.sol = Kin_IKRaw(matTemp);
+	Kin_CheckNoRealSolutionError(pointOut);
+	pointOut.qSol = pointOut.sol.v[pointOut.conf.v[3]];
+	return pointOut;
+}
+sRobPos Kin_IKCalcFromRotMat(sRobPos pointIn)
+{
+	sRobPos pointOut = pointIn;
+	sMatrix4 matTemp = Mat4xMat4(pointOut.mat, pC->Jtc.robTools[pC->Jtc.robToolNum].matInv); //uwzglednienie aktualnie wybranego narzedzia
+	pointOut.sol = Kin_IKRaw(matTemp);
+	Kin_CheckNoRealSolutionError(pointOut);
 	pointOut.qSol = pointOut.sol.v[pointOut.conf.v[3]];
 	return pointOut;
 }

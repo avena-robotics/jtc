@@ -10,6 +10,7 @@
 ".\objects\trajgen.o"
 ".\objects\inputsoutputs.o"
 ".\objects\debug.o"
+".\objects\matlabsim.o"
 ".\objects\startup_stm32h745xx.o"
 ".\objects\system_stm32h7xx_dualcore_boot_cm4_cm7.o"
 --strict --scatter ".\Objects\AT_H7M7_JTC_1.sct"

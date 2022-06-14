@@ -70,6 +70,20 @@ void TG_SetDefaultVariables(void)
 	}
 	Traj.Tgen.status = TGS_Idle;
 }
+void TG_ClearTgenVariables(void)
+{
+	if(Traj.Tgen.status == TGS_Idle)
+		return;
+	
+	Traj.Tgen.stepTime = 0.001;
+	Traj.Tgen.seqNum = 0;
+	Traj.Tgen.recwaypoints = 0;
+	Traj.Tgen.maxwaypoints = 0;
+	Traj.Tgen.maxpoints = 0;
+	Traj.Tgen.reqTrajPrepare = false;
+	
+	Traj.Tgen.status = TGS_Idle;
+}
 void TG_Conf(void)
 {
 	TG_SetDefaultVariables();
@@ -145,7 +159,7 @@ static sRobPos TG_GetSeqPointKartesianSpace(uint16_t numidx)
 	x.u32 += (uint32_t)Mbs.hregs[idx++] << 0;
 	p.zone = x.f32;
 	
-	p = Kin_IKCalc(p);
+	p = Kin_IKCalcFromQuat(p);
 	p.pos = p.qSol;
 	
 	p.type = SPT_Way;
@@ -646,7 +660,7 @@ void TG_TrajGen(void)
 	if(Traj.Tgen.reqTrajPrepare == false)
 		return;
 
-	TG_SetDefaultVariables();
+	TG_ClearTgenVariables();
 	
 	if(TG_GetSeqFromMbs() == false)
 	{

@@ -24,3 +24,4 @@
 .\objects\control.o: TrajGen.h
 .\objects\control.o: InputsOutputs.h
 .\objects\control.o: Debug.h
+.\objects\control.o: MatlabSim.h

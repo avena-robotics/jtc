@@ -345,6 +345,8 @@ static void MBS_ActTelemetry(void)
 	x.f32 = pC->Jtc.robPos.mat.v[2][2];
 	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 16);
 	Mbs.hregs[idx++] = (uint16_t)(x.u32 >> 0);
+	
+	Mbs.hregs[idx++] = pC->Jtc.robToolNum;
 }
 static void MBS_ActConfigWords(void)
 {
@@ -356,6 +358,9 @@ static void MBS_ActConfigWords(void)
 	pC->Joints[4].reqIgnore = (bool)Mbs.hregs[idx++];
 	pC->Joints[5].reqIgnore = (bool)Mbs.hregs[idx++];
 	pC->Gripper.reqIgnore = (bool)Mbs.hregs[idx++];
+	pC->Jtc.robToolNum = Mbs.hregs[idx++];
+	if(pC->Jtc.robToolNum >= ROBTOOLMAX)
+		pC->Jtc.robToolNum = 0;
 }
 static void MBS_ActControlWords(void)
 {
@@ -393,8 +398,22 @@ static void MBS_ActControlWords(void)
 	if(Mbs.hregs[idx++] == 0x01)		Control_ResetDevicesViaCan(0x20);
 	if(Mbs.hregs[idx++] == 0x01)		Control_ResetDevicesViaCan(0x40);
 	
+	
 	for(uint16_t i=MRN_CtrlStart;i<=MRN_CtrlFinish;i++)
 		Mbs.hregs[i] = 0x00;
+}
+static void MBS_ActJogWords(void)
+{
+	uint16_t idx = MRN_JogStart;
+	
+	pC->Jtc.robJog.refSystem = (eJogRefSystem)Mbs.hregs[idx++];
+	union conv32 x;
+	for(int i=0;i<JOINTS_MAX;i++)
+	{
+		x.u32 = ((uint32_t)Mbs.hregs[idx++]<<16);
+		x.u32 += ((uint32_t)Mbs.hregs[idx++]<<0);
+		pC->Jtc.robJog.percentVel.v[i] = x.f32;
+	}
 }
 static void MBS_ResponseError_IDR(void)
 {
@@ -674,6 +693,7 @@ void MBS_Act(void)
 	MBS_ActConfigWords();
 	MBS_ActControlWords();
 	MBS_ActTelemetry();
+	MBS_ActJogWords();
 }
 void USART2_IRQHandler(void)
 {

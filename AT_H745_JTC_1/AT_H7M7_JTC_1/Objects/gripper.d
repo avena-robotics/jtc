@@ -25,3 +25,4 @@
 .\objects\gripper.o: TrajGen.h
 .\objects\gripper.o: InputsOutputs.h
 .\objects\gripper.o: Debug.h
+.\objects\gripper.o: MatlabSim.h

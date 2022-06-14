@@ -4,4 +4,5 @@
 void TG_Conf(void);
 void TG_TrajGen(void);
 void TG_SetDefaultVariables(void);
+void TG_ClearTgenVariables(void);
 #endif

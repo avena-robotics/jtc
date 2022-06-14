@@ -2,10 +2,15 @@
 sControl Control;
 sTrajectory Traj __attribute__((section (".ARM.__at_0x24000000"))); // Trajektoria, w pamieci AXI_RAM, max 512kB
 #ifndef DEBUG
+#ifndef MATLABSIM
 sHost_Com Com  __attribute__((section (".ARM.__at_0x30000000"))); // Bufory komunikacji z hostem, w pamieci SRAM1 do SRAM3, max 288kB
+#endif
 #endif
 #ifdef DEBUG
 sDebug Debug  __attribute__((section (".ARM.__at_0x30000000"))); // Bufory komunikacji debugowania, w pamieci SRAM1 do SRAM3, max 288kB
+#endif
+#ifdef MATLABSIM
+sMatSim	MatSim  __attribute__((section (".ARM.__at_0x30000000"))); // Bufory komunikacji debugowania, w pamieci SRAM1 do SRAM3, max 288kB
 #endif
 sMB_RTUSlave	Mbs __attribute__((section (".ARM.__at_0x38000000"))); // Bufory komunikacji poprzez ModBus, w pamieci SRAM4, max 64kB
 sControl* pC = &Control;
@@ -108,6 +113,36 @@ static void Control_JtcVariableConf(void)
 	pC->Jtc.internalCanError = false;
 	pC->Jtc.internalComError = false;
 }
+static void Control_RobToolVariableConf(void)
+{
+	for(int i=0;i<ROBTOOLMAX;i++)
+		pC->Jtc.robTools[i].dim = Vec6Zeros();
+	
+	pC->Jtc.robTools[1].dim = Vec6SetValues(0, 0, 0.140, 0, 0, 0);
+	
+	for(int i=0;i<ROBTOOLMAX;i++)
+	{
+		pC->Jtc.robTools[i].mat = Mat4Ones();
+		pC->Jtc.robTools[i].mat = Mat4xMat4(pC->Jtc.robTools[i].mat, HT(pC->Jtc.robTools[i].dim.v[0], pC->Jtc.robTools[i].dim.v[1], pC->Jtc.robTools[i].dim.v[2]));
+		pC->Jtc.robTools[i].mat = Mat4xMat4(pC->Jtc.robTools[i].mat, HRZ(pC->Jtc.robTools[i].dim.v[5]));
+		pC->Jtc.robTools[i].mat = Mat4xMat4(pC->Jtc.robTools[i].mat, HRY(pC->Jtc.robTools[i].dim.v[4]));
+		pC->Jtc.robTools[i].mat = Mat4xMat4(pC->Jtc.robTools[i].mat, HRX(pC->Jtc.robTools[i].dim.v[3]));
+		pC->Jtc.robTools[i].matInv = InvMat4(pC->Jtc.robTools[i].mat);
+	}
+	
+	pC->Jtc.robToolNum = 0; //Domyślnie wybrane narzedzie
+}
+static void Control_JogVariableConf(void)
+{
+	pC->Jtc.robJog.stepTime = 0.001;
+	pC->Jtc.robJog.percentVelPrec = 0.001;
+	pC->Jtc.robJog.refSystem = JRS_Joints;
+	pC->Jtc.robJog.percentVel = Vec6Zeros();
+	for(int i=JRS_Joints;i<JOG_MAXREFSYS;i++)
+	{
+		pC->Jtc.robJog.maxVel[i] = Vec6SetValues(1, 1, 1, 1, 1, 1);
+	}
+}
 static void Control_TrajClearPointDouble(sTrajPointDouble * p)
 {
 	for(uint32_t num=0;num<JOINTS_MAX;num++)
@@ -130,6 +165,8 @@ static void Control_VariablesConf(void)
 	Joints_SetDefaultPidParam();
 	Gripper_SetStartValuesVariables();
 	Control_SetDefualtArmModel();
+	Control_RobToolVariableConf();
+	Control_JogVariableConf();
 }
 static void Control_ClockConf(void)
 {
@@ -238,6 +275,10 @@ void Control_SystemConf(void)
 	
 	#ifdef DEBUG
 	Debug_Conf();
+	#endif
+	
+	#ifdef MATLABSIM
+	MatlabSim_Conf();
 	#endif
 	
 	TG_Conf();
@@ -357,6 +398,11 @@ static void Control_CheckParkBrakeTimeout(void)
 		pC->Jtc.parkBrakeTimoeutCnt = 0;
 	}
 }
+static void Control_KinNoRealSolutionErrorReact(void)
+{
+	if(pC->Jtc.internalKinNoRealSoution == true)
+		pC->Jtc.internalParkBrakeError = true;
+}
 static void Control_CheckErrorFlags(void)
 {
 	pC->Jtc.internalError = false;
@@ -386,6 +432,8 @@ static void Control_CheckErrorFlags(void)
 			pC->Joints[num].flagPosErrorOverlimit = false;
 			
 			pC->Joints[num].cWPosNotAccurate = false;
+			
+			pC->Joints[num].currentPos = pC->Joints[num].setPosTemp;
 		}
 		
 		// Standardowa procedura obsługi błędów z danego jointa
@@ -419,6 +467,9 @@ static void Control_CheckErrorFlags(void)
 	
 	// Check Park Brake Timeout
 	Control_CheckParkBrakeTimeout();
+	
+	// Reakcja na bląd z kinematyki odwrotnej dotyczący braku rzeczywistych rozwiazan
+	Control_KinNoRealSolutionErrorReact();
 	
 	// Check CAN comunication errors
 	if(pC->Can.statusId == Can_SId_Error)
@@ -454,15 +505,16 @@ static void Control_CheckErrorFlags(void)
 	
 	// Przygotowywanie flag bledów JTC do wyslania
 	pC->Jtc.errors = 0x0000;
-	pC->Jtc.errors |= pC->Jtc.emergencyInput << 0; 				// bit 0
-	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 			// bit 1
-	pC->Jtc.errors |= pC->Jtc.internalError << 2; 				// bit 2
-	pC->Jtc.errors |= pC->Jtc.externalError << 3; 				// bit 3
-	pC->Jtc.errors |= pC->Jtc.internalJointsError << 4; 	// bit 4
-	pC->Jtc.errors |= pC->Jtc.internalCanError << 5; 			// bit 5
-	pC->Jtc.errors |= pC->Jtc.internalComError << 6; 			// bit 6
-	pC->Jtc.errors |= pC->Jtc.externalJointsError << 7; 	// bit 7
-	pC->Jtc.errors |= pC->Jtc.internalParkBrakeError << 8; // bit 8
+	pC->Jtc.errors |= pC->Jtc.emergencyInput << 0; 						// bit 0
+	pC->Jtc.errors |= pC->Jtc.emergencyOutput << 1; 					// bit 1
+	pC->Jtc.errors |= pC->Jtc.internalError << 2; 						// bit 2
+	pC->Jtc.errors |= pC->Jtc.externalError << 3; 						// bit 3
+	pC->Jtc.errors |= pC->Jtc.internalJointsError << 4; 			// bit 4
+	pC->Jtc.errors |= pC->Jtc.internalCanError << 5; 					// bit 5
+	pC->Jtc.errors |= pC->Jtc.internalComError << 6; 					// bit 6
+	pC->Jtc.errors |= pC->Jtc.externalJointsError << 7; 			// bit 7
+	pC->Jtc.errors |= pC->Jtc.internalParkBrakeError << 8; 		// bit 8
+	pC->Jtc.errors |= pC->Jtc.internalKinNoRealSoution << 9; 	// bit 9
 	
 	pC->Jtc.occuredErrors |= pC->Jtc.errors;
 	
@@ -739,6 +791,156 @@ static void Control_JtcPrepareSetedValuesForHoldPos(void)
 		pC->Joints[num].setAccTemp = 0.0;
 	}
 }
+static void Control_JtcJogFindNearestSolution(void)
+{
+	double sum[IK_SOLNUMREAL];
+	int solnum = 0;
+	for(int i=0;i<pC->Jtc.robJog.targetPos.sol.isRealSolNum;i++)
+	{
+		sum[i] = 0.0;
+		for(int num=0;num<JOINTS_MAX;num++)
+		{
+			sum[i] += fabs(pC->Jtc.robJog.targetPos.sol.v[i].v[num] - pC->Jtc.robJog.currentPos.pos.v[num]);
+		}
+	}
+	double min = sum[0];
+	for(int i=0;i<pC->Jtc.robJog.targetPos.sol.isRealSolNum;i++)
+	{
+		if(sum[i] < min)
+		{
+			min = sum[i];
+			solnum = i;
+		}
+	}
+	pC->Jtc.robJog.targetPos.conf.v[3] = solnum;
+	pC->Jtc.robJog.targetPos.qSol = pC->Jtc.robJog.targetPos.sol.v[solnum];
+}
+static void Control_JtcJogActJRSJoints(void)
+{
+	if(pC->Jtc.robJog.active[JRS_Joints] == false)
+	{
+		for(int i=0;i<JOG_MAXREFSYS;i++)
+			pC->Jtc.robJog.active[i] = false;
+		pC->Jtc.robJog.active[JRS_Joints] = true;
+	}
+	pC->Jtc.robJog.kinStatus = JKS_Idle;
+	
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		if(fabs(pC->Jtc.robJog.percentVel.v[num]) < pC->Jtc.robJog.percentVelPrec)
+			continue;
+		
+		double tempPos = pC->Joints[num].setPosTemp + (pC->Jtc.robJog.percentVel.v[num] / 100.0) * pC->Jtc.robJog.maxVel[JRS_Joints].v[num] * pC->Jtc.robJog.stepTime;
+		if(pC->Jtc.robJog.percentVel.v[num] > pC->Jtc.robJog.percentVelPrec && tempPos > pC->Joints[num].limitPosMax)
+			continue;
+		if(pC->Jtc.robJog.percentVel.v[num] < -pC->Jtc.robJog.percentVelPrec && tempPos < pC->Joints[num].limitPosMin)
+			continue;
+		pC->Joints[num].setPosTemp = tempPos;
+	}
+}
+static void Control_JtcJogActJRSBase(void)
+{
+	if(pC->Jtc.robJog.active[JRS_Base] == false)
+	{
+		for(int i=0;i<JOG_MAXREFSYS;i++)
+			pC->Jtc.robJog.active[i] = false;
+		pC->Jtc.robJog.active[JRS_Base] = true;
+		pC->Jtc.robJog.targetPos = pC->Jtc.robPos;
+		for(int num=0;num<JOINTS_MAX;num++)
+			pC->Joints[num].setPosTemp = pC->Joints[num].currentPos;
+	}
+	
+	pC->Jtc.robJog.currentPos = pC->Jtc.robPos;
+	sVector6 delta = Vec6Zeros();
+	for(int num=0;num<6;num++)
+	{
+		if(fabs(pC->Jtc.robJog.percentVel.v[num]) < pC->Jtc.robJog.percentVelPrec)
+			continue;
+		delta.v[num] = (pC->Jtc.robJog.percentVel.v[num] / 100.0) * pC->Jtc.robJog.maxVel[JRS_Base].v[num] * pC->Jtc.robJog.stepTime;
+	}
+
+	sMatrix4 deltaMat = Mat4Ones();
+	deltaMat = Mat4xMat4(deltaMat, HRZ(delta.v[5]));
+	deltaMat = Mat4xMat4(deltaMat, HRY(delta.v[4]));
+	deltaMat = Mat4xMat4(deltaMat, HRX(delta.v[3]));
+	pC->Jtc.robJog.targetPos.mat = Mat3ToMat4(Mat3xMat3(Mat4ToMat3(deltaMat), Mat4ToMat3(pC->Jtc.robJog.targetPos.mat)), pC->Jtc.robJog.targetPos.mat);
+
+	for(int i=0;i<3;i++)
+		pC->Jtc.robJog.targetPos.mat.v[i][3] += delta.v[i];
+
+	if(pC->Jtc.robJog.kinStatus == JKS_Idle)
+		pC->Jtc.robJog.kinStatus = JKS_InputIsReady;
+	
+	if(pC->Jtc.robJog.kinStatus == JKS_OutputIsReady)
+	{
+		Control_JtcJogFindNearestSolution();
+		for(int num=0;num<JOINTS_MAX;num++)
+			pC->Joints[num].setPosTemp = pC->Jtc.robJog.targetPos.qSol.v[num];
+		pC->Jtc.robJog.kinStatus = JKS_Idle;
+	}
+}
+static void Control_JtcJogActJRSTool(void)
+{
+	if(pC->Jtc.robJog.active[JRS_Tool] == false)
+	{
+		for(int i=0;i<JOG_MAXREFSYS;i++)
+			pC->Jtc.robJog.active[i] = false;
+		pC->Jtc.robJog.active[JRS_Tool] = true;
+		pC->Jtc.robJog.targetPos = pC->Jtc.robPos;
+		for(int num=0;num<JOINTS_MAX;num++)
+			pC->Joints[num].setPosTemp = pC->Joints[num].currentPos;
+	}
+	
+	pC->Jtc.robJog.currentPos = pC->Jtc.robPos;
+	sVector6 delta = Vec6Zeros();
+	for(int num=0;num<6;num++)
+	{
+		if(fabs(pC->Jtc.robJog.percentVel.v[num]) < pC->Jtc.robJog.percentVelPrec)
+			continue;
+		delta.v[num] = (pC->Jtc.robJog.percentVel.v[num] / 100.0) * pC->Jtc.robJog.maxVel[JRS_Tool].v[num] * pC->Jtc.robJog.stepTime;
+	}
+	
+	sMatrix4 deltaMat = Mat4Ones();
+	deltaMat = Mat4xMat4(deltaMat, HT(delta.v[0], delta.v[1], delta.v[2]));
+	deltaMat = Mat4xMat4(deltaMat, HRZ(delta.v[5]));
+	deltaMat = Mat4xMat4(deltaMat, HRY(delta.v[4]));
+	deltaMat = Mat4xMat4(deltaMat, HRX(delta.v[3]));
+	pC->Jtc.robJog.targetPos.mat = Mat4xMat4(pC->Jtc.robJog.targetPos.mat, deltaMat);
+	
+	if(pC->Jtc.robJog.kinStatus == JKS_Idle)
+		pC->Jtc.robJog.kinStatus = JKS_InputIsReady;
+	
+	if(pC->Jtc.robJog.kinStatus == JKS_OutputIsReady)
+	{
+		Control_JtcJogFindNearestSolution();
+		for(int num=0;num<JOINTS_MAX;num++)
+			pC->Joints[num].setPosTemp = pC->Jtc.robJog.targetPos.qSol.v[num];
+		pC->Jtc.robJog.kinStatus = JKS_Idle;
+	}
+}
+static void Control_JtcJogAct(void)
+{
+	if(pC->Jtc.robJog.refSystem == JRS_Joints)
+	{
+		Control_JtcJogActJRSJoints();
+	}
+	else if(pC->Jtc.robJog.refSystem == JRS_Base)
+	{
+		Control_JtcJogActJRSBase();
+	}
+	else if(pC->Jtc.robJog.refSystem == JRS_Tool)
+	{
+		Control_JtcJogActJRSTool();
+	}
+}
+void ControlJtcJogKinCalc(void)
+{
+	if(pC->Jtc.robJog.kinStatus == JKS_InputIsReady)
+	{
+		pC->Jtc.robJog.targetPos = Kin_IKCalcFromRotMat(pC->Jtc.robJog.targetPos);
+		pC->Jtc.robJog.kinStatus = JKS_OutputIsReady;
+	}
+}
 static void Control_JtcPrepareSetedValuesForOperate(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -769,6 +971,7 @@ void Control_ClearInternallErrorsInJtc(void)
 	pC->Jtc.externalJointsWarning = false;
 	pC->Jtc.parkBrakeTimoeutCnt = 0;
 	pC->Jtc.internalParkBrakeError = false;
+	pC->Jtc.internalKinNoRealSoution = false;
 	pC->Jtc.errors = 0x00;
 	pC->Jtc.occuredErrors = 0x00;
 	
@@ -1062,7 +1265,7 @@ static void Control_JtcCheckState(void)
 static void Control_JtcError(void)
 {
 	Control_TrajClear();
-	TG_SetDefaultVariables();
+	TG_ClearTgenVariables();
 	Joints_SetDefaultVariables();
 	pC->Jtc.teachingModeReq = false;
 	
@@ -1195,7 +1398,7 @@ static void Control_JtcInitPosAccurateStage(void)
 static void Control_JtcInit(void)
 {
 	Control_TrajClear();
-	TG_SetDefaultVariables();
+	TG_ClearTgenVariables();
 	Joints_SetDefaultVariables();
 	pC->Jtc.teachingModeReq = false;
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -1214,7 +1417,7 @@ static void Control_JtcInit(void)
 static void Control_JtcTeaching(void)
 {
 	Control_TrajClear();
-	TG_SetDefaultVariables();
+	TG_ClearTgenVariables();
 	
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
@@ -1243,6 +1446,7 @@ static void Control_JtcHoldPos(void)
 		Control_TrajTransNullToStop();
 	
 	Control_JtcPrepareSetedValuesForHoldPos();
+	Control_JtcJogAct();
 	RNEA_CalcTorques();
 	Joints_CalcPIDs();
 	
@@ -1317,7 +1521,7 @@ static void Control_JtcAct(void)
 		LED2_ON;
 		Control_JtcOperate();
 	}
-	
+
 	Control_CheckLimits();
 	Control_CheckErrorFlags();
 	Control_SetNewTorqueValues();
@@ -1331,6 +1535,9 @@ static void Control_JtcAct(void)
 	#endif
 	#ifdef DEBUG
 	Debug_PrepareFrame();
+	#endif
+	#ifdef MATLABSIM
+	MatlabSim_SendFrame();
 	#endif
 }
 // ********************** Interrupts functions ***********************************

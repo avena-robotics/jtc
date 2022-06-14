@@ -26,13 +26,9 @@ LR_IROM1 0x08000000 0x00100000
   RW_IRAM4 0x00000000 0x00010000 ;ITCM RAM 64kB instrukje do szybkiego wykonania
   {
 	RNEA.o (+RO)
-	Joints.o (+RO)
 	Control.o (+RO)
 	Can.o (+RO)
-	Gripper.o (+RO)
 	Trajgen.o (+RO)
-	InputsOutputs.o (+RO)
-	Debug.o (+RO)
     ; *(.ARM.__at_0x00000000)
   }
   RW_IRAM5 0x38000000 0x00010000  ;SRAM4 64kB
