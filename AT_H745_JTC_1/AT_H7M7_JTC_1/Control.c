@@ -118,7 +118,8 @@ static void Control_RobToolVariableConf(void)
 	for(int i=0;i<ROBTOOLMAX;i++)
 		pC->Jtc.robTools[i].dim = Vec6Zeros();
 	
-	pC->Jtc.robTools[1].dim = Vec6SetValues(0, 0, 0.140, 0, 0, 0);
+	pC->Jtc.robTools[1].dim = Vec6SetValues(0, 0, 0.14456, 0, 0, 0); //Łącznik ISO z iglicą
+	pC->Jtc.robTools[2].dim = Vec6SetValues(-0.020075, 0.063000, 0.251000, 0, 0, 0); //Łącznik ISO z czujnikiem obciążenia
 	
 	for(int i=0;i<ROBTOOLMAX;i++)
 	{
@@ -800,7 +801,7 @@ static void Control_JtcJogFindNearestSolution(void)
 		sum[i] = 0.0;
 		for(int num=0;num<JOINTS_MAX;num++)
 		{
-			sum[i] += fabs(pC->Jtc.robJog.targetPos.sol.v[i].v[num] - pC->Jtc.robJog.currentPos.pos.v[num]);
+			sum[i] += fabs(pC->Jtc.robJog.targetPos.sol.v[i].v[num] - pC->Jtc.robPos.pos.v[num]);
 		}
 	}
 	double min = sum[0];
@@ -850,14 +851,18 @@ static void Control_JtcJogActJRSBase(void)
 			pC->Joints[num].setPosTemp = pC->Joints[num].currentPos;
 	}
 	
-	pC->Jtc.robJog.currentPos = pC->Jtc.robPos;
 	sVector6 delta = Vec6Zeros();
+	bool flag = false;
 	for(int num=0;num<6;num++)
 	{
 		if(fabs(pC->Jtc.robJog.percentVel.v[num]) < pC->Jtc.robJog.percentVelPrec)
 			continue;
 		delta.v[num] = (pC->Jtc.robJog.percentVel.v[num] / 100.0) * pC->Jtc.robJog.maxVel[JRS_Base].v[num] * pC->Jtc.robJog.stepTime;
+		flag = true;
 	}
+	
+	if(flag == false && pC->Jtc.robJog.kinStatus == JKS_Idle)
+		return;
 
 	sMatrix4 deltaMat = Mat4Ones();
 	deltaMat = Mat4xMat4(deltaMat, HRZ(delta.v[5]));
@@ -891,14 +896,18 @@ static void Control_JtcJogActJRSTool(void)
 			pC->Joints[num].setPosTemp = pC->Joints[num].currentPos;
 	}
 	
-	pC->Jtc.robJog.currentPos = pC->Jtc.robPos;
 	sVector6 delta = Vec6Zeros();
+	bool flag = false;
 	for(int num=0;num<6;num++)
 	{
 		if(fabs(pC->Jtc.robJog.percentVel.v[num]) < pC->Jtc.robJog.percentVelPrec)
 			continue;
 		delta.v[num] = (pC->Jtc.robJog.percentVel.v[num] / 100.0) * pC->Jtc.robJog.maxVel[JRS_Tool].v[num] * pC->Jtc.robJog.stepTime;
+		flag = true;
 	}
+	
+	if(flag == false && pC->Jtc.robJog.kinStatus == JKS_Idle)
+		return;
 	
 	sMatrix4 deltaMat = Mat4Ones();
 	deltaMat = Mat4xMat4(deltaMat, HT(delta.v[0], delta.v[1], delta.v[2]));
@@ -940,6 +949,35 @@ void ControlJtcJogKinCalc(void)
 		pC->Jtc.robJog.targetPos = Kin_IKCalcFromRotMat(pC->Jtc.robJog.targetPos);
 		pC->Jtc.robJog.kinStatus = JKS_OutputIsReady;
 	}
+}
+void Control_JtcReqChangeTool(uint16_t num)
+{
+	if(num > ROBTOOLMAX || num == pC->Jtc.targetRobToolNum)
+		return;
+	pC->Jtc.targetRobToolNum = num;
+	pC->Jtc.reqChangeTool = true;
+}
+static void Control_JtcChangeTool(void)
+{
+	if(pC->Jtc.reqChangeTool == false)
+	{
+		return;
+	}
+	else if(pC->Jtc.targetRobToolNum == pC->Jtc.robToolNum)
+	{
+		pC->Jtc.reqChangeTool = false;
+		return;
+	}
+	else if(pC->Jtc.robJog.kinStatus != JKS_Idle)
+	{
+		return;
+	}
+	
+	pC->Jtc.robToolNum = pC->Jtc.targetRobToolNum;
+	Kin_RobPosAct();
+	pC->Jtc.reqChangeTool = false;
+	for(int i=0;i<JOG_MAXREFSYS;i++)
+		pC->Jtc.robJog.active[i] = false;
 }
 static void Control_JtcPrepareSetedValuesForOperate(void)
 {
@@ -1493,6 +1531,7 @@ static void Control_JtcAct(void)
 	IO_InputsAct();
 	Control_CheckErrorFlags();
 	Control_JtcCheckState();
+	Control_JtcChangeTool();
 	Kin_RobPosAct();
 	
 	if(pC->Jtc.currentFsm == JTC_FSM_Error)

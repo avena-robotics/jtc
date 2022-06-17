@@ -23,7 +23,7 @@
 
 
 #define MBS_BUFMAX 									1000
-#define MBS_COMBAUDRATE							921600
+#define MBS_COMBAUDRATE							115200
 #define MBS_REGMAX									1500
 #define MBS_COILMAX									100
 
@@ -488,7 +488,6 @@ typedef struct
 	eJogRefSystem				refSystem;							//Numer układu względem którego realizowany jest ruch
 	sVector6						percentVel;							//Prędkość jogowania w danej osi. Wyrażona jako % prędkości maksymalnej.
 	sVector6						maxVel[JOG_MAXREFSYS];	//Maksymalna prędkość jogowania w danej osi dla danego układu odniesienia.
-	sRobPos							currentPos;							//Aktualna pozycja robota podczas jogowania
 	sRobPos							targetPos;							//Docelowa pozycja robota podczas jogowania
 }sRobJog;
 typedef struct
@@ -805,6 +804,8 @@ typedef struct
 	sRobJog					robJog;									//Zmienne dotyczace jogowania robota
 	sRobTool				robTools[ROBTOOLMAX];		//Zdefiniowane narzedzia montowane na robocie - dane narzedzi potrzebne do kinematyki
 	uint16_t				robToolNum;							//numer aktualnie wybranego narzędzia. Od 0 do 9. Numer 0 oznacza brak narzędzia (czyli TCP jest na flanszy statniego jointa).
+	uint16_t				targetRobToolNum;				//docelowy numer aktualnie wybranego narzędzia. Od 0 do 9. Numer 0 oznacza brak narzędzia (czyli TCP jest na flanszy statniego jointa).
+	bool						reqChangeTool;					//żądanie zmiany numeru narzędzia
 }sJtc;
 typedef struct
 {
@@ -872,6 +873,7 @@ void Control_ClearInternallErrorsInJtc(void);
 void Control_ClearExternallErrorsViaCan(uint8_t byte);
 void Control_ResetDevicesViaCan(uint8_t byte);
 void ControlJtcJogKinCalc(void);
+void Control_JtcReqChangeTool(uint16_t num);
 
 #include "Com.h"
 #include "Can.h"

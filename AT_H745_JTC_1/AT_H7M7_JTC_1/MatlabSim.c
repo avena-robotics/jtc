@@ -12,18 +12,6 @@ union conv64
     uint64_t u64; // here_write_bits
     double   d64; // here_read_double
 };
-static uint16_t MatlabSim_Crc16(uint8_t* packet, uint32_t nBytes)
-{
-	uint16_t crc = 0;
-	for(uint32_t byte = 0; byte < nBytes; byte++)
-	{
-		crc = crc ^ ((uint16_t)packet[byte] << 8);
-		for (uint8_t bit = 0; bit < 8; bit++)
-			if(crc & 0x8000) 	crc = (crc << 1) ^ 0x1021;
-			else							crc = crc << 1;
-	}
-	return crc;
-}
 static void MatlabSim_ReinitDmaReadStream(void)
 {
 	DMA1_Stream2->CR &= ~DMA_SxCR_EN;
@@ -69,20 +57,6 @@ void MatlabSim_SendFrame(void)
 		return;
 	
 	uint16_t idx = 0;
-	int16_t val;
-	
-//	//Header - 4 bajty: A, B, C, D
-//	MatSim.bufwrite[idx++] = 'A';
-//	MatSim.bufwrite[idx++] = 'B';
-//	MatSim.bufwrite[idx++] = 'C';
-//	MatSim.bufwrite[idx++] = 'D';
-//	for(int num=0;num<JOINTS_MAX;num++)
-//	{
-//		//Wartosci z jointów
-//		val = pC->Joints[num].setPosTemp / pC->Joints[num].maxPosCom * MAXINT16;
-//		MatSim.bufwrite[idx++] = val >> 0;
-//		MatSim.bufwrite[idx++] = val >> 8;
-//	}
 	
 	idx = sprintf(MatSim.bufwrite, "ABCD%f,%f,%f,%f,%f,%f", pC->Joints[0].setPosTemp, pC->Joints[1].setPosTemp,pC->Joints[2].setPosTemp,pC->Joints[3].setPosTemp,pC->Joints[4].setPosTemp,pC->Joints[5].setPosTemp);
 

@@ -358,9 +358,7 @@ static void MBS_ActConfigWords(void)
 	pC->Joints[4].reqIgnore = (bool)Mbs.hregs[idx++];
 	pC->Joints[5].reqIgnore = (bool)Mbs.hregs[idx++];
 	pC->Gripper.reqIgnore = (bool)Mbs.hregs[idx++];
-	pC->Jtc.robToolNum = Mbs.hregs[idx++];
-	if(pC->Jtc.robToolNum >= ROBTOOLMAX)
-		pC->Jtc.robToolNum = 0;
+	Control_JtcReqChangeTool(Mbs.hregs[idx++]);
 }
 static void MBS_ActControlWords(void)
 {

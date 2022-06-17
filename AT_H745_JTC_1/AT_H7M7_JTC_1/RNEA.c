@@ -678,12 +678,20 @@ static sIKSol Kin_IKRaw(sMatrix4 mzad)
 }
 void Kin_Conf(void)
 {
-	d1 = pC->Arm.Joints[0].origin[2] + pC->Arm.Joints[1].origin[2]; // j1z + j2z;
-	a2 = -pC->Arm.Joints[2].origin[0]; // -j3x; 
-	a3 = pC->Arm.Joints[3].origin[0]; // j4x; 
-	d4 = pC->Arm.Joints[1].origin[0] + pC->Arm.Joints[2].origin[2] - pC->Arm.Joints[3].origin[2] + pC->Arm.Joints[4].origin[2]; // j2x + j3z - j4z + j5z; 
-	d5 = pC->Arm.Joints[4].origin[0] + pC->Arm.Joints[5].origin[2]; // j5x + j6z; 
-	d6 = pC->Arm.Joints[5].origin[0] + pC->Arm.Joints[6].origin[2]; // j6x + j7z;
+//	d1 = pC->Arm.Joints[0].origin[2] + pC->Arm.Joints[1].origin[2]; // j1z + j2z;
+//	a2 = -pC->Arm.Joints[2].origin[0]; // -j3x; 
+//	a3 = pC->Arm.Joints[3].origin[0]; // j4x; 
+//	d4 = pC->Arm.Joints[1].origin[0] + pC->Arm.Joints[2].origin[2] - pC->Arm.Joints[3].origin[2] + pC->Arm.Joints[4].origin[2]; // j2x + j3z - j4z + j5z; 
+//	d5 = pC->Arm.Joints[4].origin[0] + pC->Arm.Joints[5].origin[2]; // j5x + j6z; 
+//	d6 = pC->Arm.Joints[5].origin[0] + pC->Arm.Joints[6].origin[2]; // j6x + j7z;
+	
+	d1 = 0.1209;
+	a2 = 0.686;
+	a3 = 0.671;
+	d4 = 0.1165;
+	d5 = 0.1155;
+	d6 = 0.0675;
+	
 	offset = Vec6SetValues(M_PI_2, M_PI_2, 0, M_PI_2, 0, M_PI_2);
 	dir = Vec6SetValues(1.0, 1.0, -1.0, 1.0, 1.0, 1.0);
 }
