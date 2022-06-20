@@ -792,30 +792,6 @@ static void Control_JtcPrepareSetedValuesForHoldPos(void)
 		pC->Joints[num].setAccTemp = 0.0;
 	}
 }
-static void Control_JtcJogFindNearestSolution(void)
-{
-	double sum[IK_SOLNUMREAL];
-	int solnum = 0;
-	for(int i=0;i<pC->Jtc.robJog.targetPos.sol.isRealSolNum;i++)
-	{
-		sum[i] = 0.0;
-		for(int num=0;num<JOINTS_MAX;num++)
-		{
-			sum[i] += fabs(pC->Jtc.robJog.targetPos.sol.v[i].v[num] - pC->Jtc.robPos.pos.v[num]);
-		}
-	}
-	double min = sum[0];
-	for(int i=0;i<pC->Jtc.robJog.targetPos.sol.isRealSolNum;i++)
-	{
-		if(sum[i] < min)
-		{
-			min = sum[i];
-			solnum = i;
-		}
-	}
-	pC->Jtc.robJog.targetPos.conf.v[3] = solnum;
-	pC->Jtc.robJog.targetPos.qSol = pC->Jtc.robJog.targetPos.sol.v[solnum];
-}
 static void Control_JtcJogActJRSJoints(void)
 {
 	if(pC->Jtc.robJog.active[JRS_Joints] == false)
@@ -878,7 +854,7 @@ static void Control_JtcJogActJRSBase(void)
 	
 	if(pC->Jtc.robJog.kinStatus == JKS_OutputIsReady)
 	{
-		Control_JtcJogFindNearestSolution();
+		pC->Jtc.robJog.targetPos = Kin_FindNearestSolution(pC->Jtc.robJog.targetPos);
 		for(int num=0;num<JOINTS_MAX;num++)
 			pC->Joints[num].setPosTemp = pC->Jtc.robJog.targetPos.qSol.v[num];
 		pC->Jtc.robJog.kinStatus = JKS_Idle;
@@ -921,7 +897,7 @@ static void Control_JtcJogActJRSTool(void)
 	
 	if(pC->Jtc.robJog.kinStatus == JKS_OutputIsReady)
 	{
-		Control_JtcJogFindNearestSolution();
+		pC->Jtc.robJog.targetPos = Kin_FindNearestSolution(pC->Jtc.robJog.targetPos);
 		for(int num=0;num<JOINTS_MAX;num++)
 			pC->Joints[num].setPosTemp = pC->Jtc.robJog.targetPos.qSol.v[num];
 		pC->Jtc.robJog.kinStatus = JKS_Idle;

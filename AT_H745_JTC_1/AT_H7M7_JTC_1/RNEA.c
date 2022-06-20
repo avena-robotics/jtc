@@ -695,6 +695,31 @@ void Kin_Conf(void)
 	offset = Vec6SetValues(M_PI_2, M_PI_2, 0, M_PI_2, 0, M_PI_2);
 	dir = Vec6SetValues(1.0, 1.0, -1.0, 1.0, 1.0, 1.0);
 }
+sRobPos Kin_FindNearestSolution(sRobPos targetPos)
+{
+	double sum[IK_SOLNUMREAL];
+	int solnum = 0;
+	for(int i=0;i<targetPos.sol.isRealSolNum;i++)
+	{
+		sum[i] = 0.0;
+		for(int num=0;num<JOINTS_MAX;num++)
+		{
+			sum[i] += fabs(targetPos.sol.v[i].v[num] - pC->Jtc.robPos.pos.v[num]);
+		}
+	}
+	double min = sum[0];
+	for(int i=0;i<targetPos.sol.isRealSolNum;i++)
+	{
+		if(sum[i] < min)
+		{
+			min = sum[i];
+			solnum = i;
+		}
+	}
+	targetPos.conf.v[3] = solnum;
+	targetPos.qSol = pC->Jtc.robJog.targetPos.sol.v[solnum];
+	return targetPos;
+}
 static void Kin_CheckNoRealSolutionError(sRobPos pointIn)
 {
 	if(pointIn.sol.isRealSolNum == 0)

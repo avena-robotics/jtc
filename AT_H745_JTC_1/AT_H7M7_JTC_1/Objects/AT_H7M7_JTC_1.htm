@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\AT_H7M7_JTC_1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\AT_H7M7_JTC_1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Jun 17 13:14:28 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Jun 20 10:47:57 2022
 <BR><P>
 <H3>Maximum Stack Usage =      22256 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -397,6 +397,16 @@ Global Symbols
 <LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_RotmatToQuat
 </UL>
 <BR>[Called By]<UL><LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_RobPosAct
+</UL>
+
+<P><STRONG><a name="[14d]"></a>Kin_FindNearestSolution</STRONG> (Thumb, 188 bytes, Stack size 112 bytes, rnea.o(i.Kin_FindNearestSolution))
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = Kin_FindNearestSolution &rArr; __aeabi_memcpy4
+</UL>
+<BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
+</UL>
+<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogActJRSTool
+<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogActJRSBase
+<LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_GetSeqPointKartesianSpace
 </UL>
 
 <P><STRONG><a name="[162]"></a>Kin_IKCalcFromQuat</STRONG> (Thumb, 244 bytes, Stack size 1504 bytes, rnea.o(i.Kin_IKCalcFromQuat))
@@ -1290,6 +1300,7 @@ Global Symbols
 <LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3ToMat4 (via Veneer)
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_RobPosAct (via Veneer)
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_IKCalcFromRotMat (via Veneer)
+<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_FindNearestSolution (via Veneer)
 <LI><a href="#[15b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_Conf (via Veneer)
 <LI><a href="#[154]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InvMat4 (via Veneer)
 <LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HT (via Veneer)
@@ -1298,7 +1309,6 @@ Global Symbols
 <LI><a href="#[149]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX (via Veneer)
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ControlJtcJogKinCalc (via Veneer)
 <LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_RobToolVariableConf (via Veneer)
-<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogFindNearestSolution (via Veneer)
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogActJRSTool (via Veneer)
 <LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogActJRSBase (via Veneer)
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JogVariableConf (via Veneer)
@@ -2121,8 +2131,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcInit
 </UL>
 
-<P><STRONG><a name="[13b]"></a>Control_JtcJogActJRSBase</STRONG> (Thumb, 592 bytes, Stack size 800 bytes, control.o(i.Control_JtcJogActJRSBase))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1136<LI>Call Chain = Control_JtcJogActJRSBase &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+<P><STRONG><a name="[13b]"></a>Control_JtcJogActJRSBase</STRONG> (Thumb, 634 bytes, Stack size 1560 bytes, control.o(i.Control_JtcJogActJRSBase))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1896<LI>Call Chain = Control_JtcJogActJRSBase &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec6Zeros
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4xMat4
@@ -2130,10 +2140,10 @@ Local Symbols
 <LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4Ones
 <LI><a href="#[14b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3xMat3
 <LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat3ToMat4
+<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_FindNearestSolution
 <LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ
 <LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY
 <LI><a href="#[149]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX
-<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogFindNearestSolution
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
@@ -2145,29 +2155,20 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
 </UL>
 
-<P><STRONG><a name="[13c]"></a>Control_JtcJogActJRSTool</STRONG> (Thumb, 522 bytes, Stack size 704 bytes, control.o(i.Control_JtcJogActJRSTool))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1040<LI>Call Chain = Control_JtcJogActJRSTool &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
+<P><STRONG><a name="[13c]"></a>Control_JtcJogActJRSTool</STRONG> (Thumb, 566 bytes, Stack size 1560 bytes, control.o(i.Control_JtcJogActJRSTool))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1896<LI>Call Chain = Control_JtcJogActJRSTool &rArr; HRZ &rArr; __hardfp_sin &rArr; __ieee754_rem_pio2 &rArr; fabs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Vec6Zeros
 <LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4xMat4
 <LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4Ones
+<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_FindNearestSolution
 <LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HT
 <LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRZ
 <LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRY
 <LI><a href="#[149]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HRX
-<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogFindNearestSolution
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcHoldPos
-</UL>
-
-<P><STRONG><a name="[14d]"></a>Control_JtcJogFindNearestSolution</STRONG> (Thumb, 168 bytes, Stack size 88 bytes, control.o(i.Control_JtcJogFindNearestSolution))
-<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Control_JtcJogFindNearestSolution &rArr; __aeabi_memcpy4
-</UL>
-<BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
-</UL>
-<BR>[Called By]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogActJRSTool
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_JtcJogActJRSBase
 </UL>
 
 <P><STRONG><a name="[12d]"></a>Control_JtcOperate</STRONG> (Thumb, 172 bytes, Stack size 16 bytes, control.o(i.Control_JtcOperate))
@@ -2603,7 +2604,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[171]"></a>TG_GetSeqFromMbs</STRONG> (Thumb, 640 bytes, Stack size 728 bytes, trajgen.o(i.TG_GetSeqFromMbs))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8272<LI>Call Chain = TG_GetSeqFromMbs &rArr; TG_GetSeqPointKartesianSpace &rArr; Kin_IKCalcFromQuat &rArr; Kin_IKRaw &rArr; InvMat4 &rArr; Mat4Ones &rArr; __aeabi_memcpy4
+<BR><BR>[Stack]<UL><LI>Max Depth = 8280<LI>Call Chain = TG_GetSeqFromMbs &rArr; TG_GetSeqPointKartesianSpace &rArr; Kin_IKCalcFromQuat &rArr; Kin_IKRaw &rArr; InvMat4 &rArr; Mat4Ones &rArr; __aeabi_memcpy4
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 <LI><a href="#[173]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_GetSeqPointKartesianSpace
@@ -2620,10 +2621,11 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[171]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TG_GetSeqFromMbs
 </UL>
 
-<P><STRONG><a name="[173]"></a>TG_GetSeqPointKartesianSpace</STRONG> (Thumb, 554 bytes, Stack size 2048 bytes, trajgen.o(i.TG_GetSeqPointKartesianSpace))
-<BR><BR>[Stack]<UL><LI>Max Depth = 7544<LI>Call Chain = TG_GetSeqPointKartesianSpace &rArr; Kin_IKCalcFromQuat &rArr; Kin_IKRaw &rArr; InvMat4 &rArr; Mat4Ones &rArr; __aeabi_memcpy4
+<P><STRONG><a name="[173]"></a>TG_GetSeqPointKartesianSpace</STRONG> (Thumb, 592 bytes, Stack size 2056 bytes, trajgen.o(i.TG_GetSeqPointKartesianSpace))
+<BR><BR>[Stack]<UL><LI>Max Depth = 7552<LI>Call Chain = TG_GetSeqPointKartesianSpace &rArr; Kin_IKCalcFromQuat &rArr; Kin_IKRaw &rArr; InvMat4 &rArr; Mat4Ones &rArr; __aeabi_memcpy4
 </UL>
 <BR>[Calls]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mat4Ones
+<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_FindNearestSolution
 <LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4 (via Veneer)
 <LI><a href="#[162]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kin_IKCalcFromQuat
 </UL>

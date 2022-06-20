@@ -25,5 +25,6 @@ sRobPos Kin_IKCalcFromQuat(sRobPos pointIn);
 sRobPos Kin_IKCalcFromRotMat(sRobPos pointIn);
 void Kin_RobPosAct(void);
 sMatrix4 InvMat4(sMatrix4 m);
+sRobPos Kin_FindNearestSolution(sRobPos targetPos);
 
 #endif

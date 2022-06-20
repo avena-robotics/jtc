@@ -160,6 +160,7 @@ static sRobPos TG_GetSeqPointKartesianSpace(uint16_t numidx)
 	p.zone = x.f32;
 	
 	p = Kin_IKCalcFromQuat(p);
+	p = Kin_FindNearestSolution(p);
 	p.pos = p.qSol;
 	
 	p.type = SPT_Way;
