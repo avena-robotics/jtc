@@ -717,7 +717,7 @@ sRobPos Kin_FindNearestSolution(sRobPos targetPos)
 		}
 	}
 	targetPos.conf.v[3] = solnum;
-	targetPos.qSol = pC->Jtc.robJog.targetPos.sol.v[solnum];
+	targetPos.qSol = targetPos.sol.v[solnum];
 	return targetPos;
 }
 static void Kin_CheckNoRealSolutionError(sRobPos pointIn)
