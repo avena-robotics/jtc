@@ -325,11 +325,13 @@ typedef enum
 #define MAXINT32										2147483647.0
 
 //#define TESTMODE
+//-- #define ENCODER_MAGNETIC - starsza wersja z enkoderami magnetycznymi
+#define ENCODER_MAGNETIC
 
-// #define MODBUS - komunikacja jako Modbus RTU Slave
-// #define DEBUG - komunikacja poprzez USB (Virtual COM Port) do wysyłania danych diagnostycznych
-// #define RS422 - komunikacja tradycyjna poprzez RS422
-// #define UARTUSB - komunikacja tradycyjna poprzez USB (Virtual COM Port)
+//-- #define MODBUS - komunikacja jako Modbus RTU Slave
+//-- #define DEBUG - komunikacja poprzez USB (Virtual COM Port) do wysyłania danych diagnostycznych
+//-- #define RS422 - komunikacja tradycyjna poprzez RS422
+//-- #define UARTUSB - komunikacja tradycyjna poprzez USB (Virtual COM Port)
 #define MODBUS
 #define DEBUG
 //#define RS422
@@ -337,7 +339,7 @@ typedef enum
 //#define MATLABSIM
 
 #ifdef MATLABSIM
-#define MATLABSIM_COMBAUDRATE 			57600
+#define MATLABSIM_COMBAUDRATE 			115200
 #endif
 
 #ifdef DEBUG

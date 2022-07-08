@@ -58,7 +58,7 @@ void MatlabSim_SendFrame(void)
 	
 	uint16_t idx = 0;
 	
-	idx = sprintf(MatSim.bufwrite, "ABCD%f,%f,%f,%f,%f,%f", pC->Joints[0].setPosTemp, pC->Joints[1].setPosTemp,pC->Joints[2].setPosTemp,pC->Joints[3].setPosTemp,pC->Joints[4].setPosTemp,pC->Joints[5].setPosTemp);
+	idx = sprintf(MatSim.bufwrite, "ABCD,%f,%f,%f,%f,%f,%f,", pC->Joints[0].setPosTemp, pC->Joints[1].setPosTemp,pC->Joints[2].setPosTemp,pC->Joints[3].setPosTemp,pC->Joints[4].setPosTemp,pC->Joints[5].setPosTemp);
 
 	DMA1_Stream3->CR &= ~DMA_SxCR_EN;
 	DMA1->LIFCR |= DMA_LIFCR_CTCIF3;

@@ -1382,6 +1382,7 @@ static void Control_JtcInitRemoveBrakeStage(void)
 	
 	IO_ParkBrakeUnlock();
 }
+#ifdef ENCODER_MAGNETIC
 static void Control_JtcInitPosAccurateStage(void)
 {
 	// Ustalenie kierunku ruchu i docelowej wartości pozycji
@@ -1409,6 +1410,7 @@ static void Control_JtcInitPosAccurateStage(void)
 			Control_JtcSetJointToReadyToOperate(num);
 		}
 }
+#endif
 static void Control_JtcInit(void)
 {
 	Control_TrajClear();
@@ -1425,8 +1427,12 @@ static void Control_JtcInit(void)
 		Control_JtcInitDeparkStage();
 	else if(pC->Jtc.initStage == JTC_IS_RemoveBrake)
 		Control_JtcInitRemoveBrakeStage();
-	else if(pC->Jtc.initStage == JTC_IS_PosAccurate)
+
+	#ifdef ENCODER_MAGNETIC
+	// W przypadku jointów z enkoderami optycznymi poniższa faza nie jest potrzebna 
+	else if(pC->Jtc.initStage == JTC_IS_PosAccurate) 
 		Control_JtcInitPosAccurateStage();
+	#endif
 }
 static void Control_JtcTeaching(void)
 {
