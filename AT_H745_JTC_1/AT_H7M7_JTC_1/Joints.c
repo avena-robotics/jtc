@@ -142,6 +142,13 @@ static void Joints_SetDefaultFrictionPolynomial(void)
 //	pC->Joints[5].fricCoeff[4] = -0.024242620835343617;
 //	pC->Joints[5].fricCoeff[5] = 19.044821862593533;
 }
+void Joints_SetFrictionPolynomialFromCan(uint8_t num)
+{
+	for(int i=0;i<JOINTS_FRICCOEFFMAX;i++)
+	{
+		pC->Joints[num].fricCoeff[i] = pC->Joints[num].fricCoeffFromCan[i];
+	}
+}
 void Joints_SetDefaultFriction(void)
 {
 	if(pC->Jtc.fricType == JTC_FT_Polynomial)

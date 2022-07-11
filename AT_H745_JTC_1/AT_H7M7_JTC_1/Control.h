@@ -245,6 +245,7 @@ typedef enum
 	Can_TxF_ResetJoint4 = 8,
 	Can_TxF_ResetJoint5 = 9,
 	Can_TxF_ResetGripper = 10,
+	Can_TxF_ReadFriction = 11,
 }eCanTxFrames;
 typedef enum
 {
@@ -326,7 +327,7 @@ typedef enum
 
 //#define TESTMODE
 //-- #define ENCODER_MAGNETIC - starsza wersja z enkoderami magnetycznymi
-#define ENCODER_MAGNETIC
+//#define ENCODER_MAGNETIC
 
 //-- #define MODBUS - komunikacja jako Modbus RTU Slave
 //-- #define DEBUG - komunikacja poprzez USB (Virtual COM Port) do wysyłania danych diagnostycznych
@@ -380,14 +381,14 @@ typedef enum
 
 #define CAN_DEVICESMAX							7
 #define CAN_MSGRAM_STARTADDR				0x4000AC00
-#define CAN_FILTERS_MAX							21
-#define CAN_TXBUF_MAX								11
+#define CAN_FILTERS_MAX							28
+#define CAN_TXBUF_MAX								12
 #define CAN_TXBUFSIZE_CODE					0x02
 #define CAN_TXDATA_LEN							16
-#define CAN_RXBUF_MAX								21
+#define CAN_RXBUF_MAX								28
 #define CAN_RXFIFO0_MAX							(64 - CAN_RXBUF_MAX)
-#define CAN_RXBUFSIZE_CODE					0x03
-#define CAN_RXDATA_LEN							20
+#define CAN_RXBUFSIZE_CODE					0x04
+#define CAN_RXDATA_LEN							24
 #define CAN_TIMEOUTMAX							500
 #define CAN_RESETTIMEOUT						300
 
@@ -581,6 +582,8 @@ typedef struct
 	bool					cWPosNotAccurate;							//Flaga - warning odebrany z CAN - [1 - pozycja z enkodera nie jest dokladna, 0 - popozycja z enkodera  jest dokladna]
 	bool					flagDeparkPosAchieved;				//Flaga - oznacza nie osiągnięcie zadanej pozycji przy procedurze deparkowania - [0 - pozycja nieosiągnięta, 1 - pozycja osiągnięta]
 	
+	bool					flagFrictionReadFromCan;			//Flaga - oznacza odebranie parametrów tarcia z danego jointa
+	
 	double 				setPos;							//Pozycja - wartosc zadana
 	double				setVel;							//Predkosc - wartosc zadana
 	double				setAcc;							//Przyspieszenie - wartosc zadana
@@ -626,6 +629,7 @@ typedef struct
 	double				fricTableTempIdx[JOINTS_FRICTABTEMPSIZE];									//Wartosc temperatury dla indeksu 0 w tablicy kompensacji tarcia
 	double				fricTable[JOINTS_FRICTABVELSIZE][JOINTS_FRICTABTEMPSIZE]; //Tablica ze wszpolczynnikami kompensacji tarcia
 	double				fricCoeff[JOINTS_FRICCOEFFMAX];														//Tablica wspólczynników do równania tarcia
+	double				fricCoeffFromCan[JOINTS_FRICCOEFFMAX];										//Tablica wspólczynników do równania tarcia odbieranych poprzez Can z danego jointa
 	
 	
 	double				idSetPos;				//Pozycja katowa - wartosc do liczenia dynamiki odwrotnej

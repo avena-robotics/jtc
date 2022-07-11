@@ -350,6 +350,10 @@ static void Control_JtcSetGripperToTargetConf(void)
 {
 	pC->Can.TxMsgs[Can_TxF_ChangeMode].reqSend = true;
 }
+static void Control_JtcReadFrictionFromJoints(void)
+{
+	pC->Can.TxMsgs[Can_TxF_ReadFriction].reqSend = true;
+}
 static void Control_CheckLimits(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -1094,6 +1098,7 @@ static void Control_JtcCheckStateInit(void)
 			{
 				pC->Joints[num].flagFirstPosRead = true;
 				pC->Joints[num].flagConfirmChangeConf = true;
+				pC->Joints[num].flagFrictionReadFromCan = true;
 				pC->Joints[num].currentFsm = Joint_FSM_ReadyToOperate;
 				pC->Joints[num].currentMode = Joint_M_Torque;
 			}
@@ -1106,6 +1111,7 @@ static void Control_JtcCheckStateInit(void)
 		for(uint8_t num=0;num<JOINTS_MAX;num++)
 		{
 			if(pC->Joints[num].flagConfirmChangeConf != true)				flag = false;
+			if(pC->Joints[num].flagFrictionReadFromCan != true)			flag = false;
 			if(pC->Joints[num].currentFsm == Joint_FSM_Init)				flag = false;
 			if(pC->Joints[num].currentFsm == Joint_FSM_Start)				flag = false;
 		}
@@ -1177,12 +1183,13 @@ static void Control_JtcCheckStateInit(void)
 		pC->Jtc.jointsInitStatus &= ~(1 << Can_DN_Gripper);
 	else if(pC->Gripper.flagConfirmChangeConf != true || pC->Gripper.currentFsm == Joint_FSM_Init || pC->Gripper.currentFsm == Joint_FSM_Start)
 		pC->Jtc.jointsInitStatus |= (1 << Can_DN_Gripper);
+	
 	// Check Joints init status flags
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
-		if(pC->Joints[num].flagDeparkPosAchieved == true && pC->Joints[num].flagConfirmChangeConf == true && (pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate || pC->Joints[num].currentFsm == Joint_FSM_OperationEnable) && pC->Joints[num].cWPosNotAccurate == false)
+		if(pC->Joints[num].flagDeparkPosAchieved == true && pC->Joints[num].flagConfirmChangeConf == true && (pC->Joints[num].currentFsm == Joint_FSM_ReadyToOperate || pC->Joints[num].currentFsm == Joint_FSM_OperationEnable) && pC->Joints[num].cWPosNotAccurate == false && pC->Joints[num].flagFrictionReadFromCan == true)
 			pC->Jtc.jointsInitStatus &= ~(1 << num);
-		else if(pC->Joints[num].flagDeparkPosAchieved != true || pC->Joints[num].flagConfirmChangeConf != true || pC->Joints[num].currentFsm == Joint_FSM_Init || pC->Joints[num].currentFsm == Joint_FSM_Start || pC->Joints[num].cWPosNotAccurate == true)
+		else if(pC->Joints[num].flagDeparkPosAchieved != true || pC->Joints[num].flagConfirmChangeConf != true || pC->Joints[num].currentFsm == Joint_FSM_Init || pC->Joints[num].currentFsm == Joint_FSM_Start || pC->Joints[num].cWPosNotAccurate == true || pC->Joints[num].flagFrictionReadFromCan == false)
 			pC->Jtc.jointsInitStatus |= (1 << num);
 	}
 	
@@ -1314,15 +1321,19 @@ static void Control_JtcInitPreInitStage(void)
 		Control_JtcSetGripperToTargetConf();
 	}
 	
-	// ------- podstawowa inicjalizacja jointów do momentu gdy: Tryb = Joint_M_Torque, Fsm = Joint_FSM_ReadyToOperate, nie odczytano jeszcze pozycji z jointa -----------------
+	// ------- podstawowa inicjalizacja jointów do momentu gdy: flagFirstPosRead = false,  flagFrictionReadFromCan = false,  Tryb = Joint_M_Torque, Fsm = Joint_FSM_ReadyToOperate-----------------
+	Control_JtcReadFrictionFromJoints();
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
 	{
 		Control_JtcSetJointToCurrentFsm(num);
-		//Control_JtcSetJointToCurrentMode(num);
 		
 		if(pC->Joints[num].flagFirstPosRead == false)
 		{
 			//Czekam na odpowiedź na ramke Move z danego jointa. Jeżeli nie nastapi to zapewne będzie TIMEOUT na Can
+		}
+		else if(pC->Joints[num].flagFrictionReadFromCan == false)
+		{
+			//Czekam na odpowiedź na ramke ReadFriction z danego jointa. Jeżeli nie nastapi to zapewne będzie TIMEOUT na Can
 		}
 		else if(pC->Joints[num].flagFirstPosRead == true && pC->Joints[num].currentFsm == Joint_FSM_Init)
 		{
@@ -1420,7 +1431,7 @@ static void Control_JtcInit(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 		pC->Joints[num].setTorqueTemp = 0.0;
 	
-	// trzy możiwe fazy inicjalizacji Jtc: JTC_IS_PreInit, JTC_IS_Depark, JTC_IS_PosAccurate, JTC_IS_Finish. Zmiana wartości zmiennej pC->Jtc.initStage w funkcji Control_JtcCheckStateInit
+	// trzy możliwe fazy inicjalizacji Jtc: JTC_IS_PreInit, JTC_IS_Depark, JTC_IS_PosAccurate, JTC_IS_Finish. Zmiana wartości zmiennej pC->Jtc.initStage w funkcji Control_JtcCheckStateInit
 	if(pC->Jtc.initStage == JTC_IS_PreInit)
 		Control_JtcInitPreInitStage();
 	else if(pC->Jtc.initStage == JTC_IS_Depark)
