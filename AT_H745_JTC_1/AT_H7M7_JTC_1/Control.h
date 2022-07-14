@@ -23,7 +23,7 @@
 
 
 #define MBS_BUFMAX 									1000
-#define MBS_COMBAUDRATE							115200
+#define MBS_COMBAUDRATE							921600
 #define MBS_REGMAX									1500
 #define MBS_COILMAX									100
 
