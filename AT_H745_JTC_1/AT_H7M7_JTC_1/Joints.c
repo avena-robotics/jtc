@@ -255,7 +255,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].irRampTorque = 1.0;	//Unit: Nm/sek
 	}
 	
-	pC->Joints[1].deparkDist = -0.05236;
+//	pC->Joints[1].deparkDist = -0.05236;
 }
 void Joints_SetResetValuesVariables(uint8_t num)
 {

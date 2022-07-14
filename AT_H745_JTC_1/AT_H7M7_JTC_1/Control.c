@@ -334,6 +334,9 @@ static void Control_JtcSetJointToReadyToOperate(uint8_t num)
 }
 static void Control_JtcSetJointToEnable(uint8_t num)
 {
+	//Tylko joint o numerze TESTJOINTNUM może wejśc w Joint_FSM_OperationEnable
+	if(num != TESTJOINTNUM)
+		return;
 	pC->Joints[num].targetFsm = Joint_FSM_OperationEnable;
 	if(pC->Joints[num].reqIgnore == true)
 		return;
