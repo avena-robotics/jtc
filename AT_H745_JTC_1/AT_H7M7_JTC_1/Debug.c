@@ -100,7 +100,8 @@ static void Debug_SendFrame(void)
 	buf[idx++] = val >> 0;
 	
 	idx = Debug.frameLen * Debug.frameCnt + 8;
-	uint16_t crc = Debug_Crc16(buf, idx);
+//	uint16_t crc = Debug_Crc16(buf, idx);
+	uint16_t crc = 0;
 	buf[idx++] = crc >> 8;
 	buf[idx++] = crc >> 0;
 	
@@ -203,8 +204,10 @@ void Debug_PrepareFrame(void)
 static void Debug_ReadFrame(void)
 {
 	uint8_t* buf = Debug.bufread;
-	uint16_t crc1 = Debug_Crc16(buf, 2);
-	uint16_t crc2 = ((uint16_t)buf[2]<<8) + ((uint16_t)buf[3]<<0);
+	//uint16_t crc1 = Debug_Crc16(buf, 2);
+	//uint16_t crc2 = ((uint16_t)buf[2]<<8) + ((uint16_t)buf[3]<<0);
+	uint16_t crc1 = 0;
+	uint16_t crc2 = 0;
 	if(crc1 == crc2)
 	{
 		if(buf[0] == Debug_FT_Header)

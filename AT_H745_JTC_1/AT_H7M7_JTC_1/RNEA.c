@@ -300,7 +300,7 @@ void RNEA_Conf(void)
 		Rc[i] = Mat3Ones();
 	}
 	
-	g0 = Vec3SetValues(0, 0, 9.81); //global gravity vector
+	g0 = Vec3SetValues(0, 0, -9.81); //global gravity vector
 	
 	for(int i=0;i<DOF+1;i++)
 		for(int j=0;j<6;j++)
