@@ -652,6 +652,19 @@ static void Control_SendDataToJoints(void)
 {
 	Can_SendDataToJoints();
 }
+static void Control_SetVariableForIgnoreDevices(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		if(pC->Joints[num].reqIgnore == true)
+		{
+			pC->Joints[num].pidTorque = 0.0;
+			pC->Joints[num].idTorque = 0.0;
+			pC->Joints[num].fricTorque = 0.0;
+			pC->Joints[num].setTorqueTemp = 0.0;
+		}
+	}
+}
 // ***************** Trajectory functions ************************************
 void Control_TrajClear(void)
 {
@@ -1559,6 +1572,7 @@ static void Control_JtcAct(void)
 		Control_JtcOperate();
 	}
 
+	Control_SetVariableForIgnoreDevices();
 	Control_CheckLimits();
 	Control_CheckErrorFlags();
 	Control_SetNewTorqueValues();
