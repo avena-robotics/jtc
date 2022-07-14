@@ -72,6 +72,11 @@ void Debug_Conf(void)
 {
 	Debug_StructConf();
 	Debug_ComUart3Conf();
+	
+	// timer do timeout od spójnosci odbieranych ramek, przerwanie po 5ms
+	TIM14->PSC = 240-1;
+	TIM14->ARR = 0xffff;
+	TIM14->CR1 = TIM_CR1_CEN;
 }
 static void Debug_SendFrame(void)
 {
@@ -100,10 +105,10 @@ static void Debug_SendFrame(void)
 	buf[idx++] = val >> 0;
 	
 	idx = Debug.frameLen * Debug.frameCnt + 8;
-	uint16_t crc = Debug_Crc16(buf, idx);
+//	uint16_t crc = Debug_Crc16(buf, idx);
+	uint16_t crc = 0;
 	buf[idx++] = crc >> 8;
 	buf[idx++] = crc >> 0;
-	
 	
 	DMA1_Stream3->CR &= ~DMA_SxCR_EN;
 	DMA1->LIFCR |= DMA_LIFCR_CTCIF3;
@@ -199,6 +204,7 @@ void Debug_PrepareFrame(void)
 	Debug.frameCnt++;
 	if(Debug.frameCnt >= Debug.numFrames)
 		Debug_SendFrame();
+	
 }
 static void Debug_ReadFrame(void)
 {

@@ -198,7 +198,7 @@ static void Control_RccConf(void)
 	RCC->AHB2ENR |= (RCC_AHB2ENR_SRAM1EN | RCC_AHB2ENR_SRAM2EN | RCC_AHB2ENR_SRAM3EN);
 	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN | RCC_AHB1ENR_DMA2EN;
 	RCC->AHB4ENR |= RCC_AHB4ENR_GPIOAEN | RCC_AHB4ENR_GPIOBEN | RCC_AHB4ENR_GPIOCEN | RCC_AHB4ENR_GPIODEN | RCC_AHB4ENR_GPIOEEN;
-	RCC->APB1LENR |= RCC_APB1LENR_USART2EN | RCC_APB1LENR_USART3EN | RCC_APB1LENR_TIM6EN | RCC_APB1LENR_TIM7EN | RCC_APB1LENR_TIM13EN | RCC_APB1LENR_TIM12EN | RCC_APB1LENR_TIM5EN;
+	RCC->APB1LENR |= RCC_APB1LENR_USART2EN | RCC_APB1LENR_USART3EN | RCC_APB1LENR_TIM6EN | RCC_APB1LENR_TIM7EN | RCC_APB1LENR_TIM13EN | RCC_APB1LENR_TIM14EN | RCC_APB1LENR_TIM12EN | RCC_APB1LENR_TIM5EN;
 	RCC->APB4ENR |= RCC_APB4ENR_SYSCFGEN;
 	RCC->APB1HENR |= RCC_APB1HENR_FDCANEN;
 	RCC->D2CCIP1R |= RCC_D2CCIP1R_FDCANSEL_1;
@@ -305,6 +305,8 @@ static void Control_JtcSetJointToCurrentMode(uint8_t num)
 static void Control_JtcSetJointToModeTorque(uint8_t num)
 {
 	pC->Joints[num].targetMode = Joint_M_Torque;
+	if(pC->Joints[num].reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeMode].reqSend = true;
 }
 static void Control_JtcSetJointToCurrentFsm(uint8_t num)
@@ -318,36 +320,50 @@ static void Control_JtcSetGripperToCurrentFsm(void)
 static void Control_JtcSetJointToInit(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_Init;
+	if(pC->Joints[num].reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetJointToReadyToOperate(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_ReadyToOperate;
 	pC->Joints[num].setTorqueTemp = 0.0;
+	if(pC->Joints[num].reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetJointToEnable(uint8_t num)
 {
 	pC->Joints[num].targetFsm = Joint_FSM_OperationEnable;
+	if(pC->Joints[num].reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetGripperToInit(void)
 {
 	pC->Gripper.targetFsm = Joint_FSM_Init;
+	if(pC->Gripper.reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetGripperToReadyToOperate(void)
 {
 	pC->Gripper.targetFsm = Joint_FSM_ReadyToOperate;
+	if(pC->Gripper.reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetGripperToEnable(void)
 {
 	pC->Gripper.targetFsm = Joint_FSM_OperationEnable;
+	if(pC->Gripper.reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeFsm].reqSend = true;
 }
 static void Control_JtcSetGripperToTargetConf(void)
 {
+	if(pC->Gripper.reqIgnore == true)
+		return;
 	pC->Can.TxMsgs[Can_TxF_ChangeMode].reqSend = true;
 }
 static void Control_JtcReadFrictionFromJoints(void)
@@ -1484,7 +1500,6 @@ static void Control_JtcHoldPos(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 	{
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].pidTorque + pC->Joints[num].idTorque;
-
 	}
 }
 static void Control_JtcOperate(void)
@@ -1553,7 +1568,7 @@ static void Control_JtcAct(void)
 		LED2_ON;
 		Control_JtcOperate();
 	}
-
+	
 	Control_CheckLimits();
 	Control_CheckErrorFlags();
 	Control_SetNewTorqueValues();

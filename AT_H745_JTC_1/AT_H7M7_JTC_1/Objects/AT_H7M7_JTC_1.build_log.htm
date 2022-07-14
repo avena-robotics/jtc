@@ -27,11 +27,16 @@ Project File Date:  06/13/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build Project 'AT_H7M7_JTC_1' - Target 'Target 1'
-compiling Can.c...
+compiling Control.c...
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(226): warning:  #177-D: function "Control_SafetyInRead"  was declared but never referenced
+  static bool Control_SafetyInRead(void)
+C:\Users\Dawid\Moj dysk\Avena Technologie\AT_Repo\jtc\AT_H745_JTC_1\AT_H7M7_JTC_1\Control.c(301): warning:  #177-D: function "Control_JtcSetJointToCurrentMode"  was declared but never referenced
+  static void Control_JtcSetJointToCurrentMode(uint8_t num)
+Control.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=60976 RO-data=22568 RW-data=541704 ZI-data=109488  
+Program Size: Code=61084 RO-data=22568 RW-data=541704 ZI-data=109488  
 FromELF: creating hex file...
-".\Objects\AT_H7M7_JTC_1.axf" - 0 Error(s), 0 Warning(s).
+".\Objects\AT_H7M7_JTC_1.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -60,7 +65,7 @@ Package Vendor: Keil
       Include file:  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h
       Source file:   Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\arm\startup_stm32h745xx.s
       Source file:   Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\system_stm32h7xx_dualcore_boot_cm4_cm7.c
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
