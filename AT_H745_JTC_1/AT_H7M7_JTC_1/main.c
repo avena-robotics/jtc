@@ -7,8 +7,13 @@ int main(void)
 	{
 		ControlJtcJogKinCalc();
 		TG_TrajGen();
-//		for(int i=0;i<6;i++)
-//			pC->Joints[i].reqIgnore = true;
+		
+//		pC->Joints[0].reqIgnore = true;
+//		pC->Joints[1].reqIgnore = true;
+//		pC->Joints[2].reqIgnore = true;
+//		pC->Joints[3].reqIgnore = true;
+//		pC->Joints[4].reqIgnore = false;
+//		pC->Joints[5].reqIgnore = true;
 //		
 //		pC->Gripper.reqIgnore = true;
 	}

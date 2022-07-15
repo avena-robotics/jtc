@@ -235,17 +235,18 @@ typedef enum
 typedef enum
 {
 	Can_TxF_Move = 0,
-	Can_TxF_ChangeFsm = 1,
-	Can_TxF_ChangeMode = 2,
-	Can_TxF_ResetAllDevices = 3,
-	Can_TxF_ResetJoint0 = 4,
-	Can_TxF_ResetJoint1 = 5,
-	Can_TxF_ResetJoint2 = 6,
-	Can_TxF_ResetJoint3 = 7,
-	Can_TxF_ResetJoint4 = 8,
-	Can_TxF_ResetJoint5 = 9,
-	Can_TxF_ResetGripper = 10,
-	Can_TxF_ReadFriction = 11,
+	Can_TxF_ChangeFsm,
+	Can_TxF_ChangeMode,
+	Can_TxF_ReadFriction,
+	Can_TxF_ResetAllDevices,
+	Can_TxF_ResetJoint0,
+	Can_TxF_ResetJoint1,
+	Can_TxF_ResetJoint2,
+	Can_TxF_ResetJoint3,
+	Can_TxF_ResetJoint4,
+	Can_TxF_ResetJoint5,
+	Can_TxF_ResetGripper,
+
 }eCanTxFrames;
 typedef enum
 {
