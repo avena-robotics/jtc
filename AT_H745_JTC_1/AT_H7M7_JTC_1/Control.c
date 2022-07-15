@@ -1390,6 +1390,9 @@ static void Control_JtcInitDeparkStage(void)
 			pC->Joints[num].flagDeparkPosAchieved = true;
 		if(pC->Joints[num].irIsRun == true && pC->Joints[num].irTargetTorque > 0.0 && pC->Joints[num].currentPos > pC->Joints[num].irTargetPos)
 			pC->Joints[num].flagDeparkPosAchieved = true;
+		// Jeżeli dystans deparkowania bliski 0 to pomijamy faze deparkowania dla danego jointa
+		if(fabs(pC->Joints[num].deparkDist) < 0.0001)
+			pC->Joints[num].flagDeparkPosAchieved = true;
 	}
 	
 	// Koniec ruchu dla danego jointa i przejście w ReadyToOperate gdy flaga flagDeparkPosAchieved == true
