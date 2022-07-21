@@ -936,40 +936,40 @@ static void Can_ReadFrameReadFrictionResponse(uint8_t num)
 	uint32_t idx2=0;
 	if(devNum <= Can_DN_Joint5)
 	{
-		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
 		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 16;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
 		pC->Joints[devNum].fricCoeffFromCan[0] = x.f32;
 		
-		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
 		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 16;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
 		pC->Joints[devNum].fricCoeffFromCan[1] = x.f32;
 		
-		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
 		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 16;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
 		pC->Joints[devNum].fricCoeffFromCan[2] = x.f32;
 		
-		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
 		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 16;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
 		pC->Joints[devNum].fricCoeffFromCan[3] = x.f32;
 		
-		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
 		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 16;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
 		pC->Joints[devNum].fricCoeffFromCan[4] = x.f32;
 		
-		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 = (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
 		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 16;
-		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 24;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 8;
+		x.u32 += (uint32_t)pC->Can.RxMsgs[num].bytes[idx2++] << 0;
 		pC->Joints[devNum].fricCoeffFromCan[5] = x.f32;
 		
 		pC->Jtc.fricType = JTC_FT_Polynomial;
