@@ -212,6 +212,7 @@ void Joints_SetStartValuesVariables(void)
 		pC->Joints[num].setVel = 0.0;
 		pC->Joints[num].setAcc = 0.0;
 		pC->Joints[num].setTorque = 0.0;
+		pC->Joints[num].constTorque = 0.0;
 		
 		pC->Joints[num].limitPosMin = -M_PI;
 		pC->Joints[num].limitPosMax = M_PI;
@@ -330,6 +331,7 @@ void Joints_SetDefaultVariables(void)
 		pC->Joints[num].setVel = 0.0;
 		pC->Joints[num].setAcc = 0.0;
 		pC->Joints[num].setTorque = 0.0;
+		pC->Joints[num].constTorque = 0.0;
 		
 		pC->Joints[num].fricTorque = 0.0;
 		

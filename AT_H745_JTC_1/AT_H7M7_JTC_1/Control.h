@@ -60,7 +60,7 @@ typedef enum
 	MRN_CfStart = 200,
 	MRN_CfFinish = 219,
 	MRN_CtrlStart = 300,
-	MRN_CtrlFinish = 330,
+	MRN_CtrlFinish = 332,
 	MRN_JogStart = 387,
 	MRN_JogFinish = 399,
 	MRN_PidStart = 400,
@@ -81,6 +81,7 @@ typedef enum
 	JTC_FSM_Operate,
 	JTC_FSM_Teaching,
 	JTC_FSM_Error,
+	JTC_FSM_TeachingConstTorque,
 }eJTC_FSM;
 typedef enum 
 {
@@ -589,6 +590,7 @@ typedef struct
 	double				setVel;							//Predkosc - wartosc zadana
 	double				setAcc;							//Przyspieszenie - wartosc zadana
 	double				setTorque;					//Moment - wartosc zadana
+	double				constTorque;				//Moment - stała wartość momentu do trybu pracy Teaching Const Torque
 	
 	double 				setPosTemp;					//Pozycja - tymczasowa wartosc zadana
 	double				setVelTemp;					//Predkosc - tymczasowa wartosc zadana
@@ -775,6 +777,7 @@ typedef struct
 	bool						errorModeReq;
 	bool						initModeReq;
 	bool						teachingModeReq;
+	bool						teachingConstTorqueModeReq;
 	bool						holdposModeReq;
 	bool						operateModeReq;
 	

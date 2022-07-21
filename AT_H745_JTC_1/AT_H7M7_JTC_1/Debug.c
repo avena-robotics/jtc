@@ -211,7 +211,7 @@ static void Debug_ReadFrame(void)
 	uint8_t* buf = Debug.bufread;
 	uint16_t crc1 = Debug_Crc16(buf, 2);
 	uint16_t crc2 = ((uint16_t)buf[2]<<8) + ((uint16_t)buf[3]<<0);
-	if(crc1 == crc2)
+//	if(crc1 == crc2)
 	{
 		if(buf[0] == Debug_FT_Header)
 		{
@@ -243,8 +243,6 @@ void DMA1_Stream3_IRQHandler(void)
 {
 	if((DMA1->LISR & DMA_LISR_TCIF3) != RESET)
 	{
-//		Com.txFrames[Com.framenum].status = Host_TxFS_Idle;
-//		Com.status = Host_CS_Idle;
 		DMA1->LIFCR |= DMA_LIFCR_CTCIF3;
 	}
 }

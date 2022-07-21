@@ -1,8 +1,8 @@
 Dependencies for Project 'AT_H7M7_JTC_1', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\Can.c)(0x62D124E7)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
+F (.\Can.c)(0x62D950DC)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
 I (Can.h)(0x62A31A89)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -17,8 +17,8 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
-I (Joints.h)(0x62D01509)
+I (Com.h)(0x62D9531A)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
@@ -28,7 +28,7 @@ I (Debug.h)(0x62A6F8F3)
 I (MatlabSim.h)(0x62A6FB2B)
 F (.\Can.h)(0x62A31A89)()
 F (.\Com.c)(0x627E1A5C)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\com.o --omf_browse .\objects\com.crf --depend .\objects\com.d)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -43,9 +43,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
@@ -53,9 +53,9 @@ I (TrajGen.h)(0x62A34394)
 I (InputsOutputs.h)(0x627B801A)
 I (Debug.h)(0x62A6F8F3)
 I (MatlabSim.h)(0x62A6FB2B)
-F (.\Com.h)(0x626AA7AC)()
-F (.\Control.c)(0x62D12D75)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\control.o --omf_browse .\objects\control.crf --depend .\objects\control.d)
-I (Control.h)(0x62D12D39)
+F (.\Com.h)(0x62D9531A)()
+F (.\Control.c)(0x62D953B0)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\control.o --omf_browse .\objects\control.crf --depend .\objects\control.d)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -70,9 +70,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
@@ -80,9 +80,9 @@ I (TrajGen.h)(0x62A34394)
 I (InputsOutputs.h)(0x627B801A)
 I (Debug.h)(0x62A6F8F3)
 I (MatlabSim.h)(0x62A6FB2B)
-F (.\Control.h)(0x62D12D39)()
-F (.\main.c)(0x62D12D30)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
-I (Control.h)(0x62D12D39)
+F (.\Control.h)(0x62D953A5)()
+F (.\main.c)(0x62D12E4B)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -97,9 +97,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
@@ -107,9 +107,9 @@ I (TrajGen.h)(0x62A34394)
 I (InputsOutputs.h)(0x627B801A)
 I (Debug.h)(0x62A6F8F3)
 I (MatlabSim.h)(0x62A6FB2B)
-F (.\Joints.c)(0x62D12D41)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\joints.o --omf_browse .\objects\joints.crf --depend .\objects\joints.d)
-I (Joints.h)(0x62D01509)
-I (Control.h)(0x62D12D39)
+F (.\Joints.c)(0x62D95239)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\joints.o --omf_browse .\objects\joints.crf --depend .\objects\joints.d)
+I (Joints.h)(0x62D12E4B)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -124,7 +124,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
@@ -133,10 +133,10 @@ I (TrajGen.h)(0x62A34394)
 I (InputsOutputs.h)(0x627B801A)
 I (Debug.h)(0x62A6F8F3)
 I (MatlabSim.h)(0x62A6FB2B)
-F (.\Joints.h)(0x62D01509)()
-F (.\RNEA.c)(0x62D0150A)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\rnea.o --omf_browse .\objects\rnea.crf --depend .\objects\rnea.d)
+F (.\Joints.h)(0x62D12E4B)()
+F (.\RNEA.c)(0x62D950DC)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\rnea.o --omf_browse .\objects\rnea.crf --depend .\objects\rnea.d)
 I (RNEA.h)(0x62B0336B)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -151,9 +151,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
 I (TrajGen.h)(0x62A34394)
@@ -163,7 +163,7 @@ I (MatlabSim.h)(0x62A6FB2B)
 F (.\RNEA.h)(0x62B0336B)()
 F (.\Gripper.c)(0x6278BD7C)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\gripper.o --omf_browse .\objects\gripper.crf --depend .\objects\gripper.d)
 I (Gripper.h)(0x6257E118)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -178,9 +178,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (MB_RTU_Slave.h)(0x62613FBB)
 I (TrajGen.h)(0x62A34394)
@@ -190,7 +190,7 @@ I (MatlabSim.h)(0x62A6FB2B)
 F (.\Gripper.h)(0x6257E118)()
 F (.\MB_RTU_Slave.c)(0x62CE82C9)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\mb_rtu_slave.o --omf_browse .\objects\mb_rtu_slave.crf --depend .\objects\mb_rtu_slave.d)
 I (MB_RTU_Slave.h)(0x62613FBB)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -205,9 +205,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (TrajGen.h)(0x62A34394)
@@ -217,7 +217,7 @@ I (MatlabSim.h)(0x62A6FB2B)
 F (.\MB_RTU_Slave.h)(0x62613FBB)()
 F (.\TrajGen.c)(0x62D01280)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\trajgen.o --omf_browse .\objects\trajgen.crf --depend .\objects\trajgen.d)
 I (TrajGen.h)(0x62A34394)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -232,9 +232,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
@@ -244,7 +244,7 @@ I (MatlabSim.h)(0x62A6FB2B)
 F (.\TrajGen.h)(0x62A34394)()
 F (.\InputsOutputs.c)(0x627CD875)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\inputsoutputs.o --omf_browse .\objects\inputsoutputs.crf --depend .\objects\inputsoutputs.d)
 I (InputsOutputs.h)(0x627B801A)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -259,9 +259,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
@@ -269,9 +269,9 @@ I (TrajGen.h)(0x62A34394)
 I (Debug.h)(0x62A6F8F3)
 I (MatlabSim.h)(0x62A6FB2B)
 F (.\InputsOutputs.h)(0x627B801A)()
-F (.\Debug.c)(0x62D01509)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\debug.o --omf_browse .\objects\debug.crf --depend .\objects\debug.d)
+F (.\Debug.c)(0x62D95318)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\debug.o --omf_browse .\objects\debug.crf --depend .\objects\debug.d)
 I (Debug.h)(0x62A6F8F3)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -286,9 +286,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)
@@ -298,7 +298,7 @@ I (MatlabSim.h)(0x62A6FB2B)
 F (.\Debug.h)(0x62A6F8F3)()
 F (.\MatlabSim.c)(0x62CE6FF1)(--c99 -c --cpu Cortex-M7.fp.dp -g -O3 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DCORE_CM7 -DSTM32H745xx -D_RTE_-o .\objects\matlabsim.o --omf_browse .\objects\matlabsim.crf --depend .\objects\matlabsim.d)
 I (MatlabSim.h)(0x62A6FB2B)
-I (Control.h)(0x62D12D39)
+I (Control.h)(0x62D953A5)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h745xx.h)(0x60658432)
 I (C:\Users\Dawid\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm7.h)(0x60D43D42)
@@ -313,9 +313,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x602577D8)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x602577D4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x602577DC)
-I (Com.h)(0x626AA7AC)
+I (Com.h)(0x62D9531A)
 I (Can.h)(0x62A31A89)
-I (Joints.h)(0x62D01509)
+I (Joints.h)(0x62D12E4B)
 I (RNEA.h)(0x62B0336B)
 I (Gripper.h)(0x6257E118)
 I (MB_RTU_Slave.h)(0x62613FBB)

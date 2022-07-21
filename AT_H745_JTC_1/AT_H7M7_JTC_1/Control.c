@@ -810,6 +810,15 @@ static void Control_JtcPrepareSetedValuesForTeaching(void)
 		pC->Joints[num].idSetAcc = 0.0;
 	}
 }
+static void Control_JtcPrepareSetedValuesForTeachingConstTorque(void)
+{
+	for(int num=0;num<JOINTS_MAX;num++)
+	{
+		pC->Joints[num].idSetPos = pC->Joints[num].currentPos;		// aktualna pozycja katowa napedu dla dynamiki
+		pC->Joints[num].idSetVel = 0.0;
+		pC->Joints[num].idSetAcc = 0.0;
+	}
+}
 static void Control_JtcPrepareSetedValuesForHoldPos(void)
 {
 	for(int num=0;num<JOINTS_MAX;num++)
@@ -1257,6 +1266,10 @@ static void Control_JtcCheckState(void)
 	{
 		pC->Jtc.targetFsm = JTC_FSM_Teaching;
 	}
+	else if(pC->Jtc.teachingConstTorqueModeReq == true)
+	{
+		pC->Jtc.targetFsm = JTC_FSM_TeachingConstTorque;
+	}
 	else if(pC->Jtc.holdposModeReq == true)
 	{
 		pC->Jtc.targetFsm = JTC_FSM_HoldPos;
@@ -1288,6 +1301,20 @@ static void Control_JtcCheckState(void)
 			}
 		}
 		pC->Jtc.currentFsm = JTC_FSM_Teaching;
+	}
+	else if(pC->Jtc.targetFsm == JTC_FSM_TeachingConstTorque)
+	{
+		if(pC->Jtc.currentFsm != JTC_FSM_TeachingConstTorque)
+		{
+			Joints_SetDefaultVariables();
+			for(int num=0;num<JOINTS_MAX;num++)
+			{
+				pC->Joints[num].setPosTemp = 0.0;
+				pC->Joints[num].setVelTemp = 0.0;
+				pC->Joints[num].setAccTemp = 0.0;
+			}
+		}
+		pC->Jtc.currentFsm = JTC_FSM_TeachingConstTorque;
 	}
 	else if(pC->Jtc.targetFsm == JTC_FSM_HoldPos)
 	{
@@ -1495,6 +1522,24 @@ static void Control_JtcTeaching(void)
 	for(int num=0;num<JOINTS_MAX;num++)
 		pC->Joints[num].setTorqueTemp = pC->Joints[num].idTorque;
 }
+static void Control_JtcTeachingConstTorque(void)
+{
+	Control_TrajClear();
+	TG_ClearTgenVariables();
+	
+	for(uint8_t num=0;num<JOINTS_MAX;num++)
+		if(pC->Joints[num].currentFsm != Joint_FSM_OperationEnable)
+			Control_JtcSetJointToEnable(num);
+		
+	if(pC->Gripper.currentFsm != Joint_FSM_OperationEnable)
+		Control_JtcSetGripperToEnable();
+	
+	Control_JtcPrepareSetedValuesForTeachingConstTorque();
+	RNEA_CalcTorques();
+	
+	for(int num=0;num<JOINTS_MAX;num++)
+		pC->Joints[num].setTorqueTemp = pC->Joints[num].idTorque + pC->Joints[num].constTorque;
+}
 static void Control_JtcHoldPos(void)
 {
 	for(uint8_t num=0;num<JOINTS_MAX;num++)
@@ -1573,6 +1618,12 @@ static void Control_JtcAct(void)
 		LED1_ON;
 		LED2_ON;
 		Control_JtcTeaching();
+	}
+	else if(pC->Jtc.currentFsm == JTC_FSM_TeachingConstTorque)
+	{
+		LED1_ON;
+		LED2_ON;
+		Control_JtcTeachingConstTorque();
 	}
 	else if(pC->Jtc.currentFsm == JTC_FSM_HoldPos)
 	{

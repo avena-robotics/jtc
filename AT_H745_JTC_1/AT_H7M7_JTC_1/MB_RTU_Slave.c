@@ -395,6 +395,8 @@ static void MBS_ActControlWords(void)
 	if(Mbs.hregs[idx++] == 0x01)		Control_ResetDevicesViaCan(0x10);
 	if(Mbs.hregs[idx++] == 0x01)		Control_ResetDevicesViaCan(0x20);
 	if(Mbs.hregs[idx++] == 0x01)		Control_ResetDevicesViaCan(0x40);
+	if(Mbs.hregs[idx++] == 0x01)		pC->Jtc.teachingConstTorqueModeReq = true;
+	if(Mbs.hregs[idx++] == 0x01)		pC->Jtc.teachingConstTorqueModeReq = false;
 	
 	
 	for(uint16_t i=MRN_CtrlStart;i<=MRN_CtrlFinish;i++)
@@ -411,6 +413,15 @@ static void MBS_ActJogWords(void)
 		x.u32 = ((uint32_t)Mbs.hregs[idx++]<<16);
 		x.u32 += ((uint32_t)Mbs.hregs[idx++]<<0);
 		pC->Jtc.robJog.percentVel.v[i] = x.f32;
+		pC->Joints[i].constTorque = x.f32;
+	}
+	
+	for(int i=0;i<JOINTS_MAX;i++)
+	{
+		if(pC->Jtc.robJog.percentVel.v[i] > 100.0)
+			pC->Jtc.robJog.percentVel.v[i] = 100.0;
+		if(pC->Jtc.robJog.percentVel.v[i] < -100.0)
+			pC->Jtc.robJog.percentVel.v[i] = -100.0;
 	}
 }
 static void MBS_ResponseError_IDR(void)
