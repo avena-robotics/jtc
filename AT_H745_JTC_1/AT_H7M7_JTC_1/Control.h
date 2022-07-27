@@ -324,9 +324,6 @@ typedef enum
 #define MAXINT16										32767.0
 #define MAXINT32										2147483647.0
 
-//TESTJOINTNUM - numer jointa do testowania. Pozostałe jointy zawsze w ReadyToOperate
-#define TESTJOINTNUM	0
-
 //#define TESTMODE
 //-- #define ENCODER_MAGNETIC - starsza wersja z enkoderami magnetycznymi
 //#define ENCODER_MAGNETIC

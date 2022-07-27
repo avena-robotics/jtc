@@ -205,7 +205,7 @@ static void Debug_ReadFrame(void)
 	uint8_t* buf = Debug.bufread;
 	uint16_t crc1 = Debug_Crc16(buf, 2);
 	uint16_t crc2 = ((uint16_t)buf[2]<<8) + ((uint16_t)buf[3]<<0);
-	if(crc1 == crc2)
+//	if(crc1 == crc2)
 	{
 		if(buf[0] == Debug_FT_Header)
 		{

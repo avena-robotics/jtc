@@ -54,6 +54,39 @@ void Control_SetDefualtArmModel(void)
 //	pC->Arm.Links[5].mass = 1.960;		//mass of link 5
 //	pC->Arm.Links[6].mass = 0.082;		//mass of link 6
 
+//	Control_SetTable(pC->Arm.Joints[0].origin, 0, 0, 0.063, 0, 0, 0);												//joint 0 coordinate system
+//	Control_SetTable(pC->Arm.Joints[1].origin, 0.063, 0, 0.0763, 0, 1.570796, 0);						//joint 1 coordinate system
+//	Control_SetTable(pC->Arm.Joints[2].origin, -0.686, 0, 0, 0, 3.141592, 0);								//joint 2 coordinate system
+//	Control_SetTable(pC->Arm.Joints[3].origin, 0.671, 0, -0.005, 3.141592, 0, 0);						//joint 3 coordinate system
+//	Control_SetTable(pC->Arm.Joints[4].origin, 0.0495, 0, 0.064, 0, -1.570796, 3.141592);		//joint 4 coordinate system
+//	Control_SetTable(pC->Arm.Joints[5].origin, 0.0495, 0, 0.064, 0, 1.570796, 0);						//joint 5 coordinate system
+//	Control_SetTable(pC->Arm.Joints[6].origin, 0, 0, 0.0181, 0, 0, 0);											//joint 6 coordinate system
+//	
+//	Control_SetTable(pC->Arm.Links[0].origin, 0, -0.0129, 0.00034, 0, 0, 0);								//center of mass link 0 coordinate system
+//	Control_SetTable(pC->Arm.Links[1].origin, -0.00005, -0.007, 0.0175, 0, 0, 1.570796);		//center of mass link 1 coordinate system
+//	Control_SetTable(pC->Arm.Links[2].origin, -0.343, 0, 0.05884, 0, 3.141592, 1.570796);		//center of mass link 2 coordinate system
+//	Control_SetTable(pC->Arm.Links[3].origin, 0.38666, 0, 0.051, 0, 0, 1.570796);						//center of mass link 3 coordinate system
+//	Control_SetTable(pC->Arm.Links[4].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 4 coordinate system
+//	Control_SetTable(pC->Arm.Links[5].origin, 0.019, 0, 0.059, 0, 0, 1.570796);							//center of mass link 5 coordinate system
+//	Control_SetTable(pC->Arm.Links[6].origin, 0, 0, 0, 0, 0, 0);														//center of mass link 6 coordinate system
+//	
+//	Control_SetTable(pC->Arm.Links[0].innertia, 1, 0, 0, 1, 0, 1);													//link 0 innertial values
+//	Control_SetTable(pC->Arm.Links[1].innertia, 0.005372, 0, 0, 0.004691, 0, 0.005059);			//link 1 innertial values
+//	Control_SetTable(pC->Arm.Links[2].innertia, 0.8437, 0, 0, 0.01143, 0, 0.8428);					//link 2 innertial values
+//	Control_SetTable(pC->Arm.Links[3].innertia, 0.3605, 0, 0, 0.006825, 0, 0.3606);					//link 3 innertial values
+//	Control_SetTable(pC->Arm.Links[4].innertia, 0.002233, 0, 0, 0.002047, 0, 0.002384);			//link 4 innertial values
+//	Control_SetTable(pC->Arm.Links[5].innertia, 0.002233, 0, 0, 0.002047, 0, 0.002384);			//link 5 innertial values
+//	Control_SetTable(pC->Arm.Links[6].innertia, 0.000041, 0, 0, 0.000042, 0, 0.00008);			//link 6 innertial values
+//	
+//	pC->Arm.Links[0].mass = 0.750;		//mass of link 0
+//	pC->Arm.Links[1].mass = 3.800;		//mass of link 1
+//	pC->Arm.Links[2].mass = 6.900;		//mass of link 2
+//	pC->Arm.Links[3].mass = 4.600;		//mass of link 3
+//	pC->Arm.Links[4].mass = 1.960;		//mass of link 4
+//	pC->Arm.Links[5].mass = 1.960;		//mass of link 5
+//	pC->Arm.Links[6].mass = 0.082;		//mass of link 6
+
+// Parametry dynamiczne manipulatora dla testowania na stanowisku do jointów
 	Control_SetTable(pC->Arm.Joints[0].origin, 0, 0, 0.063, 0, 0, 0);												//joint 0 coordinate system
 	Control_SetTable(pC->Arm.Joints[1].origin, 0.063, 0, 0.0763, 0, 1.570796, 0);						//joint 1 coordinate system
 	Control_SetTable(pC->Arm.Joints[2].origin, -0.686, 0, 0, 0, 3.141592, 0);								//joint 2 coordinate system
@@ -82,9 +115,9 @@ void Control_SetDefualtArmModel(void)
 	pC->Arm.Links[1].mass = 3.800;		//mass of link 1
 	pC->Arm.Links[2].mass = 6.900;		//mass of link 2
 	pC->Arm.Links[3].mass = 4.600;		//mass of link 3
-	pC->Arm.Links[4].mass = 1.960;		//mass of link 4
-	pC->Arm.Links[5].mass = 1.960;		//mass of link 5
-	pC->Arm.Links[6].mass = 0.082;		//mass of link 6
+	pC->Arm.Links[4].mass = 0.001;		//mass of link 4
+	pC->Arm.Links[5].mass = 0.001;		//mass of link 5
+	pC->Arm.Links[6].mass = 0.001;		//mass of link 6
 }
 static void Control_JtcVariableConf(void)
 {
@@ -334,9 +367,6 @@ static void Control_JtcSetJointToReadyToOperate(uint8_t num)
 }
 static void Control_JtcSetJointToEnable(uint8_t num)
 {
-	//Tylko joint o numerze TESTJOINTNUM może wejśc w Joint_FSM_OperationEnable
-	if(num != TESTJOINTNUM)
-		return;
 	pC->Joints[num].targetFsm = Joint_FSM_OperationEnable;
 	if(pC->Joints[num].reqIgnore == true)
 		return;
